@@ -1,0 +1,63 @@
+﻿<Window
+    x:Class="Epsilon.Options.OptionsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Epsilon.Pages"
+    xmlns:s="https://github.com/canton7/Stylet"
+    Width="640"
+    Height="480"
+    Background="#2d2d30"
+    TextElement.Foreground="#f1f1f1"
+    WindowStyle="SingleBorderWindow">
+
+    <Grid Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ContentControl
+            Margin="4"
+            s:View.Model="{Binding CategoryTree}" />
+        <GridSplitter
+            Grid.Column="1"
+            HorizontalAlignment="Stretch"
+            Background="Transparent" />
+        <Border
+            Grid.Column="2"
+            Margin="4"
+            Background="#2d2d30">
+            <ContentControl s:View.Model="{Binding CategoryTree.SelectedNode.Page}" />
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Grid.ColumnSpan="3"
+            Margin="0,4"
+            Padding="0,8,0,0"
+            BorderBrush="#3F3F46"
+            BorderThickness="0,1,0,0">
+            <StackPanel
+                Margin="4"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    Width="70"
+                    Height="24"
+                    Click="{s:Action Apply}"
+                    Content="OK" />
+                <Button
+                    Width="70"
+                    Height="24"
+                    Margin="8,0,0,0"
+                    Click="{s:Action Cancel}"
+                    Content="Cancel" />
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</Window>

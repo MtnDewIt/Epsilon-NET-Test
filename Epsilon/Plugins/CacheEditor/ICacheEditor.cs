@@ -1,0 +1,17 @@
+﻿using Shared;
+using System;
+using System.Collections.Generic;
+using TagTool.Cache;
+
+namespace CacheEditor
+{
+    public interface ICacheEditor
+    {
+        ICacheFile CacheFile { get; }
+        ITagTree TagTree { get; }
+        ICacheEditorTool GetTool(string name);
+        IDictionary<string, object> PluginStorage { get; }
+        void OpenTag(CachedTag tag);
+        CachedTag RunBrowseTagDialog();
+    }
+}
