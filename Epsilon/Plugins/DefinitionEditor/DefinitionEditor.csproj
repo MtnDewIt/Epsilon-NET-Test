@@ -112,6 +112,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj">
+      <Project>{42814dee-5a94-4901-bda9-28afd2d4f5ac}</Project>
+      <Name>TagTool</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\components\TagStructEditor\TagStructEditor.csproj">
       <Project>{613aa9f0-1dc4-451a-a0c1-d9d1d4499d0c}</Project>
       <Name>TagStructEditor</Name>
@@ -141,10 +145,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Xaml" />
-    <Reference Include="TagTool">
-      <HintPath>F:\tagtool\TagTool\TagTool\bin\x64\Debug\TagTool.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
