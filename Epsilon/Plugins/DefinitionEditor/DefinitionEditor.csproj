@@ -115,6 +115,7 @@
     <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj">
       <Project>{42814dee-5a94-4901-bda9-28afd2d4f5ac}</Project>
       <Name>TagTool</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\components\TagStructEditor\TagStructEditor.csproj">
       <Project>{613aa9f0-1dc4-451a-a0c1-d9d1d4499d0c}</Project>

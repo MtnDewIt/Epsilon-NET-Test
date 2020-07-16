@@ -92,10 +92,6 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
       <Private>False</Private>
     </Reference>
-    <Reference Include="TagTool">
-      <HintPath>F:\tagtool\TagTool\TagTool\bin\x64\Debug\TagTool.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="PresentationCore">
       <Private>False</Private>
     </Reference>
@@ -189,6 +185,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj">
+      <Project>{42814dee-5a94-4901-bda9-28afd2d4f5ac}</Project>
+      <Name>TagTool</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.1.1\build\Fody.targets" Condition="Exists('..\packages\Fody.6.1.1\build\Fody.targets')" />
