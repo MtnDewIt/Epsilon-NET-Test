@@ -245,6 +245,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TagTool\TagTool\TagTool.csproj">
+      <Project>{42814dee-5a94-4901-bda9-28afd2d4f5ac}</Project>
+      <Name>TagTool</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EpsilonLib\EpsilonLib.csproj">
       <Project>{110511dd-0a26-4843-9cc4-bf2cf42b8e44}</Project>
       <Name>EpsilonLib</Name>
