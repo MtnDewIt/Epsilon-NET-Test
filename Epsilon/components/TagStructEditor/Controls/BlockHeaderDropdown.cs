@@ -113,5 +113,26 @@ namespace TagStructEditor.Controls
                 e.Handled = true;
             }
         }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            if (!_combo.IsFocused && !_combo.IsMouseOver)
+                return;
+
+            if (e.Delta > 0)
+            {
+                if (CurrentIndex > 0)
+                    CurrentIndex--;
+
+                e.Handled = true;
+            }
+            if (e.Delta < 0)
+            {
+                if (CurrentIndex < Count - 1)
+                    CurrentIndex++;
+
+                e.Handled = true;
+            }
+        }
     }
 }
