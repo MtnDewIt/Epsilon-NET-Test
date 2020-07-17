@@ -67,6 +67,7 @@ namespace WpfApp20
             foreach (var dict in GetInstances<ResourceDictionary>())
                 App.Current.Resources.MergedDictionaries.Add(dict);
 
+            App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
             App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
             App.Current.Resources.Add(SystemParameters.MenuPopupAnimationKey, PopupAnimation.None);
         }
@@ -79,17 +80,6 @@ namespace WpfApp20
                FrameworkPropertyMetadataOptions.AffectsMeasure |
                FrameworkPropertyMetadataOptions.AffectsRender |
                FrameworkPropertyMetadataOptions.Inherits));
-
-            var window = App.Current.MainWindow;
-
-            var commandRegistry = GetInstance<ICommandRegistry>();
-            foreach (var command in commandRegistry.GetCommands())
-            {
-                if (command.Definition.KeyShortcut == KeyShortcut.None)
-                    continue;
-
-                window.InputBindings.Add(new System.Windows.Input.InputBinding(command, command.Definition.KeyShortcut.KeyGesture));
-            }
         }
     }
 }
