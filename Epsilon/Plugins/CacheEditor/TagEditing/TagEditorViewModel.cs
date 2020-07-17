@@ -28,6 +28,7 @@ namespace CacheEditor
         {
             Items.AddRange(
                 _cacheEditingService.TagEditorPlugins
+                .Where(provider => provider.ValidForTag(context.CacheEditor.CacheFile, context.Instance))
                 .Select(provider => new TagEditorPluginTabViewModel(provider.CreateAsync(context)) { DisplayName = provider.DisplayName }));
 
             ActiveItem = Items.FirstOrDefault();

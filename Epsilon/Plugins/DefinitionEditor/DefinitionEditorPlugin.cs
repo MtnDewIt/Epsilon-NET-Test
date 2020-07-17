@@ -96,6 +96,11 @@ namespace DefinitionEditor
             return value as PerCacheDefinitionEditorContext;
         }
 
+        public bool ValidForTag(ICacheFile cache, CachedTag tag)
+        {
+            return true;
+        }
+
         class PerCacheDefinitionEditorContext
         {
             public GameCache Cache { get; }

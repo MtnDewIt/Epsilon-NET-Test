@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TagTool.Cache;
 
 namespace CacheEditor
 {
@@ -9,5 +10,7 @@ namespace CacheEditor
         int SortOrder { get; }
 
         Task<ITagEditorPlugin> CreateAsync(TagEditorContext context);
+
+        bool ValidForTag(ICacheFile cache, CachedTag tag);
     }
 }

@@ -32,5 +32,10 @@ namespace CryingCatPlugin
         {
             return Task.FromResult<ITagEditorPlugin>(new CryingCatTagEditorViewModel(context));
         }
+
+        public bool ValidForTag(ICacheFile cache, CachedTag tag)
+        {
+            return true;
+        }
     }
 }
