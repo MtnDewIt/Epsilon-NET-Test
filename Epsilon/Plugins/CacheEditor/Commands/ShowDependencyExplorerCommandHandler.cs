@@ -11,6 +11,6 @@ namespace CacheEditor.Commands
         {
         }
 
-        public override string ToolName => Components.Info.CacheInfoToolViewModel.ToolName;
+        public override string ToolName => Components.DependencyExplorer.DependencyExplorerViewModel.ToolName;
     }
 }

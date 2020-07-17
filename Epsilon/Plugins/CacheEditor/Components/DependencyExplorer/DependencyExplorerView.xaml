@@ -11,7 +11,7 @@
             x:Key="DependencyListboxItemStyle"
             BasedOn="{StaticResource {x:Type ListBoxItem}}"
             TargetType="{x:Type ListBoxItem}">
-            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Focusable" Value="False" />
             <EventSetter
                 Event="MouseDoubleClick"
                 Handler="ListBoxItem_MouseDoubleClick" />
@@ -20,6 +20,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 

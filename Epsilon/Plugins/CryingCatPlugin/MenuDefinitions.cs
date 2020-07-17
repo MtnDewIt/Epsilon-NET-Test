@@ -7,8 +7,8 @@ namespace CryingCatPlugin
 {
     class MenuDefinitions
     {
-        [ExportMenu]
-        public static MenuDefinition CatMenu = new MenuDefinition(StandardMenus.MainMenu, null, "Cats", placeAfter: StandardMenus.ToolsMenu);
+        [ExportMenuItem]
+        public static MenuItemDefinition CatMenu = new MenuItemDefinition(StandardMenus.MainMenu, null, "Cats", placeAfter: () => StandardMenus.ToolsMenu);
 
         [ExportMenuItem]
         public static MenuItemDefinition MyMenuItem = new CommandMenuItemDefinition<CatCommand>(CatMenu, null);
