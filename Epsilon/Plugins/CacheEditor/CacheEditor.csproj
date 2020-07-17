@@ -155,6 +155,7 @@
     <Compile Include="Components\TagTree\Commands\ToggleFoldersViewCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ToggleGroupsViewCommand.cs" />
     <Compile Include="ICacheEditorTool.cs" />
+    <Compile Include="ITagTree.cs" />
     <Compile Include="Models\CacheFileBase.cs" />
     <Compile Include="Models\GenericCacheFile.cs" />
     <Compile Include="Models\HaloOnlineCacheFile.cs" />
@@ -196,7 +197,6 @@
     <Compile Include="UI\PanesStyleSelector.cs" />
     <Compile Include="TagEditing\ITagEditorPlugin.cs" />
     <Compile Include="TagEditing\ITagEditorPluginProvider.cs" />
-    <Compile Include="Components\TagTree\ITagTree.cs" />
     <Compile Include="Components\TagExplorer\TagExplorerView.xaml.cs">
       <DependentUpon>TagExplorerView.xaml</DependentUpon>
     </Compile>

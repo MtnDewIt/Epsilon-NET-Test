@@ -25,21 +25,17 @@ namespace CacheEditor
             {
                 Cache.TagCacheGenHO.Tags[tag.Index] = null;
                 Cache.TagCacheGenHO.SetTagDataRaw(stream, (CachedTagHaloOnline)tag, new byte[] { });
+                Cache.SaveTagNames();
             }
-            Cache.SaveTagNames();
-
-            //base.Reload();
         }
 
         public override void ExtractTag(CachedTag tag, string filePath)
         {
             using (var stream = Cache.OpenCacheRead())
             {
-                var data = Cache.TagCacheGenHO.ExtractTagRaw(stream, (CachedTagHaloOnline)tag);
+                var data = Cache.TagCacheGenHO.ExtractTagRaw(stream, tag as CachedTagHaloOnline);
                 using (var outStream = System.IO.File.Create(filePath))
-                {
                     outStream.Write(data, 0, data.Length);
-                }
             }
         }
 
@@ -52,15 +48,12 @@ namespace CacheEditor
                 var originalDefinition = Cache.Deserialize(stream, tag);
                 Cache.Serialize(stream, newTag, originalDefinition);
             }
-
-            //base.Reload();
         }
 
         public async override Task SerializeTagAsync(CachedTag instance, object definition)
         {
-            await Task.Delay(1000);
-            //using (var stream = Cache.OpenCacheReadWrite())
-                //await Task.Run(() => Cache.Serialize(stream, instance, definition));
+            using (var stream = Cache.OpenCacheReadWrite())
+                await Task.Run(() => Cache.Serialize(stream, instance, definition));
         }
 
         public override void RenameTag(CachedTag tag, string newName)

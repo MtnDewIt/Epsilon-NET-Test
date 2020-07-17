@@ -74,10 +74,5 @@ namespace CacheEditor.Components.TagTree
         }
     }
 
-    interface ITagNameFormatter
-    {
-        string Format(CachedTag tag);
-    }
-
     public class TagTreeFolderNode : TagTreeNode { }
 }

@@ -18,5 +18,4 @@ namespace CacheEditor.Components.Info
 
         public CacheInfo Info { get; private set; }
     }
-
 }

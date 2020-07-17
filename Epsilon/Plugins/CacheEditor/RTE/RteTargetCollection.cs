@@ -36,8 +36,7 @@ namespace CacheEditor.RTE
                 {
                     _targets.Remove(target);
                     OnTargetRemoved(target);
-                }
-                   
+                }    
             }
         }
 
