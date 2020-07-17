@@ -22,7 +22,7 @@ namespace TagStructEditor.Fields
     public enum ValueFieldFlags
     {
         None = 0,
-        ShowType = (1 << 1),
+        ShowType = (1 << 0),
 
         Default = ShowType
     }

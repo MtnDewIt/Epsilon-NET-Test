@@ -20,5 +20,7 @@ namespace TagStructEditor
         /// Callback function to open a tag
         /// </summary>
         public Action<CachedTag> OpenTag;
+
+        public bool DisplayFieldTypes { get; set; }
     }
 }

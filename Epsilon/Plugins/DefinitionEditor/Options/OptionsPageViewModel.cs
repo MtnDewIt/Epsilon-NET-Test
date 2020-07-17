@@ -1,29 +1,35 @@
 ﻿using EpsilonLib.Options;
-using Stylet;
+using EpsilonLib.Settings;
 using System.ComponentModel.Composition;
 
 namespace DefinitionEditor.Options
 {
     [Export(typeof(IOptionsPage))]
-    class OptionsPageViewModel : Screen, IOptionsPage
+    class OptionsPageViewModel : OptionPageBase
     {
-        public string Category => "Cache Editor";
+        private readonly ISettingsCollection _settings;
+        private bool _isDisplayFieldTypesEnabled;
 
-        public bool IsDirty { get; set; }
-
-        public OptionsPageViewModel()
+        [ImportingConstructor]
+        public OptionsPageViewModel(ISettingsService settingsService) : base("Cache Editor", "Definition Editor")
         {
-            DisplayName = "Definition Editor";
+            _settings = settingsService.GetCollection(Settings.CollectionKey);
         }
 
-        public void Apply()
+        public bool IsDisplayFieldTypesChecked
         {
-            
+            get => _isDisplayFieldTypesEnabled;
+            set => SetOptionAndNotify(ref _isDisplayFieldTypesEnabled, value);
         }
 
-        public void Load()
+        public override void Apply()
         {
-            
+            _settings.Set(Settings.DisplayFieldTypesSetting.Key, IsDisplayFieldTypesChecked);
+        }
+
+        public override void Load()
+        {
+            IsDisplayFieldTypesChecked = _settings.Get(Settings.DisplayFieldTypesSetting.Key, (bool)Settings.DisplayFieldTypesSetting.DefaultValue);
         }
     }
 }

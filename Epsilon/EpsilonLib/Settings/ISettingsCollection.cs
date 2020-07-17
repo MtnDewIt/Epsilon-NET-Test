@@ -21,6 +21,11 @@ namespace EpsilonLib.Settings
             return (T)collection.Get(typeof(T), key, defaultValue);
         }
 
+        public static T Get<T>(this ISettingsCollection collection, SettingDefinition defintion)
+        {
+            return (T)collection.Get(typeof(T), defintion.Key, (T)defintion.DefaultValue);
+        }
+
         public static void Set<T>(this ISettingsCollection collection, string key, T value)
         {
             collection.Set(key, value);

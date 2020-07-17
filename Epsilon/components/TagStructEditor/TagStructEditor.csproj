@@ -150,7 +150,7 @@
     <Compile Include="Fields\ValueField.cs" />
     <Compile Include="Helpers\FieldExpander.cs" />
     <Compile Include="Helpers\FieldSearch.cs" />
-    <Compile Include="Fields\ITagFieldFactory.cs" />
+    <Compile Include="Fields\IFieldFactory.cs" />
     <Compile Include="Controls\StructEditorControl.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Configuration.cs" />

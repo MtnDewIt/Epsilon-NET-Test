@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\DisabledPluginAttribute.cs" />
+    <Compile Include="Options\OptionPageBase.cs" />
     <Compile Include="Utils\DispatcherEx.cs" />
     <Compile Include="Core\ExplicitViewAttribute.cs" />
     <Compile Include="Shell\TreeModels\ITreeEventSink.cs" />

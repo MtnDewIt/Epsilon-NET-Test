@@ -3,5 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:DefinitionEditor.Options">
-    <Grid />
+    <StackPanel>
+        <CheckBox
+            Content="Display Field Types"
+            IsChecked="{Binding IsDisplayFieldTypesChecked, Mode=TwoWay}" />
+    </StackPanel>
 </UserControl>

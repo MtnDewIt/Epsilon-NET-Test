@@ -21,7 +21,7 @@ namespace TagStructEditor.Fields
         /// <summary>
         /// Flags for the value field
         /// </summary>
-        public ValueFieldFlags FieldFlags { get; set; }
+        public ValueFieldFlags FieldFlags => FieldInfo.Flags;
 
         /// <summary>
         /// The parent field if any

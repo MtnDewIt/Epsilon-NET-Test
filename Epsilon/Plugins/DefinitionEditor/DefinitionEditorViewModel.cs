@@ -2,6 +2,7 @@
 using CacheEditor.RTE;
 using CacheEditor.RTE.UI;
 using EpsilonLib.Commands;
+using EpsilonLib.Settings;
 using EpsilonLib.Utils;
 using Shared;
 using Stylet;

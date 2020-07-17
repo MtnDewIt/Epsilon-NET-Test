@@ -1,24 +1,23 @@
 ﻿using CacheEditor.Components.TagTree;
 using EpsilonLib.Options;
 using EpsilonLib.Settings;
-using Shared;
-using Stylet;
-using System;
 using System.ComponentModel.Composition;
-using System.Runtime.CompilerServices;
 
 namespace CacheEditor.Options
 {
     [Export(typeof(IOptionsPage))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    class GeneralOptionsPageViewModel : Screen, IOptionsPage
+    class GeneralOptionsPageViewModel : OptionPageBase
     {
-        public string Category => "Cache Editor";
-        public bool IsDirty { get; set; }
-
         private TagTreeViewMode _tagTreeViewMode;
         private TagTreeGroupDisplayMode _tagTreeGroupDisplayMode;
         private ISettingsCollection _settings;
+
+        [ImportingConstructor]
+        public GeneralOptionsPageViewModel(ISettingsService settingsService) : base("Cache Editor", "General")
+        {
+            _settings = settingsService.GetCollection(Settings.CollectionKey);
+        }
 
         public TagTreeViewMode TagTreeViewMode
         {
@@ -32,41 +31,16 @@ namespace CacheEditor.Options
             set => SetOptionAndNotify(ref _tagTreeGroupDisplayMode, value);
         }
 
-        protected virtual void SetOptionAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
-        {
-            if(SetAndNotify(ref field, value, propertyName))
-                IsDirty = true;
-        }
-
-        [ImportingConstructor]
-        public GeneralOptionsPageViewModel(ISettingsService settingsService)
-        {
-            DisplayName = "General";
-            _settings = settingsService.GetCollection("CacheEditor");
-            
-        }
-
-        public void Apply()
+        public override void Apply()
         {
             _settings.Set(Components.TagTree.Settings.TagTreeViewModeSetting.Key, TagTreeViewMode);
             _settings.Set(Components.TagTree.Settings.TagTreeGroupDisplaySetting.Key, TagTreeGroupDisplayMode);
         }
 
-
-        protected override void OnViewLoaded()
+        public override void Load()
         {
-            base.OnViewLoaded();
-            TagTreeViewMode = _settings.Get(
-                Components.TagTree.Settings.TagTreeViewModeSetting.Key,
-                (TagTreeViewMode)Components.TagTree.Settings.TagTreeViewModeSetting.DefaultValue);
-            TagTreeGroupDisplayMode = _settings.Get(
-                Components.TagTree.Settings.TagTreeGroupDisplaySetting.Key,
-                (TagTreeGroupDisplayMode)Components.TagTree.Settings.TagTreeGroupDisplaySetting.DefaultValue);
-        }
-
-        public void Load()
-        {
-            
+            TagTreeViewMode = _settings.Get<TagTreeViewMode>(Components.TagTree.Settings.TagTreeViewModeSetting);
+            TagTreeGroupDisplayMode = _settings.Get<TagTreeGroupDisplayMode>(Components.TagTree.Settings.TagTreeGroupDisplaySetting);
         }
     }
 }

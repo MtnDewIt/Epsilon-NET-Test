@@ -58,6 +58,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="IFieldsValueChangeSink.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="ValueField.cs" />
     <Page Include="Options\OptionsPageView.xaml">
       <SubType>Designer</SubType>

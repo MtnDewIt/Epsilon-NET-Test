@@ -1,5 +1,6 @@
 ﻿using CacheEditor;
 using CacheEditor.RTE;
+using EpsilonLib.Settings;
 using Shared;
 using System;
 using System.ComponentModel.Composition;
@@ -17,13 +18,15 @@ namespace DefinitionEditor
         const string ContextKey = "DefinitionEditor.Context";
 
         private readonly IRteService _rteService;
+        private readonly ISettingsCollection _settings;
         private readonly Lazy<IShell> _shell;
        
         [ImportingConstructor]
-        public DefinitionEditorPluginProvider(Lazy<IShell> shell, IRteService rteService)
+        public DefinitionEditorPluginProvider(Lazy<IShell> shell, ISettingsService settingsService, IRteService rteService)
         {
             _shell = shell;
             _rteService = rteService;
+            _settings = settingsService.GetCollection(Settings.CollectionKey);
         }
 
         public string DisplayName => "Definition";
@@ -38,7 +41,8 @@ namespace DefinitionEditor
             {
                 OpenTag = context.CacheEditor.OpenTag,
                 BrowseTag = context.CacheEditor.RunBrowseTagDialog,
-                ValueChanged = valueChangeSink.Invoke
+                ValueChanged = valueChangeSink.Invoke,
+                DisplayFieldTypes = _settings.Get<bool>(Settings.DisplayFieldTypesSetting)
             };
 
             var ctx = GetDefinitionEditorContext(context);

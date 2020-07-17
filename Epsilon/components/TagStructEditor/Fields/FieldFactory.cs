@@ -105,6 +105,11 @@ namespace TagStructEditor.Fields
 
         public ValueField CreateValueField(ValueFieldInfo info)
         {
+            if (_config.DisplayFieldTypes)
+                info.Flags |= ValueFieldFlags.ShowType;
+            else
+                info.Flags &= ~ValueFieldFlags.ShowType;
+
             if (typeof(IList).IsAssignableFrom(info.FieldType))
             {
                 Type elementType;
