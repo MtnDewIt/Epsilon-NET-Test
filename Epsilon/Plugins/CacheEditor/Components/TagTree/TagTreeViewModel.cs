@@ -18,14 +18,24 @@ namespace CacheEditor.Components.TagTree
         Groups
     }
 
+    enum TagTreeGroupDisplayMode
+    {
+        TagGroup,
+        TagGroupName
+    }
+
     class TagTreeViewModel : TreeModel, ITagTree,
         ICommandHandler<ToggleFoldersViewCommand>,
         ICommandHandler<ToggleGroupsViewCommand>,
-        ICommandHandler<CopyCommand>
+        ICommandHandler<CopyCommand>,
+        ICommandHandler<ToggleGroupNameViewCommand>,
+        ICommandHandler<ToggleGroupTagNameViewCommand>
     {
         private ICacheFile _cacheFile;
         private string _filterText;
         private TagTreeViewMode _viewMode = TagTreeViewMode.Groups;
+        private TagTreeGroupDisplayMode _groupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
+
         public MenuDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
 
         public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile)
@@ -33,6 +43,10 @@ namespace CacheEditor.Components.TagTree
             _viewMode = cacheEditingService.Settings.Get(
                 Settings.TagTreeViewModeSetting.Key, 
                 (TagTreeViewMode)Settings.TagTreeViewModeSetting.DefaultValue);
+
+            _groupDisplayMode = cacheEditingService.Settings.Get(
+                Settings.TagTreeGroupDisplaySetting.Key,
+                (TagTreeGroupDisplayMode)Settings.TagTreeGroupDisplaySetting.DefaultValue);
 
             _cacheFile = cacheFile;
             Refresh();
@@ -44,6 +58,16 @@ namespace CacheEditor.Components.TagTree
             set
             {
                 if (SetAndNotify(ref _viewMode, value))
+                    Refresh();
+            }
+        }
+
+        public TagTreeGroupDisplayMode GroupDisplayMode
+        {
+            get => _groupDisplayMode;
+            set
+            {
+                if (SetAndNotify(ref _groupDisplayMode, value))
                     Refresh();
             }
         }
@@ -80,7 +104,7 @@ namespace CacheEditor.Components.TagTree
                 case TagTreeViewMode.Folders:
                     return new TagTreeFolderView();
                 case TagTreeViewMode.Groups:
-                    return new TagTreeGroupView();
+                    return new TagTreeGroupView(_groupDisplayMode);
                 default:
                     return null;
             }
@@ -132,6 +156,26 @@ namespace CacheEditor.Components.TagTree
         void ICommandHandler<CopyCommand>.UpdateCommand(Command command)
         {
             command.IsEnabled = SelectedNode != null;
+        }
+
+        void ICommandHandler<ToggleGroupNameViewCommand>.ExecuteCommand(Command command)
+        {
+            GroupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
+        }
+
+        void ICommandHandler<ToggleGroupNameViewCommand>.UpdateCommand(Command command)
+        {
+            command.IsChecked = GroupDisplayMode == TagTreeGroupDisplayMode.TagGroupName;
+        }
+
+        void ICommandHandler<ToggleGroupTagNameViewCommand>.ExecuteCommand(Command command)
+        {
+            GroupDisplayMode = TagTreeGroupDisplayMode.TagGroup;
+        }
+
+        void ICommandHandler<ToggleGroupTagNameViewCommand>.UpdateCommand(Command command)
+        {
+            command.IsChecked = GroupDisplayMode == TagTreeGroupDisplayMode.TagGroup;
         }
 
         #endregion

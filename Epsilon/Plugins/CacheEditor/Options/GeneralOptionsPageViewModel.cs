@@ -17,12 +17,19 @@ namespace CacheEditor.Options
         public bool IsDirty { get; set; }
 
         private TagTreeViewMode _tagTreeViewMode;
+        private TagTreeGroupDisplayMode _tagTreeGroupDisplayMode;
         private ISettingsCollection _settings;
 
         public TagTreeViewMode TagTreeViewMode
         {
             get => _tagTreeViewMode;
             set => SetOptionAndNotify(ref _tagTreeViewMode, value);
+        }
+
+        public TagTreeGroupDisplayMode TagTreeGroupDisplayMode
+        {
+            get => _tagTreeGroupDisplayMode;
+            set => SetOptionAndNotify(ref _tagTreeGroupDisplayMode, value);
         }
 
         protected virtual void SetOptionAndNotify<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
@@ -42,6 +49,7 @@ namespace CacheEditor.Options
         public void Apply()
         {
             _settings.Set(Components.TagTree.Settings.TagTreeViewModeSetting.Key, TagTreeViewMode);
+            _settings.Set(Components.TagTree.Settings.TagTreeGroupDisplaySetting.Key, TagTreeGroupDisplayMode);
         }
 
 
@@ -51,6 +59,9 @@ namespace CacheEditor.Options
             TagTreeViewMode = _settings.Get(
                 Components.TagTree.Settings.TagTreeViewModeSetting.Key,
                 (TagTreeViewMode)Components.TagTree.Settings.TagTreeViewModeSetting.DefaultValue);
+            TagTreeGroupDisplayMode = _settings.Get(
+                Components.TagTree.Settings.TagTreeGroupDisplaySetting.Key,
+                (TagTreeGroupDisplayMode)Components.TagTree.Settings.TagTreeGroupDisplaySetting.DefaultValue);
         }
 
         public void Load()

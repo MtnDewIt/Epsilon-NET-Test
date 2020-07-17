@@ -38,5 +38,12 @@ namespace CacheEditor.Components.TagExplorer
         public static MenuItemDefinition ToggleFoldersViewMenuItem = new CommandMenuItemDefinition<ToggleFoldersViewCommand>(ViewMenu, null);
         [ExportMenuItem]
         public static MenuItemDefinition ToggleGroupsViewMenuItem = new CommandMenuItemDefinition<ToggleGroupsViewCommand>(ViewMenu, null);
+
+        [ExportMenu]
+        public static MenuDefinition GroupViewMenu = new MenuDefinition(ViewMenu, "Group View", "Group View Options", placeAfter: ToggleGroupsViewMenuItem);
+        [ExportMenuItem]
+        public static MenuItemDefinition ToggleGroupNameViewMenuItem = new CommandMenuItemDefinition<ToggleGroupNameViewCommand>(GroupViewMenu, null);
+        [ExportMenuItem]
+        public static MenuItemDefinition ToggleGroupTagNameMenuItem = new CommandMenuItemDefinition<ToggleGroupTagNameViewCommand>(GroupViewMenu, null);
     }
 }

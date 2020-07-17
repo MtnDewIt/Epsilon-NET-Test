@@ -139,6 +139,8 @@
     <Compile Include="Components\Info\CacheInfoToolViewModel.cs" />
     <Compile Include="Components\TagExplorer\Commands\DeleteTagCommand.cs" />
     <Compile Include="Components\TagExplorer\MenuDefinitions.cs" />
+    <Compile Include="Components\TagTree\Commands\ToggleGroupTagNameViewCommand.cs" />
+    <Compile Include="Components\TagTree\Commands\ToggleGroupNameViewCommand.cs" />
     <Compile Include="Components\TagTree\ITagTreeViewMode.cs" />
     <Compile Include="Components\TagTree\MenuDefinitions.cs" />
     <Compile Include="Components\TagTree\Settings.cs" />

@@ -10,6 +10,13 @@ namespace CacheEditor.Components.TagTree
 {
     class TagTreeGroupView : ITagTreeViewMode
     {
+        private readonly TagTreeGroupDisplayMode DisplayMode;
+
+        public TagTreeGroupView(TagTreeGroupDisplayMode displayMode)
+        {
+            DisplayMode = displayMode;
+        }
+
         public IEnumerable<ITreeNode> BuildTree(GameCache cache, Func<CachedTag, bool> filter)
         {
            return cache.TagCache
@@ -29,7 +36,7 @@ namespace CacheEditor.Components.TagTree
         {
             var groupNode = new TagTreeGroupNode()
             {
-                Text = group.Key.ToString(),
+                Text = FormatGroupNodeName(group.Key),
                 Tag = group.Key,
                 Children = new ObservableCollection<ITreeNode>(group.OrderBy(node => node.Text))
             };
@@ -37,6 +44,16 @@ namespace CacheEditor.Components.TagTree
                 node.Parent = groupNode;
 
             return groupNode;
+        }
+
+        private string FormatGroupNodeName(TagGroup group)
+        {
+            if (DisplayMode == TagTreeGroupDisplayMode.TagGroupName)
+                return group.ToString();
+            else if (DisplayMode == TagTreeGroupDisplayMode.TagGroup)
+                return group.Tag.ToString();
+            else
+                return group.ToString();
         }
 
         private string FormatName(CachedTag tag)

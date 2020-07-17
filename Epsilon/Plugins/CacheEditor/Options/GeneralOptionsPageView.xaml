@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:CacheEditor.Options"
     xmlns:tagtree="clr-namespace:CacheEditor.Components.TagTree">
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBlock
                 Margin="4"
                 VerticalAlignment="Center"
@@ -26,6 +26,26 @@
                     Tag="{x:Static tagtree:TagTreeViewMode.Folders}" />
             </ComboBox>
         </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock
+                Margin="4"
+                VerticalAlignment="Center"
+                Text="Tag Tree Group Name: "
+                ToolTip="The default tag tree group display mode" />
+            <ComboBox
+                Width="200"
+                Margin="4"
+                VerticalAlignment="Center"
+                SelectedValue="{Binding TagTreeGroupDisplayMode}"
+                SelectedValuePath="Tag">
 
+                <ComboBoxItem
+                    Content="Group Name"
+                    Tag="{x:Static tagtree:TagTreeGroupDisplayMode.TagGroup}" />
+                <ComboBoxItem
+                    Content="Group Tag Name"
+                    Tag="{x:Static tagtree:TagTreeGroupDisplayMode.TagGroupName}" />
+            </ComboBox>
+        </StackPanel>
     </StackPanel>
 </UserControl>
