@@ -6,6 +6,7 @@ using Shared;
 using Stylet;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Reflection;
 
 namespace Epsilon.Pages
 {
@@ -26,9 +27,13 @@ namespace Epsilon.Pages
             _menuFactory = menuFactory;
             StatusBar = new StatusBarModel();
 
+            var assemblyInfo = Assembly.GetExecutingAssembly().GetName();
+            Title = $"{assemblyInfo.Name}";
             MainMenu = new BindableCollection<MenuItemViewModel>(_menuFactory.GetMenuBar(StandardMenus.MainMenu));
             RefreshMainMenu();
         }
+
+        public string Title { get;  }
 
         public IObservableCollection<MenuItemViewModel> MainMenu { get; }
 

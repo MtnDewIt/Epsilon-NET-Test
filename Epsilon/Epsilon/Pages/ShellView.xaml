@@ -6,34 +6,42 @@
     xmlns:local="clr-namespace:WpfApp20"
     xmlns:s="https://github.com/canton7/Stylet"
     xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
-    Title="Epsilon"
+    Title="{Binding Title}"
     Width="1280"
     Height="720">
-    <Window.Resources />
     <DockPanel>
-        <!--<Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem
-                    Click="{s:Action OpenFile}"
-                    Header="_Open" />
-            </MenuItem>
-            <MenuItem Header="Tools">
-                <MenuItem
-                    Click="{s:Action OpenOptions}"
-                    Header="Options" />
-                <MenuItem
-                    Click="{s:Action CollectGarbage}"
-                    Header="GC" />
-            </MenuItem>
-        </Menu>-->
-        <Menu
-            Margin="0,3,0,0"
-            HorizontalAlignment="Left"
-            DockPanel.Dock="Top"
-            FontSize="15"
-            ItemContainerStyle="{StaticResource MenuItemStyle}"
-            ItemsSource="{Binding MainMenu}"
-            WindowChrome.IsHitTestVisibleInChrome="True" />
+        <Grid
+            HorizontalAlignment="Stretch"
+            DockPanel.Dock="Top">
+            <StackPanel
+                Margin="0,3,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Image
+                    Width="24"
+                    Height="24"
+                    Margin="4,0,4,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    RenderOptions.BitmapScalingMode="Fant"
+                    Source="/MainIcon.ico" />
+                <Menu
+                    FontSize="15"
+                    ItemContainerStyle="{StaticResource MenuItemStyle}"
+                    ItemsSource="{Binding MainMenu}"
+                    WindowChrome.IsHitTestVisibleInChrome="True" />
+            </StackPanel>
+            <TextBlock
+                Margin="0,4,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Foreground="#d0d0d0"
+                Text="{Binding Title}" />
+        </Grid>
+
+
         <StatusBar
             Height="Auto"
             Background="#FF007ACC"
