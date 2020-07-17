@@ -8,7 +8,7 @@ namespace EpsilonLib.Menus
 {
     public interface IMenuFactory
     {
-        MenuItemViewModel GetMenu(MenuDefinition definition);
+        MenuItemViewModel GetMenu(MenuItemDefinition definition);
         IEnumerable<MenuItemViewModel> GetMenuBar(MenuBarDefinition definition);
     }
 }

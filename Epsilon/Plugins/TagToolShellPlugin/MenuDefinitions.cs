@@ -6,11 +6,7 @@ namespace TagToolShellPlugin
 {
     public static class MenuDefinitions
     {
-        [ExportMenu]
-        public static MenuDefinition CacheMenu = new MenuDefinition(StandardMenus.MainMenu, null, "Cache",
-            placeAfter: StandardMenus.ViewMenu, initiallyVisible: false);
-
         [ExportMenuItem]
-        public static MenuItemDefinition ShowTagsWindowMenuItem = new CommandMenuItemDefinition<ShowShellWindowCommand>(StandardMenus.ViewMenu, "CacheTools");
+        public static MenuItemDefinition ShowShellWindowMenuItem = new CommandMenuItemDefinition<ShowShellWindowCommand>(StandardMenus.ViewMenu, "CacheEditor.Tools");
     }
 }

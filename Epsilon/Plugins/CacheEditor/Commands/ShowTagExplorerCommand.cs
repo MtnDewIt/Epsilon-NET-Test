@@ -5,8 +5,8 @@ namespace CacheEditor.Commands
     [ExportCommand]
     class ShowTagExplorerCommand : CommandDefinition
     {
-        public override string Name => "CacheEditor.ToggleTagExplorer";
+        public override string Name => "CacheEditor.ShowTagExplorer";
 
-        public override string DisplayText => "Tags Window";
+        public override string DisplayText => "Tag Explorer";
     }
 }

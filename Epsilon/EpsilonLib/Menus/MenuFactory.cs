@@ -11,30 +11,32 @@ namespace EpsilonLib.Menus
     public class MenuFactory : IMenuFactory
     {
         private readonly ICommandRegistry _commandRegistry;
-        private readonly MenuDefinition[] _menus;
-        private readonly MenuItemDefinition[] _menuItems;
+        private readonly MenuItemDefinition[] _definitions;
         private Dictionary<object, MenuItemViewModel> _menuViewModels = new Dictionary<object, MenuItemViewModel>();
 
         [ImportingConstructor]
         public MenuFactory(
             [Import] ICommandRegistry commandRegistry,
-            [ImportMany] MenuDefinition[] menus,
-            [ImportMany] MenuItemDefinition[] menuItems)
+            [ImportMany] MenuItemDefinition[] definitions)
         {
             _commandRegistry = commandRegistry;
-            _menus = menus;
-            _menuItems = menuItems;
+            _definitions = definitions;
         }
 
-        public MenuItemViewModel GetMenu(MenuDefinition definition)
+        public MenuItemViewModel GetMenu(MenuItemDefinition definition)
         {
             if (_menuViewModels.TryGetValue(definition, out MenuItemViewModel menuViewModel))
                 return menuViewModel;
 
-            menuViewModel = new MenuItemViewModel() { Text = definition.Text, IsVisible = definition.InitiallyVisible };
+            menuViewModel = new MenuItemViewModel() { Text = definition.Text };
             _menuViewModels.Add(definition, menuViewModel);
 
-            var children = _menus.Cast<IMenuChild>().Concat(_menuItems)
+            if(definition.Text != null && definition.Text == "File")
+            {
+
+            }
+
+            var children = _definitions
                 .Where(x => x.Parent == definition)
                 .InPreferedOrder();
 
@@ -57,27 +59,24 @@ namespace EpsilonLib.Menus
             return menuViewModel;
         }
 
-        private MenuItemViewModel CreateChild(IMenuChild child)
+        private MenuItemViewModel CreateChild(MenuItemDefinition child)
         {
             switch (child)
             {
-                case MenuDefinition submenu:
-                    return GetMenu(submenu);
-                case TextMenuItemDefinition item:
-                    return new MenuItemViewModel() { Text = item.Text };
+               
                 case CommandMenuItemDefinition item:
                     {
                         var command = _commandRegistry.GetCommand(item.CommandType);
                         return new CommandMenuItemViewModel(command);
                     }
                 default:
-                    throw new NotSupportedException();
+                    return GetMenu(child);
             }
         }
 
         public IEnumerable<MenuItemViewModel> GetMenuBar(MenuBarDefinition definition)
         {
-            var children = _menus
+            var children = _definitions
                 .Where(x => x.Parent == definition)
                 .InPreferedOrder();
 
@@ -88,15 +87,15 @@ namespace EpsilonLib.Menus
 
     static class Helpers
     {
-        public static IEnumerable<T> InPreferedOrder<T>(this IEnumerable<T> input) where T : IMenuChild
+        public static IEnumerable<MenuItemDefinition> InPreferedOrder(this IEnumerable<MenuItemDefinition> input)
         {
-            var sorted = input.ToList<T>();
+            var sorted = input.ToList<MenuItemDefinition>();
             for (int i = 0; i < sorted.Count; i++)
             {
-                if (sorted[i].PlaceAfterChild != null)
+                if (sorted[i].PlaceAfter != null)
                 {
                     var source = sorted[i];
-                    var target = (T)source.PlaceAfterChild;
+                    var target = source.PlaceAfter();
                     sorted.RemoveAt(i);
                     sorted.Insert(sorted.IndexOf(target) + 1, source);
                 }

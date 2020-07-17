@@ -1,7 +1,6 @@
 ﻿using CacheEditor.Commands;
 using EpsilonLib.Commands;
 using System.ComponentModel.Composition;
-using System.Windows.Threading;
 
 namespace CacheEditor
 {

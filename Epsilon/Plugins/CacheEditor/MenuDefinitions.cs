@@ -4,13 +4,9 @@ using EpsilonLib.Shell;
 
 namespace CacheEditor
 {
-    public static class CacheEditorMenus
+    public static class MenuDefinitions
     {
-        [ExportMenu]
-        public static MenuDefinition CacheMenu = new MenuDefinition(StandardMenus.MainMenu, null, "Cache", 
-            placeAfter: StandardMenus.ViewMenu, initiallyVisible: false);
-
         [ExportMenuItem]
-        public static MenuItemDefinition ShowTagsWindowMenuItem = new CommandMenuItemDefinition<ShowTagExplorerCommand>(StandardMenus.ViewMenu, "CacheTools");
+        public static MenuItemDefinition ShowTagExplorerMenuItem = new CommandMenuItemDefinition<ShowTagExplorerCommand>(StandardMenus.ViewMenu, "CacheEditor.Tools");
     }
 }

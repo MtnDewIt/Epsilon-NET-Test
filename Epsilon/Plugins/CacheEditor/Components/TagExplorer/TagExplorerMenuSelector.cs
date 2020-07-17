@@ -7,7 +7,7 @@ namespace CacheEditor
 {
     class TagExplorerMenuSelector : IContextMenuSelector
     {
-        public MenuDefinition SelectMenu(object target, ContextMenuEventArgs e)
+        public MenuItemDefinition SelectMenu(object target, ContextMenuEventArgs e)
         {
             return Components.TagTree.MenuDefinitions.ContextMenu;
         }

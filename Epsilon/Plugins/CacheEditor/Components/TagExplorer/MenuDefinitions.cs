@@ -8,42 +8,40 @@ namespace CacheEditor.Components.TagExplorer
 {
     public static class MenuDefinitions
     {
-        [ExportMenu]
-        public static MenuDefinition ContextMenu = new MenuDefinition(null, null, null,
-         placeAfter: StandardMenus.ViewMenu, initiallyVisible: false);
+        public static object CopyMenuItemGroup = new object();
+        public static object ViewMenuItemGroup = new object();
+        public static object EditMenuItemGroup = new object();
 
         [ExportMenuItem]
-        public static MenuItemDefinition CopyMenuItem = new CommandMenuItemDefinition<CopyCommand>(ContextMenu, "Copy");
+        public static MenuItemDefinition ContextMenu = new MenuItemDefinition();
 
+        // Copy Group
         [ExportMenuItem]
-        public static MenuItemDefinition OpenTagMenuItem = new CommandMenuItemDefinition<OpenTagCommand>(ContextMenu, "Open");
+        public static MenuItemDefinition CopyMenuItem = new CommandMenuItemDefinition<CopyCommand>(ContextMenu, CopyMenuItemGroup);
 
-
+        // View Group
         [ExportMenuItem]
-        public static MenuItemDefinition RenameTagMenuItem = new CommandMenuItemDefinition<RenameTagCommand>(ContextMenu, null);
-
-        [ExportMenuItem]
-        public static MenuItemDefinition DuplicateTagMenuItem = new CommandMenuItemDefinition<DuplicateTagCommand>(ContextMenu, null);
-
-        [ExportMenuItem]
-        public static MenuItemDefinition ExtractTagMenuItem = new CommandMenuItemDefinition<ExtractTagCommand>(ContextMenu, null);
-
-        [ExportMenuItem]
-        public static MenuItemDefinition DeleteTagMenuItem = new CommandMenuItemDefinition<DeleteTagCommand>(ContextMenu, null);
-
-
-        [ExportMenu]
-        public static MenuDefinition ViewMenu = new MenuDefinition(ContextMenu, "View", "View", placeAfter: OpenTagMenuItem);
+        public static MenuItemDefinition ViewMenu = new MenuItemDefinition(ContextMenu, ViewMenuItemGroup, "View");
         [ExportMenuItem]
         public static MenuItemDefinition ToggleFoldersViewMenuItem = new CommandMenuItemDefinition<ToggleFoldersViewCommand>(ViewMenu, null);
         [ExportMenuItem]
         public static MenuItemDefinition ToggleGroupsViewMenuItem = new CommandMenuItemDefinition<ToggleGroupsViewCommand>(ViewMenu, null);
 
-        [ExportMenu]
-        public static MenuDefinition GroupViewMenu = new MenuDefinition(ViewMenu, "Group View", "Group View Options", placeAfter: ToggleGroupsViewMenuItem);
+        [ExportMenuItem]
+        public static MenuItemDefinition GroupViewMenu = new MenuItemDefinition(ContextMenu, ViewMenuItemGroup, "Group View Options");
         [ExportMenuItem]
         public static MenuItemDefinition ToggleGroupNameViewMenuItem = new CommandMenuItemDefinition<ToggleGroupNameViewCommand>(GroupViewMenu, null);
         [ExportMenuItem]
         public static MenuItemDefinition ToggleGroupTagNameMenuItem = new CommandMenuItemDefinition<ToggleGroupTagNameViewCommand>(GroupViewMenu, null);
+
+        // Edit Group
+        [ExportMenuItem]
+        public static MenuItemDefinition RenameTagMenuItem = new CommandMenuItemDefinition<RenameTagCommand>(ContextMenu, EditMenuItemGroup);
+        [ExportMenuItem]
+        public static MenuItemDefinition DuplicateTagMenuItem = new CommandMenuItemDefinition<DuplicateTagCommand>(ContextMenu, EditMenuItemGroup);
+        [ExportMenuItem]
+        public static MenuItemDefinition ExtractTagMenuItem = new CommandMenuItemDefinition<ExtractTagCommand>(ContextMenu, EditMenuItemGroup);
+        [ExportMenuItem]
+        public static MenuItemDefinition DeleteTagMenuItem = new CommandMenuItemDefinition<DeleteTagCommand>(ContextMenu, EditMenuItemGroup);
     }
 }

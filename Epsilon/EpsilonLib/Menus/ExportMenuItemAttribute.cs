@@ -12,14 +12,6 @@ namespace EpsilonLib.Menus
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class ExportMenuAttribute : ExportAttribute
-    {
-        public ExportMenuAttribute() : base(typeof(MenuDefinition))
-        {
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class ExportMenuBarAttribute : ExportAttribute
     {
         public ExportMenuBarAttribute() : base(typeof(MenuBarDefinition))

@@ -5,6 +5,6 @@ namespace EpsilonLib.Behaviors
 {
     public interface IContextMenuSelector
     {
-        MenuDefinition SelectMenu(object target, ContextMenuEventArgs e);
+        MenuItemDefinition SelectMenu(object target, ContextMenuEventArgs e);
     }
 }

@@ -1,13 +1,15 @@
-﻿namespace EpsilonLib.Menus
+﻿using System;
+
+namespace EpsilonLib.Menus
 {
     public class TextMenuItemDefinition : MenuItemDefinition
     {
-        public TextMenuItemDefinition(object parent, object group, string text, IMenuChild placeAfter = null)
+        public TextMenuItemDefinition(object parent, object group, string text, Func<MenuItemDefinition> placeAfter = null)
         {
             Parent = parent;
             Group = group;
             Text = text;
-            PlaceAfterChild = placeAfter;
+            PlaceAfter = placeAfter;
         }
     }
 }

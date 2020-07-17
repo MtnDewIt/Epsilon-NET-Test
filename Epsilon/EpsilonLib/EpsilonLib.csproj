@@ -135,7 +135,6 @@
     <Compile Include="Menus\IMenuChild.cs" />
     <Compile Include="Menus\IMenuFactory.cs" />
     <Compile Include="Menus\MenuBarDefinition.cs" />
-    <Compile Include="Menus\MenuDefinition.cs" />
     <Compile Include="Menus\MenuFactory.cs" />
     <Compile Include="Menus\MenuItemDefinition.cs" />
     <Compile Include="Menus\MenuItemViewModel.cs" />

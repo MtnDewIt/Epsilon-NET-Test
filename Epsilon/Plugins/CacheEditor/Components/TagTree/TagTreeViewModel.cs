@@ -36,7 +36,7 @@ namespace CacheEditor.Components.TagTree
         private TagTreeViewMode _viewMode = TagTreeViewMode.Groups;
         private TagTreeGroupDisplayMode _groupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
 
-        public MenuDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
+        public MenuItemDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
 
         public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile)
         {

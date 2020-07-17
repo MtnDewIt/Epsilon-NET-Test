@@ -11,12 +11,12 @@ namespace EpsilonLib.Behaviors
         public static object MenuStyleKey = new object();
 
         public static readonly DependencyProperty MenuProperty = 
-            DependencyProperty.RegisterAttached("Menu", typeof(MenuDefinition), typeof(ContextMenuBehavior), new PropertyMetadata(OnMenuChanged));
+            DependencyProperty.RegisterAttached("Menu", typeof(MenuItemDefinition), typeof(ContextMenuBehavior), new PropertyMetadata(OnMenuChanged));
         public static readonly DependencyProperty MenuSelectorProperty =
            DependencyProperty.RegisterAttached("MenuSelector", typeof(IContextMenuSelector), typeof(ContextMenuBehavior), new PropertyMetadata(OnMenuSelectorChanged));
 
-        public static MenuDefinition GetMenu(DependencyObject obj) => (MenuDefinition)obj.GetValue(MenuProperty);
-        public static void SetMenu(DependencyObject obj, MenuDefinition value) => obj.SetValue(MenuProperty, value);
+        public static MenuItemDefinition GetMenu(DependencyObject obj) => (MenuItemDefinition)obj.GetValue(MenuProperty);
+        public static void SetMenu(DependencyObject obj, MenuItemDefinition value) => obj.SetValue(MenuProperty, value);
         public static IContextMenuSelector GetMenuSelector(DependencyObject obj) => (IContextMenuSelector)obj.GetValue(MenuSelectorProperty);
         public static void SetMenuSelector(DependencyObject obj, IContextMenuSelector value) => obj.SetValue(MenuSelectorProperty, value);
 
@@ -48,7 +48,7 @@ namespace EpsilonLib.Behaviors
             RunContextMenu(e.OriginalSource as FrameworkElement, menu);
         }
 
-        private static void RunContextMenu(FrameworkElement host, MenuDefinition definition)
+        private static void RunContextMenu(FrameworkElement host, MenuItemDefinition definition)
         {
             var menuFactory = (IMenuFactory)host.TryFindResource(typeof(IMenuFactory));
             if (menuFactory == null)
