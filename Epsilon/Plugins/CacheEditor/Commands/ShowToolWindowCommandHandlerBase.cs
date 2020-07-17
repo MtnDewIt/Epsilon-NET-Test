@@ -7,29 +7,31 @@ namespace CacheEditor.Commands
     {
         private ICacheEditingService _cacheEditingService;
 
-        public abstract string ToolName { get; }
-
         public ShowToolWindowCommandHandlerBase(ICacheEditingService cacheEditingService)
         {
             _cacheEditingService = cacheEditingService;
         }
 
+        public abstract string ToolName { get; }
+
         public ICacheEditor CurrentEditor => _cacheEditingService.ActiveCacheEditor;
+        public ICacheEditorTool GetTool() => CurrentEditor?.GetTool(ToolName);
 
         public void ExecuteCommand(Command command)
         {
-            var tool = CurrentEditor.GetTool(ToolName);
-            tool.Show(!tool.IsVisible, true);
+            var tool = GetTool();
+            if(tool != null)
+                tool.Show(!tool.IsVisible, true);
         }
 
         public void UpdateCommand(Command command)
         {
-            command.IsVisible = _cacheEditingService.ActiveCacheEditor != null;
-            if (_cacheEditingService.ActiveCacheEditor != null)
-            {
-                command.IsEnabled = _cacheEditingService.ActiveCacheEditor != null;
-                command.IsChecked = _cacheEditingService.ActiveCacheEditor.GetTool(ToolName).IsVisible;
-            }
+            var tool = GetTool();
+
+            command.IsVisible = tool != null;
+
+            if (tool != null)
+                command.IsChecked = tool.IsVisible;
         }
     }
 }
