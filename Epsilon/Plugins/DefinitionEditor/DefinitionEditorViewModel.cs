@@ -57,8 +57,6 @@ namespace DefinitionEditor
             SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
 
             RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
-
-            Preferences.PropertyChanged += Preferences_PropertyChanged;
         }
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
@@ -73,15 +71,7 @@ namespace DefinitionEditor
 
         private List<BlockOutlineItem> _blockOutline;
         public int BlockOutlineIndex { get; set; } = -1;
-        public bool BlockOutlineVisible
-        {
-            get => Preferences.BlockOutlineToggled;
-            set 
-            {
-                Preferences.BlockOutlineToggled = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public bool BlockOutlineVisible { get; set; }
 
         public NavigableSearchResults SearchResults { get; } = new NavigableSearchResults();
 
@@ -108,7 +98,6 @@ namespace DefinitionEditor
                 _blockOutline = value;
             }
         }
-
 
         private void CreateBlockOutline()
         {
@@ -259,7 +248,6 @@ namespace DefinitionEditor
             _cacheFile = null;
             _cacheFile = null;
 
-            Preferences.PropertyChanged -= Preferences_PropertyChanged;
             _changeSink.ValueChanged -= Field_ValueChanged;
 
             if (_rteRefreshTimer != null)
@@ -267,12 +255,6 @@ namespace DefinitionEditor
                 _rteRefreshTimer.Dispose();
                 _rteRefreshTimer = null;
             }
-        }
-
-        private void Preferences_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(SharedPreferences.BlockOutlineToggled))
-                NotifyOfPropertyChange(nameof(BlockOutlineVisible));
         }
 
         public class SearchResultItem
@@ -289,7 +271,6 @@ namespace DefinitionEditor
         public class SharedPreferences : PropertyChangedBase
         {
             private bool _autopokeEnabled = false;
-            private bool _blockOutlineToggled = false;
 
             public static SharedPreferences Instance = new SharedPreferences();
 
@@ -297,12 +278,6 @@ namespace DefinitionEditor
             {
                 get => _autopokeEnabled;
                 set => SetAndNotify(ref _autopokeEnabled, value);
-            }
-
-            public bool BlockOutlineToggled
-            {
-                get => _blockOutlineToggled;
-                set => SetAndNotify(ref _blockOutlineToggled, value);
             }
         }
     }
