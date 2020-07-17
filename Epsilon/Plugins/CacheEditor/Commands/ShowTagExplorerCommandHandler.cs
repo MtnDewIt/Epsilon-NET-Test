@@ -5,32 +5,13 @@ using System.ComponentModel.Composition;
 namespace CacheEditor
 {
     [ExportCommandHandler]
-    class ShowTagExplorerCommandHandler : ICommandHandler<ShowTagExplorerCommand>
+    class ShowTagExplorerCommandHandler : ShowToolWindowCommandHandlerBase<ShowTagExplorerCommand>
     {
-        private ICacheEditingService _cacheEditingService;
-
         [ImportingConstructor]
-        public ShowTagExplorerCommandHandler(ICacheEditingService cacheEditingService)
+        public ShowTagExplorerCommandHandler(ICacheEditingService cacheEditingService) : base(cacheEditingService)
         {
-            _cacheEditingService = cacheEditingService;
         }
 
-        public ICacheEditor CurrentEditor => _cacheEditingService.ActiveCacheEditor;
-
-        public void ExecuteCommand(Command command)
-        {
-            var tool = CurrentEditor.GetTool(TagExplorerViewModel.ToolName);
-            tool.Show(!tool.IsVisible, true);
-        }
-
-        public void UpdateCommand(Command command)
-        {
-            command.IsVisible = _cacheEditingService.ActiveCacheEditor != null;
-            if (_cacheEditingService.ActiveCacheEditor != null)
-            {
-                command.IsEnabled = _cacheEditingService.ActiveCacheEditor != null;
-                command.IsChecked = _cacheEditingService.ActiveCacheEditor.GetTool(TagExplorerViewModel.ToolName).IsVisible;
-            }
-        }
+        public override string ToolName => TagExplorerViewModel.ToolName;
     }
 }

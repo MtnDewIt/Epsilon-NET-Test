@@ -8,5 +8,8 @@ namespace CacheEditor
     {
         [ExportMenuItem]
         public static MenuItemDefinition ShowTagExplorerMenuItem = new CommandMenuItemDefinition<ShowTagExplorerCommand>(StandardMenus.ViewMenu, "CacheEditor.Tools");
+
+        [ExportMenuItem]
+        public static MenuItemDefinition ShowInfoWindowMenuItem = new CommandMenuItemDefinition<ShowInfoWindowCommand>(StandardMenus.ViewMenu, "CacheEditor.Tools");
     }
 }

@@ -131,6 +131,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Commands\ShowInfoWindowCommand.cs" />
+    <Compile Include="Commands\ShowInfoWindowCommandHandler.cs" />
+    <Compile Include="Commands\ShowToolWindowCommandHandlerBase.cs" />
     <Compile Include="Components\Info\CacheInfo.cs" />
     <Compile Include="Components\Info\CacheInfoToolProvider.cs" />
     <Compile Include="Components\Info\CacheInfoToolView.xaml.cs">
