@@ -23,6 +23,8 @@ namespace EpsilonLib.Shell
         public static MenuItemDefinition ViewMenu = new MenuItemDefinition(MainMenu, null, "View");
         [ExportMenuItem]
         public static MenuItemDefinition ToolsMenu = new MenuItemDefinition(MainMenu, null, "Tools");
+        [ExportMenuItem]
+        public static MenuItemDefinition HelpMenu = new MenuItemDefinition(MainMenu, null, "Help");
 
 
         [ExportMenuItem]

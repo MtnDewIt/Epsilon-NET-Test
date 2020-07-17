@@ -92,6 +92,8 @@
     <Compile Include="Commands\OpenFileCommand.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commands\GarbageCollectCommand.cs" />
+    <Compile Include="Commands\ShowAboutCommand.cs" />
+    <Compile Include="Commands\ShowAboutCommandHandler.cs" />
     <Compile Include="Commands\ShowOptionsCommand.cs" />
     <Compile Include="Logging\DefaultLogger.cs" />
     <Compile Include="MefBootstrapper.cs" />
@@ -110,6 +112,10 @@
     </Compile>
     <Compile Include="Options\OptionsViewModel.cs" />
     <Compile Include="Components\StatusBarModel.cs" />
+    <Compile Include="Pages\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AboutViewModel.cs" />
     <Compile Include="Plugins\PluginLoader.cs" />
     <Compile Include="Plugins\PluginInfo.cs" />
     <Compile Include="Plugins\PluginLoaderException.cs" />
@@ -159,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Options\OptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
