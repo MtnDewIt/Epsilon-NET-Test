@@ -1,4 +1,5 @@
-﻿using EpsilonLib.Logging;
+﻿using EpsilonLib.Core;
+using EpsilonLib.Logging;
 using Host;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,9 @@ namespace Epsilon
             try
             {
                 pluginAssembly = Assembly.LoadFrom(pluginDll.FullName);
+                if (pluginAssembly.GetCustomAttribute<DisabledPluginAttribute>() != null)
+                    return false;
+
                 return true;
             }
             catch (Exception ex)

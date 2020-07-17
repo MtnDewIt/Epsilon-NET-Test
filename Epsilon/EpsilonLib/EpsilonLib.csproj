@@ -76,6 +76,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\DisabledPluginAttribute.cs" />
     <Compile Include="Utils\DispatcherEx.cs" />
     <Compile Include="Core\ExplicitViewAttribute.cs" />
     <Compile Include="Shell\TreeModels\ITreeEventSink.cs" />
