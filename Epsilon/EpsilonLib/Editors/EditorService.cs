@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +48,18 @@ namespace EpsilonLib.Editors
                 await provider.OpenFileAsync(shell, filePath);
                 await _fileHistory.RecordFileOpened(editorProviderId, filePath);
             }
+        }
+
+        public Task OpenFileAsync(string filePath)
+        {
+            var file = new FileInfo(filePath);
+            foreach(var provider in EditorProviders)
+            {
+                if (provider.FileExtensions.Contains(file.Extension))
+                    return OpenFileWithEditorAsync(filePath, provider.Id); 
+            }
+
+            throw new NotSupportedException();
         }
     }
 }

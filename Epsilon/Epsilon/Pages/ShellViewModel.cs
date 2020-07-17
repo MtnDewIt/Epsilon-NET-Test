@@ -1,9 +1,11 @@
 ﻿using Epsilon.Components;
 using EpsilonLib.Editors;
+using EpsilonLib.Logging;
 using EpsilonLib.Menus;
 using EpsilonLib.Shell;
 using Shared;
 using Stylet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Reflection;
@@ -16,15 +18,19 @@ namespace Epsilon.Pages
     {
         private readonly IWindowManager _windowManager;
         private readonly IMenuFactory _menuFactory;
+        private readonly Lazy<IEditorService> _editorService;
 
         [ImportingConstructor]
         public ShellViewModel(
             [ImportMany] IEnumerable<IEditorProvider> editorProviders,
             IWindowManager windowManager,
-            IMenuFactory menuFactory)
+            IMenuFactory menuFactory, 
+            Lazy<IEditorService> editorService)
         {
             _windowManager = windowManager;
             _menuFactory = menuFactory;
+            _editorService = editorService;
+
             StatusBar = new StatusBarModel();
 
             var assemblyInfo = Assembly.GetExecutingAssembly().GetName();
@@ -56,6 +62,8 @@ namespace Epsilon.Pages
         {
             base.OnInitialActivate();
 
+            HandleCommandLine();
+
             RefreshMainMenu();
         }
 
@@ -81,6 +89,23 @@ namespace Epsilon.Pages
         public bool? ShowDialog(object viewModel)
         {
             return _windowManager.ShowDialog(viewModel);
+        }
+
+        private async void HandleCommandLine()
+        {
+            var args = Environment.GetCommandLineArgs();
+
+            if (args.Length < 2)
+                return;
+
+            try
+            {
+                await _editorService.Value.OpenFileAsync(args[1]);
+            }
+            catch(Exception ex)
+            {
+                Logger.Error($"Failed to open file from command line '{args[1]}'\n{ex}");
+            }
         }
     }
 }
