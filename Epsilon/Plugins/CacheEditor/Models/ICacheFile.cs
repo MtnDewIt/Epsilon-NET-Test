@@ -17,8 +17,10 @@ namespace CacheEditor
         bool CanDeleteTag { get; }
         bool CanDuplicateTag { get; }
         bool CanSerializeTags { get; }
+        bool CanImportTag { get; }
 
         void ExtractTag(CachedTag tag, string filePath);
+        void ImportTag(CachedTag tag, string filePath);
         void RenameTag(CachedTag tag, string newName);
         void DeleteTag(CachedTag tag);
         void DuplicateTag(CachedTag tag, string newName);

@@ -23,6 +23,7 @@ namespace CacheEditor
         ICommandHandler<RenameTagCommand>,
         ICommandHandler<DuplicateTagCommand>,
         ICommandHandler<ExtractTagCommand>,
+        ICommandHandler<ImportTagCommand>,
         ICommandHandler<DeleteTagCommand>
     {
         private readonly ICacheEditingService _cacheEditingService;
@@ -226,6 +227,12 @@ namespace CacheEditor
             OpenTag(tag);
         }
 
+
+        void ICommandHandler<RenameTagCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = _cacheFile.CanRenameTag && TagTree.SelectedNode?.Tag is CachedTag;
+        }
+
         void ICommandHandler<RenameTagCommand>.ExecuteCommand(Command command)
         {
             if (TagTree.SelectedNode?.Tag is CachedTag tag)
@@ -243,6 +250,11 @@ namespace CacheEditor
             }
         }
 
+        void ICommandHandler<ExtractTagCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = _cacheFile.CanExtractTag && TagTree.SelectedNode?.Tag is CachedTag;
+        }
+
         void ICommandHandler<ExtractTagCommand>.ExecuteCommand(Command command)
         {
             if (TagTree.SelectedNode?.Tag is CachedTag tag)
@@ -250,8 +262,35 @@ namespace CacheEditor
                 var ofd = new SaveFileDialog();
                 ofd.FileName = $"{Path.GetFileName(tag.Name)}.{tag.Group}";
                 if(ofd.ShowDialog() == true)
+                {
                     _cacheFile.ExtractTag(tag, ofd.FileName);
+                    MessageBox.Show("Tag extracted successfully", "Tag Extracted", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
+        }
+
+        void ICommandHandler<ImportTagCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = _cacheFile.CanImportTag && TagTree.SelectedNode?.Tag is CachedTag;
+        }
+
+        void ICommandHandler<ImportTagCommand>.ExecuteCommand(Command command)
+        {
+            if (TagTree.SelectedNode?.Tag is CachedTag tag)
+            {
+                var ofd = new OpenFileDialog();
+                ofd.FileName = $"{Path.GetFileName(tag.Name)}.{tag.Group}";
+                if (ofd.ShowDialog() == true)
+                {
+                    _cacheFile.ImportTag(tag, ofd.FileName);
+                    MessageBox.Show("Tag imported successfully", "Tag Imported", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        void ICommandHandler<DuplicateTagCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = _cacheFile.CanDuplicateTag && TagTree.SelectedNode?.Tag is CachedTag;
         }
 
         void ICommandHandler<DuplicateTagCommand>.ExecuteCommand(Command command)
@@ -271,36 +310,26 @@ namespace CacheEditor
             }
         }
 
-        void ICommandHandler<DeleteTagCommand>.ExecuteCommand(Command command)
-        {
-            if (TagTree.SelectedNode?.Tag is CachedTag tag)
-            {
-                if (MessageBox.Show($"Deleting tag '{Path.GetFileName(tag.Name)}.{tag.Group}'.\n\nClick OK to continue.", "Warning", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
-                {
-                    _cacheFile.DeleteTag(tag);
-                    TagTree.Refresh();
-                }
-            }
-        }
-
         void ICommandHandler<DeleteTagCommand>.UpdateCommand(Command command)
         {
             command.IsVisible = _cacheFile.CanDeleteTag && TagTree.SelectedNode?.Tag is CachedTag;
         }
 
-        void ICommandHandler<RenameTagCommand>.UpdateCommand(Command command)
+        void ICommandHandler<DeleteTagCommand>.ExecuteCommand(Command command)
         {
-            command.IsVisible = _cacheFile.CanRenameTag && TagTree.SelectedNode?.Tag is CachedTag;
-        }
+            if (TagTree.SelectedNode?.Tag is CachedTag tag)
+            {
+                var result = MessageBox.Show(
+                    $"Deleting tag '{Path.GetFileName(tag.Name)}.{tag.Group}'.\n\nClick OK to continue.",
+                    "Warning", MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning);
 
-        void ICommandHandler<ExtractTagCommand>.UpdateCommand(Command command)
-        {
-            command.IsVisible = _cacheFile.CanExtractTag && TagTree.SelectedNode?.Tag is CachedTag;
-        }
-
-        void ICommandHandler<DuplicateTagCommand>.UpdateCommand(Command command)
-        {
-            command.IsVisible = _cacheFile.CanDuplicateTag && TagTree.SelectedNode?.Tag is CachedTag;
+                if (result == MessageBoxResult.OK)
+                {
+                    _cacheFile.DeleteTag(tag);
+                    TagTree.Refresh();
+                }
+            }
         }
 
         #endregion

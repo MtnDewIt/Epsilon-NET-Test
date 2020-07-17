@@ -11,6 +11,7 @@ namespace CacheEditor.Components.TagExplorer
         public static object CopyMenuItemGroup = new object();
         public static object ViewMenuItemGroup = new object();
         public static object EditMenuItemGroup = new object();
+        public static object ExtractImportMenuItemGroup = new object();
 
         [ExportMenuItem]
         public static MenuItemDefinition ContextMenu = new MenuItemDefinition();
@@ -38,10 +39,15 @@ namespace CacheEditor.Components.TagExplorer
         [ExportMenuItem]
         public static MenuItemDefinition RenameTagMenuItem = new CommandMenuItemDefinition<RenameTagCommand>(ContextMenu, EditMenuItemGroup);
         [ExportMenuItem]
-        public static MenuItemDefinition DuplicateTagMenuItem = new CommandMenuItemDefinition<DuplicateTagCommand>(ContextMenu, EditMenuItemGroup);
-        [ExportMenuItem]
-        public static MenuItemDefinition ExtractTagMenuItem = new CommandMenuItemDefinition<ExtractTagCommand>(ContextMenu, EditMenuItemGroup);
+        public static MenuItemDefinition DuplicateTagMenuItem = new CommandMenuItemDefinition<DuplicateTagCommand>(ContextMenu, EditMenuItemGroup);    
         [ExportMenuItem]
         public static MenuItemDefinition DeleteTagMenuItem = new CommandMenuItemDefinition<DeleteTagCommand>(ContextMenu, EditMenuItemGroup);
+
+
+        // Extract/Import Group
+        [ExportMenuItem]
+        public static MenuItemDefinition ExtractTagMenuItem = new CommandMenuItemDefinition<ExtractTagCommand>(ContextMenu, ExtractImportMenuItemGroup);
+        [ExportMenuItem]
+        public static MenuItemDefinition ImportTagMenuItem = new CommandMenuItemDefinition<ImportTagCommand>(ContextMenu, ExtractImportMenuItemGroup);
     }
 }

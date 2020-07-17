@@ -29,8 +29,10 @@ namespace CacheEditor
         public virtual bool CanDeleteTag => false;
         public virtual bool CanDuplicateTag => false;
         public virtual bool CanSerializeTags => false;
+        public virtual bool CanImportTag => false;
 
         public virtual void DeleteTag(CachedTag tag) => throw new NotSupportedException();
+        public virtual void ImportTag(CachedTag tag, string filePath) => throw new NotSupportedException();
         public virtual void ExtractTag(CachedTag tag, string filePath) => throw new NotSupportedException();
         public virtual void RenameTag(CachedTag tag, string newName) => throw new NotSupportedException();
         public virtual void DuplicateTag(CachedTag tag, string newName) => throw new NotSupportedException();

@@ -18,6 +18,7 @@ namespace CacheEditor
         public override bool CanRenameTag => true;
         public override bool CanDuplicateTag => true;
         public override bool CanSerializeTags => true;
+        public override bool CanImportTag => true;
 
         public override void DeleteTag(CachedTag tag)
         {
@@ -36,6 +37,15 @@ namespace CacheEditor
                 var data = Cache.TagCacheGenHO.ExtractTagRaw(stream, tag as CachedTagHaloOnline);
                 using (var outStream = System.IO.File.Create(filePath))
                     outStream.Write(data, 0, data.Length);
+            }
+        }
+
+        public override void ImportTag(CachedTag tag, string filePath)
+        {
+            using (var stream = Cache.OpenCacheRead())
+            {
+                var data = System.IO.File.ReadAllBytes(filePath);
+                Cache.TagCacheGenHO.SetTagDataRaw(stream, tag as CachedTagHaloOnline, data);
             }
         }
 
