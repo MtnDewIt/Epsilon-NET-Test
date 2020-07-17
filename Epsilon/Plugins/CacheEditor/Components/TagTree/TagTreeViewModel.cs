@@ -94,6 +94,12 @@ namespace CacheEditor.Components.TagTree
             if (string.IsNullOrEmpty(FilterText))
                 return true;
 
+            string groupTagName = tag.Group.Tag.ToString();
+            string groupName = tag.Group.ToString();
+            // check for filter match with group name/group tag name
+            if (groupName.Contains(FilterText) || groupTagName.Contains(FilterText))
+                return true;
+
             return tag.ToString().Contains(FilterText);
         }
 
