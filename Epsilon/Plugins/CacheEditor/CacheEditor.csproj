@@ -99,6 +99,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Components\DependencyExplorer\DependencyExplorerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Info\CacheInfoToolView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -131,9 +135,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Commands\ShowDependencyExplorerCommand.cs" />
     <Compile Include="Commands\ShowInfoWindowCommand.cs" />
+    <Compile Include="Commands\ShowDependencyExplorerCommandHandler.cs" />
     <Compile Include="Commands\ShowInfoWindowCommandHandler.cs" />
     <Compile Include="Commands\ShowToolWindowCommandHandlerBase.cs" />
+    <Compile Include="Components\DependencyExplorer\DependencyExplorerToolProvider.cs" />
+    <Compile Include="Components\DependencyExplorer\DependencyExplorerView.xaml.cs">
+      <DependentUpon>DependencyExplorerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\DependencyExplorer\DependencyExplorerViewModel.cs" />
     <Compile Include="Components\Info\CacheInfo.cs" />
     <Compile Include="Components\Info\CacheInfoToolProvider.cs" />
     <Compile Include="Components\Info\CacheInfoToolView.xaml.cs">
