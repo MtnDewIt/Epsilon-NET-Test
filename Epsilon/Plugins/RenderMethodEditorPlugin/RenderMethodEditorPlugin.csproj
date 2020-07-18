@@ -72,6 +72,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShaderArgumentsDescription.cs" />
+    <Compile Include="ShaderStringConverter.cs" />
     <Page Include="RenderMethodEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

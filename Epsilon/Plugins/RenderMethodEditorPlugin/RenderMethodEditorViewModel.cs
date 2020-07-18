@@ -2,6 +2,7 @@
 using Stylet;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,69 +16,81 @@ namespace RenderMethodEditorPlugin
         private RenderMethod _renderMethod;
         private GameCache _cache;
         private RenderMethodTemplate _renderMethodTemplate;
-        private RenderMethod.ShaderProperty _shaderProperties;
+        private RenderMethod.ShaderProperty _shaderProperty;
 
-        private List<BooleanConstant> _booleanConstants = new List<BooleanConstant>();
+        public ObservableCollection<BooleanConstant> BooleanConstants {get;} = new ObservableCollection<BooleanConstant>();
+        // only properties can be bound to from xaml
+
 
         public RenderMethodEditorViewModel(GameCache cache, RenderMethod renderMethod)
         {
+            /*
+             * System.Windows.Data Error: 40 : BindingExpression path error: 'BooleanConstant' property not found on 'object' ''BooleanConstant' (HashCode=29753161)'. BindingExpression:Path=BooleanConstant.Name; DataItem='BooleanConstant' (HashCode=29753161); target element is 'TextBlock' (Name=''); target property is 'Text' (type 'String')
+System.Windows.Data Error: 40 : BindingExpression path error: 'BooleanConstant' property not found on 'object' ''BooleanConstant' (HashCode=29753161)'. BindingExpression:Path=BooleanConstant.Value; DataItem='BooleanConstant' (HashCode=29753161); target element is 'CheckBox' (Name=''); target property is 'IsChecked' (type 'Nullable`1')
+The thread 0xcc has exited with code 0 (0x0).
+             * */
             _cache = cache;
-            _renderMethod = renderMethod;
-            _shaderProperties = _renderMethod.ShaderProperties[0];
+            _renderMethod = renderMethod; // discord down? yeah now it kinda works but the name and value are broken for the class broken how? no string showing and box not ticked
+            _shaderProperty = _renderMethod.ShaderProperties[0];
             using (var stream = _cache.OpenCacheRead())
             {
-                _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperties.Template);
+                _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
             }
-            
+
+            ParseBooleanArguments();
         }
 
-        // magic shader code goes here
+        // get boolean values from existing tag data
 
         private void ParseBooleanArguments()
         {
             for(int i = 0; i < _renderMethodTemplate.BooleanParameterNames.Count; i++)
             {
                 string name = _cache.StringTable.GetString(_renderMethodTemplate.BooleanParameterNames[i].Name);
-                bool value = ((int)(_shaderProperties.BooleanConstants) & (1 << i)) == 1;
-                _booleanConstants.Add(new BooleanConstant(name, value, i));
-            }
-            
-            // convert name to something pretty somehow
-            
-            // this should be a flag like a tagfield flag with name and checkbox
-            // updating the value here would also update the UI and model value
-            // also dynamically generated from the rmt2 since they heavily depend on it
-        }
-
-        private class ShaderConstant
-        {
-            public string Name;
-            public int TemplateIndex;
-            public ShaderConstant(string name, int templateIndex)
-            {
-                Name = name;
-                TemplateIndex = templateIndex;
+                BooleanConstants.Add(new BooleanConstant(_shaderProperty, name, FindDescriptionFromName(name), i));
             }
         }
 
-        private class BooleanConstant : ShaderConstant
+        private string FindDescriptionFromName(string shaderArgName)
         {
-            public bool Value;
+            if(ShaderArgumentsDescription.ArgsDescription.ContainsKey(shaderArgName))
+                return ShaderArgumentsDescription.ArgsDescription[shaderArgName];
+            else
+                return "Missing description";
+        }
+        
+    }
 
-            public BooleanConstant(string name, bool value, int templateIndex) : base(name, templateIndex)
+    class ShaderConstant
+    {
+        public RenderMethod.ShaderProperty Property;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int TemplateIndex;
+        public ShaderConstant(RenderMethod.ShaderProperty property, string name, string desc, int templateIndex)
+        {
+            Name = ShaderStringConverter.ToPrettyFormat(name);
+            TemplateIndex = templateIndex;
+            Property = property;
+            Description = desc;
+        }
+    }
+    class BooleanConstant : ShaderConstant
+    {
+        public bool Value
+        {
+            get => (((int)(Property.BooleanConstants) >> TemplateIndex) & 1) == 1;
+            set
             {
-                Value = value;
+                if(value == true)
+                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants | (1 << TemplateIndex));
+                else
+                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants & ~(1 << TemplateIndex));
             }
         }
 
-        private class FloatConstant : ShaderConstant
+        public BooleanConstant(RenderMethod.ShaderProperty property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
         {
-            public float Value;
-
-            public FloatConstant(string name, float value, int templateIndex) : base(name, templateIndex)
-            {
-                Value = value;
-            }
         }
     }
 }

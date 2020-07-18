@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RenderMethodEditorPlugin
+{
+    static class ShaderStringConverter
+    {
+        public static string ToPrettyFormat(string input)
+        {
+            string result = input.Replace("_", " ");
+            return result;
+        }
+
+        public static string FromPrettyFormat(string input)
+        {
+            string result = input.Replace(" ", "_");
+            result = result.ToLower();
+            return result;
+        }
+    }
+}

@@ -6,7 +6,21 @@
              xmlns:local="clr-namespace:RenderMethodEditorPlugin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type local:BooleanConstant}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" Width="200"/>
+                <CheckBox IsChecked="{Binding Value, Mode=TwoWay}" ToolTip="{Binding Description}" Width="100" HorizontalAlignment="Right"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <Grid>
-            
+        <StackPanel Orientation="Vertical" Margin="4">
+            <TextBlock Text="Boolean Constants" />
+            <Border BorderThickness="1">
+                <ListBox ItemsSource="{Binding BooleanConstants}" />
+            </Border>
+        </StackPanel>
     </Grid>
 </UserControl>
