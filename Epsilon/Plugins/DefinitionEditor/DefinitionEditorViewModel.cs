@@ -1,6 +1,8 @@
 ﻿using CacheEditor;
 using CacheEditor.RTE;
 using CacheEditor.RTE.UI;
+using CacheEditor.TagEditing;
+using CacheEditor.TagEditing.Messages;
 using EpsilonLib.Commands;
 using EpsilonLib.Settings;
 using EpsilonLib.Utils;
@@ -18,7 +20,7 @@ using TagTool.Cache;
 
 namespace DefinitionEditor
 {
-    public class DefinitionEditorViewModel : Screen, ITagEditorPlugin
+    public class DefinitionEditorViewModel : TagEditorPluginBase
     {
         private IShell _shell;
         private ICacheFile _cacheFile;
@@ -255,6 +257,12 @@ namespace DefinitionEditor
                 _rteRefreshTimer.Dispose();
                 _rteRefreshTimer = null;
             }
+        }
+
+        protected override void OnMessage(object sender, object message)
+        {
+            if (message is DefinitionDataChangedEvent e)
+                StructField.Populate(null, e.NewData);
         }
 
         public class SearchResultItem

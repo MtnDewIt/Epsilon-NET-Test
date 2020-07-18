@@ -1,4 +1,6 @@
 ﻿using CacheEditor;
+using CacheEditor.TagEditing;
+using CacheEditor.TagEditing.Messages;
 using Stylet;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using TagTool.Tags.Definitions;
 
 namespace RenderMethodEditorPlugin
 {
-    class RenderMethodEditorViewModel : Screen, ITagEditorPlugin
+    class RenderMethodEditorViewModel : TagEditorPluginBase
     {
         private RenderMethod _renderMethod;
         private GameCache _cache;
@@ -58,7 +60,11 @@ The thread 0xcc has exited with code 0 (0x0).
             else
                 return "Missing description";
         }
-        
+
+        public void Test()
+        {
+            PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
+        }
     }
 
     class ShaderConstant

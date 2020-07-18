@@ -1,4 +1,5 @@
 ﻿using CacheEditor;
+using CacheEditor.TagEditing;
 using Stylet;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using TagTool.Cache;
 
 namespace CryingCatPlugin
 {
-    class CryingCatTagEditorViewModel : Screen, ITagEditorPlugin
+    class CryingCatTagEditorViewModel : TagEditorPluginBase
     {
         private CachedTag _tag;
         public CryingCatTagEditorViewModel(TagEditorContext context)

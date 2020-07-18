@@ -177,6 +177,8 @@
     <Compile Include="Models\ICacheFile.cs" />
     <Compile Include="RTE\PCProcessTarget.cs" />
     <Compile Include="RTE\Providers\HaloOnline106708Provider.cs" />
+    <Compile Include="TagEditing\Messages\DefinitionDataChangedEvent.cs" />
+    <Compile Include="TagEditing\TagEditorBase.cs" />
     <Compile Include="UI\LayoutInitializer.cs" />
     <Compile Include="Options\GeneralOptionsPageView.xaml.cs">
       <DependentUpon>GeneralOptionsPageView.xaml</DependentUpon>

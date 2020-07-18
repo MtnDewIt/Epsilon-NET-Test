@@ -7,6 +7,8 @@ namespace CacheEditor
     {
         private IScreen _content;
 
+        public Task<ITagEditorPlugin> LoadTask { get; }
+
         public IScreen Content
         {
             get => _content;
@@ -15,6 +17,7 @@ namespace CacheEditor
 
         public TagEditorPluginTabViewModel(Task<ITagEditorPlugin> futurePlugin)
         {
+            LoadTask = futurePlugin;
             DoLoadingAsync(futurePlugin); 
         }
 

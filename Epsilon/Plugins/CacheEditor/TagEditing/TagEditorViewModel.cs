@@ -1,12 +1,14 @@
 ﻿using EpsilonLib.Commands;
 using Stylet;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CacheEditor
 {
-    class TagEditorViewModel : Conductor<TagEditorPluginTabViewModel>.Collection.OneActive
+    class TagEditorViewModel : Conductor<TagEditorPluginTabViewModel>.Collection.OneActive, ITagEditorPluginClient
     {
         private ICacheEditingService _cacheEditingService;
 
@@ -23,13 +25,18 @@ namespace CacheEditor
             LoadPlugins(context);
         }
 
-
-        private void LoadPlugins(TagEditorContext context)
+        private async void LoadPlugins(TagEditorContext context)
         {
-            Items.AddRange(
-                _cacheEditingService.TagEditorPlugins
-                .Where(provider => provider.ValidForTag(context.CacheEditor.CacheFile, context.Instance))
-                .Select(provider => new TagEditorPluginTabViewModel(provider.CreateAsync(context)) { DisplayName = provider.DisplayName }));
+            foreach(var provider in _cacheEditingService.TagEditorPlugins)
+            {
+                if (!provider.ValidForTag(context.CacheEditor.CacheFile, context.Instance))
+                    continue;
+
+                var futurePlugin = provider.CreateAsync(context);
+                Items.Add(new TagEditorPluginTabViewModel(futurePlugin) { DisplayName = provider.DisplayName });
+
+                (await futurePlugin).Client = this;
+            }
 
             ActiveItem = Items.FirstOrDefault();
         }
@@ -47,6 +54,17 @@ namespace CacheEditor
         protected override void OnActivate()
         {
             base.OnActivate();
+        }
+
+        async void ITagEditorPluginClient.PostMessage(object sender, object message)
+        {
+            foreach(var tab in Items)
+            {
+                var plugin = await tab.LoadTask;
+
+                if (plugin != sender)
+                    plugin.OnMessage(sender, message);
+            }
         }
     }
 }
