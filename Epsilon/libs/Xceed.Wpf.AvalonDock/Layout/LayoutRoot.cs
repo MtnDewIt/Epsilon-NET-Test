@@ -839,7 +839,16 @@ namespace Xceed.Wpf.AvalonDock.Layout
             if( element.Parent != this )
             {
               if( element.Parent != null )
-                element.Parent.RemoveChild( element );
+                {
+                    // Fix issue where anchor groups are left in the parent side after being hidden
+                    var parentGroup = element.Parent as LayoutAnchorGroup;
+                    var parentSide = parentGroup?.Parent as LayoutAnchorSide;
+                    if (parentSide != null)
+                        parentSide.RemoveChild(parentGroup);
+
+                    element.Parent.RemoveChild(element);
+                }
+                
               element.Parent = this;
             }
 
