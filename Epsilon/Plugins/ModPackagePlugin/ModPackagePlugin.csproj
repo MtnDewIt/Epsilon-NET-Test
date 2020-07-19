@@ -56,8 +56,14 @@
     <Compile Include="Commands\TagCacheCommandList.cs" />
     <Compile Include="Commands\TagCacheCommandListHandler.cs" />
     <Compile Include="MenuDefinitions.cs" />
+    <Compile Include="MetadataEditorToolProvider.cs" />
+    <Compile Include="MetadataEditorView.xaml.cs">
+      <DependentUpon>MetadataEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MetadataEditorViewModel.cs" />
     <Compile Include="ModPackageCacheFile.cs" />
     <Compile Include="ModPackageEditorProvider.cs" />
+    <Compile Include="MetadataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -95,6 +101,12 @@
       <Project>{9DE40A24-8308-4C7D-B77E-71E9D389BBFA}</Project>
       <Name>CacheEditor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MetadataEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
