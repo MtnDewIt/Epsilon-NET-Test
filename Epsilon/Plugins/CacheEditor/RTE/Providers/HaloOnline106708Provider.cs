@@ -48,7 +48,6 @@ namespace CacheEditor.RTE.Providers
                 if (address == 0)
                     throw new RteProviderException(this, $"Tag '{hoInstance}' could not be located in the target process.");
 
-                // TODO: RuntimeSerializationContext should throw exceptions when it fails instead of just logging
                 var runtimeContext = new RuntimeSerializationContext(
                     cache,
                     processStream,
@@ -57,13 +56,20 @@ namespace CacheEditor.RTE.Providers
                     hoInstance.CalculateHeaderSize(),
                     hoInstance.TotalSize);
 
-                //pause the process during poking to prevent race conditions
+               
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
-                process.Suspend();
-                cache.Serializer.Serialize(runtimeContext, definition);
-                process.Resume();
-                stopWatch.Stop();
+
+                try
+                {
+                    //pause the process during poking to prevent race conditions
+                    process.Suspend();
+                    cache.Serializer.Serialize(runtimeContext, definition);
+                }
+                finally
+                {
+                    process.Resume();
+                }
 
                 Console.WriteLine($"Poked tag at 0x{address.ToString("X8")} in {stopWatch.ElapsedMilliseconds / 1000.0f} seconds");
             }
