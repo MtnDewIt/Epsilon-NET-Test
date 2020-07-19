@@ -58,7 +58,10 @@ namespace CacheEditor.Components.TagTree
 
         private string FormatName(CachedTag tag)
         {
-            return tag.Name;
+            if(tag.Name == null)
+                return $"0x{tag.Index:X8}";
+            else
+                return tag.Name; 
         }
     }
 

@@ -26,6 +26,13 @@ namespace CacheEditor.Components.TagTree
 
         private void AddTag(IList<ITreeNode> roots, CachedTag tag)
         {
+            if(tag.Name == null)
+            {
+                var node = CreateTagNode(tag);
+                roots.Add(node);
+                return;
+            }
+
             var segments = tag.Name.Split('\\');
             for(int i = 0; i < segments.Length; i++)
             {
@@ -69,8 +76,16 @@ namespace CacheEditor.Components.TagTree
 
         private string FormatName(CachedTag tag)
         {
-            var fileName = Path.GetFileName(tag.Name);
-            return $"{fileName}.{tag.Group}";
+            if(tag.Name == null)
+            {
+                return $"0x{tag.Index:X8}.{tag.Group}";
+            }
+            else
+            {
+                var fileName = Path.GetFileName(tag.Name);
+                return $"{fileName}.{tag.Group}";
+            }
+            
         }
     }
 
