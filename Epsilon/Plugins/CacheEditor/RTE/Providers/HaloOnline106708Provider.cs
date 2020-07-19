@@ -1,5 +1,7 @@
-﻿using System;
+﻿using EpsilonLib.Logging;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
@@ -18,8 +20,9 @@ namespace CacheEditor.RTE.Providers
         {
             foreach (var process in Process.GetProcessesByName("eldorado"))
             {
-                yield return new PCProcessTarget(this, process);
-            }   
+                if (PCProcessTarget.TryCreate(this, process, out PCProcessTarget target))
+                    yield return target;
+            }
         }
 
         public bool ValidForCacheFile(ICacheFile cacheFile)
