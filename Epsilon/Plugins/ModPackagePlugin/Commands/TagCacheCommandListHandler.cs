@@ -46,7 +46,8 @@ namespace ModPackagePlugin.Commands
         {
             var packageCache = ActiveEditor?.CacheFile?.Cache as GameCacheModPackage;
 
-            command.IsVisible = packageCache != null;
+            if(command.Tag == null)
+                command.IsVisible = packageCache != null;
 
             if (packageCache != null)
             {
