@@ -5,7 +5,7 @@ using TagTool.Cache.HaloOnline;
 
 namespace CacheEditor
 {
-    class HaloOnlineCacheFile : CacheFileBase
+    public class HaloOnlineCacheFile : CacheFileBase
     {
         private new GameCacheHaloOnline Cache => (GameCacheHaloOnline) base.Cache;
  

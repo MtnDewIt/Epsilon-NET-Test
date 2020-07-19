@@ -1,6 +1,8 @@
 ﻿using EpsilonLib.Settings;
 using Shared;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using TagTool.Cache;
 
 namespace CacheEditor
 {
@@ -10,5 +12,6 @@ namespace CacheEditor
         ISettingsCollection Settings { get; }
         IReadOnlyList<ITagEditorPluginProvider> TagEditorPlugins { get; }
         IEnumerable<ICacheEditorToolProvider> Tools { get; }
+        ICacheEditor CreateEditor(ICacheFile cacheFile);
     }
 }

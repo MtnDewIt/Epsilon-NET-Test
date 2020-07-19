@@ -207,6 +207,13 @@ namespace CacheEditor
             return null;
         }
 
+        void ICacheEditor.Reload()
+        {
+            TagTree.Refresh();
+            Documents.Clear();
+        }
+
+
         #endregion
 
         #region Command Handlers

@@ -5,7 +5,7 @@ using TagTool.Cache;
 
 namespace CacheEditor
 {
-    class CacheFileBase : ICacheFile
+    public class CacheFileBase : ICacheFile
     {
         public event EventHandler Reloaded;
 

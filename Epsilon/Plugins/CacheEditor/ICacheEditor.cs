@@ -13,5 +13,6 @@ namespace CacheEditor
         IDictionary<string, object> PluginStorage { get; }
         void OpenTag(CachedTag tag);
         CachedTag RunBrowseTagDialog();
+        void Reload();
     }
 }
