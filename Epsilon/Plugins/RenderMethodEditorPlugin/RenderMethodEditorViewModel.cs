@@ -1,6 +1,10 @@
 ﻿using CacheEditor;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
+using HaloShaderGenerator.Generator;
+using RenderMethodEditorPlugin.ShaderMethods;
+using RenderMethodEditorPlugin.ShaderMethods.Shader;
+using RenderMethodEditorPlugin.ShaderParameters;
 using Stylet;
 using System;
 using System.Collections.Generic;
@@ -21,25 +25,67 @@ namespace RenderMethodEditorPlugin
         private RenderMethod.ShaderProperty _shaderProperty;
 
         public ObservableCollection<BooleanConstant> BooleanConstants {get;} = new ObservableCollection<BooleanConstant>();
-        // only properties can be bound to from xaml
+        public ObservableCollection<Method> ShaderMethods { get; } = new ObservableCollection<Method>();
 
+        public ObservableCollection<GenericShaderParameter> ShaderParameters { get; } = new ObservableCollection<GenericShaderParameter>();
 
         public RenderMethodEditorViewModel(GameCache cache, RenderMethod renderMethod)
         {
-            /*
-             * System.Windows.Data Error: 40 : BindingExpression path error: 'BooleanConstant' property not found on 'object' ''BooleanConstant' (HashCode=29753161)'. BindingExpression:Path=BooleanConstant.Name; DataItem='BooleanConstant' (HashCode=29753161); target element is 'TextBlock' (Name=''); target property is 'Text' (type 'String')
-System.Windows.Data Error: 40 : BindingExpression path error: 'BooleanConstant' property not found on 'object' ''BooleanConstant' (HashCode=29753161)'. BindingExpression:Path=BooleanConstant.Value; DataItem='BooleanConstant' (HashCode=29753161); target element is 'CheckBox' (Name=''); target property is 'IsChecked' (type 'Nullable`1')
-The thread 0xcc has exited with code 0 (0x0).
-             * */
             _cache = cache;
-            _renderMethod = renderMethod; // discord down? yeah now it kinda works but the name and value are broken for the class broken how? no string showing and box not ticked
+            _renderMethod = renderMethod;
             _shaderProperty = _renderMethod.ShaderProperties[0];
-            using (var stream = _cache.OpenCacheRead())
-            {
-                _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
-            }
+            var templateName = _shaderProperty.Template.Name;
 
-            ParseBooleanArguments();
+            if (templateName == null)
+                return;
+
+            var templateTypeSplitIndex = 1;
+            if (templateName.Contains("ms30"))
+                templateTypeSplitIndex = 2;
+
+            string templateType = templateName.Split('\\')[templateTypeSplitIndex];
+
+            MethodParser methodParser;
+            IShaderGenerator generator;
+
+            if (templateType == "shader_templates")
+            {
+                using (var stream = _cache.OpenCacheRead())
+                {
+                    _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
+                }
+
+                switch (templateType)
+                {
+                    case "shader_templates":
+                        methodParser = new ShaderMethod();
+                        break;
+                    default:
+                        return;
+                }
+
+                generator = methodParser.BuildShaderGenerator(_renderMethod.RenderMethodDefinitionOptionIndices);
+
+                for(int i = 0; i < _renderMethod.RenderMethodDefinitionOptionIndices.Count; i++)
+                {
+                    var optionIndex = _renderMethod.RenderMethodDefinitionOptionIndices[i].OptionIndex;
+                    var methodInfo = methodParser.ParseMethod(i, optionIndex, generator);
+                    if (methodInfo != null)
+                        ShaderMethods.Add(methodInfo);
+                }
+
+                bool useRotation = false;
+                if (generator is HaloShaderGenerator.Shader.ShaderGenerator && _renderMethod.RenderMethodDefinitionOptionIndices[9].OptionIndex == 3)
+                    useRotation = true;
+
+                ShaderParameters = ShaderParameterFactory.BuildShaderParameters(cache, generator.GetPixelShaderParameters(), _shaderProperty, _renderMethodTemplate, useRotation);
+
+                //ParseBooleanArguments();
+            }
+            else
+                return; // only shader templates, particle templates
+
+            
         }
 
         // get boolean values from existing tag data
@@ -81,6 +127,7 @@ The thread 0xcc has exited with code 0 (0x0).
             Description = desc;
         }
     }
+
     class BooleanConstant : ShaderConstant
     {
         public bool Value

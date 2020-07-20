@@ -73,6 +73,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ShaderArgumentsDescription.cs" />
+    <Compile Include="ShaderMethods\Method.cs" />
+    <Compile Include="ShaderMethods\Shader\ShaderMethod.cs" />
+    <Compile Include="ShaderParameters\Color3ShaderParameter.cs" />
+    <Compile Include="ShaderParameters\Color4ShaderParameter.cs" />
+    <Compile Include="ShaderParameters\SamplerShaderParameter.cs" />
+    <Compile Include="ShaderParameters\TransformRotationShaderParameter.cs" />
+    <Compile Include="ShaderParameters\TransformShaderParameter.cs" />
+    <Compile Include="ShaderParameters\Float4ShaderParameter.cs" />
+    <Compile Include="ShaderParameters\Float3ShaderParameter.cs" />
+    <Compile Include="ShaderParameters\Float2ShaderParameter.cs" />
+    <Compile Include="ShaderParameters\FloatShaderParameter.cs" />
+    <Compile Include="ShaderParameters\BooleanShaderParameter.cs" />
+    <Compile Include="ShaderParameters\GenericShaderParameter.cs" />
+    <Compile Include="ShaderParameters\ShaderParameterFactory.cs" />
     <Compile Include="ShaderStringConverter.cs" />
     <Page Include="RenderMethodEditorView.xaml">
       <SubType>Designer</SubType>
@@ -109,6 +123,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TagTool\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj">
+      <Project>{17BFEFFB-1619-4647-BA40-3CD1D87FD774}</Project>
+      <Name>HaloShaderGenerator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj">
       <Project>{42814dee-5a94-4901-bda9-28afd2d4f5ac}</Project>
       <Name>TagTool</Name>
@@ -122,5 +140,6 @@
       <Name>CacheEditor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

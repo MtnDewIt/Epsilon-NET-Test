@@ -11,6 +11,7 @@ namespace RenderMethodEditorPlugin
         public static string ToPrettyFormat(string input)
         {
             string result = input.Replace("_", " ");
+            result = result.ToLower();
             return result;
         }
 

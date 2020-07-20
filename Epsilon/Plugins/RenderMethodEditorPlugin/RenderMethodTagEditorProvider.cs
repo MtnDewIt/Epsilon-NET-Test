@@ -27,7 +27,7 @@ namespace RenderMethodEditorPlugin
         public bool ValidForTag(ICacheFile cache, CachedTag tag)
         {
             if( cache.Cache is GameCacheGen3 || cache.Cache is GameCacheHaloOnlineBase)
-                if (tag.IsInGroup("rm  "))
+                if (tag.IsInGroup("rm  ") )
                     return true;
             return false;
         }
