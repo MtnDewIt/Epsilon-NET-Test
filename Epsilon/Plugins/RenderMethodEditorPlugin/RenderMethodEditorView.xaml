@@ -125,27 +125,25 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="4" Grid.Row="0">
-            <TextBlock Text="Shader Methods" />
-            <ListView Margin="10" Name="shaderMethods" ItemsSource="{Binding ShaderMethods}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Method Name" Width="200" DisplayMemberBinding="{Binding MethodName}" />
-                        <GridViewColumn Header="Method Option" Width="200" DisplayMemberBinding="{Binding MethodOption}" />
-                        <GridViewColumn Header="Method Description" DisplayMemberBinding="{Binding MethodDescription}" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </StackPanel>
+        <TextBlock Text="Shader Methods" Grid.Row="0" />
+        <ListView Margin="10" Name="shaderMethods" ItemsSource="{Binding ShaderMethods}" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Method Name" Width="200" DisplayMemberBinding="{Binding MethodName}" />
+                    <GridViewColumn Header="Method Option" Width="200" DisplayMemberBinding="{Binding MethodOption}" />
+                    <GridViewColumn Header="Method Description" DisplayMemberBinding="{Binding MethodDescription}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
 
-        <StackPanel Orientation="Vertical" Margin="4" Grid.Row="1">
-            <TextBlock Text="Shader Parameters" />
-            <ListBox ItemsSource="{Binding ShaderParameters}" />
-        </StackPanel>
+        <TextBlock Text="Shader Parameters" Grid.Row="2" />
+        <ListBox ItemsSource="{Binding ShaderParameters}" Grid.Row="3" />
 
         <!-- <Button Click="{s:Action Test}" Content="Sync" /> -->
     </Grid>
