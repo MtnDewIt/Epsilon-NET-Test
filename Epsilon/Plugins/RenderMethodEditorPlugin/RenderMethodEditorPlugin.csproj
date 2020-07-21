@@ -74,9 +74,11 @@
   <ItemGroup>
     <Compile Include="ShaderArgumentsDescription.cs" />
     <Compile Include="ShaderMethods\Method.cs" />
+    <Compile Include="ShaderMethods\Particle\ParticleMethod.cs" />
     <Compile Include="ShaderMethods\Shader\ShaderMethod.cs" />
     <Compile Include="ShaderParameters\Color3ShaderParameter.cs" />
     <Compile Include="ShaderParameters\Color4ShaderParameter.cs" />
+    <Compile Include="ShaderParameters\CategoryShaderParameter.cs" />
     <Compile Include="ShaderParameters\SamplerShaderParameter.cs" />
     <Compile Include="ShaderParameters\TransformRotationShaderParameter.cs" />
     <Compile Include="ShaderParameters\TransformShaderParameter.cs" />

@@ -19,7 +19,13 @@ namespace RenderMethodEditorPlugin
 
         public async Task<ITagEditorPlugin> CreateAsync(TagEditorContext context)
         {
-            RenderMethod rm = (RenderMethod)(await context.DefinitionData);
+            RenderMethod rm = null;
+
+            if (context.Instance.IsInGroup("rm  "))
+                rm = (RenderMethod)(await context.DefinitionData);
+            else if (context.Instance.IsInGroup("prt3"))
+                rm = ((Particle)(await context.DefinitionData)).RenderMethod;
+
             var cache = context.CacheEditor.CacheFile.Cache;
             return new RenderMethodEditorViewModel(cache, rm);
         }
@@ -27,7 +33,7 @@ namespace RenderMethodEditorPlugin
         public bool ValidForTag(ICacheFile cache, CachedTag tag)
         {
             if( cache.Cache is GameCacheGen3 || cache.Cache is GameCacheHaloOnlineBase)
-                if (tag.IsInGroup("rm  ") )
+                if (tag.IsInGroup("rm  ") || tag.IsInGroup("prt3"))
                     return true;
             return false;
         }

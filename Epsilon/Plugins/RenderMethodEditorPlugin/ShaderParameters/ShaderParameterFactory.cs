@@ -12,10 +12,10 @@ namespace RenderMethodEditorPlugin.ShaderParameters
 {
     static class ShaderParameterFactory
     {
-        public static ObservableCollection<GenericShaderParameter> BuildShaderParameters(GameCache cache, HaloShaderGenerator.Globals.ShaderParameters parameters, RenderMethod.ShaderProperty property, RenderMethodTemplate template, bool useRotation=false)
+        public static ObservableCollection<GenericShaderParameter> BuildShaderParameters(GameCache cache, List<ShaderParameter> parameters, RenderMethod.ShaderProperty property, RenderMethodTemplate template, bool useRotation=false)
         {
             var result = new ObservableCollection<GenericShaderParameter>();
-            foreach(var parameter in parameters.Parameters)
+            foreach(var parameter in parameters)
             {
                 if (parameter.RenderMethodExtern != RenderMethodExtern.none)
                     continue;
@@ -36,6 +36,11 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                         int realArgumentIndex = FindParameterIndexFromName(cache, template.RealParameterNames, paramName);
                         if (realArgumentIndex == -1)
                             continue;
+
+                        bool isCategory = false;
+                        if (paramName == "albedo" || paramName == "blend_mode" || paramName == "specialized_rendering" || paramName == "lighting" || paramName == "fog" || paramName == "frame_blend" || paramName == "self_illumination")
+                            isCategory = true;
+
                         switch (parameter.CodeType)
                         {
                             case HLSLType.Float:
@@ -54,6 +59,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                             case HLSLType.Float4:
                                 if (parameter.IsColor)
                                     result.Add(new Color4ShaderParameter(property, paramName, desc, realArgumentIndex));
+                                else if (isCategory)
+                                    result.Add(new CategoryShaderParameter(property, paramName, desc, realArgumentIndex));
                                 else
                                     result.Add(new Float4ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 break;

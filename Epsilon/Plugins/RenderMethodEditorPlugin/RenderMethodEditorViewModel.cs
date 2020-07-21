@@ -3,6 +3,7 @@ using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
 using HaloShaderGenerator.Generator;
 using RenderMethodEditorPlugin.ShaderMethods;
+using RenderMethodEditorPlugin.ShaderMethods.Particle;
 using RenderMethodEditorPlugin.ShaderMethods.Shader;
 using RenderMethodEditorPlugin.ShaderParameters;
 using Stylet;
@@ -48,44 +49,39 @@ namespace RenderMethodEditorPlugin
             MethodParser methodParser;
             IShaderGenerator generator;
 
-            if (templateType == "shader_templates")
+            using (var stream = _cache.OpenCacheRead())
             {
-                using (var stream = _cache.OpenCacheRead())
-                {
-                    _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
-                }
-
-                switch (templateType)
-                {
-                    case "shader_templates":
-                        methodParser = new ShaderMethod();
-                        break;
-                    default:
-                        return;
-                }
-
-                generator = methodParser.BuildShaderGenerator(_renderMethod.RenderMethodDefinitionOptionIndices);
-
-                for(int i = 0; i < _renderMethod.RenderMethodDefinitionOptionIndices.Count; i++)
-                {
-                    var optionIndex = _renderMethod.RenderMethodDefinitionOptionIndices[i].OptionIndex;
-                    var methodInfo = methodParser.ParseMethod(i, optionIndex, generator);
-                    if (methodInfo != null)
-                        ShaderMethods.Add(methodInfo);
-                }
-
-                bool useRotation = false;
-                if (generator is HaloShaderGenerator.Shader.ShaderGenerator && _renderMethod.RenderMethodDefinitionOptionIndices[9].OptionIndex == 3)
-                    useRotation = true;
-
-                ShaderParameters = ShaderParameterFactory.BuildShaderParameters(cache, generator.GetPixelShaderParameters(), _shaderProperty, _renderMethodTemplate, useRotation);
-
-                //ParseBooleanArguments();
+                _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
             }
-            else
-                return; // only shader templates, particle templates
 
-            
+            switch (templateType)
+            {
+                case "shader_templates":
+                    methodParser = new ShaderMethod();
+                    break;
+                case "particle_templates":
+                    methodParser = new ParticleMethod();
+                    break;
+                default:
+                    return;
+            }
+
+            generator = methodParser.BuildShaderGenerator(_renderMethod.RenderMethodDefinitionOptionIndices);
+
+            for (int i = 0; i < _renderMethod.RenderMethodDefinitionOptionIndices.Count; i++)
+            {
+                var optionIndex = _renderMethod.RenderMethodDefinitionOptionIndices[i].OptionIndex;
+                var methodInfo = methodParser.ParseMethod(i, optionIndex, generator);
+                if (methodInfo != null)
+                    ShaderMethods.Add(methodInfo);
+            }
+
+            bool useRotation = false;
+            if (generator is HaloShaderGenerator.Shader.ShaderGenerator && _renderMethod.RenderMethodDefinitionOptionIndices[9].OptionIndex == 3)
+                useRotation = true;
+            var parameters = generator.GetPixelShaderParameters().Parameters;
+            parameters.AddRange(generator.GetVertexShaderParameters().Parameters);
+            ShaderParameters = ShaderParameterFactory.BuildShaderParameters(cache, parameters, _shaderProperty, _renderMethodTemplate, useRotation);
         }
 
         // get boolean values from existing tag data

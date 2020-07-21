@@ -14,12 +14,17 @@ namespace RenderMethodEditorPlugin.ShaderMethods
         public string MethodName { get; set; }
         public string MethodOption { get; set; }
         public string MethodDescription { get; set; }
+        public int MethodIndex { get; set; }
+        public int OptionIndex { get; set; }
 
-        public Method(string name, string option, string desc)
+
+        public Method(string name, string option, string desc, int methodIndex, int optionIndex)
         {
             MethodName = ShaderStringConverter.ToPrettyFormat(name);
             MethodOption = ShaderStringConverter.ToPrettyFormat(option);
             MethodDescription = desc;
+            MethodIndex = methodIndex;
+            OptionIndex = optionIndex;
         }
     }
 
@@ -31,7 +36,7 @@ namespace RenderMethodEditorPlugin.ShaderMethods
             {
                 if (optionIndex >= 0 && optionIndex < generator.GetMethodOptionCount(methodIndex))
                 {
-                    return new Method(GetMethodName(methodIndex), GetOptionName(methodIndex, optionIndex), GetOptionDescription(methodIndex, optionIndex));
+                    return new Method(GetMethodName(methodIndex), GetOptionName(methodIndex, optionIndex), GetOptionDescription(methodIndex, optionIndex), methodIndex, optionIndex);
                 }
             }
             return null;
