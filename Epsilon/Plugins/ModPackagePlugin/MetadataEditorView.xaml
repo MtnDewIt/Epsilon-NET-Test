@@ -14,22 +14,25 @@
                 Text="Name" />
             <TextBox
                 Margin="0,2"
-                Text="{Binding Metadata.Name}" MaxLength="15" />
+                MaxLength="15"
+                Text="{Binding Metadata.Name, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock
                 Margin="0,2"
                 Text="Author" />
             <TextBox
                 Margin="0,2"
-                Text="{Binding Metadata.Author}" MaxLength="15" />
+                MaxLength="15"
+                Text="{Binding Metadata.Author, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock
                 Margin="0,2"
-                Text="Description"  />
+                Text="Description" />
             <TextBox
                 Height="100"
                 Margin="0,2"
+                MaxLength="127"
                 MaxLines="4"
-                Text="{Binding Metadata.Description}"
-                TextWrapping="Wrap" MaxLength="127" />
+                Text="{Binding Metadata.Description, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
         </StackPanel>
 
     </Grid>

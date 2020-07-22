@@ -21,7 +21,9 @@ namespace ModPackagePlugin
 
         public string DisplayName => "Mod Package";
 
-        public Guid Id => new Guid("{BECDF82F-CF23-4DBD-BE7A-A44DBF943BFB}");
+        public static Guid EditorId = new Guid("{BECDF82F-CF23-4DBD-BE7A-A44DBF943BFB}");
+
+        public Guid Id => EditorId;
 
         public IReadOnlyList<string> FileExtensions => new[] { ".pak" };
 
@@ -37,27 +39,12 @@ namespace ModPackagePlugin
             FileInfo baseCacheFile = new FileInfo(Path.Combine(file.Directory.FullName, "..\\..\\maps\\tags.dat"));
             if (!baseCacheFile.Exists)
             {
-                if (!RunBrowseCacheDialog(out baseCacheFile))
+                if (!FileDialogs.RunBrowseCacheDialog(out baseCacheFile))
                     return;
             }
 
             var cache = await Task.Run(() => new GameCacheModPackage((GameCacheHaloOnlineBase)GameCache.Open(baseCacheFile), new FileInfo(fileName)));
             shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new ModPackageCacheFile(file, cache));
-        }
-
-        private bool RunBrowseCacheDialog(out FileInfo chosenFile)
-        {
-            chosenFile = null;
-
-            var ofd = new OpenFileDialog()
-            {
-                Title = "Open base cache",
-                FileName = "tags.dat",
-            };
-            if (ofd.ShowDialog() == false)
-                return false;
-
-            return true;
         }
     }
 }

@@ -26,9 +26,12 @@ namespace EpsilonLib.Shell
         [ExportMenuItem]
         public static MenuItemDefinition HelpMenu = new MenuItemDefinition(MainMenu, null, "Help");
 
+        [ExportMenuItem]
+        public static MenuItemDefinition FileNewMenu = new MenuItemDefinition(FileMenu, FileOpenMenuItemGroup, "New");
 
         [ExportMenuItem]
         public static MenuItemDefinition FileOpenMenu = new MenuItemDefinition(FileMenu, FileOpenMenuItemGroup, "Open");
+
         [ExportMenuItem]
         public static MenuItemDefinition FileOpenMenuItem = new CommandMenuItemDefinition<OpenFileCommand>(FileOpenMenu, null);
 

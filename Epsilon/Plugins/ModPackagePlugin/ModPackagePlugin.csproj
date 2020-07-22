@@ -53,8 +53,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\NewModPackageCommand.cs" />
+    <Compile Include="Commands\NewModPackageCommandHandler.cs" />
     <Compile Include="Commands\TagCacheCommandList.cs" />
     <Compile Include="Commands\TagCacheCommandListHandler.cs" />
+    <Compile Include="FileDialogs.cs" />
     <Compile Include="MenuDefinitions.cs" />
     <Compile Include="MetadataEditorToolProvider.cs" />
     <Compile Include="MetadataEditorView.xaml.cs">
