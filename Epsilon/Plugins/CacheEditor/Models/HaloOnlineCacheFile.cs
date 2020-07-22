@@ -7,7 +7,7 @@ namespace CacheEditor
 {
     public class HaloOnlineCacheFile : CacheFileBase
     {
-        private new GameCacheHaloOnline Cache => (GameCacheHaloOnline) base.Cache;
+        private new GameCacheHaloOnlineBase Cache => (GameCacheHaloOnlineBase) base.Cache;
  
         public HaloOnlineCacheFile(FileInfo file, GameCache cache) : base(file, cache)
         {

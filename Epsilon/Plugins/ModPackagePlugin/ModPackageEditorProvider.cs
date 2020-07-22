@@ -42,7 +42,7 @@ namespace ModPackagePlugin
             }
 
             var cache = await Task.Run(() => new GameCacheModPackage((GameCacheHaloOnlineBase)GameCache.Open(baseCacheFile), new FileInfo(fileName)));
-            shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new HaloOnlineCacheFile(file, cache));
+            shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new ModPackageCacheFile(file, cache));
         }
 
         private bool RunBrowseCacheDialog(out FileInfo chosenFile)

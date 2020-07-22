@@ -1,13 +1,23 @@
 ﻿using CacheEditor;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 using TagTool.Cache;
 
 namespace ModPackagePlugin
 {
-    internal class ModPackageCacheFile : CacheFileBase
+    internal class ModPackageCacheFile : HaloOnlineCacheFile
     {
-        public ModPackageCacheFile(FileInfo file, GameCache cache) : base(file, cache)
+        private new GameCacheModPackage Cache => (GameCacheModPackage)base.Cache;
+
+        public ModPackageCacheFile(FileInfo file, GameCacheModPackage cache) : base(file, cache) { }
+
+        public async override Task SerializeTagAsync(CachedTag instance, object definition)
         {
+            await base.SerializeTagAsync(instance, definition);
+
+            // Temporary
+            await Task.Run(() => Cache.SaveModPackage(File));
         }
     }
 }
