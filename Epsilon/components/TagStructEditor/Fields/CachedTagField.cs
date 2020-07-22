@@ -63,7 +63,7 @@ namespace TagStructEditor.Fields
         private void SelectCachedTag(CachedTag instance)
         {
             SelectedGroup = Groups.FirstOrDefault(item => item.Group == instance.Group);
-            SelectedInstance = SelectedGroup.Instances.FirstOrDefault(item => item.Instance == instance);
+            SelectedInstance = SelectedGroup.Instances.FirstOrDefault(item => $"{item.Instance}" == $"{instance}");
         }
 
         public void OnSelectedInstanceChanged()
