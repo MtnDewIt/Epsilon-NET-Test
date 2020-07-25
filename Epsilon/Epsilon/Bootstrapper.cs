@@ -74,6 +74,8 @@ namespace WpfApp20
 
         private void PostLaunchInitShell()
         {
+            FrameworkCompatibilityPreferences.KeepTextBoxDisplaySynchronizedWithTextProperty = false;
+
             // better font rendering
             TextOptions.TextFormattingModeProperty.OverrideMetadata(typeof(Window),
                new FrameworkPropertyMetadata(TextFormattingMode.Display,
