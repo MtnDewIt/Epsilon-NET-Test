@@ -6,6 +6,7 @@ using System.Reflection;
 using TagStructEditor.Common;
 using TagTool.Cache;
 using TagTool.Common;
+using TagTool.Shaders;
 using TagTool.Tags;
 
 namespace TagStructEditor.Fields
@@ -179,6 +180,11 @@ namespace TagStructEditor.Fields
                 return new RealRectangle3dField(info);
             else if (info.FieldType == typeof(Rectangle2d))
                 return new Rectangle2dField(info);
+            else if (info.FieldType == typeof(VertexShaderReference))
+                return new InlineStructField(info);
+            else if (info.FieldType == typeof(PixelShaderReference))
+                return new InlineStructField(info);
+
 
             switch (Type.GetTypeCode(info.FieldType))
             {
