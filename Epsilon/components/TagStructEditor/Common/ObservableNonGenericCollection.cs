@@ -20,6 +20,7 @@ namespace TagStructEditor.Common
                 _collection = value;
                 CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 NotifyOfPropertyChange(nameof(BaseCollection));
+                NotifyOfPropertyChange(nameof(Count));
             }
         }
 
