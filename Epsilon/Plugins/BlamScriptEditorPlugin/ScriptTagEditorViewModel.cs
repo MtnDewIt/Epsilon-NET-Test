@@ -35,16 +35,17 @@ namespace BlamScriptEditorPlugin
             }
         }
 
-        private void Load(ICacheFile cacheFile, Scenario definition)
+        private async void Load(ICacheFile cacheFile, Scenario definition)
         {
             var decompiler = new ScriptDecompiler(cacheFile.Cache, definition);
             try
             {
-                ScriptSourceCode = decompiler.Decompile();
+                ScriptSourceCode = await Task.Run(() => decompiler.Decompile());
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An exception occured while decompiling\n{ex}");
+                ScriptSourceCode = ex.ToString();
+                //MessageBox.Show($"An exception occured while decompiling\n{ex}");
             }
         }
 
