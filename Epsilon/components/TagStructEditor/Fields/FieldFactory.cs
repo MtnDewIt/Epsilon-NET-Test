@@ -124,8 +124,8 @@ namespace TagStructEditor.Fields
 
                 return CreateBlockField(info);
             }
-            else if (info.FieldType == typeof(TagData))
-                return new DataField(info);
+            //else if (info.FieldType == typeof(TagData))
+            //    return new DataField(info);
             else if (info.FieldType == typeof(TagFunction))
                 return new TagFunctionField(info);
             else if (typeof(TagStructure).IsAssignableFrom(info.FieldType))
@@ -214,7 +214,7 @@ namespace TagStructEditor.Fields
                     return new Float64Field(info);
             }
 
-            //return (ValueField)Activator.CreateInstance(typeof(DebugValueField<>).MakeGenericType(info.FieldType), info);
+            return (ValueField)Activator.CreateInstance(typeof(DebugValueField<>).MakeGenericType(info.FieldType), info);
 
             throw new NotSupportedException($"Unknown field type: {info.FieldType}");
         }

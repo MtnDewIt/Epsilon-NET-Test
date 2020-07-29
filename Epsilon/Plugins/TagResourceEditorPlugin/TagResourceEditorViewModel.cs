@@ -1,0 +1,106 @@
+﻿using CacheEditor;
+using CacheEditor.TagEditing;
+using EpsilonLib.Logging;
+using Shared;
+using Stylet;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using TagStructEditor.Fields;
+using TagTool.Tags;
+
+namespace TagResourceEditorPlugin
+{
+    partial class TagResourceEditorViewModel : TagEditorPluginBase
+    {
+        private readonly IShell _shell;
+        private readonly ICacheFile _cacheFile;
+        private TagResourceItem _activeItem;
+        private IField _displayField;
+
+        public TagResourceEditorViewModel(IShell shell, ICacheFile cacheFile)
+        {
+            _shell = shell;
+            _cacheFile = cacheFile;
+        }
+
+        public ICollection<TagResourceItem> Items { get; set; }
+        public TagResourceItem ActiveItem
+        {
+            get => _activeItem;
+            set
+            {
+                if (SetAndNotify(ref _activeItem, value))
+                {
+                    LoadResource(_activeItem.Resource);
+                }
+            }
+        }
+
+        public IField DisplayField
+        {
+            get => _displayField;
+            set => SetAndNotify(ref _displayField, value);
+        }
+
+        public Task LoadAsync(object definition)
+        {
+            Items = new BindableCollection<TagResourceItem>();
+            foreach(var resourceReference in ResourceReferenceCollector.Collect(_cacheFile.Cache, definition as TagStructure))
+            {
+                var tagResource = TagResourceUtils.GetTagResourceFromReference(_cacheFile.Cache.ResourceCache, resourceReference);
+                if (tagResource == null)
+                    continue;
+
+                var displayName = $"{tagResource.ResourceType} ({GetDisplayableResourceId(resourceReference)})";
+                Items.Add(new TagResourceItem() { DisplayName = displayName, Resource = resourceReference });
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private async void LoadResource(TagResourceReference resourceReference)
+        {
+            using (var progress = _shell.CreateProgressScope())
+            {
+                try
+                {
+                    await LoadResourceBlocking(resourceReference, progress);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex.ToString());
+                    MessageBox.Show("An eception occured while loading the resource:\n\n{ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private async Task LoadResourceBlocking(TagResourceReference resourceReference, IProgressReporter progress)
+        {
+            var resourceCache = _cacheFile.Cache.ResourceCache;
+            progress.Report("Deserializing resource definition...");
+            var resourceDefinition = await Task.Run(() => TagResourceUtils.GetResourceDefinition(resourceCache, resourceReference));
+
+            progress.Report("Creating fields...");
+
+            DisplayField = await Task.Run(() =>
+            {
+                var config = new TagStructEditor.Configuration() { };
+                var tagFieldFactory = new FieldFactory(_cacheFile.Cache, new TagStructEditor.Common.TagList(_cacheFile.Cache), config);
+                var field = tagFieldFactory.CreateStruct(resourceDefinition.GetType());
+                field.Populate(resourceDefinition);
+                return field;
+            });
+        }
+
+        int GetDisplayableResourceId(TagResourceReference resourceReference)
+        {
+            if (resourceReference.HaloOnlinePageableResource != null)
+                return resourceReference.HaloOnlinePageableResource.Page.Index;
+            else
+                return resourceReference.Gen3ResourceID.Index;
+        }
+    }
+}
