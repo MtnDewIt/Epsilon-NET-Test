@@ -185,11 +185,11 @@
                 Text="{Binding Name, Mode=OneTime}" />
             <TextBox
                 Style="{StaticResource FieldTextBoxStyle}"
-                Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Value}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
 
         </StackPanel>
     </DataTemplate>
@@ -216,11 +216,11 @@
             <!--  Value  -->
             <TextBox
                 Style="{StaticResource FieldTextBoxStyle}"
-                Text="{Binding Value, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Value, StringFormat={StaticResource RealFormatString}}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -233,11 +233,11 @@
             <!--  Value  -->
             <TextBox
                 Style="{StaticResource FieldTextBoxStyle}"
-                Text="{Binding Value, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Value, StringFormat={StaticResource RealFormatString}}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -252,11 +252,11 @@
                 Width="250"
                 MaxLength="{Binding MaxLength}"
                 Style="{StaticResource FieldTextBoxStyle}"
-                Text="{Binding Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+                Text="{Binding Value, ValidatesOnExceptions=True}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -270,11 +270,11 @@
             <TextBox
                 Width="250"
                 Style="{StaticResource FieldTextBoxStyle}"
-                Text="{Binding Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+                Text="{Binding Value, ValidatesOnExceptions=True}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -290,32 +290,32 @@
                 Text="A:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Alpha, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Alpha, StringFormat={StaticResource RealFormatString}}" />
             <!--  Red  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="R:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Red, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Red, StringFormat={StaticResource RealFormatString}}" />
             <!--  Green  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="G:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Green, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Green, StringFormat={StaticResource RealFormatString}}" />
             <!--  Blue  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="B:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Blue, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Blue, StringFormat={StaticResource RealFormatString}}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -331,25 +331,25 @@
                 Text="R:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Red, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Red, StringFormat={StaticResource RealFormatString}}" />
             <!--  Green  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="G:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Green, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Green, StringFormat={StaticResource RealFormatString}}" />
             <!--  Blue  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="B:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Blue, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Blue, StringFormat={StaticResource RealFormatString}}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -366,7 +366,7 @@
             <TextBox
                 Width="40"
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Alpha, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Alpha}" />
             <!--  Red  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
@@ -374,7 +374,7 @@
             <TextBox
                 Width="40"
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Red, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Red}" />
             <!--  Green  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
@@ -382,7 +382,7 @@
             <TextBox
                 Width="40"
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Green, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Green}" />
             <!--  Blue  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
@@ -390,11 +390,11 @@
             <TextBox
                 Width="40"
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Blue, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Blue}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -410,31 +410,31 @@
                 Text="I:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding I, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
             <!--  J  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="J:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding J, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
             <!--  K  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="K:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding K, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding K, StringFormat={StaticResource RealFormatString}}" />
             <!--  D  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="D:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding D, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding D, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -450,31 +450,31 @@
                 Text="I:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding I, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
             <!--  J  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="J:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding J, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
             <!--  K  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="K:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding K, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding K, StringFormat={StaticResource RealFormatString}}" />
             <!--  W  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="W:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding W, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding W, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -490,24 +490,24 @@
                 Text="I:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding I, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
             <!--  J  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="J:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding J, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
             <!--  K  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="K:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding K, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding K, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -523,17 +523,17 @@
                 Text="I:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding I, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
             <!--  J  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="J:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding J, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -549,24 +549,24 @@
                 Text="X:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding X, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding X, StringFormat={StaticResource RealFormatString}}" />
             <!--  Y  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Y:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Y, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Y, StringFormat={StaticResource RealFormatString}}" />
             <!--  Z  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Z:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Z, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Z, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -582,17 +582,17 @@
                 Text="X:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding X, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding X, StringFormat={StaticResource RealFormatString}}" />
             <!--  Y  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Y:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Y, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Y, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -608,24 +608,24 @@
                 Text="Y:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Yaw, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Yaw, StringFormat={StaticResource RealFormatString}}" />
             <!--  Pitch  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="P:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Pitch, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Pitch, StringFormat={StaticResource RealFormatString}}" />
             <!--  Roll  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="R:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Roll, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Roll, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -641,17 +641,17 @@
                 Text="Y:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Yaw, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Yaw, StringFormat={StaticResource RealFormatString}}" />
             <!--  Pitch  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="P:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Pitch, StringFormat={StaticResource RealFormatString}, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Pitch, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -667,18 +667,18 @@
                 Text="X:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding X, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding X}" />
             <!--  Y  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Y:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Y, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Y}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -695,7 +695,7 @@
                 Text="Right:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Top, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Top}" />
             <!--  Left  -->
             <TextBlock
                 Width="Auto"
@@ -703,7 +703,7 @@
                 Text="Bottom:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Left, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Left}" />
             <!--  Bottom  -->
             <TextBlock
                 Width="Auto"
@@ -711,7 +711,7 @@
                 Text="Left:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Bottom, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Bottom}" />
             <!--  Right  -->
             <TextBlock
                 Width="Auto"
@@ -719,11 +719,11 @@
                 Text="Top:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Right, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Right}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -739,46 +739,46 @@
                 Text="X0:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding X0, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding X0}" />
             <!--  X1  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="X1:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding X1, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding X1}" />
             <!--  Y0  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Y0:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Y0, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Y0}" />
             <!--  Y1  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Y1:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Y1, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Y1}" />
             <!--  Z0  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Z0:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Z0, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Z0}" />
             <!--  Z1  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Z1:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Z1, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Z1}" />
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
-                Text="{Binding FieldTypeName, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding FieldTypeName}" />
         </StackPanel>
     </DataTemplate>
 
@@ -824,7 +824,7 @@
                         <CheckBox
                             HorizontalAlignment="Stretch"
                             Content="{Binding Name, Mode=OneTime}"
-                            IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                            IsChecked="{Binding IsChecked}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -965,7 +965,7 @@
                 Text="Offset:" />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding AddressOffset, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding AddressOffset}" />
         </StackPanel>
     </DataTemplate>
 
@@ -982,7 +982,7 @@
                 Text="Salt: " />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Salt, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Salt}" />
             <!--  Index  -->
             <TextBlock
                 Width="Auto"
@@ -990,7 +990,7 @@
                 Text="Index: " />
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
-                Text="{Binding Index, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding Index}" />
         </StackPanel>
     </DataTemplate>
 
@@ -1038,7 +1038,7 @@
                                 VerticalAlignment="Center"
                                 Focusable="False"
                                 IsReadOnly="True"
-                                Text="{Binding Path=Length, Mode=OneWay, StringFormat={}0x{0:X}, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding Path=Length, Mode=OneWay, StringFormat={}0x{0:X}}"
                                 TextWrapping="Wrap" />
                             <Button
                                 Margin="2,0"
@@ -1061,7 +1061,7 @@
             <DataTrigger
                 Binding="{Binding IsExpanded}"
                 Value="True">
-                <Setter TargetName="ValueTextBox" Property="Text" Value="{Binding Path=Data, Converter={x:Static converters:HexValueConverter.Instance}, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
+                <Setter TargetName="ValueTextBox" Property="Text" Value="{Binding Path=Data, Converter={x:Static converters:HexValueConverter.Instance}, ValidatesOnExceptions=True}" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
