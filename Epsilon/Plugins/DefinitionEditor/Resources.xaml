@@ -1237,8 +1237,8 @@
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
-                                    <Run Text="{Binding Mode=OneTime}" />
-                                    <Run Text="- (" /><Run Text="{Binding Path=Tag, ElementName=PART_Combo, Mode=OneTime}" /><Run Text=")" />
+                                    <Run Text="{Binding Mode=OneWay}" />
+                                    <Run Text="- (" /><Run Text="{Binding Path=Tag, ElementName=PART_Combo, Mode=OneWay}" /><Run Text=")" />
                                 </TextBlock>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
