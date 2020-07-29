@@ -23,7 +23,10 @@ namespace TagStructEditor.Fields
         protected override void OnPopulate(object value)
         {
             var stringId = (StringId)value;
-            Value = _stringTable.GetString(stringId);
+            if (stringId == StringId.Invalid)
+                Value = "";
+            else
+                Value = _stringTable.GetString(stringId);
         }
 
         public void OnValueChanged()
@@ -32,7 +35,7 @@ namespace TagStructEditor.Fields
             if (!string.IsNullOrEmpty(Value))
             {
                 stringId = _stringTable.GetStringId(Value);
-                if (Value != "invalid" && stringId == StringId.Invalid)
+                if (string.IsNullOrWhiteSpace(Value) || stringId == StringId.Invalid)
                    throw new ArgumentException(nameof(Value));
             }
 
