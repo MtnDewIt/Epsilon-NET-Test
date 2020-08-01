@@ -19,6 +19,9 @@ namespace TagStructEditor.Fields
 
         protected override void OnPopulate(object value)
         {
+            if (Value == null)
+                Value = string.Empty;
+
             Value = (string)value;
         }
 
