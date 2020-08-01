@@ -63,7 +63,16 @@ namespace CacheEditor
         public async override Task SerializeTagAsync(CachedTag instance, object definition)
         {
             using (var stream = Cache.OpenCacheReadWrite())
-                await Task.Run(() => Cache.Serialize(stream, instance, definition));
+            {
+                await Task.Run(() => 
+                {
+                    // File -> Save when
+                    Cache.Serialize(stream, instance, definition);
+                    Cache.SaveStrings();
+                    Cache.SaveTagNames();
+                });
+            }
+               
         }
 
         public override void RenameTag(CachedTag tag, string newName)
