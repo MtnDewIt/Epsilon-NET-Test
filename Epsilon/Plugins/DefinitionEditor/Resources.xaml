@@ -994,6 +994,31 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  PackedInteger_10_6  -->
+    <DataTemplate DataType="{x:Type fields:PackedInteger_10_6Field}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <!--  Offset  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Offset: " />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Offset}" />
+            <!--  Count  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Count: " />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Count}" />
+        </StackPanel>
+    </DataTemplate>
+
     <!--  Data  -->
     <DataTemplate DataType="{x:Type fields:DataField}">
         <Expander

@@ -8,6 +8,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Shaders;
 using TagTool.Tags;
+using static TagTool.Tags.Definitions.RenderMethodTemplate;
 
 namespace TagStructEditor.Fields
 {
@@ -89,10 +90,7 @@ namespace TagStructEditor.Fields
 
         private IField CreateBlockTemplateField(Type elementType, BlockField blockField)
         {
-            if (typeof(TagStructure).IsAssignableFrom(elementType))
-                return CreateStruct(elementType);
-
-            // Handle the lists of value types case
+            
             var info = new ValueFieldInfo()
             {
                 Name = "[Value]",
@@ -100,7 +98,15 @@ namespace TagStructEditor.Fields
                 ValueGetter = (owner) => blockField.Block[blockField.CurrentIndex],
                 ValueSetter = (owner, value) => blockField.Block[blockField.CurrentIndex] = value
             };
-            
+
+            if (elementType == typeof(PackedInteger_10_6))
+                return CreateValueField(info);
+
+            if (typeof(TagStructure).IsAssignableFrom(elementType))
+                return CreateStruct(elementType);
+
+            // Handle the lists of value types case
+
             return CreateValueField(info);
         }
 
@@ -126,6 +132,8 @@ namespace TagStructEditor.Fields
             }
             //else if (info.FieldType == typeof(TagData))
             //    return new DataField(info);
+            else if (info.FieldType == typeof(PackedInteger_10_6))
+                return new PackedInteger_10_6Field(info);
             else if (info.FieldType == typeof(TagFunction))
                 return new TagFunctionField(info);
             else if (typeof(TagStructure).IsAssignableFrom(info.FieldType))
@@ -184,6 +192,7 @@ namespace TagStructEditor.Fields
                 return new InlineStructField(info);
             else if (info.FieldType == typeof(PixelShaderReference))
                 return new InlineStructField(info);
+           
 
 
             switch (Type.GetTypeCode(info.FieldType))
