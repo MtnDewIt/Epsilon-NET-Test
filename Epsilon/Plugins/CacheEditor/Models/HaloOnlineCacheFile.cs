@@ -42,7 +42,7 @@ namespace CacheEditor
 
         public override void ImportTag(CachedTag tag, string filePath)
         {
-            using (var stream = Cache.OpenCacheRead())
+            using (var stream = Cache.OpenCacheReadWrite())
             {
                 var data = System.IO.File.ReadAllBytes(filePath);
                 Cache.TagCacheGenHO.SetTagDataRaw(stream, tag as CachedTagHaloOnline, data);
