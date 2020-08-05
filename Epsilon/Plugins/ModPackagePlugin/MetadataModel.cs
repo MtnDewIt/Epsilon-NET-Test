@@ -41,5 +41,35 @@ namespace ModPackagePlugin
                 NotifyOfPropertyChange();
             }
         }
+
+        public string Website
+        {
+            get => _metadata.URL;
+            set
+            {
+                _metadata.URL = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public short VersionMajor
+        {
+            get => _metadata.VersionMajor;
+            set
+            {
+                _metadata.VersionMajor = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public short VersionMinor
+        {
+            get => _metadata.VersionMinor;
+            set
+            {
+                _metadata.VersionMinor = value;
+                NotifyOfPropertyChange();
+            }
+        }
     }
 }

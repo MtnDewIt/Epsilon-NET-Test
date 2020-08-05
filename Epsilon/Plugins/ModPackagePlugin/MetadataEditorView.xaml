@@ -11,28 +11,60 @@
         <StackPanel>
             <TextBlock
                 Margin="0,2"
+                Text="Version" />
+            <StackPanel
+                Margin="0,2"
+                Orientation="Horizontal">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Text="Major: " />
+                <TextBox
+                    Width="40"
+                    Margin="2,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Metadata.VersionMajor, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="Minor: " />
+                <TextBox
+                    Width="40"
+                    Margin="2,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Metadata.VersionMinor, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <TextBlock
+                Margin="0,2"
                 Text="Name" />
             <TextBox
                 Margin="0,2"
-                MaxLength="15"
+                MaxLength="31"
                 Text="{Binding Metadata.Name, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock
                 Margin="0,2"
                 Text="Author" />
             <TextBox
                 Margin="0,2"
-                MaxLength="15"
+                MaxLength="31"
                 Text="{Binding Metadata.Author, UpdateSourceTrigger=PropertyChanged}" />
+
             <TextBlock
                 Margin="0,2"
                 Text="Description" />
             <TextBox
                 Height="100"
                 Margin="0,2"
-                MaxLength="127"
+                MaxLength="511"
                 MaxLines="4"
                 Text="{Binding Metadata.Description, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap" />
+            <TextBlock
+                Margin="0,2"
+                Text="Website" />
+            <TextBox
+                Margin="0,2"
+                MaxLength="511"
+                Text="{Binding Metadata.Website, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
     </Grid>
