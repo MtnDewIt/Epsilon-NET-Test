@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace MapVariantFixer.Properties {
+    using System;
     
     
     /// <summary>
@@ -18,7 +19,7 @@ namespace MapVariantFixer.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -37,7 +38,7 @@ namespace MapVariantFixer.Properties {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if ((resourceMan == null)) {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MapVariantFixer.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
@@ -56,6 +57,21 @@ namespace MapVariantFixer.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0x0000002A, objects\characters\masterchief\mp_masterchief\armor\base.scen
+        ///0x00000032, objects\characters\masterchief\mp_masterchief\armor\mp_cobra.scen
+        ///0x0000003A, objects\characters\masterchief\mp_masterchief\armor\mp_intruder.scen
+        ///0x00000042, objects\characters\masterchief\mp_masterchief\armor\mp_ninja.scen
+        ///0x0000004A, objects\characters\masterchief\mp_masterchief\armor\mp_regulator.scen
+        ///0x00000052, objects\characters\masterchief\mp_masterchief\armor\mp_ryu.scen
+        ///0x0000005A, objects\characters\master [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string _061_mapping {
+            get {
+                return ResourceManager.GetString("_061_mapping", resourceCulture);
             }
         }
     }

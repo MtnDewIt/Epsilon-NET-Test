@@ -7,11 +7,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using TagTool.BlamFile;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.IO;
+using TagTool.Serialization;
 
 namespace MapVariantFixer
 {
@@ -21,6 +25,7 @@ namespace MapVariantFixer
         private ICacheFile _cacheFile;
         private string _output;
         private bool _inProgress;
+        private Dictionary<int, string> _061_TagRemapping;
 
         public MapVariantFixerViewModel(IShell shell, ICacheFile cacheFile)
         {
@@ -108,27 +113,34 @@ namespace MapVariantFixer
             var sandboxMapFile = new FileInfo(filePath);
             using (var stream = sandboxMapFile.Open(FileMode.Open, FileAccess.ReadWrite))
             {
-                var blf = new Blf(TagTool.Cache.CacheVersion.HaloOnline106708);
-                blf.Read(new EndianReader(stream));
-
                 var reader = new EndianReader(stream);
                 var writer = new EndianWriter(stream);
+
+                Fix061Endianess(stream);
+
+                var blf = new Blf(baseCache.Version);
+                blf.Read(reader);
 
                 if (blf.MapVariant == null)
                     return;
 
-                var tagNamesChunk = blf.MapVariantTagNames;
+                if (blf.MapVariantTagNames == null)
+                {
+                    WriteLog("converting from 0.6.1 format...");
+                    Convert061MapVariant(blf);
+                }
+
                 var palette = blf.MapVariant.MapVariant.Palette;
                 for (int i = 0; i < palette.Length; i++)
                 {
                     if (palette[i].TagIndex == -1)
                         continue;
 
-                    var name = tagNamesChunk.Names[i].Name;
+                    var name = blf.MapVariantTagNames.Names[i].Name;
                     string newName = $"ms30\\{name}";
                     if (baseCache.TagCache.TryGetTag(newName, out CachedTag tag))
                     {
-                        tagNamesChunk.Names[i].Name = newName;
+                        blf.MapVariantTagNames.Names[i].Name = newName;
                         WriteLog($"prefixed '{tag}'");
                     }
                 }
@@ -136,6 +148,82 @@ namespace MapVariantFixer
                 WriteLog("saving file...");
                 stream.Position = 0;
                 blf.Write(writer);
+            }
+        }
+
+        private void Fix061Endianess(Stream stream)
+        {
+            var deserializer = new TagDeserializer(CacheVersion.HaloOnline106708);
+            var serializer = new TagSerializer(CacheVersion.HaloOnline106708);
+
+            var reader = new EndianReader(stream, EndianFormat.BigEndian);
+            var writer = new EndianWriter(stream, EndianFormat.LittleEndian);
+            var readerContext = new DataSerializationContext(reader);
+            var writerContext = new DataSerializationContext(writer);
+
+            // check this is actually a big endian chunk header (this could also be true for h3 files, but that's their fault)
+            if(reader.ReadTag() != "_blf")
+            {
+                stream.Position = 0;
+                return;
+            }          
+
+            WriteLog("Fixing chunk endianess...");
+
+            // fix the chunk headers
+            while (true)
+            {
+                var pos = reader.BaseStream.Position;
+                var header = (BlfChunkHeader)deserializer.Deserialize(readerContext, typeof(BlfChunkHeader));
+               
+                writer.BaseStream.Position = pos;
+                serializer.Serialize(writerContext, header);
+                if (header.Signature == "_eof")
+                    break;
+
+                reader.BaseStream.Position += header.Length - typeof(BlfChunkHeader).GetSize();
+            }
+
+            // fix the BOM
+            stream.Position = 0xC;
+            writer.Format = EndianFormat.LittleEndian;
+            writer.Write((short)-2);
+            stream.Position = 0;
+        }
+
+        private void Convert061MapVariant(Blf blf)
+        {
+            if(_061_TagRemapping == null)
+            {
+                _061_TagRemapping = Properties.Resources._061_mapping
+                                .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(line => line.Split(','))
+                                .Where(delim => delim.Length > 1)
+                                .Select(delim => new { TagIndex = System.Convert.ToInt32(delim[0].Trim(), 16), Name = delim[1].Trim() })
+                                .ToDictionary(x => x.TagIndex, y => y.Name);
+            }
+
+            blf.MapVariantTagNames = new BlfMapVariantTagNames()
+            {
+                Signature = new Tag("tagn"),
+                Length = (int)typeof(BlfMapVariantTagNames).GetSize(),
+                MajorVersion = 1,
+                MinorVersion = 0,
+                Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),
+            };
+            blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+
+            var mapVariant = blf.MapVariant.MapVariant;
+            for(int i = 0; i < mapVariant.Palette.Length; i++)
+            {
+                var tagIndex = mapVariant.Palette[i].TagIndex;
+                if (tagIndex == -1)
+                    continue;
+                if(_061_TagRemapping.TryGetValue(tagIndex, out string name))
+                {
+                    blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
+                    WriteLog($"added tag name entry 0x{tagIndex:X04} -> {name}");
+                }
             }
         }
 
