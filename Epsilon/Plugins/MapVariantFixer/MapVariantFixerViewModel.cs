@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using TagTool.BlamFile;
@@ -16,6 +15,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
+using TagTool.Tags;
 
 namespace MapVariantFixer
 {
@@ -97,7 +97,7 @@ namespace MapVariantFixer
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Failed to map variants. Check the output for details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("One or more map variants failed. Check the output for details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     WriteLog(ex.ToString());
                 }
                 finally
@@ -141,13 +141,27 @@ namespace MapVariantFixer
                     if (baseCache.TagCache.TryGetTag(newName, out CachedTag tag))
                     {
                         blf.MapVariantTagNames.Names[i].Name = newName;
-                        WriteLog($"prefixed '{tag}'");
+                        WriteLog($"prefixed '{newName}'");
                     }
+                }
+
+                if(blf.EndOfFile == null)
+                {
+                    WriteLog("fixing EOF chunk...");
+                    blf.EndOfFile = new BlfChunkEndOfFile()
+                    {
+                        Signature = new Tag("_eof"),
+                        Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version),
+                        MajorVersion = 1,
+                        MinorVersion = 1,
+                    };
+                    blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
                 }
 
                 WriteLog("saving file...");
                 stream.Position = 0;
-                blf.Write(writer);
+                if (!blf.Write(writer))
+                    throw new Exception("failed to write blf");
             }
         }
 
@@ -166,7 +180,7 @@ namespace MapVariantFixer
             {
                 stream.Position = 0;
                 return;
-            }          
+            }
 
             WriteLog("Fixing chunk endianess...");
 
@@ -202,11 +216,11 @@ namespace MapVariantFixer
                                 .Select(delim => new { TagIndex = System.Convert.ToInt32(delim[0].Trim(), 16), Name = delim[1].Trim() })
                                 .ToDictionary(x => x.TagIndex, y => y.Name);
             }
-
+            
             blf.MapVariantTagNames = new BlfMapVariantTagNames()
             {
                 Signature = new Tag("tagn"),
-                Length = (int)typeof(BlfMapVariantTagNames).GetSize(),
+                Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version),
                 MajorVersion = 1,
                 MinorVersion = 0,
                 Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),
