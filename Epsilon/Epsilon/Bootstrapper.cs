@@ -31,6 +31,15 @@ namespace WpfApp20
 
             await Task.WhenAll(startupTasks);
 
+            App.Current.DispatcherUnhandledException += (o, args) =>
+            {
+                var dialog = new ExceptionDialog(args.Exception);
+                dialog.Owner = App.Current.MainWindow;
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                if(dialog.ShowDialog() == false)
+                    args.Handled = true;
+            };
+
             base.Launch();
 
             PostLaunchInitShell();
