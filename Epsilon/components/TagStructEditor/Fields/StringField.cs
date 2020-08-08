@@ -27,6 +27,9 @@ namespace TagStructEditor.Fields
 
         public void OnValueChanged()
         {
+            if (Value == null)
+                return;
+
             if (Value.Length > MaxLength)
                 throw new ArgumentException(nameof(Value), $"Length ({Value.Length}) exceeded MaxLength ({MaxLength})");
 
