@@ -62,7 +62,7 @@
     </Style>
 
     <!--  Constants  -->
-    <system:String x:Key="RealFormatString">0.#####</system:String>
+    <system:String x:Key="RealFormatString">{0}</system:String>
 
     <!--  Styles  -->
     <Style
