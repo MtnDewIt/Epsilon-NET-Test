@@ -137,11 +137,32 @@ namespace MapVariantFixer
                         continue;
 
                     var name = blf.MapVariantTagNames.Names[i].Name;
-                    string newName = $"ms30\\{name}";
-                    if (baseCache.TagCache.TryGetTag(newName, out CachedTag tag))
+                    CachedTag tag;
+
+                    if (baseCache.TagCache.TryGetTag(name, out tag))
                     {
-                        blf.MapVariantTagNames.Names[i].Name = newName;
-                        WriteLog($"prefixed '{newName}'");
+                        continue;
+                    }
+                    else
+                    {
+                        string newName = "";
+                        if (name.StartsWith("ms30"))
+                        {
+                            newName = name.Substring(5);
+                        }
+                        else
+                        {
+                            newName = $"ms30\\{name}";
+                        }
+                        if (baseCache.TagCache.TryGetTag(newName, out tag))
+                        {
+                            blf.MapVariantTagNames.Names[i].Name = newName;
+                            WriteLog($"Fixed name '{newName}'");
+                        }
+                        else
+                        {
+                            throw new Exception($"Missing tag {name} in the base cache. Reach out to a dev for help.");
+                        }
                     }
                 }
 
