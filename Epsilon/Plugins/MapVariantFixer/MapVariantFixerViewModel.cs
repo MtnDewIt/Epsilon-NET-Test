@@ -205,6 +205,7 @@ namespace MapVariantFixer
 
             WriteLog("Fixing chunk endianess...");
 
+            reader.BaseStream.Position = 0;
             // fix the chunk headers
             while (true)
             {
