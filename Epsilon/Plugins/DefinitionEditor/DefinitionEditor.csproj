@@ -57,6 +57,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EnumBindingSource.cs" />
     <Compile Include="IFieldsValueChangeSink.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ValueField.cs" />

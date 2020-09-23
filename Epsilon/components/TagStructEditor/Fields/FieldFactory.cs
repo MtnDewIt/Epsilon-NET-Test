@@ -6,6 +6,7 @@ using System.Reflection;
 using TagStructEditor.Common;
 using TagTool.Cache;
 using TagTool.Common;
+using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Shaders;
 using TagTool.Tags;
 using static TagTool.Tags.Definitions.RenderMethodTemplate;
@@ -101,6 +102,8 @@ namespace TagStructEditor.Fields
 
             if (elementType == typeof(PackedInteger_10_6))
                 return CreateValueField(info);
+            else if (elementType == typeof(Bsp3dNode))
+                return new Bsp3dNodeField(info);
 
             if (typeof(TagStructure).IsAssignableFrom(elementType))
                 return CreateStruct(elementType);
@@ -134,6 +137,8 @@ namespace TagStructEditor.Fields
             //    return new DataField(info);
             else if (info.FieldType == typeof(PackedInteger_10_6))
                 return new PackedInteger_10_6Field(info);
+            else if (info.FieldType == typeof(Bsp3dNode))
+                return new Bsp3dNodeField(info);
             else if (info.FieldType == typeof(TagFunction))
                 return new TagFunctionField(info);
             else if (typeof(TagStructure).IsAssignableFrom(info.FieldType))
@@ -192,7 +197,7 @@ namespace TagStructEditor.Fields
                 return new InlineStructField(info);
             else if (info.FieldType == typeof(PixelShaderReference))
                 return new InlineStructField(info);
-           
+
 
 
             switch (Type.GetTypeCode(info.FieldType))

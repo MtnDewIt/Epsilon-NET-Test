@@ -107,6 +107,7 @@
     <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\PropertyChangedNotifier.cs" />
     <Compile Include="Controls\BlockHeaderDropdown.cs" />
+    <Compile Include="Fields\Bsp3dNodeField.cs" />
     <Compile Include="Fields\PackedInteger_10_6Field.cs" />
     <Compile Include="Fields\ValueChangedEventArgs.cs" />
     <Compile Include="Fields\ValueFieldInfo.cs" />

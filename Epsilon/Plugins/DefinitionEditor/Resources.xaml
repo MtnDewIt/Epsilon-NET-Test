@@ -1019,6 +1019,104 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  Bsp3dNode  -->
+    <DataTemplate DataType="{x:Type fields:Bsp3dNodeField}">
+
+        <StackPanel Orientation="Horizontal">
+
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <StackPanel Orientation="Vertical">
+                <StackPanel
+                    Margin="0,2"
+                    Orientation="Horizontal">
+                    <!--  Value  -->
+                    <TextBlock
+                        Width="80"
+                        Style="{StaticResource FieldLabelStyle}"
+                        Text="[Value]" />
+                    <TextBox
+                        Width="120"
+                        IsReadOnly="True"
+                        Style="{StaticResource FieldTextBoxStyle}"
+                        Text="{Binding Value, StringFormat={}{0:X016}}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,2"
+                    Orientation="Horizontal">
+                    <!--  Plane  -->
+                    <TextBlock
+                        Width="80"
+                        Style="{StaticResource FieldLabelStyle}"
+                        Text="[Plane]" />
+                    <TextBox
+                        Width="120"
+                        Style="{StaticResource FieldTextBoxStyle}"
+                        Text="{Binding Plane}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,2"
+                    Orientation="Horizontal">
+                    <!--  Front Child  -->
+                    <TextBlock
+                        Width="80"
+                        Style="{StaticResource InlineFieldLabelStyle}"
+                        Text="[Front Child]" />
+                    <TextBlock
+                        Width="Auto"
+                        Style="{StaticResource InlineFieldLabelStyle}"
+                        Text="Type:" />
+                    <ComboBox
+                        Width="60"
+                        Margin="2,0"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding Source={local:EnumBindingSource {x:Static fields:Bsp3dNodeField.ChildTypeEnum}}}"
+                        SelectedValue="{Binding FrontChildType}" />
+                    <TextBlock
+                        Width="Auto"
+                        Margin="8,0,0,0"
+                        Style="{StaticResource InlineFieldLabelStyle}"
+                        Text="Index:" />
+                    <TextBox
+                        Margin="4,0"
+                        Style="{StaticResource InlineFieldTextBoxStyle}"
+                        Text="{Binding FrontChildIndex}" />
+
+                </StackPanel>
+                <StackPanel
+                    Margin="0,2"
+                    Orientation="Horizontal">
+                    <!--  Back Child  -->
+                    <TextBlock
+                        Width="80"
+                        Style="{StaticResource InlineFieldLabelStyle}"
+                        Text="[Back Child]" />
+                    <TextBlock
+                        Width="Auto"
+                        Style="{StaticResource InlineFieldLabelStyle}"
+                        Text="Type:" />
+                    <ComboBox
+                        Width="60"
+                        Margin="2,0"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding Source={local:EnumBindingSource {x:Static fields:Bsp3dNodeField.ChildTypeEnum}}}"
+                        SelectedValue="{Binding BackChildType}" />
+                    <TextBlock
+                        Width="Auto"
+                        Margin="8,0,0,0"
+                        Style="{StaticResource InlineFieldLabelStyle}"
+                        Text="Index:" />
+                    <TextBox
+                        Margin="4,0"
+                        Style="{StaticResource InlineFieldTextBoxStyle}"
+                        Text="{Binding BackChildIndex}" />
+
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
     <!--  Data  -->
     <DataTemplate DataType="{x:Type fields:DataField}">
         <Expander
