@@ -398,6 +398,39 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  RealPlane2d  -->
+    <DataTemplate DataType="{x:Type fields:RealPlane2dField}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <!--  I  -->
+            <TextBlock
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="I:" />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
+            <!--  J  -->
+            <TextBlock
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="J:" />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
+            <!--  D  -->
+            <TextBlock
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="D:" />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding D, StringFormat={StaticResource RealFormatString}}" />
+            <TextBlock
+                Style="{StaticResource FieldTypeLabelStyle}"
+                Text="{Binding FieldTypeName}" />
+        </StackPanel>
+    </DataTemplate>
+
     <!--  RealPlane3d  -->
     <DataTemplate DataType="{x:Type fields:RealPlane3dField}">
         <StackPanel Orientation="Horizontal">
