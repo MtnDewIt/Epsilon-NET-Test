@@ -5,6 +5,8 @@ using HaloShaderGenerator.Generator;
 using RenderMethodEditorPlugin.ShaderMethods;
 using RenderMethodEditorPlugin.ShaderMethods.Particle;
 using RenderMethodEditorPlugin.ShaderMethods.Shader;
+using RenderMethodEditorPlugin.ShaderMethods.Halogram;
+using RenderMethodEditorPlugin.ShaderMethods.Decal;
 using RenderMethodEditorPlugin.ShaderParameters;
 using Stylet;
 using System;
@@ -61,6 +63,12 @@ namespace RenderMethodEditorPlugin
                     break;
                 case "particle_templates":
                     methodParser = new ParticleMethod();
+                    break;
+                case "halogram_templates":
+                    methodParser = new HalogramMethod();
+                    break;
+                case "decal_templates":
+                    methodParser = new DecalMethod();
                     break;
                 default:
                     return;

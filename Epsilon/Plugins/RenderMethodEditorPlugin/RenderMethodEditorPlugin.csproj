@@ -74,6 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ShaderArgumentsDescription.cs" />
+    <Compile Include="ShaderMethods\Decal\DecalMethod.cs" />
+    <Compile Include="ShaderMethods\Halogram\HalogramMethod.cs" />
     <Compile Include="ShaderMethods\Method.cs" />
     <Compile Include="ShaderMethods\Particle\ParticleMethod.cs" />
     <Compile Include="ShaderMethods\Shader\ShaderMethod.cs" />
