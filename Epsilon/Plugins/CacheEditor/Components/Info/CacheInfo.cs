@@ -20,7 +20,7 @@ namespace CacheEditor.Components.Info
             var cache = cacheFile.Cache;
             CacheDisplayName = cache.DisplayName;
             LocaleCount = cache.LocaleTables?.Count ?? 0;
-            StringCount = cache.StringTable.Count;
+            StringCount = cache.StringTable?.Count ?? 0;
             TagCount = cache.TagCache.TagTable.Count();
             CacheDirectory = cache.Directory;
             Version = cache.Version;
