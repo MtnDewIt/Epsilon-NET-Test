@@ -9,6 +9,7 @@ using TagTool.Common;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Shaders;
 using TagTool.Tags;
+using static TagTool.Tags.Definitions.RenderMethod.ShaderProperty.TextureConstant;
 using static TagTool.Tags.Definitions.RenderMethodTemplate;
 
 namespace TagStructEditor.Fields
@@ -137,6 +138,10 @@ namespace TagStructEditor.Fields
             //    return new DataField(info);
             else if (info.FieldType == typeof(PackedInteger_10_6))
                 return new PackedInteger_10_6Field(info);
+            else if (info.FieldType == typeof(PackedSamplerAddressMode))
+                return new PackedSamplerAddressModeField(info);
+            else if (info.FieldType == typeof(PackedSamplerFilterMode))
+                return new PackedSamplerFilterModeField(info);
             else if (info.FieldType == typeof(Bsp3dNode))
                 return new Bsp3dNodeField(info);
             else if (info.FieldType == typeof(TagFunction))

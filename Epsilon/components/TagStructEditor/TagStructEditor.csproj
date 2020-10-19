@@ -109,6 +109,8 @@
     <Compile Include="Controls\BlockHeaderDropdown.cs" />
     <Compile Include="Fields\Bsp3dNodeField.cs" />
     <Compile Include="Fields\PackedInteger_10_6Field.cs" />
+    <Compile Include="Fields\PackedSamplerAddressModeField.cs" />
+    <Compile Include="Fields\PackedSamplerFilterModeField.cs" />
     <Compile Include="Fields\ValueChangedEventArgs.cs" />
     <Compile Include="Fields\ValueFieldInfo.cs" />
     <Compile Include="Common\IExpandable.cs" />

@@ -1052,6 +1052,67 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  PackedSamplerAddressMode  -->
+    <DataTemplate DataType="{x:Type fields:PackedSamplerAddressModeField}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <!--  AddressU  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Address U: " />
+            <ComboBox
+                Width="132"
+                VerticalAlignment="Center"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding Values, Mode=OneTime}"
+                SelectedItem="{Binding ValueU}"/>
+            <!--  AddressV  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Address V: "
+                Padding="2"/>
+            <ComboBox
+                Width="132"
+                VerticalAlignment="Center"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding Values, Mode=OneTime}"
+                SelectedItem="{Binding ValueV}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!--  PackedSamplerFilterMode  -->
+    <DataTemplate DataType="{x:Type fields:PackedSamplerFilterModeField}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <!--  Filter Mode  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Filter Mode: " />
+            <ComboBox
+                Width="150"
+                VerticalAlignment="Center"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding FilterModeValues, Mode=OneTime}"
+                SelectedItem="{Binding ValueFilterMode}"/>
+            <!--  Anisotropy  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Anisotropy: "
+                Padding="2"/>
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding ValueAnisotropy}" />
+        </StackPanel>
+    </DataTemplate>
+
     <!--  Bsp3dNode  -->
     <DataTemplate DataType="{x:Type fields:Bsp3dNodeField}">
 

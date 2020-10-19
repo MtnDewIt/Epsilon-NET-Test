@@ -16,7 +16,7 @@ namespace TagStructEditor.Fields
             Values = new ObservableCollection<EnumMember>(GenerateMemberList(info.FieldType));
         }
 
-        private IEnumerable<EnumMember> GenerateMemberList(Type enumType)
+        public static IEnumerable<EnumMember> GenerateMemberList(Type enumType)
         {
             var values = Enum.GetValues(enumType);
             var names = Enum.GetNames(enumType);
