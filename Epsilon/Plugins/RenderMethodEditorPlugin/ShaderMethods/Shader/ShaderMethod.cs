@@ -1,10 +1,6 @@
 ﻿using HaloShaderGenerator.Generator;
 using HaloShaderGenerator.Shader;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static TagTool.Tags.Definitions.RenderMethod;
 
 namespace RenderMethodEditorPlugin.ShaderMethods.Shader
@@ -85,9 +81,9 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Shader
                     var alpha_test = (Alpha_Test)optionIndex;
                     switch (alpha_test)
                     {
-                        case Alpha_Test.On:
+                        case Alpha_Test.Simple:
                             return "Transparency testing from alpha map.";
-                        case Alpha_Test.Off:
+                        case Alpha_Test.None:
                             return "No transparency";
                     }
                     break;

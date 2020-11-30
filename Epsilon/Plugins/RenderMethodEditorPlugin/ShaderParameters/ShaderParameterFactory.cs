@@ -50,14 +50,14 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                                 result.Add(new Float2ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 break;
                             case HLSLType.Float3:
-                                if (parameter.IsColor)
+                                if (parameter.Flags.HasFlag(ShaderParameterFlags.IsColor))
                                     result.Add(new Color3ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 else
                                     result.Add(new Float3ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 break;
 
                             case HLSLType.Float4:
-                                if (parameter.IsColor)
+                                if (parameter.Flags.HasFlag(ShaderParameterFlags.IsColor))
                                     result.Add(new Color4ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 else if (isCategory)
                                     result.Add(new CategoryShaderParameter(property, paramName, desc, realArgumentIndex));
