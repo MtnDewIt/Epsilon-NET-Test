@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EpsilonLib.Shell;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -104,12 +105,12 @@ namespace TagStructEditor.Fields
 
         private void CopyTagName()
         {
-            Clipboard.SetText($"{SelectedInstance.Instance}");
+            ClipboardEx.SetTextSafe($"{SelectedInstance.Instance}");
         }
 
         private void CopyTagIndex()
         {
-            Clipboard.SetText($"0x{SelectedInstance.Instance.Index:X04}");
+            ClipboardEx.SetTextSafe($"0x{SelectedInstance.Instance.Index:X08}");
         }
     }
 }

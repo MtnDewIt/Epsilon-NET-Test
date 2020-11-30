@@ -2,6 +2,7 @@
 using EpsilonLib.Commands;
 using EpsilonLib.Menus;
 using EpsilonLib.Settings;
+using EpsilonLib.Shell;
 using EpsilonLib.Shell.Commands;
 using EpsilonLib.Shell.TreeModels;
 using System.Collections.ObjectModel;
@@ -156,7 +157,12 @@ namespace CacheEditor.Components.TagTree
         void ICommandHandler<CopyCommand>.ExecuteCommand(Command command)
         {
             if (SelectedNode is TagTreeNode node)
-                Clipboard.SetText(node.Text);
+            {
+                if(node.Tag is CachedTag tag)
+                    ClipboardEx.SetTextSafe($"{tag}");
+                else
+                    ClipboardEx.SetTextSafe(node.Text);
+            }    
         }
 
         void ICommandHandler<CopyCommand>.UpdateCommand(Command command)

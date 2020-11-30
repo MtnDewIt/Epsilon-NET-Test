@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EpsilonLib.Shell;
+using System;
 using System.Media;
 using System.Windows;
 using WpfApp20;
@@ -22,7 +23,7 @@ namespace Epsilon
 
         private void btnCopy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(Exception.ToString());
+            ClipboardEx.SetTextSafe(Exception.ToString());
         }
 
         private void btnIgnore_Click(object sender, RoutedEventArgs e)
