@@ -46,6 +46,8 @@ namespace CacheEditor.Components.TagExplorer
 
         // Extract/Import Group
         [ExportMenuItem]
+        public static MenuItemDefinition ExtractBitmapMenuItem = new CommandMenuItemDefinition<ExtractBitmapCommand>(ContextMenu, ExtractImportMenuItemGroup);
+        [ExportMenuItem]
         public static MenuItemDefinition ExtractTagMenuItem = new CommandMenuItemDefinition<ExtractTagCommand>(ContextMenu, ExtractImportMenuItemGroup);
         [ExportMenuItem]
         public static MenuItemDefinition ImportTagMenuItem = new CommandMenuItemDefinition<ImportTagCommand>(ContextMenu, ExtractImportMenuItemGroup);

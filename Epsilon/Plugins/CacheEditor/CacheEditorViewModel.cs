@@ -46,7 +46,7 @@ namespace CacheEditor
             cacheFile.Reloaded += CacheFile_Reloaded;
 
             DisplayName = _cacheFile.File.Name;
-            TagTree = new TagTreeViewModel(_cacheEditingService, _cacheFile);
+            TagTree = new TagTreeViewModel(_cacheEditingService, _cacheFile, new TagEditing.TagExtract(_shell));
             TagTree.ContextMenu = Components.TagExplorer.MenuDefinitions.ContextMenu;
             TagTree.NodeDoubleClicked += TagTree_ItemDoubleClicked;
             CloseCommand = new DelegateCommand(Close);

@@ -66,6 +66,7 @@
     <Reference Include="System.Data">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -158,6 +159,7 @@
     <Compile Include="Components\TagExplorer\Commands\DeleteTagCommand.cs" />
     <Compile Include="Components\TagExplorer\Commands\ImportTagCommand.cs" />
     <Compile Include="Components\TagExplorer\MenuDefinitions.cs" />
+    <Compile Include="Components\TagTree\Commands\ExtractBitmapCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ToggleGroupTagNameViewCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ToggleGroupNameViewCommand.cs" />
     <Compile Include="Components\TagTree\ITagTreeViewMode.cs" />
@@ -181,6 +183,7 @@
     <Compile Include="Models\ICacheFile.cs" />
     <Compile Include="RTE\PCProcessTarget.cs" />
     <Compile Include="RTE\Providers\HaloOnline106708Provider.cs" />
+    <Compile Include="TagEditing\TagExtract.cs" />
     <Compile Include="TagEditing\Messages\DefinitionDataChangedEvent.cs" />
     <Compile Include="TagEditing\TagEditorBase.cs" />
     <Compile Include="TagEditing\TagEditorPluginErrorView.xaml.cs">

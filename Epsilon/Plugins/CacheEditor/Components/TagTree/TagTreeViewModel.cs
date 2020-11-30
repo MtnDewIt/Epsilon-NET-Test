@@ -1,4 +1,5 @@
 ﻿using CacheEditor.Components.TagTree.Commands;
+using CacheEditor.TagEditing;
 using EpsilonLib.Commands;
 using EpsilonLib.Menus;
 using EpsilonLib.Settings;
@@ -30,16 +31,18 @@ namespace CacheEditor.Components.TagTree
         ICommandHandler<ToggleGroupsViewCommand>,
         ICommandHandler<CopyCommand>,
         ICommandHandler<ToggleGroupNameViewCommand>,
-        ICommandHandler<ToggleGroupTagNameViewCommand>
+        ICommandHandler<ToggleGroupTagNameViewCommand>,
+        ICommandHandler<ExtractBitmapCommand>
     {
         private ICacheFile _cacheFile;
         private string _filterText;
         private TagTreeViewMode _viewMode = TagTreeViewMode.Groups;
         private TagTreeGroupDisplayMode _groupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
+        private TagExtract _bitmapExtract;
 
         public MenuItemDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
 
-        public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile)
+        public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile, TagExtract bitmapExtract = null)
         {
             _viewMode = cacheEditingService.Settings.Get(
                 Settings.TagTreeViewModeSetting.Key, 
@@ -50,6 +53,7 @@ namespace CacheEditor.Components.TagTree
                 (TagTreeGroupDisplayMode)Settings.TagTreeGroupDisplaySetting.DefaultValue);
 
             _cacheFile = cacheFile;
+            _bitmapExtract = bitmapExtract;
             Refresh();
         }
 
@@ -188,6 +192,17 @@ namespace CacheEditor.Components.TagTree
         void ICommandHandler<ToggleGroupTagNameViewCommand>.UpdateCommand(Command command)
         {
             command.IsChecked = GroupDisplayMode == TagTreeGroupDisplayMode.TagGroup;
+        }
+
+        void ICommandHandler<ExtractBitmapCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode?.Tag is CachedTag tag)
+                _bitmapExtract.ExtractBitmap(_cacheFile.Cache, tag);
+        }
+
+        void ICommandHandler<ExtractBitmapCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = SelectedNode?.Tag is CachedTag tag && tag.IsInGroup("bitm");
         }
 
         #endregion
