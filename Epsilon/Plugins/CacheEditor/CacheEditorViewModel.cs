@@ -93,7 +93,7 @@ namespace CacheEditor
                 OpenTag(instance);
         }
 
-        private async void OpenTag(CachedTag instance)
+        private void OpenTag(CachedTag instance)
         {
             using (var progress = _shell.CreateProgressScope())
             {
@@ -112,8 +112,6 @@ namespace CacheEditor
                 };
 
                 ActiveItem = new TagEditorViewModel(_cacheEditingService, context);
-
-                await context.DefinitionData;
             }
         }
 

@@ -1,5 +1,7 @@
 ﻿using EpsilonLib.Commands;
+using EpsilonLib.Logging;
 using Stylet;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,7 +37,14 @@ namespace CacheEditor
                 var futurePlugin = provider.CreateAsync(context);
                 Items.Add(new TagEditorPluginTabViewModel(futurePlugin) { DisplayName = provider.DisplayName });
 
-                (await futurePlugin).Client = this;
+                try
+                {
+                    (await futurePlugin).Client = this;
+                }
+                catch(Exception ex)
+                {
+                    Logger.Error($"failed to load tag editor plugin '{provider.DisplayName}'. Exception: {ex}");
+                }
             }
 
             ActiveItem = Items.FirstOrDefault();

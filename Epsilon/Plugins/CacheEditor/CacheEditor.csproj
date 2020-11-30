@@ -131,6 +131,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TagEditing\TagEditorPluginErrorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TagEditing\TagEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -179,6 +183,10 @@
     <Compile Include="RTE\Providers\HaloOnline106708Provider.cs" />
     <Compile Include="TagEditing\Messages\DefinitionDataChangedEvent.cs" />
     <Compile Include="TagEditing\TagEditorBase.cs" />
+    <Compile Include="TagEditing\TagEditorPluginErrorView.xaml.cs">
+      <DependentUpon>TagEditorPluginErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TagEditing\TagEditorPluginErrorViewModel.cs" />
     <Compile Include="UI\LayoutInitializer.cs" />
     <Compile Include="Options\GeneralOptionsPageView.xaml.cs">
       <DependentUpon>GeneralOptionsPageView.xaml</DependentUpon>

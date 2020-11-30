@@ -1,4 +1,5 @@
 ﻿using Stylet;
+using System;
 using System.Threading.Tasks;
 
 namespace CacheEditor
@@ -23,19 +24,21 @@ namespace CacheEditor
 
         private async void DoLoadingAsync(Task<ITagEditorPlugin> futurePlugin)
         {
-            var plugin = await futurePlugin;
-            Content = plugin;
+            try
+            {
+                var plugin = await futurePlugin;
+                Content = plugin;
+            }
+            catch(Exception ex)
+            {
+                Content = new TagEditorPluginErrorViewModel(ex);
+            }
         }
 
         protected override void OnClose()
         {
-            Content?.Close();
+            _content?.Close();
             _content = null;
-        }
-
-        ~TagEditorPluginTabViewModel()
-        {
-
         }
     }
 }
