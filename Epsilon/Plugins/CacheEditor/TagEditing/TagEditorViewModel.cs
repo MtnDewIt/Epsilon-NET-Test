@@ -20,7 +20,7 @@ namespace CacheEditor
         {
             _cacheEditingService = cacheEditingService;
             var instance = context.Instance;
-            DisplayName = $"{Path.GetFileName(instance.Name)}.{instance.Group}";
+            DisplayName = $"{Path.GetFileName(instance.Name)}.{instance.Group.Tag}";
 
             CloseCommand = new DelegateCommand(Close);
 
