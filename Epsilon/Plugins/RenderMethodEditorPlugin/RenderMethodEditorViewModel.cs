@@ -7,6 +7,7 @@ using RenderMethodEditorPlugin.ShaderMethods.Particle;
 using RenderMethodEditorPlugin.ShaderMethods.Shader;
 using RenderMethodEditorPlugin.ShaderMethods.Halogram;
 using RenderMethodEditorPlugin.ShaderMethods.Decal;
+using RenderMethodEditorPlugin.ShaderMethods.Screen;
 using RenderMethodEditorPlugin.ShaderParameters;
 using Stylet;
 using System;
@@ -69,6 +70,9 @@ namespace RenderMethodEditorPlugin
                     break;
                 case "decal_templates":
                     methodParser = new DecalMethod();
+                    break;
+                case "screen_templates":
+                    methodParser = new ScreenMethod();
                     break;
                 default:
                     return;

@@ -101,7 +101,7 @@ namespace TagStructEditor.Fields
                 ValueSetter = (owner, value) => blockField.Block[blockField.CurrentIndex] = value
             };
 
-            if (elementType == typeof(PackedInteger_10_6))
+            if (elementType == typeof(TagBlockIndex))
                 return CreateValueField(info);
             else if (elementType == typeof(Bsp3dNode))
                 return new Bsp3dNodeField(info);
@@ -136,8 +136,8 @@ namespace TagStructEditor.Fields
             }
             //else if (info.FieldType == typeof(TagData))
             //    return new DataField(info);
-            else if (info.FieldType == typeof(PackedInteger_10_6))
-                return new PackedInteger_10_6Field(info);
+            else if (info.FieldType == typeof(TagBlockIndex))
+                return new TagBlockIndexField(info);
             else if (info.FieldType == typeof(PackedSamplerAddressMode))
                 return new PackedSamplerAddressModeField(info);
             else if (info.FieldType == typeof(PackedSamplerFilterMode))

@@ -78,6 +78,7 @@
     <Compile Include="ShaderMethods\Halogram\HalogramMethod.cs" />
     <Compile Include="ShaderMethods\Method.cs" />
     <Compile Include="ShaderMethods\Particle\ParticleMethod.cs" />
+    <Compile Include="ShaderMethods\Screen\ScreenMethod.cs" />
     <Compile Include="ShaderMethods\Shader\ShaderMethod.cs" />
     <Compile Include="ShaderParameters\Color3ShaderParameter.cs" />
     <Compile Include="ShaderParameters\Color4ShaderParameter.cs" />

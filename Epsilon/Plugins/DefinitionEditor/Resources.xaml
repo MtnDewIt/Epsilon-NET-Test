@@ -1027,8 +1027,8 @@
         </StackPanel>
     </DataTemplate>
 
-    <!--  PackedInteger_10_6  -->
-    <DataTemplate DataType="{x:Type fields:PackedInteger_10_6Field}">
+    <!--  TagBlockIndex  -->
+    <DataTemplate DataType="{x:Type fields:TagBlockIndexField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"

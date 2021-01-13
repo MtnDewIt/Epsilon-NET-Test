@@ -7,12 +7,12 @@ using static TagTool.Tags.Definitions.RenderMethodTemplate;
 
 namespace TagStructEditor.Fields
 {
-    public class PackedInteger_10_6Field : ValueField
+    public class TagBlockIndexField : ValueField
     {
         public ushort Offset { get; set; }
         public ushort Count { get; set; }
 
-        public PackedInteger_10_6Field(ValueFieldInfo info) : base(info)
+        public TagBlockIndexField(ValueFieldInfo info) : base(info)
         {
         }
 
@@ -23,7 +23,7 @@ namespace TagStructEditor.Fields
 
         protected override void OnPopulate(object value)
         {
-            var packedInt = (PackedInteger_10_6)value;
+            var packedInt = (TagBlockIndex)value;
             Offset = packedInt.Offset;
             Count = packedInt.Count;
         }
@@ -33,7 +33,7 @@ namespace TagStructEditor.Fields
 
         void UpdateValue()
         {
-            SetActualValue(new PackedInteger_10_6() { Offset = Offset, Count = Count });
+            SetActualValue(new TagBlockIndex() { Offset = Offset, Count = Count });
         }
     }
 }
