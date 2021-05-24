@@ -7,12 +7,12 @@ namespace TagStructEditor.Fields
 {
     public class GroupTagField : ValueField
     {
-        public TagGroupItem Value { get; set; }
-        public IList<TagGroupItem> Groups { get; }
+        public Tag Value { get; set; }
+        public IList<Tag> Tags { get; }
 
         public GroupTagField(TagList tagList, ValueFieldInfo info) : base(info)
         {
-            Groups = tagList.Groups;
+            Tags = tagList.GroupTags;
         }
 
         public override void Accept(IFieldVisitor visitor)
@@ -22,9 +22,9 @@ namespace TagStructEditor.Fields
 
         protected override void OnPopulate(object value)
         {
-            Value = Groups.FirstOrDefault(item => item.Group.Tag == (Tag)value);
+            Value = (Tag)value;
         }
 
-        public void OnValueChanged() => SetActualValue(Value.Group.Tag);
+        public void OnValueChanged() => SetActualValue(Value);
     }
 }

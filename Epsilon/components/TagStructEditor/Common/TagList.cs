@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagStructEditor.Common
@@ -10,6 +11,7 @@ namespace TagStructEditor.Common
     {
         public ObservableCollection<TagGroupItem> Groups { get; set; }
         public ObservableCollection<TagInstanceItem> Instances { get; set; }
+        public ObservableCollection<Tag> GroupTags { get; set; }
 
         public TagList(GameCache cache)
         {
@@ -29,6 +31,15 @@ namespace TagStructEditor.Common
                 .GroupBy(item => item.Instance.Group)
                 .Select(group => new TagGroupItem(group.Key, group))
                 .OrderBy(item => item.TagAscii));
+
+            var tags = new HashSet<Tag>();
+            foreach (var instance in Instances)
+            {
+                tags.Add(instance.Instance.Group.Tag);
+                tags.Add(instance.Instance.Group.ParentTag);
+                tags.Add(instance.Instance.Group.GrandParentTag);
+            }
+            GroupTags = new ObservableCollection<Tag>(tags.OrderBy(x => x.Value));
         }
     }
 

@@ -974,9 +974,8 @@
             <ComboBox
                 Width="60"
                 VerticalAlignment="Center"
-                DisplayMemberPath="TagAscii"
-                ItemsSource="{Binding Groups, Mode=OneTime}"
-                SelectedItem="{Binding Value}" />
+                ItemsSource="{Binding Tags, Mode=OneTime}"
+                SelectedValue="{Binding Value}" />
         </StackPanel>
     </DataTemplate>
 
