@@ -144,7 +144,7 @@ namespace TagStructEditor.Fields
 
         private void Duplicate()
         {
-            Block.Add(Block[CurrentIndex].DeepClone());
+            Block.Add(Block[CurrentIndex].DeepCloneV2());
         }
 
         private void Shift(int direction)
