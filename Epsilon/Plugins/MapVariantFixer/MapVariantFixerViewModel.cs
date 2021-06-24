@@ -118,7 +118,7 @@ namespace MapVariantFixer
 
                 Fix061Endianess(stream);
 
-                var blf = new Blf(baseCache.Version);
+                var blf = new Blf(baseCache.Version, baseCache.Platform);
                 blf.Read(reader);
 
                 if (blf.MapVariant == null)
@@ -172,7 +172,7 @@ namespace MapVariantFixer
                     blf.EndOfFile = new BlfChunkEndOfFile()
                     {
                         Signature = new Tag("_eof"),
-                        Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version),
+                        Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, baseCache.Platform),
                         MajorVersion = 1,
                         MinorVersion = 1,
                     };
@@ -188,8 +188,8 @@ namespace MapVariantFixer
 
         private void Fix061Endianess(Stream stream)
         {
-            var deserializer = new TagDeserializer(CacheVersion.HaloOnline106708);
-            var serializer = new TagSerializer(CacheVersion.HaloOnline106708);
+            var deserializer = new TagDeserializer(CacheVersion.HaloOnline106708, CachePlatform.Original);
+            var serializer = new TagSerializer(CacheVersion.HaloOnline106708, CachePlatform.Original);
 
             var reader = new EndianReader(stream, EndianFormat.BigEndian);
             var writer = new EndianWriter(stream, EndianFormat.LittleEndian);
@@ -242,7 +242,7 @@ namespace MapVariantFixer
             blf.MapVariantTagNames = new BlfMapVariantTagNames()
             {
                 Signature = new Tag("tagn"),
-                Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version),
+                Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariantTagNames), blf.Version, CachePlatform.Original),
                 MajorVersion = 1,
                 MinorVersion = 0,
                 Names = Enumerable.Range(0, 256).Select(x => new TagName()).ToArray(),

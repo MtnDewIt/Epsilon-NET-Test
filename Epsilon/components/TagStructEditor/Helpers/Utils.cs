@@ -49,7 +49,7 @@ namespace TagStructEditor.Helpers
             if (!Attribute.IsDefined(elementType, typeof(TagStructureAttribute)) || !elementType.IsSubclassOf(typeof(TagStructure)))
                 return instance;
 
-            foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(elementType))
+            foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(elementType, TagTool.Cache.CacheVersion.Unknown, TagTool.Cache.CachePlatform.Original))
             {
                 var fieldType = tagFieldInfo.FieldType;
 

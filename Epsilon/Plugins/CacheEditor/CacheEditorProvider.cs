@@ -36,7 +36,7 @@ namespace CacheEditor
 
         ICacheFile CreateCacheFileDocument(FileInfo file, GameCache cache)
         {
-            if (cache.Version == CacheVersion.HaloOnline106708)
+            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, cache.Version))
                 return new HaloOnlineCacheFile(file, cache);
             else
                 return new GenericCacheFile(file, cache);

@@ -47,7 +47,7 @@ namespace TagStructEditor.Fields
 
         private IEnumerable<IField> CreateStructChildren(Type structType)
         {
-            foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(structType, _cache.Version))
+            foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(structType, _cache.Version, _cache.Platform))
             {
                 var attribute = tagFieldInfo.Attribute;
 
