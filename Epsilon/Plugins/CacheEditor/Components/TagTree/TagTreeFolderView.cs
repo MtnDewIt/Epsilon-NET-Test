@@ -16,7 +16,7 @@ namespace CacheEditor.Components.TagTree
             var tags = cache.TagCache
                 .NonNull()
                 .Where(filter)
-                .OrderBy(tag => tag.Name);
+                .OrderByDescending(tag => tag.Name);
 
             foreach (var tag in tags)
                 AddTag(tree, tag);
@@ -50,7 +50,7 @@ namespace CacheEditor.Components.TagTree
                 else
                 {
                     var node = CreateTagNode(tag);
-                    roots.Add(node);
+                    roots.Insert(0, node);
                 }
             }
         }
@@ -85,7 +85,6 @@ namespace CacheEditor.Components.TagTree
                 var fileName = Path.GetFileName(tag.Name);
                 return $"{fileName}.{tag.Group}";
             }
-            
         }
     }
 
