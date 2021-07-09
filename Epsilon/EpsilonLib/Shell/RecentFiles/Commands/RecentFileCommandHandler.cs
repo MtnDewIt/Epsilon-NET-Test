@@ -40,8 +40,13 @@ namespace EpsilonLib.Shell.RecentFiles
         {
             if (_fileHistory.RecentlyOpened.Any())
             {
-                foreach (var record in _fileHistory.RecentlyOpened)
+                int i = 0;
+                while (i < 25)
+                {
+                    var record = _fileHistory.RecentlyOpened.ElementAt(i);
                     yield return new Command(command.Definition) { RequiresUpdate = false, DisplayText = record.FilePath, Tag = record };
+                    i++;
+                }
             }
             else
             {
