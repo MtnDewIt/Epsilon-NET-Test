@@ -87,6 +87,9 @@ namespace TagStructEditor.Fields
             template.Parent = blockField;
             blockField.Template = template;
 
+            if (_config.CollapseBlocks)
+                blockField.IsExpanded = false;
+
             return blockField;
         }
 

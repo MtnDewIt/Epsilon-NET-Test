@@ -42,7 +42,8 @@ namespace DefinitionEditor
                 OpenTag = context.CacheEditor.OpenTag,
                 BrowseTag = context.CacheEditor.RunBrowseTagDialog,
                 ValueChanged = valueChangeSink.Invoke,
-                DisplayFieldTypes = _settings.Get<bool>(Settings.DisplayFieldTypesSetting)
+                DisplayFieldTypes = _settings.Get<bool>(Settings.DisplayFieldTypesSetting),
+                CollapseBlocks = _settings.Get<bool>(Settings.CollapseBlocksSetting)
             };
 
             var ctx = GetDefinitionEditorContext(context);

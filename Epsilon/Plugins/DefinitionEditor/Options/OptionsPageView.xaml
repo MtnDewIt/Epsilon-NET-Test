@@ -7,5 +7,8 @@
         <CheckBox
             Content="Display Field Types"
             IsChecked="{Binding IsDisplayFieldTypesChecked, Mode=TwoWay}" />
+        <CheckBox
+            Content="Collapse Blocks By Default"
+            IsChecked="{Binding IsCollapseBlocksChecked, Mode=TwoWay}" />
     </StackPanel>
 </UserControl>

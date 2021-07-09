@@ -12,5 +12,6 @@ namespace DefinitionEditor
         public const string CollectionKey = "DefinitionEditor";
 
         public static SettingDefinition DisplayFieldTypesSetting = new SettingDefinition("DisplayFieldTypes", false);
+        public static SettingDefinition CollapseBlocksSetting = new SettingDefinition("CollapseBlocks", false);
     }
 }
