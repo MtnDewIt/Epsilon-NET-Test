@@ -7,6 +7,11 @@
     xmlns:shared="clr-namespace:DefinitionEditor"
     Background="Transparent"
     SnapsToDevicePixels="True">
+
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding SaveCommand}" Modifiers="Control" Key="S"/>
+    </UserControl.InputBindings>
+    
     <DockPanel>
         <!--  Toolbar  -->
         <Border
