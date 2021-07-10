@@ -8,7 +8,9 @@
     xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
     Title="{Binding Title}"
     Width="1280"
-    Height="720">
+    Height="720"
+    MinWidth="500"
+    MinHeight="281">
     <DockPanel>
         <Grid
             HorizontalAlignment="Stretch"
