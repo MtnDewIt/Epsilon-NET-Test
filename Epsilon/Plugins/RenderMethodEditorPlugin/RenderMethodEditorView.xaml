@@ -72,11 +72,11 @@
             <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}" Margin="1">
                 <TextBlock Text="{Binding Name}" Width="250" Padding="0,2,10,0"/>
                 <TextBlock Text="R:" Padding="0,3,7,0"/>
-                <TextBox Text="{Binding Value1}"  Width="65" HorizontalAlignment="Right" Padding="1"/>
+                <TextBox Text="{Binding Value1}"  Width="70" HorizontalAlignment="Right" Padding="1"/>
                 <TextBlock Text="G:" Padding="11,3,7,0"/>
-                <TextBox Text="{Binding Value2}"  Width="65" HorizontalAlignment="Right" Padding="1"/>
+                <TextBox Text="{Binding Value2}"  Width="70" HorizontalAlignment="Right" Padding="1"/>
                 <TextBlock Text="B:" Padding="11,3,7,0"/>
-                <TextBox Text="{Binding Value3}"  Width="65" HorizontalAlignment="Right" Padding="1"/>
+                <TextBox Text="{Binding Value3}"  Width="70" HorizontalAlignment="Right" Padding="1"/>
             </StackPanel>
         </DataTemplate>
 
@@ -148,6 +148,16 @@
 
         <TextBlock Text="Shader Methods" Grid.Row="0" FontWeight="Bold" Padding="3,10,0,0"/>
         <ListView Margin="10" Name="shaderMethods" ItemsSource="{Binding ShaderMethods}" Grid.Row="1" Background="#FF2D2D30" Foreground="#f1f1f1">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Focusable" Value="false"/>
+                    <Style.Triggers>
+                        <Trigger Property="Control.IsMouseOver" Value="True">
+                            <Setter Property="Control.Background" Value="#000000" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridView.ColumnHeaderContainerStyle>
