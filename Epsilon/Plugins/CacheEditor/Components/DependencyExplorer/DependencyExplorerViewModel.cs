@@ -39,6 +39,8 @@ namespace CacheEditor.Components.DependencyExplorer
         internal void OnItemDoubleClicked(DependencyItem item)
         {
             _editor.OpenTag(item.Tag);
+            if (item.Tag is CachedTagHaloOnline instance)
+                Populate(instance);
         }
 
         private void Populate(CachedTagHaloOnline instance)
