@@ -72,7 +72,7 @@ namespace ModPackagePlugin.Commands
             modCache.BaseModPackage.TagCacheNames = new List<Dictionary<int, string>>();
 
             var referenceStream = new MemoryStream(); // will be reused by all base caches
-            var modTagCache = new TagCacheHaloOnline(referenceStream, modCache.BaseModPackage.StringTable);
+            var modTagCache = new TagCacheHaloOnline(baseCache.Version, referenceStream, modCache.BaseModPackage.StringTable);
 
             var tagCount = baseCache.TagCache.Count;
             for (var tagIndex = 0; tagIndex < tagCount; tagIndex++)
