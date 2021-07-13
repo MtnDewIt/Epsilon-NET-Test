@@ -5,12 +5,13 @@
     xmlns:local="clr-namespace:CacheEditor.Options"
     xmlns:tagtree="clr-namespace:CacheEditor.Components.TagTree">
     <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
             <TextBlock
                 Margin="4"
+                Width="181"
                 VerticalAlignment="Center"
-                Text="Tag Tree View: "
-                ToolTip="The default tag tree view mode" />
+                Text="Tag Tree Layout:"
+                ToolTip="Choose the tag tree sorting method." />
             <ComboBox
                 Width="200"
                 Margin="4"
@@ -22,16 +23,17 @@
                     Content="Tag Groups"
                     Tag="{x:Static tagtree:TagTreeViewMode.Groups}" />
                 <ComboBoxItem
-                    Content="Folders"
+                    Content="Folders By Tag Name"
                     Tag="{x:Static tagtree:TagTreeViewMode.Folders}" />
             </ComboBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
             <TextBlock
                 Margin="4"
+                Width="181"
                 VerticalAlignment="Center"
-                Text="Tag Tree Group Name: "
-                ToolTip="The default tag tree group display mode" />
+                Text="Tag Tree Group Labels: "
+                ToolTip="Choose between full and 4-letter labels for the Tag Groups layout." />
             <ComboBox
                 Width="200"
                 Margin="4"
@@ -40,10 +42,10 @@
                 SelectedValuePath="Tag">
 
                 <ComboBoxItem
-                    Content="Group Name"
+                    Content="Abbreviated"
                     Tag="{x:Static tagtree:TagTreeGroupDisplayMode.TagGroup}" />
                 <ComboBoxItem
-                    Content="Group Tag Name"
+                    Content="Full"
                     Tag="{x:Static tagtree:TagTreeGroupDisplayMode.TagGroupName}" />
             </ComboBox>
         </StackPanel>
