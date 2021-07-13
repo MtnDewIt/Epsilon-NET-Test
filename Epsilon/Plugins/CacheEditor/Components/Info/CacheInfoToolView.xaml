@@ -12,7 +12,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     Width="140"
-                    Text="Display Name" />
+                    Text="Display Name:" />
                 <TextBlock
                     Width="140"
                     Text="{Binding Info.CacheDisplayName}" />
@@ -20,37 +20,37 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     Width="140"
-                    Text="Version" />
+                    Text="Version:" />
                 <TextBlock Text="{Binding Info.Version}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     Width="140"
-                    Text="Endianess" />
+                    Text="Endianness:" />
                 <TextBlock Text="{Binding Info.Endianess}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     Width="140"
-                    Text="Locales Count" />
+                    Text="Locale Count:" />
                 <TextBlock Text="{Binding Info.LocaleCount}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     Width="140"
-                    Text="Tags Count" />
+                    Text="Tag Count:" />
                 <TextBlock Text="{Binding Info.TagCount}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     Width="140"
-                    Text="Strings Count" />
+                    Text="String Count:" />
                 <TextBlock Text="{Binding Info.StringCount}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock
                     Width="140"
-                    Text="Directory"
+                    Text="Directory:"
                     TextTrimming="CharacterEllipsis" />
                 <TextBlock Text="{Binding Info.CacheDirectory}" />
             </StackPanel>
