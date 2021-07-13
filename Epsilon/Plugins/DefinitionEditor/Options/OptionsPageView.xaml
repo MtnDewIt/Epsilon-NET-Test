@@ -5,10 +5,14 @@
     xmlns:local="clr-namespace:DefinitionEditor.Options">
     <StackPanel>
         <CheckBox
+            Margin="4,9,4,5"
             Content="Display Field Types"
+            ToolTip="Data type labels will be shown to the right of each value."
             IsChecked="{Binding IsDisplayFieldTypesChecked, Mode=TwoWay}" />
         <CheckBox
+            Margin="4,9,4,5"
             Content="Collapse Blocks By Default"
+            ToolTip="On opening a new tag, its blocks (and child blocks within) are collapsed."
             IsChecked="{Binding IsCollapseBlocksChecked, Mode=TwoWay}" />
     </StackPanel>
 </UserControl>
