@@ -27,6 +27,7 @@ namespace TagStructEditor.Fields
             BrowseCommand = new DelegateCommand(BrowseTag);
             CopyTagNameCommand = new DelegateCommand(CopyTagName, () => SelectedInstance != null);
             CopyTagIndexCommand = new DelegateCommand(CopyTagIndex, () => SelectedInstance != null);
+            PasteTagNameCommand = new DelegateCommand(PasteTagName);
         }
 
         public IEnumerable<TagGroupItem> Groups { get; set; }
@@ -41,7 +42,7 @@ namespace TagStructEditor.Fields
         public DelegateCommand BrowseCommand { get; }
         public DelegateCommand CopyTagNameCommand { get; }
         public DelegateCommand CopyTagIndexCommand { get; }
-
+        public DelegateCommand PasteTagNameCommand { get; }
 
         public override void Accept(IFieldVisitor visitor) => visitor.Visit(this);
 
@@ -87,6 +88,7 @@ namespace TagStructEditor.Fields
             BrowseCommand.RaiseCanExecuteChanged();
             CopyTagIndexCommand.RaiseCanExecuteChanged();
             CopyTagNameCommand.RaiseCanExecuteChanged();
+            PasteTagNameCommand.RaiseCanExecuteChanged();
         }
 
         public void Null()
@@ -111,6 +113,18 @@ namespace TagStructEditor.Fields
         private void CopyTagIndex()
         {
             ClipboardEx.SetTextSafe($"0x{SelectedInstance.Instance.Index:X08}");
+        }
+
+        private void PasteTagName()
+        {
+            string[] split = Clipboard.GetText().Split('.');
+            if (split.Count() != 2)
+                return;
+            else
+            {
+                SelectedGroup = Groups.FirstOrDefault(item => ((TagTool.Cache.Gen3.TagGroupGen3)item.Group).Name == split.Last()) ?? SelectedGroup;
+                SelectedInstance = SelectedGroup.Instances.First(item => item.Name == split.First()) ?? SelectedInstance;
+            }
         }
     }
 }

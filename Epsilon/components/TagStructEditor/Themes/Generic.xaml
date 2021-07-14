@@ -816,10 +816,13 @@
                         <MenuItem
                             Command="{Binding CopyTagIndexCommand}"
                             Header="Copy Tag Index" />
+                        <MenuItem
+                            Command="{Binding PasteTagNameCommand}"
+                            Header="Paste Tag Name" />
                         <Separator />
                         <MenuItem
                             Command="{Binding GotoCommand}"
-                            Header="Open in a new Tab" />
+                            Header="Open in a new tab" />
                         <Separator />
                         <MenuItem
                             Command="{Binding BrowseCommand}"
