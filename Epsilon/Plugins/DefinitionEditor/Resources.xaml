@@ -891,7 +891,8 @@
                 VirtualizingPanel.VirtualizationMode="Standard">
                 <ComboBox.Resources>
                     <Style TargetType="ScrollViewer">
-                        <Setter Property="Width" Value="600" />
+                        <Setter Property="Width" Value="auto" />
+                        <Setter Property="MinWidth" Value="320" />
                         <Setter Property="HorizontalScrollBarVisibility" Value="Hidden" />
                     </Style>
                 </ComboBox.Resources>
