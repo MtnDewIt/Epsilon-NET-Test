@@ -41,7 +41,7 @@ namespace EpsilonLib.Shell.RecentFiles
             if (_fileHistory.RecentlyOpened.Any())
             {
                 int i = 0;
-                while (i < 25)
+                while (i < 25 && i < _fileHistory.RecentlyOpened.Count())
                 {
                     var record = _fileHistory.RecentlyOpened.ElementAt(i);
                     yield return new Command(command.Definition) { RequiresUpdate = false, DisplayText = record.FilePath, Tag = record };
