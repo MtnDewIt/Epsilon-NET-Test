@@ -8,7 +8,7 @@ namespace EpsilonLib.Shell.Commands
     {
         public override string Name => "File.OpenFile";
 
-        public override string DisplayText => "File...";
+        public override string DisplayText => "Open...";
 
         public override KeyShortcut KeyShortcut => new KeyShortcut(ModifierKeys.Control, Key.O);
     }

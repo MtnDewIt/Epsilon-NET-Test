@@ -30,10 +30,10 @@ namespace EpsilonLib.Shell
         public static MenuItemDefinition FileNewMenu = new MenuItemDefinition(FileMenu, FileOpenMenuItemGroup, "New");
 
         [ExportMenuItem]
-        public static MenuItemDefinition FileOpenMenu = new MenuItemDefinition(FileMenu, FileOpenMenuItemGroup, "Open");
+        public static MenuItemDefinition FileOpenMenu = new CommandMenuItemDefinition<OpenFileCommand>(FileMenu, null);
 
-        [ExportMenuItem]
-        public static MenuItemDefinition FileOpenMenuItem = new CommandMenuItemDefinition<OpenFileCommand>(FileOpenMenu, null);
+        //[ExportMenuItem]
+        //public static MenuItemDefinition FileOpenMenuItem = new CommandMenuItemDefinition<OpenFileCommand>(FileOpenMenu, null);
 
         [ExportMenuItem]
         public static CommandMenuItemDefinition FileRecentFilesMenu = new CommandMenuItemDefinition<RecentFilesCommandList>(FileMenu, FileRecentMenuItemGroup);
