@@ -12,7 +12,7 @@ namespace RenderMethodEditorPlugin
         {
             {"order3_area_specular", "Use order 3 SH coefficients for area specular calculations." },
             {"use_material_texture", "Use material texture to define per-pixel values for specular coefficient, albedo blend, environment map specular and roughness." },
-            {"no_dynamic_lights", "Desactivate the contribution of dynamic light sources." }
+            {"no_dynamic_lights", "Deactivate the contribution of dynamic light sources." }
         };
     }
 }
