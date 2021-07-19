@@ -59,6 +59,7 @@ namespace DefinitionEditor
             SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
 
             RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
+            RteHasTargets = RteTargetList.Any();
         }
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
@@ -80,6 +81,7 @@ namespace DefinitionEditor
         public IRteService RteService { get; }
         public TargetListModel RteTargetList { get; }
         public TargetListItem SelectedRteTargetItem { get; set; }
+        public bool RteHasTargets { get; set; }
 
         public DelegateCommand ExpandAllCommand { get; }
         public DelegateCommand CollapseAllCommand { get; }
@@ -186,6 +188,7 @@ namespace DefinitionEditor
         private void RefreshRteTargets()
         {
             RteTargetList.Refresh();
+            RteHasTargets = RteTargetList.Any();
 
             if (SelectedRteTargetItem == null || !RteTargetList.Contains(SelectedRteTargetItem))
                 SelectedRteTargetItem = RteTargetList.FirstOrDefault();

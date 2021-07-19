@@ -11,7 +11,10 @@
         TabStripPlacement="Bottom">
         <TabControl.ItemTemplate>
             <DataTemplate>
-                <TextBlock Text="{Binding DisplayName}" />
+                <TextBlock
+                    Text="{Binding DisplayName}"
+                    FontSize="14"
+                    Padding="2,0,2,1"/>
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>

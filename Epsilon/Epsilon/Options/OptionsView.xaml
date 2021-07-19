@@ -49,7 +49,7 @@
                     Width="70"
                     Height="24"
                     Click="{s:Action Apply}"
-                    Content="OK" />
+                    Content="Apply" />
                 <Button
                     Width="70"
                     Height="24"

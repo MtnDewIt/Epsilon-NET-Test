@@ -29,12 +29,14 @@
                 <ControlTemplate TargetType="{x:Type ListBox}">
                     <Border
                         Name="Bd"
-                        Padding="1"
+                        Padding="1,0,0,0"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         SnapsToDevicePixels="true">
-                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="false">
+                        <ScrollViewer
+                            Padding="{TemplateBinding Padding}"
+                            Focusable="false">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
                     </Border>

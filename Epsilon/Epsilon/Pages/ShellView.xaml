@@ -51,6 +51,7 @@
             DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <TextBlock
+                    Margin="3,0,0,0"
                     FontSize="14"
                     Text="{Binding StatusBar.StatusText}" />
             </StatusBarItem>
@@ -66,7 +67,7 @@
             </StatusBarItem>
         </StatusBar>
         <xcad:DockingManager
-            Margin="4,6,4,4"
+            Margin="6,6,4,4"
             ActiveContent="{Binding ActiveDocument, Mode=TwoWay}"
             AllowMixedOrientation="True"
             DocumentsSource="{Binding Items}">
