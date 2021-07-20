@@ -14,7 +14,7 @@ namespace CacheEditor.Options
         private ISettingsCollection _settings;
 
         [ImportingConstructor]
-        public GeneralOptionsPageViewModel(ISettingsService settingsService) : base("Cache Editor", "General")
+        public GeneralOptionsPageViewModel(ISettingsService settingsService) : base("Cache Editor", "Tag Browser")
         {
             _settings = settingsService.GetCollection(Settings.CollectionKey);
         }

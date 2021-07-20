@@ -101,6 +101,11 @@
     <Compile Include="Logging\DefaultLogger.cs" />
     <Compile Include="MefBootstrapper.cs" />
     <Compile Include="MenuDefinitions.cs" />
+    <Compile Include="Options\GeneralSettings.cs" />
+    <Compile Include="Options\GeneralOptionsView.xaml.cs">
+      <DependentUpon>GeneralOptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Options\GeneralOptionsViewModel.cs" />
     <Compile Include="Options\OptionsPageTreeView.xaml.cs">
       <DependentUpon>OptionsPageTreeView.xaml</DependentUpon>
     </Compile>
@@ -158,6 +163,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Options\GeneralOptionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Options\OptionsPageTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
