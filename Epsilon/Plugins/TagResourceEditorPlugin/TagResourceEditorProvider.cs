@@ -1,4 +1,5 @@
 ﻿using CacheEditor;
+using EpsilonLib.Settings;
 using Shared;
 using System;
 using System.ComponentModel.Composition;
@@ -25,11 +26,13 @@ namespace TagResourceEditorPlugin
         };
 
         private readonly Lazy<IShell> _shell;
+        private readonly Lazy<ISettingsService> _settings;
 
         [ImportingConstructor]
-        public TagResourceEditorProvider(Lazy<IShell> shell)
+        public TagResourceEditorProvider(Lazy<IShell> shell, Lazy<ISettingsService> settings)
         {
             _shell = shell;
+            _settings = settings;
         }
 
         public string DisplayName => "Resources";
@@ -38,7 +41,7 @@ namespace TagResourceEditorPlugin
 
         public async Task<ITagEditorPlugin> CreateAsync(TagEditorContext context)
         {
-            var editor = new TagResourceEditorViewModel(_shell.Value, context.CacheEditor.CacheFile);
+            var editor = new TagResourceEditorViewModel(_shell.Value, context.CacheEditor.CacheFile, _settings.Value);
             await editor.LoadAsync(await context.DefinitionData);
             return editor;
         }

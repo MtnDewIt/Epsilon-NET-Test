@@ -1,6 +1,7 @@
 ﻿using CacheEditor;
 using CacheEditor.TagEditing;
 using EpsilonLib.Logging;
+using EpsilonLib.Settings;
 using Shared;
 using Stylet;
 using System;
@@ -20,11 +21,13 @@ namespace TagResourceEditorPlugin
         private readonly ICacheFile _cacheFile;
         private TagResourceItem _activeItem;
         private IField _displayField;
+        private ISettingsService _settings;
 
-        public TagResourceEditorViewModel(IShell shell, ICacheFile cacheFile)
+        public TagResourceEditorViewModel(IShell shell, ICacheFile cacheFile, ISettingsService settings)
         {
             _shell = shell;
             _cacheFile = cacheFile;
+            _settings = settings;
         }
 
         public ICollection<TagResourceItem> Items { get; set; }
@@ -86,9 +89,15 @@ namespace TagResourceEditorPlugin
 
             progress.Report("Creating fields...");
 
+            // bit of a hack
+            var config = new TagStructEditor.Configuration() { };
+            var settings = _settings.GetCollection("DefinitionEditor");
+            config.DisplayFieldTypes = settings.Get("DisplayFieldTypes", false);
+            config.DisplayFieldOffsets = settings.Get("DisplayFieldOffsets", false);
+            config.CollapseBlocks = settings.Get("CollapseBlocks", false);
+
             DisplayField = await Task.Run(() =>
             {
-                var config = new TagStructEditor.Configuration() { };
                 var tagFieldFactory = new FieldFactory(_cacheFile.Cache, new TagStructEditor.Common.TagList(_cacheFile.Cache), config);
                 var field = tagFieldFactory.CreateStruct(resourceDefinition.GetType());
                 field.Populate(resourceDefinition);
