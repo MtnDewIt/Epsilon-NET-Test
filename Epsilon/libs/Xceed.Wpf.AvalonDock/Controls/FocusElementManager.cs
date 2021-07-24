@@ -179,7 +179,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
         if ( parentAnchorable != null )
         {
             _modelFocusedElement[ parentAnchorable.Model ] = e.NewFocus;
-            parentAnchorable.Model.ContentId = null;
             parentAnchorable.Model.Root.ActiveContent = parentAnchorable.Model;
          }
       
