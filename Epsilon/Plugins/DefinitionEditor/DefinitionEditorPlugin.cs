@@ -43,6 +43,7 @@ namespace DefinitionEditor
                 BrowseTag = context.CacheEditor.RunBrowseTagDialog,
                 ValueChanged = valueChangeSink.Invoke,
                 DisplayFieldTypes = _settings.Get<bool>(Settings.DisplayFieldTypesSetting),
+                DisplayFieldOffsets = _settings.Get<bool>(Settings.DisplayFieldOffsetsSetting),
                 CollapseBlocks = _settings.Get<bool>(Settings.CollapseBlocksSetting)
             };
 

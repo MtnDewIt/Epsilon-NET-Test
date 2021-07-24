@@ -22,6 +22,7 @@ namespace TagStructEditor
         public Action<CachedTag> OpenTag;
 
         public bool DisplayFieldTypes { get; set; }
+        public bool DisplayFieldOffsets { get; set; }
         public bool CollapseBlocks { get; set; }
     }
 }
