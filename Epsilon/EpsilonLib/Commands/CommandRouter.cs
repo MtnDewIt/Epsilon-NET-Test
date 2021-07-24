@@ -72,27 +72,30 @@ namespace EpsilonLib.Commands
 
         private ICommandHandler FindCommandHandlerInVisualTree(Command command)
         {
-            var focusScope = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
-            if (focusScope == null)
-                return null;
-
-            var element = (FocusManager.GetFocusedElement(focusScope) ?? focusScope) as DependencyObject;
-
-            // walk up the visual tree from the focused element until looking for DataContext (ICommandTarget) that can handle this command
-            while (element != null)
+            foreach(var window in Application.Current.Windows.OfType<Window>())
             {
-                if (element is FrameworkElement frameworkElement)
-                {
-                    if (frameworkElement.DataContext is ICommandTarget target)
-                    {
-                        var commandType = command.Definition.GetType();
-                        if(GetHandlerInterfaces(target).Any(type => type.GetGenericArguments()[0] == commandType))
-                            return CreateHandler(commandType, target);
-                    }
-                }
+                if (!window.IsActive)
+                    continue;
 
-                element = VisualTreeHelper.GetParent(element);
+                var element = (FocusManager.GetFocusedElement(window) ?? window) as DependencyObject;
+
+                // walk up the visual tree from the focused element until looking for DataContext (ICommandTarget) that can handle this command
+                while (element != null)
+                {
+                    if (element is FrameworkElement frameworkElement)
+                    {
+                        if (frameworkElement.DataContext is ICommandTarget target)
+                        {
+                            var commandType = command.Definition.GetType();
+                            if (GetHandlerInterfaces(target).Any(type => type.GetGenericArguments()[0] == commandType))
+                                return CreateHandler(commandType, target);
+                        }
+                    }
+
+                    element = VisualTreeHelper.GetParent(element);
+                }
             }
+
             return null;
         }
     }

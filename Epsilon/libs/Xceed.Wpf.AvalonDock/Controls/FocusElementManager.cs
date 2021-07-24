@@ -153,6 +153,21 @@ namespace Xceed.Wpf.AvalonDock.Controls
       }
     }
 
+    public static T FindRootVisualAncestor<T>(DependencyObject dependencyObject) where T : class
+    {
+        T found = null;
+        DependencyObject target = dependencyObject;
+        do
+        {
+            target = VisualTreeHelper.GetParent(target);
+                if (target is T f)
+                    found = f;
+        }
+        while (target != null);
+
+        return found;
+    }
+
     private static void manager_PreviewGotKeyboardFocus( object sender, KeyboardFocusChangedEventArgs e )
     {
       var focusedElement = e.NewFocus as Visual;
@@ -160,18 +175,19 @@ namespace Xceed.Wpf.AvalonDock.Controls
           !( focusedElement is LayoutAnchorableTabItem || focusedElement is LayoutDocumentTabItem ) )
       //Avoid tracking focus for elements like this
       {
-        var parentAnchorable = focusedElement.FindVisualAncestor<LayoutAnchorableControl>();
-        if( parentAnchorable != null )
+        var parentAnchorable = FindRootVisualAncestor<LayoutAnchorableControl>(focusedElement);
+        if ( parentAnchorable != null )
         {
-          _modelFocusedElement[ parentAnchorable.Model ] = e.NewFocus;
-        }
-        else
-        {
-          var parentDocument = focusedElement.FindVisualAncestor<LayoutDocumentControl>();
+            _modelFocusedElement[ parentAnchorable.Model ] = e.NewFocus;
+            parentAnchorable.Model.ContentId = null;
+            parentAnchorable.Model.Root.ActiveContent = parentAnchorable.Model;
+         }
+      
+          var parentDocument = FindRootVisualAncestor<LayoutDocumentControl>(focusedElement);
           if( parentDocument != null )
           {
             _modelFocusedElement[ parentDocument.Model ] = e.NewFocus;
-          }
+            parentDocument.Model.Root.ActiveContent = parentDocument.Model;
         }
       }
     }
