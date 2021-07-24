@@ -15,12 +15,12 @@ namespace TagResourceEditorPlugin
         private static readonly Tag[] TagsWithResources =
         {
             new Tag("sbsp"),
-            new Tag("lbsp"),
+            new Tag("Lbsp"),
             new Tag("bitm"),
             new Tag("mode"),
             new Tag("coll"),
             new Tag("snd!"),
-            new Tag("jamd"),
+            new Tag("jmad"),
             new Tag("bink")
         };
 

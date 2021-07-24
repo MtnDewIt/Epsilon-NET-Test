@@ -1,4 +1,5 @@
-﻿using TagTool.Tags;
+﻿using System;
+using TagTool.Tags;
 
 namespace TagResourceEditorPlugin
 {
@@ -6,5 +7,6 @@ namespace TagResourceEditorPlugin
     {
         public string DisplayName { get; set; }
         public TagResourceReference Resource { get; set; }
+        public Type DefinitionType { get; set; }
     }
 }
