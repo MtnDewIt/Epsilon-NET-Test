@@ -112,6 +112,16 @@
     </Style>
 
     <Style
+        x:Key="InlineFieldTextBoxFixedStyle"
+        BasedOn="{StaticResource FieldTextBoxStyle}"
+        TargetType="{x:Type TextBox}">
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="Width" Value="auto" />
+        <Setter Property="Margin" Value="-1,0,3,0" />
+        <Setter Property="Padding" Value="2,1,2,0" />
+    </Style>
+    
+    <Style
         x:Key="StructListBoxStyle"
         BasedOn="{StaticResource {x:Type ListBox}}"
         TargetType="{x:Type ListBox}">
@@ -485,28 +495,28 @@
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="I:" />
             <TextBox
-                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
                 Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
             <!--  J  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="J:" />
             <TextBox
-                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
                 Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
             <!--  K  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
-                Text="K:" />
+                Text="K: " />
             <TextBox
-                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
                 Text="{Binding K, StringFormat={StaticResource RealFormatString}}" />
             <!--  W  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
-                Text="W:" />
+                Text="W: " />
             <TextBox
-                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
                 Text="{Binding W, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
@@ -584,21 +594,21 @@
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="X:" />
             <TextBox
-                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
                 Text="{Binding X, StringFormat={StaticResource RealFormatString}}" />
             <!--  Y  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
                 Text="Y:" />
             <TextBox
-                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
                 Text="{Binding Y, StringFormat={StaticResource RealFormatString}}" />
             <!--  Z  -->
             <TextBlock
                 Style="{StaticResource InlineFieldLabelStyle}"
-                Text="Z:" />
+                Text="Z: " />
             <TextBox
-                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
                 Text="{Binding Z, StringFormat={StaticResource RealFormatString}}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
@@ -938,31 +948,36 @@
                 Width="24"
                 Height="24"
                 Margin="4,0,0,0"
-                Padding="4,4"
+                Padding="4,0,4,1"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
                 Command="{Binding BrowseCommand}"
-                Content="..."
-                ToolTip="Select a tag" />
+                FontSize="14"
+                FontFamily="Segoe UI"
+                Content="⋯"
+                ToolTip="Select a tag from the Tag Browser." />
             <Button
                 Width="24"
                 Height="24"
                 Margin="4,0,0,0"
-                Padding="4,4"
+                Padding="3,3,4,4"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
                 Command="{Binding NullCommand}"
+                FontFamily="Segoe UI"
+                FontSize="12"
                 Content="Ø"
-                ToolTip="Null the tag reference" />
+                ToolTip="Null this tag reference." />
             <Button
                 Height="24"
                 Margin="4,0,0,0"
-                Padding="4,4"
+                Padding="3,4,4,4"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
                 Command="{Binding GotoCommand}"
                 FontSize="18"
-                ToolTip="Open the tag in a new tab">
+                FontFamily="Segoe UI"
+                ToolTip="Open this tag in a new tab.">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <TextBlock
