@@ -44,7 +44,18 @@ namespace CacheEditor.RTE.Providers
 
             using (var processStream = new ProcessMemoryStream(process))
             {
-                var address = GetTagAddress(processStream, hoInstance.Index);
+                int tagindex = hoInstance.Index;
+                #if DEBUG
+                {
+                    if (cache is GameCacheModPackage modpackage &&
+                        !hoInstance.IsEmpty())
+                    {
+                        tagindex = 0xFFFE - tagindex;
+                    }
+                }
+                #endif
+
+                var address = GetTagAddress(processStream, tagindex);
                 if (address == 0)
                     throw new RteProviderException(this, $"Tag '{hoInstance}' could not be located in the target process.");
 
