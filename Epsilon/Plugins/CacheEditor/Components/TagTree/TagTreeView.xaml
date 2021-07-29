@@ -55,6 +55,8 @@
     <DockPanel>
         <TextBox
             Margin="0,-3,0,0"
+            Padding="1,0,0,0"
+            VerticalContentAlignment="Center"
             Height="25"
             DockPanel.Dock="Top"
             Tag="Search..."

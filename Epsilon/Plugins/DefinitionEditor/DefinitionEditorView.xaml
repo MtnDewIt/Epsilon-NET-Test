@@ -37,6 +37,8 @@
                             VerticalAlignment="Center"
                             Tag="Search..."
                             Margin="-2,1,2,0"
+                            Padding="1,0,0,0"
+                            VerticalContentAlignment="Center"
                             Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.InputBindings>
                                 <KeyBinding
