@@ -27,7 +27,7 @@ namespace CacheEditor.RTE.Providers
 
         public bool ValidForCacheFile(ICacheFile cacheFile)
         {
-            return cacheFile.Cache.Version == CacheVersion.HaloOnline106708;
+            return cacheFile.Cache is GameCacheHaloOnlineBase;
         }
 
 
@@ -47,8 +47,8 @@ namespace CacheEditor.RTE.Providers
                 int tagindex = hoInstance.Index;
                 #if DEBUG
                 {
-                    if (cache is GameCacheModPackage modpackage &&
-                        !hoInstance.IsEmpty())
+                    if (cache is GameCacheModPackage modpackage && 
+                        !modpackage.BaseCacheReference.TagCache.TryGetTag($"{hoInstance.Name}.{hoInstance.Group}", out var baseTag))
                     {
                         tagindex = 0xFFFE - tagindex;
                     }
@@ -59,30 +59,66 @@ namespace CacheEditor.RTE.Providers
                 if (address == 0)
                     throw new RteProviderException(this, $"Tag '{hoInstance}' could not be located in the target process.");
 
-                var runtimeContext = new RuntimeSerializationContext(
-                    cache,
-                    processStream,
-                    address,
-                    hoInstance.Offset,
-                    hoInstance.CalculateHeaderSize(),
-                    hoInstance.TotalSize);
+                //first get a raw copy of the tag in the cache
+                byte[] tagcachedata;
+                using (var stream = cache.OpenCacheRead())
+                using (var outstream = new MemoryStream())
+                using (EndianWriter writer = new EndianWriter(outstream, EndianFormat.LittleEndian))
+                {
+                    //deserialize the cache def then reserialize to a stream
+                    var cachedef = cache.Deserialize(stream, hoInstance);
+                    var dataContext = new DataSerializationContext(writer);
+                    cache.Serializer.Serialize(dataContext, cachedef);
+                    StreamUtil.Align(outstream, 0x10);
+                    tagcachedata = outstream.ToArray();
+                }
 
-               
+                //then serialize the current version of the tag in the editor
+                byte[] editordata;
+                using (MemoryStream stream = new MemoryStream())
+                using (EndianWriter writer = new EndianWriter(stream, EndianFormat.LittleEndian))
+                {
+                    var dataContext = new DataSerializationContext(writer);
+                    cache.Serializer.Serialize(dataContext, definition);
+                    StreamUtil.Align(stream, 0x10);
+                    editordata = stream.ToArray();
+                }
+
+                //length should make to make sure the serializer is consistent
+                if (tagcachedata.Length != editordata.Length)
+                {
+                    throw new RteProviderException(this, $"Error: tag size changed or the serializer failed!");
+                }
+
+                //some very rare tags have a size that doesn't match our serialized version, need to fix root cause
+                if (!(cache is GameCacheModPackage modpackage) && tagcachedata.Length != hoInstance.TotalSize - hoInstance.CalculateHeaderSize())
+                {
+                    throw new RteProviderException(this, $"Sorry can't poke this specific tag yet (only happens with very rare specific tags), go bug a dev");
+                }
+
+                //pause the process during poking to prevent race conditions
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
+                process.Suspend();
 
-                try
+                //write diffed bytes only
+                int patchedbytes = 0;
+                int headersize = (int)hoInstance.CalculateHeaderSize();
+                for (var i = 0; i < editordata.Length; i++)
                 {
-                    //pause the process during poking to prevent race conditions
-                    process.Suspend();
-                    cache.Serializer.Serialize(runtimeContext, definition);
+                    if (editordata[i] != tagcachedata[i])
+                    {
+                        processStream.Seek(address + headersize + i, SeekOrigin.Begin);
+                        processStream.WriteByte(editordata[i]);
+                        patchedbytes++;
+                    }
                 }
-                finally
-                {
-                    process.Resume();
-                }
+                processStream.Flush();
 
-                Console.WriteLine($"Poked tag at 0x{address.ToString("X8")} in {stopWatch.ElapsedMilliseconds / 1000.0f} seconds");
+                process.Resume();
+                stopWatch.Stop();
+
+                Console.WriteLine($"Patched {patchedbytes} bytes in {stopWatch.ElapsedMilliseconds / 1000.0f} seconds");
             }
         }
 
@@ -91,7 +127,7 @@ namespace CacheEditor.RTE.Providers
             // Read the tag count and validate the tag index
             var reader = new BinaryReader(stream);
             reader.BaseStream.Position = 0x22AB008;
-            var maxIndex = reader.ReadInt32();
+            var maxIndex = 0xFFFF;
             if (tagIndex >= maxIndex)
                 return 0;
 
