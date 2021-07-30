@@ -109,6 +109,28 @@
         </Setter>
     </Style>
 
+    <Style BasedOn="{StaticResource AvalonDock_ThemeMetro_ButtonStyle}"
+        x:Key="SmallClose"
+        TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="#E81123" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <!--  DocumentPaneControlStyle  -->
     <Style
         x:Key="AvalonDock_ThemeMetro_DocumentPaneControlStyle"
@@ -150,6 +172,8 @@
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
                                 Focusable="False"
+                                Height="16"
+                                ToolTip="List Open Tabs"
                                 Style="{StaticResource AvalonDock_ThemeMetro_ToolButtonStyle}">
                                 <avalonDockControls:DropDownButton.DropDownContextMenu>
                                     <avalonDockControls:ContextMenuEx ItemsSource="{Binding Model.ChildrenSorted, RelativeSource={RelativeSource TemplatedParent}}">
@@ -157,6 +181,8 @@
                                             <Style
                                                 BasedOn="{StaticResource {x:Type MenuItem}}"
                                                 TargetType="{x:Type avalonDockControls:MenuItemEx}">
+                                                <Setter Property="Background" Value="White"/>
+                                                <Setter Property="Foreground" Value="Black"/>
                                                 <Setter Property="HeaderTemplate" Value="{Binding Path=Root.Manager.DocumentPaneMenuItemHeaderTemplate}" />
                                                 <Setter Property="HeaderTemplateSelector" Value="{Binding Path=Root.Manager.DocumentPaneMenuItemHeaderTemplateSelector}" />
                                                 <Setter Property="IconTemplate" Value="{Binding Path=Root.Manager.IconContentTemplate}" />
@@ -168,6 +194,7 @@
                                 </avalonDockControls:DropDownButton.DropDownContextMenu>
                                 <Image Source="Images/PinDocMenu.png" />
                             </avalonDockControls:DropDownButton>
+                            
                         </Grid>
                         <Border
                             x:Name="ContentPanel"
@@ -191,16 +218,18 @@
                         <Trigger SourceName="MenuDropDownButton" Property="IsMouseOver" Value="True">
                             <Setter TargetName="MenuDropDownButton" Property="Content">
                                 <Setter.Value>
-                                    <Image Source="Images/PinDocMenu_Black.png" />
+                                    <Image Source="Images/PinDocMenu.png" />
                                 </Setter.Value>
                             </Setter>
+                            <Setter TargetName="MenuDropDownButton" Property="Background" Value="#38ffffff" />
                         </Trigger>
                         <Trigger SourceName="MenuDropDownButton" Property="IsChecked" Value="True">
                             <Setter TargetName="MenuDropDownButton" Property="Content">
                                 <Setter.Value>
-                                    <Image Source="Images/PinDocMenu_Black.png" />
+                                    <Image Source="Images/PinDocMenu.png" />
                                 </Setter.Value>
                             </Setter>
+                            <Setter TargetName="MenuDropDownButton" Property="Background" Value="#FF000000" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
@@ -255,10 +284,6 @@
                                         <Setter Property="Foreground" Value="#f1f1f1" />
                                         <Setter Property="Panel.ZIndex" Value="0" />
                                     </Trigger>
-
-
-
-
                                     <DataTrigger
                                         Binding="{Binding IsActive}"
                                         Value="True">
@@ -267,8 +292,6 @@
                                         <Setter Property="Foreground" Value="#f1f1f1" />
                                         <Setter Property="Panel.ZIndex" Value="1" />
                                     </DataTrigger>
-
-
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
                                             <Condition Property="IsMouseOver" Value="true" />
@@ -489,13 +512,12 @@
                                 DropDownContextMenuDataContext="{Binding Path=LayoutItem, RelativeSource={RelativeSource TemplatedParent}}">
                                 <ContentPresenter
                                     x:Name="Header"
-                                    Margin="2,0,0,0"
+                                    Margin="3,0,0,2"
                                     Content="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}"
                                     ContentTemplate="{Binding Model.Root.Manager.AnchorableTitleTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                                     ContentTemplateSelector="{Binding Model.Root.Manager.AnchorableTitleTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
                                     TextElement.Foreground="{DynamicResource AvalonDock_ThemeMetro_BaseColor2}" />
                             </avalonDockControls:DropDownControlArea>
-
 
                             <avalonDockControls:DropDownButton
                                 x:Name="MenuDropDownButton"
@@ -511,17 +533,12 @@
                                     Width="16"
                                     Height="16"
                                     Stretch="None">
-
-
-
                                     <Path
                                         x:Name="PART_ImgMenuPin"
                                         Data="M 0,0 L 3.5,4 L 7,0 Z"
                                         Fill="White"
                                         Stretch="UniformToFill" />
-
                                 </Viewbox>
-
                             </avalonDockControls:DropDownButton>
 
                             <Button
@@ -554,10 +571,9 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding Path=LayoutItem.HideCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                 Focusable="False"
-                                Style="{StaticResource AvalonDock_ThemeMetro_ButtonStyle}"
-                                ToolTip="{x:Static avalonDockProperties:Resources.Anchorable_BtnClose_Hint}"
+                                Style="{StaticResource SmallClose}"
+                                ToolTip="Close"
                                 Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-
                                 <Viewbox
                                     Width="16"
                                     Height="16"
@@ -566,14 +582,12 @@
                                         x:Name="PART_ImgHidePin"
                                         Width="10"
                                         Height="10"
+                                        
                                         Data="F1M8.707,8L11.353,10.646 10.646,11.354 8,8.707 5.353,11.354 4.646,10.646 7.293,8 4.646,5.354 5.353,4.646 8,7.293 10.646,4.646 11.353,5.354z"
                                         Fill="#f1f1f1"
                                         Stretch="UniformToFill" />
                                 </Viewbox>
-
-
                             </Button>
-
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -1416,7 +1430,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding Path=LayoutItem.CloseCommand, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Style="{StaticResource AvalonDock_ThemeMetro_ButtonStyle}"
+                                    Style="{StaticResource SmallClose}"
                                     ToolTip="{x:Static avalonDockProperties:Resources.Document_Close}"
                                     Visibility="Hidden">
                                     <Path

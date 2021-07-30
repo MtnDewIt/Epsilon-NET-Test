@@ -22,7 +22,8 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="1" />
+        <Setter Property="Padding" Value="0,0,2,2" />
+        <Setter Property="Margin" Value="0,1,0,0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
@@ -51,7 +52,7 @@
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FFF1F1F1" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="#11ffffff" />
+                            <Setter TargetName="border" Property="Background" Value="#20ffffff" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
                             <Setter TargetName="border" Property="Background" Value="#FF007ACC" />
@@ -63,13 +64,44 @@
                             <!--<Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static local:ThemeResourceKeys.ButtonBorderDisabled}}" />-->
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FF656565" />
                         </Trigger>
-
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
+    <Style BasedOn="{StaticResource ChromeButtonStyle}"
+        TargetType="{x:Type ButtonBase}"
+        x:Key="CloseButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ButtonBase}">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="true">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Focusable="False"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="#E81123" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
     <Style
         BasedOn="{StaticResource {x:Type Window}}"
         TargetType="{x:Type local:ChromeWindow}">
@@ -146,7 +178,7 @@
                                 <Button
                                     x:Name="closeButton"
                                     Command="{Binding CloseCommand, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                    Style="{StaticResource ChromeButtonStyle}">
+                                    Style="{StaticResource CloseButton}">
                                     <Path
                                         Data="{StaticResource ChromeClose}"
                                         Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
