@@ -47,8 +47,8 @@ namespace CacheEditor.RTE.Providers
                 int tagindex = hoInstance.Index;
                 #if DEBUG
                 {
-                    if (cache is GameCacheModPackage modpackage && 
-                        !modpackage.BaseCacheReference.TagCache.TryGetTag($"{hoInstance.Name}.{hoInstance.Group}", out var baseTag))
+                    if (cache is GameCacheModPackage modpak && 
+                        !modpak.BaseCacheReference.TagCache.TryGetTag($"{hoInstance.Name}.{hoInstance.Group}", out var baseTag))
                     {
                         tagindex = 0xFFFE - tagindex;
                     }
