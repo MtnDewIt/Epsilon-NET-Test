@@ -91,7 +91,7 @@ namespace CacheEditor.RTE.Providers
                 }
 
                 //some very rare tags have a size that doesn't match our serialized version, need to fix root cause
-                if (tagcachedata.Length != hoInstance.TotalSize - hoInstance.CalculateHeaderSize())
+                if (!(cache is GameCacheModPackage modpackage) && tagcachedata.Length != hoInstance.TotalSize - hoInstance.CalculateHeaderSize())
                 {
                     throw new RteProviderException(this, $"Sorry can't poke this specific tag yet (only happens with very rare specific tags), go bug a dev");
                 }
