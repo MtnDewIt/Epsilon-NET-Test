@@ -39,7 +39,8 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="18"
-                Foreground="#d0d0d0"
+                Foreground="White"
+                FontFamily="Bahnschrift Light"
                 Text="{Binding Title}" />
         </Grid>
 
