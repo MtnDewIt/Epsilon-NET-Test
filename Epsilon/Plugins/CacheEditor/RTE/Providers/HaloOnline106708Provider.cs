@@ -30,13 +30,12 @@ namespace CacheEditor.RTE.Providers
             return cacheFile.Cache is GameCacheHaloOnlineBase;
         }
 
-
-        void IRteProvider.PokeTag(IRteTarget target, GameCache cache, CachedTag instance, object definition)
+        void IRteProvider.PokeTag(IRteTarget target, GameCache cache, CachedTag instance, object definition, ref byte[] RuntimeTagData)
         {
-            PokeTag(target, cache, definition, instance as CachedTagHaloOnline);
+            PokeTag(target, cache, definition, instance as CachedTagHaloOnline, ref RuntimeTagData);
         }
 
-        private void PokeTag(IRteTarget target, GameCache cache, object definition, CachedTagHaloOnline hoInstance)
+        private void PokeTag(IRteTarget target, GameCache cache, object definition, CachedTagHaloOnline hoInstance, ref byte[] RuntimeTagData)
         {
             var process = Process.GetProcessById((int)target.Id);
             if (process == null)
@@ -56,6 +55,7 @@ namespace CacheEditor.RTE.Providers
                 #endif
 
                 var address = GetTagAddress(processStream, tagindex);
+                int headersize = (int)hoInstance.CalculateHeaderSize();
                 if (address == 0)
                     throw new RteProviderException(this, $"Tag '{hoInstance}' could not be located in the target process.");
 
@@ -96,23 +96,45 @@ namespace CacheEditor.RTE.Providers
                     throw new RteProviderException(this, $"Sorry can't poke this specific tag yet (only happens with very rare specific tags), go bug a dev");
                 }
 
+                //Store the process data before the first poke so we know which values are runtime values
+                if(RuntimeTagData.Length == 0)
+                {
+                    RuntimeTagData = new byte[tagcachedata.Length];
+                    processStream.Seek(address + headersize, SeekOrigin.Begin);
+                    processStream.Read(RuntimeTagData, 0, tagcachedata.Length);
+                }
+
+                if(tagcachedata.Length != RuntimeTagData.Length)
+                {
+                    throw new RteProviderException(this, $"Error: Loaded tag has changed size since initial poke! Try closing and reopening the tag.");
+                }
+
                 //pause the process during poking to prevent race conditions
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
                 process.Suspend();
 
+                byte[] CurrentRuntimeTagData = new byte[tagcachedata.Length];
+                processStream.Seek(address + headersize, SeekOrigin.Begin);
+                processStream.Read(CurrentRuntimeTagData, 0, tagcachedata.Length);
+
                 //write diffed bytes only
                 int patchedbytes = 0;
-                int headersize = (int)hoInstance.CalculateHeaderSize();
-                for (var i = 0; i < editordata.Length; i++)
+                for (var i = 0; i < tagcachedata.Length; i++)
                 {
-                    if (editordata[i] != tagcachedata[i])
+                    if(tagcachedata[i] == RuntimeTagData[i])
                     {
-                        processStream.Seek(address + headersize + i, SeekOrigin.Begin);
-                        processStream.WriteByte(editordata[i]);
+                        CurrentRuntimeTagData[i] = editordata[i];
                         patchedbytes++;
                     }
+                    else if (editordata[i] != tagcachedata[i])
+                    {
+                        throw new RteProviderException(this, $"Error: Please do not poke runtime fields!");
+                    }
                 }
+
+                processStream.Seek(address + headersize, SeekOrigin.Begin);
+                processStream.Write(CurrentRuntimeTagData, 0, CurrentRuntimeTagData.Length);
                 processStream.Flush();
 
                 process.Resume();

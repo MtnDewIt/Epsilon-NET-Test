@@ -60,6 +60,7 @@ namespace DefinitionEditor
 
             RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
             RteHasTargets = RteTargetList.Any();
+            RuntimeTagData = new byte[0];
         }
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
@@ -82,6 +83,7 @@ namespace DefinitionEditor
         public TargetListModel RteTargetList { get; }
         public TargetListItem SelectedRteTargetItem { get; set; }
         public bool RteHasTargets { get; set; }
+        public byte[] RuntimeTagData;
 
         public DelegateCommand ExpandAllCommand { get; }
         public DelegateCommand CollapseAllCommand { get; }
@@ -225,7 +227,7 @@ namespace DefinitionEditor
             try
             {
                 var target = SelectedRteTargetItem.Target;
-                target.Provider.PokeTag(target, _cacheFile.Cache, _instance, _definitionData);
+                target.Provider.PokeTag(target, _cacheFile.Cache, _instance, _definitionData, ref RuntimeTagData);
                 _shell.StatusBar.ShowStatusText("Poked Changes");
             }
             catch (Exception ex)
