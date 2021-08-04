@@ -14,8 +14,6 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -336,9 +334,4 @@ if ERRORLEVEL == 0 (
 )
 EXIT %25ERRORLEVEL%25</PostBuildEvent>
   </PropertyGroup>
-  <Target Name="SetupDestinationSubDirectory" AfterTargets="ResolveAssemblyReferences">
-    <ItemGroup>
-      <ReferenceCopyLocalPaths Update="*" DestinationSubDirectory="bin/" />
-    </ItemGroup>
-  </Target>
 </Project>
