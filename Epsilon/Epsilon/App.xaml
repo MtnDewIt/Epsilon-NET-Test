@@ -9,6 +9,7 @@
     xmlns:s="https://github.com/canton7/Stylet">
     <Application.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <s:ApplicationLoader x:Key="AppLoader">
@@ -33,6 +34,7 @@
                 <ResourceDictionary Source="Themes/Controls/AvalonDock/AvalonDock.xaml" />
                 <ResourceDictionary Source="Themes/Controls/LoadingIndicator.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
             <Style TargetType="{x:Type EpsilonControls:TabControlEx}">
                 <Setter Property="ItemsSource" Value="{Binding Items}" />
                 <Setter Property="SelectedItem" Value="{s:RethrowingBinding ActiveItem}" />
@@ -41,7 +43,6 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <!--  The Tab Names Binding with DisplayName  -->
-
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     Text="{Binding DisplayName}" />
@@ -61,7 +62,6 @@
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>
-
                             </StackPanel>
                         </DataTemplate>
                     </Setter.Value>
@@ -108,7 +108,6 @@
             <Style
                 BasedOn="{StaticResource {x:Type Window}}"
                 TargetType="{x:Type Window}">
-
                 <Setter Property="Background" Value="#2d2d30" />
             </Style>
 
@@ -117,7 +116,6 @@
                 BasedOn="{StaticResource {x:Type ContextMenu}}"
                 TargetType="{x:Type ContextMenu}">
                 <Setter Property="ItemContainerStyle" Value="{StaticResource MenuItemStyle}" />
-
             </Style>
 
         </ResourceDictionary>

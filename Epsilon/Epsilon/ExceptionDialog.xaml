@@ -17,16 +17,19 @@
         <StackPanel Margin="0,4">
             <TextBlock
                 FontSize="18"
+                FontFamily="Bahnschrift Light"
+                Foreground="White"
                 Text="An unhandled exception has occured. See below for details:" />
             <TextBlock
-                Margin="0,4"
-                Foreground="#d0d0d0"
-                Text="Ignoring may leave the application in an invalid state" />
+                Margin="0,0,0,10"
+                Foreground="#ff5555"
+                Text="Ignoring may leave the application in an invalid state." />
         </StackPanel>
 
         <TextBox
             Grid.Row="1"
             Margin="0,4"
+            Padding="4"
             IsReadOnly="True"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             Text="{Binding Exception, Mode=OneWay}"
@@ -62,7 +65,7 @@
                     Height="28"
                     Margin="10,0,0,0"
                     Click="btnExit_Click"
-                    Content="Exit" />
+                    Content="Quit" />
             </StackPanel>
         </Border>
     </Grid>
