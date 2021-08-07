@@ -47,15 +47,18 @@ namespace CacheEditor.RTE.Providers
                 #if DEBUG
                 {
                     if (cache is GameCacheModPackage modpak && 
-                        !modpak.BaseCacheReference.TagCache.TryGetTag($"{hoInstance.Name}.{hoInstance.Group}", out var baseTag))
+                        !modpak.BaseCacheReference.TagCache.TryGetCachedTag(hoInstance.Index, out var baseTag))
                     {
-                        tagindex = 0xFFFE - tagindex;
+                        int paktagcount = 0;
+                        for (var i = 0; i < tagindex; i++)
+                            if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
+                                paktagcount++;
+                        tagindex = 0xFFFE - paktagcount;
                     }
                 }
                 #endif
 
                 var address = GetTagAddress(processStream, tagindex);
-                int headersize = (int)hoInstance.CalculateHeaderSize();
                 if (address == 0)
                     throw new RteProviderException(this, $"Tag '{hoInstance}' could not be located in the target process.");
 
@@ -96,28 +99,74 @@ namespace CacheEditor.RTE.Providers
                     throw new RteProviderException(this, $"Sorry can't poke this specific tag yet (only happens with very rare specific tags), go bug a dev");
                 }
 
-                //Store the process data before the first poke so we know which values are runtime values
-                if(RuntimeTagData.Length == 0)
-                {
-                    RuntimeTagData = new byte[tagcachedata.Length];
-                    processStream.Seek(address + headersize, SeekOrigin.Begin);
-                    processStream.Read(RuntimeTagData, 0, tagcachedata.Length);
-                }
-
-                if(tagcachedata.Length != RuntimeTagData.Length)
-                {
-                    throw new RteProviderException(this, $"Error: Loaded tag has changed size since initial poke! Try closing and reopening the tag.");
-                }
-
                 //pause the process during poking to prevent race conditions
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
                 process.Suspend();
 
-                byte[] CurrentRuntimeTagData = new byte[tagcachedata.Length];
-                processStream.Seek(address + headersize, SeekOrigin.Begin);
-                processStream.Read(CurrentRuntimeTagData, 0, tagcachedata.Length);
+                uint currenttotalsize = 0;
+                uint headersize = 0;
+                List<uint> TagReferenceFixups = new List<uint>();
+                using (EndianReader reader = new EndianReader(processStream))
+                {
+                    CachedTagHaloOnline runtimetag = new CachedTagHaloOnline();
+                    processStream.Seek(address + 4, SeekOrigin.Begin);
+                    ReadHeaderValues(reader, ref currenttotalsize, ref headersize, ref TagReferenceFixups);
+                }
 
+                byte[] CurrentRuntimeTagData = new byte[currenttotalsize - headersize];
+                processStream.Seek(address + headersize, SeekOrigin.Begin);
+                processStream.Read(CurrentRuntimeTagData, 0, (int)(currenttotalsize - headersize));
+
+                if (currenttotalsize - headersize != tagcachedata.Length)
+                {
+                    process.Resume();
+                    throw new RteProviderException(this, $"Error: Loaded tag size did not match cache tag size. Is this tag overwritten in a modpak?");
+                }
+
+                //Store the process data before the first poke so we know which values are runtime values
+                if (RuntimeTagData.Length == 0)
+                {
+                    RuntimeTagData = CurrentRuntimeTagData.DeepClone();
+                }
+
+                if (tagcachedata.Length != RuntimeTagData.Length)
+                {
+                    process.Resume();
+                    throw new RteProviderException(this, $"Error: Loaded tag has changed size since initial poke! Try closing and reopening the tag.");
+                }
+
+                //fixup modpak tagrefs
+                #if DEBUG
+                using (MemoryStream editorstream = new MemoryStream(editordata))
+                using (MemoryStream cachestream = new MemoryStream(tagcachedata))
+                using (EndianReader cachereader = new EndianReader(cachestream))
+                using (EndianReader reader = new EndianReader(editorstream))
+                using (EndianWriter writer = new EndianWriter(editorstream))
+                {
+                    foreach (uint tagreffixup in TagReferenceFixups)
+                    {
+                        reader.BaseStream.Position = tagreffixup - headersize;
+                        int editortagref = reader.ReadInt32();
+                        cachereader.BaseStream.Position = tagreffixup - headersize;
+                        int cachetagref = cachereader.ReadInt32();
+
+                        if (editortagref != cachetagref &&
+                            cache is GameCacheModPackage modpak &&
+                        !modpak.BaseCacheReference.TagCache.TryGetCachedTag(editortagref, out var baseTag))
+                        {
+                            int paktagcount = 0;
+                            for (var i = 0; i < editortagref; i++)
+                                if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
+                                    paktagcount++;
+                            editortagref = 0xFFFE - paktagcount;
+
+                            writer.BaseStream.Position = tagreffixup - headersize;
+                            writer.Write(editortagref);
+                        }
+                    }
+                }
+                #endif
                 //write diffed bytes only
                 int patchedbytes = 0;
                 for (var i = 0; i < tagcachedata.Length; i++)
@@ -126,10 +175,11 @@ namespace CacheEditor.RTE.Providers
                     {
                         CurrentRuntimeTagData[i] = editordata[i];
                         patchedbytes++;
-                    }
-                    else if (editordata[i] != tagcachedata[i])
+                    }                
+                    else if (tagcachedata[i] != editordata[i])
                     {
-                        throw new RteProviderException(this, $"Error: Please do not poke runtime fields!");
+                        CurrentRuntimeTagData[i] = editordata[i];
+                        patchedbytes++;
                     }
                 }
 
@@ -142,6 +192,29 @@ namespace CacheEditor.RTE.Providers
 
                 Console.WriteLine($"Patched {patchedbytes} bytes in {stopWatch.ElapsedMilliseconds / 1000.0f} seconds");
             }
+        }
+
+        private void ReadHeaderValues(EndianReader reader, ref uint currenttotalsize, ref uint headersize, ref List<uint> TagReferenceFixups)
+        {
+            currenttotalsize = reader.ReadUInt32();
+            var numDependencies = reader.ReadInt16();              // 0x08 int16  dependencies count
+            var numDataFixups = reader.ReadInt16();                // 0x0A int16  data fixup count
+            var numResourceFixups = reader.ReadInt16();            // 0x0C int16  resource fixup count
+            var numTagReferenceFixups = reader.ReadInt16();        // 0x0E int16  tag reference fixup count(was padding)
+
+            reader.BaseStream.Position += 20; //skip to dependencies section
+            reader.BaseStream.Position += 4 * numDependencies; //skip dependencies
+            reader.BaseStream.Position += 4 * numDataFixups; //skip datafixups
+            reader.BaseStream.Position += 4 * numResourceFixups; //skip resourcefixups
+            for (var i = 0; i < numTagReferenceFixups; i++)
+                TagReferenceFixups.Add(reader.ReadUInt32() - 0x40000000);
+
+            headersize = CalculateMemoryHeaderSize(0x24, numDependencies, numDataFixups, numResourceFixups, numTagReferenceFixups);
+        }
+        public uint CalculateMemoryHeaderSize(int TagHeaderSize, int numDependencies, int numDataFixups, int numResourceFixups, int numTagReferenceFixups)
+        {
+            var size = (uint)(TagHeaderSize + numDependencies * 4 + numDataFixups * 4 + numResourceFixups * 4 + numTagReferenceFixups * 4);
+            return (uint)((size + 0xF) & ~0xF);  // align to 0x10
         }
 
         private static uint GetTagAddress(ProcessMemoryStream stream, int tagIndex)
@@ -170,6 +243,14 @@ namespace CacheEditor.RTE.Providers
                 return 0;
             reader.BaseStream.Position = tagAddressTableAddress + addressIndex * 4;
             return reader.ReadUInt32();
+        }
+
+        public void DumpData(string filename, byte[] data)
+        {
+            using (var fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+            {
+                fs.Write(data, 0, data.Length);
+            }
         }
     }
 }
