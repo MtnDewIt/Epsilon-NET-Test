@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Editing;
@@ -44,9 +45,18 @@ namespace CacheEditor.RTE.Providers
             using (var processStream = new ProcessMemoryStream(process))
             {
                 int tagindex = hoInstance.Index;
+                bool isModPackage = false;
+                bool isModPackageTag = false;
+                GameCacheModPackage modpak = null;
+                if (cache is GameCacheModPackage)
+                {
+                    modpak = (GameCacheModPackage)cache;
+                    isModPackage = true;
+                }                 
+
                 #if DEBUG
                 {
-                    if (cache is GameCacheModPackage modpak && 
+                    if (isModPackage && 
                         !modpak.BaseCacheReference.TagCache.TryGetCachedTag(hoInstance.Index, out var baseTag))
                     {
                         int paktagcount = 0;
@@ -54,6 +64,7 @@ namespace CacheEditor.RTE.Providers
                             if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
                                 paktagcount++;
                         tagindex = 0xFFFE - paktagcount;
+                        isModPackageTag = true;
                     }
                 }
                 #endif
@@ -94,7 +105,7 @@ namespace CacheEditor.RTE.Providers
                 }
 
                 //some very rare tags have a size that doesn't match our serialized version, need to fix root cause
-                if (!(cache is GameCacheModPackage modpackage) && tagcachedata.Length != hoInstance.TotalSize - hoInstance.CalculateHeaderSize())
+                if (!isModPackage && tagcachedata.Length != hoInstance.TotalSize - hoInstance.CalculateHeaderSize())
                 {
                     throw new RteProviderException(this, $"Sorry can't poke this specific tag yet (only happens with very rare specific tags), go bug a dev");
                 }
@@ -138,35 +149,32 @@ namespace CacheEditor.RTE.Providers
 
                 //fixup modpak tagrefs
                 #if DEBUG
-                using (MemoryStream editorstream = new MemoryStream(editordata))
-                using (MemoryStream cachestream = new MemoryStream(tagcachedata))
-                using (EndianReader cachereader = new EndianReader(cachestream))
-                using (EndianReader reader = new EndianReader(editorstream))
-                using (EndianWriter writer = new EndianWriter(editorstream))
+                if(isModPackage)
                 {
+                    List<int> modpaktagindices = new List<int>();
+                    for (var i = 0; i < modpak.TagCache.Count; i++)
+                        if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
+                            modpaktagindices.Add(i);
+
                     foreach (uint tagreffixup in TagReferenceFixups)
                     {
-                        reader.BaseStream.Position = tagreffixup - headersize;
-                        int editortagref = reader.ReadInt32();
-                        cachereader.BaseStream.Position = tagreffixup - headersize;
-                        int cachetagref = cachereader.ReadInt32();
+                        int editortagref = BitConverter.ToInt32(editordata, (int)(tagreffixup - headersize));
+                        int cachetagref = BitConverter.ToInt32(tagcachedata, (int)(tagreffixup - headersize));
+                        int runtimetagref = BitConverter.ToInt32(RuntimeTagData, (int)(tagreffixup - headersize));
+                        int currentruntimetagref = BitConverter.ToInt32(CurrentRuntimeTagData, (int)(tagreffixup - headersize));
 
-                        if (editortagref != cachetagref &&
-                            cache is GameCacheModPackage modpak &&
-                        !modpak.BaseCacheReference.TagCache.TryGetCachedTag(editortagref, out var baseTag))
+                        if (!modpak.BaseCacheReference.TagCache.TryGetCachedTag(editortagref, out var baseTag))
                         {
-                            int paktagcount = 0;
-                            for (var i = 0; i < editortagref; i++)
-                                if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
-                                    paktagcount++;
+                            int paktagcount = modpaktagindices.Count(x => x < editortagref);
                             editortagref = 0xFFFE - paktagcount;
 
-                            writer.BaseStream.Position = tagreffixup - headersize;
-                            writer.Write(editortagref);
+                            byte[] newvalue = BitConverter.GetBytes(editortagref);
+                            newvalue.CopyTo(editordata, tagreffixup - headersize);
                         }
                     }
-                }
+                }               
                 #endif
+
                 //write diffed bytes only
                 int patchedbytes = 0;
                 for (var i = 0; i < tagcachedata.Length; i++)
