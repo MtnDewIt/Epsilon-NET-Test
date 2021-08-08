@@ -132,7 +132,7 @@ namespace CacheEditor.RTE.Providers
                 if (currenttotalsize - headersize != tagcachedata.Length)
                 {
                     process.Resume();
-                    throw new RteProviderException(this, $"Error: Loaded tag size did not match cache tag size. Is this tag overwritten in a modpak?");
+                    throw new RteProviderException(this, $"Error: Loaded tag size did not match cache tag size. Is this tag overwritten in a modpak? Is your modpak built on the most up to date cache?");
                 }
 
                 //Store the process data before the first poke so we know which values are runtime values
@@ -151,6 +151,7 @@ namespace CacheEditor.RTE.Providers
                 #if DEBUG
                 if(isModPackage)
                 {
+                    //a list of all modpak tags in the modpak that are not basecache tags
                     List<int> modpaktagindices = new List<int>();
                     for (var i = 0; i < modpak.TagCache.Count; i++)
                         if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
@@ -159,32 +160,27 @@ namespace CacheEditor.RTE.Providers
                     foreach (uint tagreffixup in TagReferenceFixups)
                     {
                         int editortagref = BitConverter.ToInt32(editordata, (int)(tagreffixup - headersize));
-                        int cachetagref = BitConverter.ToInt32(tagcachedata, (int)(tagreffixup - headersize));
-                        int runtimetagref = BitConverter.ToInt32(RuntimeTagData, (int)(tagreffixup - headersize));
-                        int currentruntimetagref = BitConverter.ToInt32(CurrentRuntimeTagData, (int)(tagreffixup - headersize));
 
+                        //patching all tagrefs by default because they are runtime fields and we need to be able to reset them to default values
                         if (!modpak.BaseCacheReference.TagCache.TryGetCachedTag(editortagref, out var baseTag))
                         {
+                            //find the index of our desired tag in relation to all modpak tags in the modpak that are not basecache tags
                             int paktagcount = modpaktagindices.Count(x => x < editortagref);
                             editortagref = 0xFFFE - paktagcount;
 
                             byte[] newvalue = BitConverter.GetBytes(editortagref);
-                            newvalue.CopyTo(editordata, tagreffixup - headersize);
+                            newvalue.CopyTo(CurrentRuntimeTagData, tagreffixup - headersize);
                         }
                     }
-                }               
+                }
                 #endif
 
                 //write diffed bytes only
                 int patchedbytes = 0;
                 for (var i = 0; i < tagcachedata.Length; i++)
                 {
+                    //patch anything that isn't a runtime modified field
                     if(tagcachedata[i] == RuntimeTagData[i])
-                    {
-                        CurrentRuntimeTagData[i] = editordata[i];
-                        patchedbytes++;
-                    }                
-                    else if (tagcachedata[i] != editordata[i])
                     {
                         CurrentRuntimeTagData[i] = editordata[i];
                         patchedbytes++;
