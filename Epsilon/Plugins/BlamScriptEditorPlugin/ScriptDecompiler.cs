@@ -92,8 +92,8 @@ namespace BlamScriptEditorPlugin
         {
             string result = "unk_op";
 
-            if (ScriptInfo.Scripts[Cache.Version].ContainsKey(Opcode))
-                result = ScriptInfo.Scripts[Cache.Version][Opcode].Name;
+            if (ScriptInfo.Scripts[(Cache.Version, Cache.Platform)].ContainsKey(Opcode))
+                result = ScriptInfo.Scripts[(Cache.Version, Cache.Platform)][Opcode].Name;
 
             return result;
         }
