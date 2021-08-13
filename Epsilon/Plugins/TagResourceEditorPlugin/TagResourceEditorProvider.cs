@@ -16,13 +16,15 @@ namespace TagResourceEditorPlugin
         private static readonly Tag[] TagsWithResources =
         {
             new Tag("sbsp"),
+            new Tag("sLdT"),
             new Tag("Lbsp"),
             new Tag("bitm"),
             new Tag("mode"),
+            new Tag("pmdf"),
             new Tag("coll"),
             new Tag("snd!"),
             new Tag("jmad"),
-            new Tag("bink")
+            new Tag("bink"),
         };
 
         private readonly Lazy<IShell> _shell;
