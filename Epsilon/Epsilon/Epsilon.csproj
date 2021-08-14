@@ -334,4 +334,9 @@ if ERRORLEVEL == 0 (
 )
 EXIT %25ERRORLEVEL%25</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="RemoveSatelliteAssemblies" AfterTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Remove="@(ReferenceSatellitePaths)" />
+    </ItemGroup>
+  </Target>
 </Project>
