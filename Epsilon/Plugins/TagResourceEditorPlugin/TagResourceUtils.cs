@@ -34,6 +34,17 @@ namespace TagResourceEditorPlugin
                 var typeName = cache.StringTable.GetString(typeDef.Name);
                 return GetTagResourceDefinitionTypeGen3(typeName);
             }
+            else if (cache is GameCacheGen4 gen4Cache)
+            {
+                var resource = gen4Cache.ResourceCacheGen4.GetTagResourceFromReference(resourceReference);
+                var gestalt = gen4Cache.ResourceCacheGen4.ResourceGestalt;
+                if (resource.ResourceTypeIndex < 0 || resource.ResourceTypeIndex >= gestalt.ResourceTypeIdentifiers.Count)
+                    return null;
+
+                var typeDef = gestalt.ResourceTypeIdentifiers[resource.ResourceTypeIndex];
+                var typeName = cache.StringTable.GetString(typeDef.Name);
+                return GetTagResourceDefinitionTypeGen4(typeName);
+            }
             else if(cache is GameCacheHaloOnlineBase)
             {
                 if (resourceReference.HaloOnlinePageableResource == null)
@@ -70,36 +81,30 @@ namespace TagResourceEditorPlugin
             }
         }
 
-        private static Type GetTagResourceDefinitionTypeHaloOnline(TagResourceTypeGen3 type)
+        private static Type GetTagResourceDefinitionTypeGen4(string name)
         {
-            switch (type)
+            switch (name)
             {
-                case TagResourceTypeGen3.Animation:
-                    return typeof(ModelAnimationTagResource);
-
-                case TagResourceTypeGen3.Bink:
-                    return typeof(BinkResource);
-
-                case TagResourceTypeGen3.Bitmap:
-                    return typeof(BitmapTextureInteropResource);
-
-                case TagResourceTypeGen3.BitmapInterleaved:
-                    return typeof(BitmapTextureInterleavedInteropResource);
-
-                case TagResourceTypeGen3.Collision:
-                    return typeof(StructureBspTagResources);
-
-                case TagResourceTypeGen3.Pathfinding:
-                    return typeof(StructureBspCacheFileTagResources);
-
-                case TagResourceTypeGen3.RenderGeometry:
-                    return typeof(RenderGeometryApiResourceDefinition);
-
-                case TagResourceTypeGen3.Sound:
-                    return typeof(SoundResourceDefinition);
-
+                case "collision_model_resource":
+                    return typeof(TagTool.Tags.Resources.Gen4.CollisionModelResource);
+                case "model_animation_tag_resource":
+                    return typeof(TagTool.Tags.Resources.Gen4.ModelAnimationTagResource);
+                case "bink_resource":
+                    return typeof(TagTool.Tags.Resources.Gen4.ModelAnimationTagResource);
+                case "bitmap_texture_interop_resource":
+                    return typeof(TagTool.Tags.Resources.Gen4.BitmapTextureInteropResource);
+                case "bitmap_texture_interleaved_interop_resource":
+                    return typeof(TagTool.Tags.Resources.Gen4.BitmapTextureInterleavedInteropResource);
+                //case "structure_bsp_tag_resources":
+                //    return typeof(TagTool.Tags.Resources.Gen4.StructureBspTagResources);
+                //case "structure_bsp_cache_file_tag_resources":
+                //    return typeof(TagTool.Tags.Resources.Gen4.StructureBspCacheFileTagResources);
+                case "sound_resource_definition":
+                    return typeof(TagTool.Tags.Resources.Gen4.SoundResourceDefinition);
+                case "render_geometry_api_resource_definition":
+                    return typeof(TagTool.Tags.Resources.Gen4.RenderGeometryApiResourceDefinition);
                 default:
-                    throw new TypeLoadException(type.ToString());
+                    return null;
             }
         }
     }
