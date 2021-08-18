@@ -1,6 +1,9 @@
-﻿using EpsilonLib.Shell.TreeModels;
+﻿using EpsilonLib.Commands;
+using EpsilonLib.Shell.TreeModels;
 using Stylet;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 
@@ -72,6 +75,16 @@ namespace CacheEditor.Components.DependencyExplorer
         {
             public CachedTag Tag { get; set; }
             public string DisplayName { get; set; }
+
+            public ICommand CopyTagNameCommand { get; set; }
+
+            public DependencyItem()
+            {
+                CopyTagNameCommand = new DelegateCommand(CopyTagName_Execute);
+            }
+
+            private void CopyTagName_Execute()
+                => Clipboard.SetText(Tag.ToString());
         }
     }
 }

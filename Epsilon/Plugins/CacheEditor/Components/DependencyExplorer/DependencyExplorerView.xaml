@@ -15,6 +15,15 @@
             <EventSetter
                 Event="MouseDoubleClick"
                 Handler="ListBoxItem_MouseDoubleClick" />
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu>
+                        <MenuItem 
+                                Command="{Binding CopyTagNameCommand}"
+                                Header="Copy Tag Name" />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
     <Grid>
