@@ -23,6 +23,7 @@ namespace TagToolShellPlugin
             Name = ToolName;
             PreferredLocation = PaneLocation.Bottom;
             PreferredHeight = 300;
+            IsVisible = false;
 
             editor.CacheFile.Reloaded += (s, e) =>
             {

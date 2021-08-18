@@ -24,6 +24,8 @@ namespace CacheEditor.Components.DependencyExplorer
             DisplayName = "Dependency Explorer";
             PreferredLocation = EpsilonLib.Shell.PaneLocation.Right;
             PreferredWidth = 450;
+            IsVisible = true;
+
             var tagTree = (editor.TagTree as Components.TagTree.TagTreeViewModel);
             tagTree.NodeSelected += TagTree_NodeSelected;
 

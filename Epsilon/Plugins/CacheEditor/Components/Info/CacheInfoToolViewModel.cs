@@ -12,6 +12,7 @@ namespace CacheEditor.Components.Info
             DisplayName = "Info";
             PreferredLocation = PaneLocation.Left;
             PreferredWidth = 400;
+            IsVisible = true;
 
             Info = new CacheInfo(editor.CacheFile);
         }

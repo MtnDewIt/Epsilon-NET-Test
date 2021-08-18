@@ -137,7 +137,6 @@ namespace CacheEditor
                     continue;
 
                 var tool = toolFactory.CreateTool(this);
-                tool.IsVisible = true;
                 Tools.Add(tool);
                 if (tool.IsVisible)
                     ShowTool(tool, false);

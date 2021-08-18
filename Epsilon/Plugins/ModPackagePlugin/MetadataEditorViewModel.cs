@@ -19,6 +19,7 @@ namespace ModPackagePlugin
             PreferredWidth = 420;
             Name = ToolName;
             Metadata = new MetadataModel(package.Metadata);
+            IsVisible = true;
         }
 
         public MetadataModel Metadata { get; }
