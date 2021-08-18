@@ -6,23 +6,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using TagTool.Cache;
 
 namespace CacheEditor
 {
     class TagEditorViewModel : Conductor<TagEditorPluginTabViewModel>.Collection.OneActive, ITagEditorPluginClient
     {
         private ICacheEditingService _cacheEditingService;
+        public CachedTag Tag;
 
         public ICommand CloseCommand { get; set; }
+        public ICommand CopyTagNameCommand { get; set; }
 
         public TagEditorViewModel(ICacheEditingService cacheEditingService, TagEditorContext context)
         {
             _cacheEditingService = cacheEditingService;
-            var instance = context.Instance;
-            DisplayName = $"{Path.GetFileName(instance.Name)}.{instance.Group.Tag}";
+            Tag = context.Instance;
+            DisplayName = $"{Path.GetFileName(Tag.Name)}.{Tag.Group.Tag}";
 
             CloseCommand = new DelegateCommand(Close);
+            CopyTagNameCommand = new DelegateCommand(CopyTagName_Execute);
 
             LoadPlugins(context);
         }
@@ -53,6 +58,11 @@ namespace CacheEditor
         public void Close()
         {
             RequestClose();
+        }
+
+        private void CopyTagName_Execute()
+        {
+            Clipboard.SetText(Tag.ToString());   
         }
 
         protected override void OnClose()

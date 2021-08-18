@@ -72,6 +72,47 @@
             AnchorablesSource="{Binding Tools}"
             DocumentsSource="{Binding Documents}"
             Style="{StaticResource DockingManagerStyle}">
+            <xcad:DockingManager.DocumentContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        Command="{Binding Model.CopyTagNameCommand}"
+                        Header="Copy Tag Name" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding Path=CloseCommand}"
+                        Header="Close"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <MenuItem
+                        Command="{Binding Path=CloseAllButThisCommand}"
+                        Header="Close all But This" />
+                    <MenuItem
+                        Command="{Binding Path=CloseAllCommand}"
+                        Header="Close All" />
+                    <MenuItem
+                        Command="{Binding Path=FloatCommand}"
+                        Header="Float" />
+                    <MenuItem
+                        Command="{Binding Path=DockAsDocumentCommand}"
+                        Header="Dock as Tabbed Document" />
+                    <MenuItem
+                        Command="{Binding Path=NewHorizontalTabGroupCommand}"
+                        Header="New Horizontal Tab Group"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <MenuItem
+                        Command="{Binding Path=NewVerticalTabGroupCommand}"
+                        Header="New Vertical Tab Group"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <MenuItem
+                        Command="{Binding Path=MoveToNextTabGroupCommand}"
+                        Header="Move To Next Tab Group"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <MenuItem
+                        Command="{Binding Path=MoveToPreviousTabGroupCommand}"
+                        Header="Move To Previous Tab Group"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                   
+                </ContextMenu>
+            </xcad:DockingManager.DocumentContextMenu>
 
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel
