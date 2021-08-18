@@ -6,6 +6,7 @@ using EpsilonLib.Shell.TreeModels;
 using Microsoft.Win32;
 using Shared;
 using Stylet;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -58,8 +59,11 @@ namespace CacheEditor
         public IObservableCollection<ICacheEditorTool> Tools { get; } = new BindableCollection<ICacheEditorTool>();
         public ICommand CloseCommand { get; }
         public TagTreeViewModel TagTree { get; }
+        public event EventHandler CurrentTagChanged;
+        public CachedTag CurrentTag => (ActiveItem as TagEditorViewModel)?.Tag;
 
         public object _activeLayoutItem;
+
         public object ActiveLayoutItem
         {
             get => _activeLayoutItem;
@@ -72,6 +76,9 @@ namespace CacheEditor
 
                 if (!(value is ICacheEditorTool))
                     ActivateItem((IScreen)value);
+
+                if(value is TagEditorViewModel)
+                    CurrentTagChanged?.Invoke(this, EventArgs.Empty);
 
                 NotifyOfPropertyChange();
             }

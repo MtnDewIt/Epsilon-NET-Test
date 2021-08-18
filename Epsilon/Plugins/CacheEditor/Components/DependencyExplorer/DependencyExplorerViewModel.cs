@@ -25,6 +25,8 @@ namespace CacheEditor.Components.DependencyExplorer
             PreferredWidth = 450;
             var tagTree = (editor.TagTree as Components.TagTree.TagTreeViewModel);
             tagTree.NodeSelected += TagTree_NodeSelected;
+
+            _editor.CurrentTagChanged += _editor_CurrentTagChanged;
         }
 
         public override bool InitialAutoHidden => true;
@@ -46,9 +48,20 @@ namespace CacheEditor.Components.DependencyExplorer
                 Populate(instance);
         }
 
+        private void _editor_CurrentTagChanged(object sender, System.EventArgs e)
+        {
+            Populate((CachedTagHaloOnline)_editor.CurrentTag);
+        }
+
         private void Populate(CachedTagHaloOnline instance)
         {
             var cache = _editor.CacheFile.Cache;
+
+            Dependencies.Clear();
+            Dependents.Clear();
+
+            if (instance == null)
+                return;
 
             var dependencies = instance.Dependencies
                 .Select(tagIndex => cache.TagCache.GetTag(tagIndex))
@@ -58,11 +71,8 @@ namespace CacheEditor.Components.DependencyExplorer
                 .Cast<CachedTagHaloOnline>()
                 .Where(tag => tag.Dependencies.Contains(instance.Index))
                 .Select(CreateItem);
-
-            Dependencies.Clear();
+      
             Dependencies.AddRange(dependencies);
-
-            Dependents.Clear();
             Dependents.AddRange(dependents);
         }
 

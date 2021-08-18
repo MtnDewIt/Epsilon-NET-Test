@@ -14,5 +14,8 @@ namespace CacheEditor
         void OpenTag(CachedTag tag);
         CachedTag RunBrowseTagDialog();
         void Reload();
+
+        CachedTag CurrentTag { get; }
+        event EventHandler CurrentTagChanged;
     }
 }
