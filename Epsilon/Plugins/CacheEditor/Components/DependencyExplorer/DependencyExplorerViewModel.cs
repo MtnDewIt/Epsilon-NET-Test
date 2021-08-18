@@ -1,4 +1,5 @@
 ﻿using EpsilonLib.Commands;
+using EpsilonLib.Shell;
 using EpsilonLib.Shell.TreeModels;
 using Stylet;
 using System.Linq;
@@ -87,14 +88,13 @@ namespace CacheEditor.Components.DependencyExplorer
             public string DisplayName { get; set; }
 
             public ICommand CopyTagNameCommand { get; set; }
+            public ICommand CopyTagIndexCommand { get; set; }
 
             public DependencyItem()
             {
-                CopyTagNameCommand = new DelegateCommand(CopyTagName_Execute);
+                CopyTagNameCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"{Tag}"));
+                CopyTagIndexCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"0x{Tag.Index:X08}"));
             }
-
-            private void CopyTagName_Execute()
-                => Clipboard.SetText(Tag.ToString());
         }
     }
 }

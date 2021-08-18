@@ -159,6 +159,8 @@
     <Compile Include="Components\TagExplorer\Commands\DeleteTagCommand.cs" />
     <Compile Include="Components\TagExplorer\Commands\ImportTagCommand.cs" />
     <Compile Include="Components\TagExplorer\MenuDefinitions.cs" />
+    <Compile Include="Components\TagTree\Commands\CopyTagNameCommand.cs" />
+    <Compile Include="Components\TagTree\Commands\CopyTagIndexCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ExtractBitmapCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ToggleGroupTagNameViewCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ToggleGroupNameViewCommand.cs" />

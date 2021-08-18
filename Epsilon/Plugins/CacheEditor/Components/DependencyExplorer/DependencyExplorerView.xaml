@@ -19,8 +19,11 @@
                 <Setter.Value>
                     <ContextMenu>
                         <MenuItem 
-                                Command="{Binding CopyTagNameCommand}"
-                                Header="Copy Tag Name" />
+                            Command="{Binding CopyTagNameCommand}"
+                            Header="Copy Tag Name" />
+                        <MenuItem 
+                            Command="{Binding CopyTagIndexCommand}"
+                            Header="Copy Tag Index" />
                     </ContextMenu>
                 </Setter.Value>
             </Setter>

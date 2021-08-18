@@ -1,5 +1,6 @@
 ﻿using EpsilonLib.Commands;
 using EpsilonLib.Logging;
+using EpsilonLib.Shell;
 using Stylet;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace CacheEditor
 
         public ICommand CloseCommand { get; set; }
         public ICommand CopyTagNameCommand { get; set; }
+        public ICommand CopyTagIndexCommand { get; set; }
 
         public TagEditorViewModel(ICacheEditingService cacheEditingService, TagEditorContext context)
         {
@@ -27,7 +29,8 @@ namespace CacheEditor
             DisplayName = $"{Path.GetFileName(Tag.Name)}.{Tag.Group.Tag}";
 
             CloseCommand = new DelegateCommand(Close);
-            CopyTagNameCommand = new DelegateCommand(CopyTagName_Execute);
+            CopyTagNameCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"{Tag}"));
+            CopyTagIndexCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"0x{Tag.Index:X08}"));
 
             LoadPlugins(context);
         }
@@ -58,11 +61,6 @@ namespace CacheEditor
         public void Close()
         {
             RequestClose();
-        }
-
-        private void CopyTagName_Execute()
-        {
-            Clipboard.SetText(Tag.ToString());   
         }
 
         protected override void OnClose()

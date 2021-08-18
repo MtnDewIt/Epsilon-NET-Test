@@ -77,6 +77,9 @@
                     <MenuItem
                         Command="{Binding Model.CopyTagNameCommand}"
                         Header="Copy Tag Name" />
+                    <MenuItem
+                        Command="{Binding Model.CopyTagIndexCommand}"
+                        Header="Copy Tag Index" />
                     <Separator />
                     <MenuItem
                         Command="{Binding Path=CloseCommand}"

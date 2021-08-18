@@ -32,6 +32,8 @@ namespace CacheEditor.Components.TagTree
         ICommandHandler<ToggleFoldersViewCommand>,
         ICommandHandler<ToggleGroupsViewCommand>,
         ICommandHandler<CopyCommand>,
+        ICommandHandler<CopyTagNameCommand>,
+        ICommandHandler<CopyTagIndexCommand>,
         ICommandHandler<ToggleGroupNameViewCommand>,
         ICommandHandler<ToggleGroupTagNameViewCommand>,
         ICommandHandler<ExtractBitmapCommand>
@@ -188,6 +190,28 @@ namespace CacheEditor.Components.TagTree
         void ICommandHandler<CopyCommand>.UpdateCommand(Command command)
         {
             command.IsEnabled = SelectedNode != null;
+        }
+
+        void ICommandHandler<CopyTagNameCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = SelectedNode != null && SelectedNode?.Tag is CachedTag;
+        }
+
+        void ICommandHandler<CopyTagNameCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode is TagTreeNode node && node.Tag is CachedTag tag)
+                    ClipboardEx.SetTextSafe($"{tag}");
+        }
+
+        void ICommandHandler<CopyTagIndexCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode is TagTreeNode node && node.Tag is CachedTag tag)
+                ClipboardEx.SetTextSafe($"0x{tag.Index:X08}");
+        }
+
+        void ICommandHandler<CopyTagIndexCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = SelectedNode != null && SelectedNode?.Tag is CachedTag;
         }
 
         void ICommandHandler<ToggleGroupNameViewCommand>.ExecuteCommand(Command command)
