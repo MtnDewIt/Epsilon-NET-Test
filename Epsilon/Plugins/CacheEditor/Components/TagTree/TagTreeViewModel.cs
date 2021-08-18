@@ -6,7 +6,9 @@ using EpsilonLib.Settings;
 using EpsilonLib.Shell;
 using EpsilonLib.Shell.Commands;
 using EpsilonLib.Shell.TreeModels;
+using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using TagTool.Cache;
@@ -99,13 +101,27 @@ namespace CacheEditor.Components.TagTree
             if (string.IsNullOrEmpty(FilterText))
                 return true;
 
+            var filterText = FilterText.Trim();
+
+            // check for filter match with group group tag name
             string groupTagName = tag.Group.Tag.ToString();
-            string groupName = tag.Group.ToString();
-            // check for filter match with group name/group tag name
-            if (groupName.Contains(FilterText) || groupTagName.Contains(FilterText))
+            if (groupTagName.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) >= 0)
                 return true;
 
-            return tag.ToString().Contains(FilterText);
+            // check for filter match with tag name or group name
+            if (tag.ToString().IndexOf(filterText, StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+
+            if (filterText.StartsWith("0x"))
+            {
+                if (int.TryParse(filterText.Remove(0, 2), NumberStyles.HexNumber, null, out int value))
+                {
+                    if (tag.Index == value || (tag.ID != 0 && tag.ID == value))
+                        return true;
+                }
+            }
+    
+            return false;
         }
 
         private ITagTreeViewMode CreateView(TagTreeViewMode mode)
