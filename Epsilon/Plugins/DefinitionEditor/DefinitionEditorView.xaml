@@ -90,6 +90,12 @@
                         Command="{Binding SaveCommand}"
                         Content="Save"
                         ToolTip="Save the current changes" />
+                    <Button
+                        Margin="4,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding ReloadCommand}"
+                        Content="Reload"
+                        ToolTip="Reload from disk" />
                     <Separator Margin="4,0" />
                     <StackPanel
                         VerticalAlignment="Stretch"

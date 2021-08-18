@@ -17,5 +17,6 @@ namespace CacheEditor
 
         CachedTag CurrentTag { get; }
         event EventHandler CurrentTagChanged;
+        void ReloadCurrentTag();
     }
 }

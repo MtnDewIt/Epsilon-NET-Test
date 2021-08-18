@@ -23,6 +23,7 @@ namespace DefinitionEditor
     public class DefinitionEditorViewModel : TagEditorPluginBase
     {
         private IShell _shell;
+        private ICacheEditor _cacheEditor;
         private ICacheFile _cacheFile;
         private CachedTag _instance;
         private object _definitionData;
@@ -32,6 +33,7 @@ namespace DefinitionEditor
         public DefinitionEditorViewModel(      
             IShell shell,
             IRteService rteService,
+            ICacheEditor cacheEditor,
             ICacheFile cacheFile,
             CachedTag instance,
             object definitionData,
@@ -40,6 +42,7 @@ namespace DefinitionEditor
         {
             _shell = shell;
             _definitionData = definitionData;
+            _cacheEditor = cacheEditor;
             _cacheFile = cacheFile;
             _changeSink = changeSink;
             _changeSink.ValueChanged += Field_ValueChanged;
@@ -55,6 +58,7 @@ namespace DefinitionEditor
             CollapseAllCommand = new DelegateCommand(CollapseAll);
             PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
             SaveCommand = new DelegateCommand(SaveChanges, () => _cacheFile.CanSerializeTags);
+            ReloadCommand = new DelegateCommand(() => _cacheEditor.ReloadCurrentTag());
 
             SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
 
@@ -89,6 +93,7 @@ namespace DefinitionEditor
         public DelegateCommand CollapseAllCommand { get; }
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand PokeCommand { get; }
+        public DelegateCommand ReloadCommand { get; }
 
         public List<BlockOutlineItem> BlockOutline
         {

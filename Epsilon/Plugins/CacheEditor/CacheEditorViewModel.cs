@@ -1,5 +1,6 @@
 ﻿using CacheEditor.Components.TagExplorer.Commands;
 using CacheEditor.Components.TagTree;
+using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
 using EpsilonLib.Shell.TreeModels;
@@ -340,6 +341,18 @@ namespace CacheEditor
                 {
                     _cacheFile.DeleteTag(tag);
                     TagTree.Refresh();
+                }
+            }
+        }
+
+        public void ReloadCurrentTag()
+        {
+            if(ActiveItem is ITagEditorPluginClient tagEditor)
+            {
+                using (var stream = CacheFile.Cache.OpenCacheRead())
+                {
+                    var data = CacheFile.Cache.Deserialize(stream, CurrentTag);
+                    tagEditor.PostMessage(this, new DefinitionDataChangedEvent(data));
                 }
             }
         }

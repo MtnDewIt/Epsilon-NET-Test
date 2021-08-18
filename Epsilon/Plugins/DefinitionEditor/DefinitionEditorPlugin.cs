@@ -56,6 +56,7 @@ namespace DefinitionEditor
             return new DefinitionEditorViewModel(
                 _shell.Value,
                 _rteService,
+                context.CacheEditor,
                 context.CacheEditor.CacheFile,
                 context.Instance,
                 definitionData,
