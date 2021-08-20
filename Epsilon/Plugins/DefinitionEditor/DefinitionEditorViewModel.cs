@@ -272,7 +272,10 @@ namespace DefinitionEditor
         protected override void OnMessage(object sender, object message)
         {
             if (message is DefinitionDataChangedEvent e)
+            {
+                _definitionData = e.NewData;
                 StructField.Populate(null, e.NewData);
+            }
         }
 
         public class SearchResultItem

@@ -16,14 +16,13 @@ namespace BlamScriptEditorPlugin
     {
         private readonly IShell _shell;
         private readonly ICacheFile _cacheFile;
-        private readonly Scenario _definition;
+        private Scenario _definition;
         public string ScriptSourceCode { get; set; }
 
         public ScriptTagEditorViewModel(IShell shell, ICacheFile cacheFile, Scenario definition)
         {
             _shell = shell;
             _cacheFile = cacheFile;
-            _definition = definition;
             Load(cacheFile, definition);
         }
 
@@ -37,6 +36,7 @@ namespace BlamScriptEditorPlugin
 
         private async void Load(ICacheFile cacheFile, Scenario definition)
         {
+            _definition = definition;
             var decompiler = new ScriptDecompiler(cacheFile.Cache, definition);
             try
             {

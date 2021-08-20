@@ -53,8 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Stylet, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stylet.1.3.3\lib\net45\Stylet.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\Stylet.1.3.3\lib\net45\Stylet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

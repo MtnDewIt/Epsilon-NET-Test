@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
+using System.ComponentModel;
 
 namespace RenderMethodEditorPlugin
 {
@@ -28,14 +29,18 @@ namespace RenderMethodEditorPlugin
         private RenderMethodTemplate _renderMethodTemplate;
         private RenderMethod.ShaderProperty _shaderProperty;
 
-        public ObservableCollection<BooleanConstant> BooleanConstants {get;} = new ObservableCollection<BooleanConstant>();
-        public ObservableCollection<Method> ShaderMethods { get; } = new ObservableCollection<Method>();
-
-        public ObservableCollection<GenericShaderParameter> ShaderParameters { get; } = new ObservableCollection<GenericShaderParameter>();
+        public ObservableCollection<BooleanConstant> BooleanConstants { get; private set;  } = new ObservableCollection<BooleanConstant>();
+        public ObservableCollection<Method> ShaderMethods { get; private set; } = new ObservableCollection<Method>();
+        public ObservableCollection<GenericShaderParameter> ShaderParameters { get; private set; } = new ObservableCollection<GenericShaderParameter>();
 
         public RenderMethodEditorViewModel(GameCache cache, RenderMethod renderMethod)
         {
             _cache = cache;
+            Load(cache, renderMethod);
+        }
+
+        private void Load(GameCache cache, RenderMethod renderMethod)
+        {
             _renderMethod = renderMethod;
             _shaderProperty = _renderMethod.ShaderProperties[0];
             var templateName = _shaderProperty.Template.Name;
@@ -83,9 +88,12 @@ namespace RenderMethodEditorPlugin
             for (int i = 0; i < _renderMethod.RenderMethodDefinitionOptionIndices.Count; i++)
             {
                 var optionIndex = _renderMethod.RenderMethodDefinitionOptionIndices[i].OptionIndex;
+
+                var methods = new ObservableCollection<Method>();
                 var methodInfo = methodParser.ParseMethod(i, optionIndex, generator);
                 if (methodInfo != null)
-                    ShaderMethods.Add(methodInfo);
+                    methods.Add(methodInfo);
+                ShaderMethods = methods;
             }
 
             bool useRotation = false;
@@ -94,6 +102,9 @@ namespace RenderMethodEditorPlugin
             var parameters = generator.GetPixelShaderParameters().Parameters;
             parameters.AddRange(generator.GetVertexShaderParameters().Parameters);
             ShaderParameters = ShaderParameterFactory.BuildShaderParameters(cache, parameters, _shaderProperty, _renderMethodTemplate, useRotation);
+
+            this.NotifyOfPropertyChange(nameof(ShaderMethods));
+            this.NotifyOfPropertyChange(nameof(ShaderParameters));
         }
 
         // get boolean values from existing tag data
@@ -118,6 +129,14 @@ namespace RenderMethodEditorPlugin
         public void Test()
         {
             PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
+        }
+
+        protected override void OnMessage(object sender, object message)
+        {
+            if (message is DefinitionDataChangedEvent e)
+            {
+               Load(_cache, (RenderMethod)e.NewData);
+            }
         }
     }
 
