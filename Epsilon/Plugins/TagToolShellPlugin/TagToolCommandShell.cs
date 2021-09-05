@@ -40,7 +40,7 @@ namespace TagToolShellPlugin
             var oldContext = _commandRunner.ContextStack.Context;
             var oldOutHandle = Console.Out;
             Console.SetOut(new OutputWriter(Dispatcher.CurrentDispatcher, Console.Out.Encoding, Console_OnOutputLine));
-            await Task.Run(() => _commandRunner.RunCommand(commandLine, false));
+            await Task.Run(() => _commandRunner.RunCommand(commandLine, false, true));
             Console.SetOut(oldOutHandle);
 
             if (_commandRunner.ContextStack.Context != oldContext)
