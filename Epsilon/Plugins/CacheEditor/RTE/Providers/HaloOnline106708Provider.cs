@@ -36,7 +36,7 @@ namespace CacheEditor.RTE.Providers
             PokeTag(target, cache, definition, instance as CachedTagHaloOnline, ref RuntimeTagData);
         }
 
-        private void PokeTag(IRteTarget target, GameCache cache, object definition, CachedTagHaloOnline hoInstance, ref byte[] RuntimeTagData)
+        private void PokeTag(IRteTarget target, GameCache cache, object definition, CachedTagHaloOnline hoInstance, ref byte[] RuntimeTagDataMap)
         {
             var process = Process.GetProcessById((int)target.Id);
             if (process == null)
@@ -136,12 +136,18 @@ namespace CacheEditor.RTE.Providers
                 }
 
                 //Store the process data before the first poke so we know which values are runtime values
-                if (RuntimeTagData.Length == 0)
+                if (RuntimeTagDataMap.Length == 0)
                 {
-                    RuntimeTagData = CurrentRuntimeTagData.DeepClone();
+                    RuntimeTagDataMap = new byte[CurrentRuntimeTagData.Length];
+                    for(var i = 0; i < CurrentRuntimeTagData.Length; i++)
+                    {
+                        //this will serve as a map of the tag data, with 1 being pokeable fields, and 0 being nonpokeable
+                        if (CurrentRuntimeTagData[i] == tagcachedata[i])
+                            RuntimeTagDataMap[i] = 1;
+                    }
                 }
 
-                if (tagcachedata.Length != RuntimeTagData.Length)
+                if (tagcachedata.Length != RuntimeTagDataMap.Length)
                 {
                     process.Resume();
                     throw new RteProviderException(this, $"Error: Loaded tag has changed size since initial poke! Try closing and reopening the tag.");
@@ -180,7 +186,7 @@ namespace CacheEditor.RTE.Providers
                 for (var i = 0; i < tagcachedata.Length; i++)
                 {
                     //patch anything that isn't a runtime modified field
-                    if(tagcachedata[i] == RuntimeTagData[i])
+                    if(RuntimeTagDataMap[i] == 1)
                     {
                         CurrentRuntimeTagData[i] = editordata[i];
                         patchedbytes++;
