@@ -85,15 +85,14 @@ namespace RenderMethodEditorPlugin
 
             generator = methodParser.BuildShaderGenerator(_renderMethod.RenderMethodDefinitionOptionIndices);
 
+            ShaderMethods = new ObservableCollection<Method>();
             for (int i = 0; i < _renderMethod.RenderMethodDefinitionOptionIndices.Count; i++)
             {
                 var optionIndex = _renderMethod.RenderMethodDefinitionOptionIndices[i].OptionIndex;
 
-                var methods = new ObservableCollection<Method>();
                 var methodInfo = methodParser.ParseMethod(i, optionIndex, generator);
                 if (methodInfo != null)
-                    methods.Add(methodInfo);
-                ShaderMethods = methods;
+                    ShaderMethods.Add(methodInfo);
             }
 
             bool useRotation = false;
