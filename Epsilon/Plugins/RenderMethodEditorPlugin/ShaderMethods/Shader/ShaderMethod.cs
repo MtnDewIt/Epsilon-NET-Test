@@ -37,7 +37,7 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Shader
                 case HaloShaderGenerator.Shader.ShaderMethods.Misc:
                     return ((Misc)optionIndex).ToString();
                 case HaloShaderGenerator.Shader.ShaderMethods.Distortion:
-                    return ((Distortion)optionIndex).ToString();
+                    return ((HaloShaderGenerator.Shared.Distortion)optionIndex).ToString();
             }
             return "";
         }
@@ -217,10 +217,10 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Shader
                     break;
 
                 case HaloShaderGenerator.Shader.ShaderMethods.Distortion:
-                    var dist = (Distortion)optionIndex;
+                    var dist = (HaloShaderGenerator.Shared.Distortion)optionIndex;
                     switch (dist)
                     {
-                        case Distortion.Off:
+                        case HaloShaderGenerator.Shared.Distortion.Off:
                             return "No distortion effect";
                     }
                     break;
@@ -241,9 +241,9 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Shader
             var blend_mode = (Blend_Mode)shaderOptions[7].OptionIndex;
             var parallax = (Parallax)shaderOptions[8].OptionIndex;
             var misc = (Misc)shaderOptions[9].OptionIndex;
-            var distortion = Distortion.Off;
+            var distortion = HaloShaderGenerator.Shared.Distortion.Off;
             if(shaderOptions.Count >= 11)
-                distortion = (Distortion)shaderOptions[10].OptionIndex;
+                distortion = (HaloShaderGenerator.Shared.Distortion)shaderOptions[10].OptionIndex;
              
             return new ShaderGenerator(albedo, bump_mapping, alpha_test, specular_mask, material_model, environment_mapping, self_illumination, blend_mode, parallax, misc, distortion);
         }
