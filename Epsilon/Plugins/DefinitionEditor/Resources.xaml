@@ -1076,6 +1076,46 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  IndexBufferIndex  -->
+    <DataTemplate DataType="{x:Type fields:IndexBufferIndexField}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}"/>
+            <TextBox
+                Style="{StaticResource FieldTextBoxStyle}"
+                Text="{Binding Value}" />
+            <TextBlock
+                Style="{StaticResource FieldTypeLabelStyle}"
+                Text="{Binding FieldTypeName}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!--  PlaneReference  -->
+    <DataTemplate DataType="{x:Type fields:PlaneReferenceField}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <!--  Triangle Index  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Triangle: " />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding TriangleIndex}" />
+            <!--  Cluster Index  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Cluster: " />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding ClusterIndex}" />
+        </StackPanel>
+    </DataTemplate>
+
     <!--  PackedSamplerAddressMode  -->
     <DataTemplate DataType="{x:Type fields:PackedSamplerAddressModeField}">
         <StackPanel Orientation="Horizontal">

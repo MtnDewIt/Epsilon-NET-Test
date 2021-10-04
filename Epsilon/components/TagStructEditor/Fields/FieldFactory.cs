@@ -209,8 +209,11 @@ namespace TagStructEditor.Fields
                 return new InlineStructField(info);
             else if (info.FieldType == typeof(PixelShaderReference))
                 return new InlineStructField(info);
-
-
+            else if (info.FieldType == typeof(IndexBufferIndex))
+                return new IndexBufferIndexField(info);
+            else if (info.FieldType == typeof(PlaneReference))
+                return new PlaneReferenceField(info);
+           
 
             switch (Type.GetTypeCode(info.FieldType))
             {
