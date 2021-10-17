@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using static TagStructEditor.Fields.EnumField;
-using static TagTool.Tags.Definitions.RenderMethod.ShaderProperty.TextureConstant;
+using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.TextureConstant;
 
 namespace TagStructEditor.Fields
 {

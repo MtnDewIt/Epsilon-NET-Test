@@ -9,7 +9,7 @@ using TagTool.Common;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Shaders;
 using TagTool.Tags;
-using static TagTool.Tags.Definitions.RenderMethod.ShaderProperty.TextureConstant;
+using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.TextureConstant;
 using static TagTool.Tags.Definitions.RenderMethodTemplate;
 
 namespace TagStructEditor.Fields
