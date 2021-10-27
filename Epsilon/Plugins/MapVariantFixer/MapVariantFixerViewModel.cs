@@ -188,8 +188,8 @@ namespace MapVariantFixer
 
         private void Fix061Endianess(Stream stream)
         {
-            var deserializer = new TagDeserializer(CacheVersion.HaloOnline106708, CachePlatform.Original);
-            var serializer = new TagSerializer(CacheVersion.HaloOnline106708, CachePlatform.Original);
+            var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+            var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
 
             var reader = new EndianReader(stream, EndianFormat.BigEndian);
             var writer = new EndianWriter(stream, EndianFormat.LittleEndian);
