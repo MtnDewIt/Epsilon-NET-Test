@@ -146,9 +146,9 @@ namespace TagStructEditor.Fields
             else if (info.FieldType == typeof(TagBlockIndex))
                 return new TagBlockIndexField(info);
             else if (info.FieldType == typeof(PackedSamplerAddressMode))
-                return new PackedSamplerAddressModeField(info);
+                return new PackedSamplerAddressModeField(info, _cache.Version, _cache.Platform);
             else if (info.FieldType == typeof(PackedSamplerFilterMode))
-                return new PackedSamplerFilterModeField(info);
+                return new PackedSamplerFilterModeField(info, _cache.Version, _cache.Platform);
             else if (info.FieldType == typeof(Bsp3dNode))
                 return new Bsp3dNodeField(info);
             else if (info.FieldType == typeof(TagFunction))
@@ -158,9 +158,9 @@ namespace TagStructEditor.Fields
             else if (typeof(IBounds).IsAssignableFrom(info.FieldType))
                 return new BoundsField(this, info);
             else if (info.FieldType.IsEnum && !info.FieldType.GetCustomAttributes(typeof(FlagsAttribute)).Any())
-                return new EnumField(info);
+                return new EnumField(info, TagEnum.GetInfo(info.FieldType, _cache.Version, _cache.Platform));
             else if (info.FieldType.IsEnum)
-                return new FlagsField(info);
+                return new FlagsField(info, _cache.Version, _cache.Platform);
             else if (info.FieldType == typeof(CachedTag))
                 return new CachedTagField(info, _tagList, _config.OpenTag, _config.BrowseTag);
             else if (info.FieldType == typeof(RealMatrix4x3))
@@ -213,6 +213,8 @@ namespace TagStructEditor.Fields
                 return new IndexBufferIndexField(info);
             else if (info.FieldType == typeof(PlaneReference))
                 return new PlaneReferenceField(info);
+            else if (typeof(IFlagBits).IsAssignableFrom(info.FieldType))
+                return new FlagBitsField(info, _cache.Version, _cache.Platform);
            
 
             switch (Type.GetTypeCode(info.FieldType))
