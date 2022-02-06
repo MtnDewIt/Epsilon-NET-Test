@@ -1,5 +1,7 @@
 ﻿using CacheEditor;
 using EpsilonLib.Commands;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Shared;
 using SimpleJSON;
 using Stylet;
@@ -20,7 +22,9 @@ namespace ServerJsonEditor
         private IShell _shell;
         private ICacheFile _cacheFile;
         private string _output;
+        private string _serverPath;
 
+        public string ServerFolder { get { return _serverPath; } set { _serverPath = value; } }
         public class MapEntry
         {
             public string DisplayName { get; set; }
@@ -82,19 +86,26 @@ namespace ServerJsonEditor
         public class CharacterOverride : INotifyPropertyChanged
         {
             private string _team;
+            private string _characterSet;
             private string _character;
             public event PropertyChangedEventHandler PropertyChanged;
 
             public string Team
             {
                 get => _team;
-                set { _team = value; NotifyPropertyChanged("Commands"); }
+                set { _team = value; NotifyPropertyChanged("Team"); }
+            }
+
+            public string CharacterSet
+            {
+                get => _characterSet;
+                set { _characterSet = value; NotifyPropertyChanged("CharacterSet"); }
             }
 
             public string Character
             {
                 get => _character;
-                set { _character = value; NotifyPropertyChanged("Commands"); }
+                set { _character = value; NotifyPropertyChanged("Character"); }
             }
 
             private void NotifyPropertyChanged(string propertyName)
@@ -122,7 +133,7 @@ namespace ServerJsonEditor
             new ServerCommand{ Name = "Server.UnlimitedSprint", Alias="Unlimited Sprint", Enabled = false },
             new ServerCommand{ Name = "Server.EmotesEnabled", Alias="Emotes Allowed", Enabled = true },
             new ServerCommand{ Name = "Server.AssassinationEnabled", Alias="Assassinations", Enabled = true },
-            new ServerCommand{ Name = "Server.NumberofTeams", Alias="Multi-Team", Enabled = false },
+            new ServerCommand{ Name = "Server.NumberOfTeams", Alias="Multi-Team", Enabled = false },
             new ServerCommand{ Name = "Server.BottomlessClipEnabled", Alias="Bottomless Clip", Enabled = false },
             new ServerCommand{ Name = "Server.DualWieldEnabled", Alias="Dual Wielding Allowed", Enabled = true },
             new ServerCommand{ Name = "Server.HitMarkersEnabled", Alias="Hit Markers", Enabled = false },
@@ -133,7 +144,6 @@ namespace ServerJsonEditor
             new Dictionary<ModEntry, ObservableCollection<TypeEntry>>();
 
         public string CacheFilePath => _cacheFile.File.FullName;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public DelegateCommand SaveCommand { get; }
 
@@ -142,7 +152,7 @@ namespace ServerJsonEditor
             set
             {
                 _privateLocalMods = value;
-                NotifyPropertyChanged("LocalModList");
+                NotifyOfPropertyChange("LocalModList");
             }
         }
         public ObservableCollection<string> LocalMapList { get; set; }
@@ -152,7 +162,7 @@ namespace ServerJsonEditor
             set
             {
                 _privateLocalGametypes = value;
-                NotifyPropertyChanged("CurrentModList");
+                NotifyOfPropertyChange("CurrentModList");
             }
         }
         public ObservableCollection<ModEntry> CurrentModList
@@ -161,7 +171,7 @@ namespace ServerJsonEditor
             set
             {
                 _CurrentModList = value;
-                NotifyPropertyChanged("CurrentModList");
+                NotifyOfPropertyChange("CurrentModList");
             }
         }
         public ObservableCollection<TypeEntry> CurrentGametypeList
@@ -170,7 +180,7 @@ namespace ServerJsonEditor
             set
             {
                 _CurrentGametypeList = value;
-                NotifyPropertyChanged("CurrentGametypeList");
+                NotifyOfPropertyChange("CurrentGametypeList");
             }
         }
         public ObservableCollection<ServerCommand> CurrentEntryCommands
@@ -179,7 +189,7 @@ namespace ServerJsonEditor
             set
             {
                 _CurrentEntryCommands = value;
-                NotifyPropertyChanged("CurrentEntryCommands");
+                NotifyOfPropertyChange("CurrentEntryCommands");
             }
         }
         public ObservableCollection<MapEntry> CurrentSpecificMaps
@@ -188,7 +198,7 @@ namespace ServerJsonEditor
             set
             {
                 _CurrentSpecificMaps = value;
-                NotifyPropertyChanged("CurrentSpecificMaps");
+                NotifyOfPropertyChange("CurrentSpecificMaps");
             }
         }
 
@@ -198,6 +208,7 @@ namespace ServerJsonEditor
             _shell = shell;
             _cacheFile = cacheFile;
             DisplayName = "Server Voting Editor";
+            ServerFolder = Path.Combine(_cacheFile.File.Directory.Parent.FullName, @"mods\server");
 
             GetServerCollections();
             GetPathCollections();
@@ -264,13 +275,28 @@ namespace ServerJsonEditor
         }
         private void GetServerCollections()
         {
-            var serverDirectory = new DirectoryInfo(Path.Combine(_cacheFile.File.Directory.Parent.FullName, @"mods\server"));
+            var serverDirectory = new DirectoryInfo(ServerFolder);
             if (serverDirectory.Exists)
             {
-                var modtest = ((JSONClass)ParseJsonInitial(serverDirectory + "\\mods.json"))["mods"];
-                modsJsonDictionary = ((JSONClass)modtest).ToDictionary();
-                votingDefaultMapsArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["Maps"].AsArray;
-                votingTypesArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["Types"].AsArray;
+				try
+				{
+                    var modtest = ((JSONClass)ParseJsonInitial(serverDirectory + "\\mods.json"))["mods"];
+                    modsJsonDictionary = ((JSONClass)modtest).ToDictionary();
+                }
+				catch
+				{
+                    MessageBox.Show($"mods.json has a formatting error and could not be parsed.", "Error in mods.json", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+                try
+				{
+                    votingDefaultMapsArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["Maps"].AsArray;
+                    votingTypesArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["Types"].AsArray;
+                }
+                catch
+				{
+                    MessageBox.Show($"voting.json has a formatting error and could not be parsed.", "Error in voting.json", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else
                 MessageBox.Show($"The directory \"{serverDirectory}\" could not be found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -310,7 +336,7 @@ namespace ServerJsonEditor
                     "No Mod Packages Found", MessageBoxButton.OK, MessageBoxImage.Error);
 
             CurrentModList = new ObservableCollection<ModEntry>(modGametypeMapping.Keys.ToList());
-            NotifyPropertyChanged("CurrentModList");
+            NotifyOfPropertyChange("CurrentModList");
             UpdateAvailablePaks(null);
         }
         private ObservableCollection<MapEntry> CreateMapEntryCollection(JSONArray mapNodes)
@@ -331,7 +357,16 @@ namespace ServerJsonEditor
         {
             Dictionary<ModEntry, ObservableCollection<TypeEntry>> modTypeDictionary = new Dictionary<ModEntry, ObservableCollection<TypeEntry>>();
 
-            // create mod collection    
+            // create mod collection   
+
+            ModEntry none = new ModEntry
+            {
+                FileName = "<none>",
+                DisplayName = "<none>",
+                Link = "<none>"
+            };
+
+            modTypeDictionary.Add(none, new ObservableCollection<TypeEntry>());
 
             foreach (KeyValuePair<string, JSONNode> N in modNodes)
             {
@@ -356,6 +391,12 @@ namespace ServerJsonEditor
                     ModEntry mod = null;
                     string modKeyName = (modTypeDictionary.ElementAt(i).Key).FileName;
                     string entryModName = typeElem["modPack"].ToString().Replace("\"", "");
+
+                    if (entryModName == "" && modKeyName == "<none>")
+                    {
+                        entryModName = "<none>";
+                        mod = none;
+                    }
 
                     if (entryModName == modKeyName)
                     {
@@ -386,16 +427,27 @@ namespace ServerJsonEditor
             string[] cmdList = node.ToString().Trim(new char[] { '{', '}', '[', ']' }).Split(',');
             cmdList = cmdList.Select(x => x.Replace("\"", "").Trim()).ToArray();
 
-            var commandList = CommandDefaults;
+            var commandList = new ObservableCollection<ServerCommand>();
+            foreach (ServerCommand command in CommandDefaults)
+                commandList.Add(command.DeepClone());
 
-            if (cmdList.Count() > 0)
+            if (cmdList.Count() > 0 && !string.IsNullOrEmpty(cmdList[0]))
             {
                 foreach (string cmd in cmdList)
                 {
                     string[] pair = cmd.Split(' ');
                     bool enabled = false;
 
-                    if (pair[1] != "0")
+                    if (pair[0] == "Server.NumberOfTeams")
+					{
+                        int.TryParse(pair[1], out int result);
+
+                        if (result > 2)
+                            enabled = true;
+                        else
+                            enabled = false;
+                    }
+                    else if (pair[1] != "0")
                         enabled = true;
 
                     foreach (ServerCommand command in commandList)
@@ -429,11 +481,6 @@ namespace ServerJsonEditor
 
         // Modification Methods
 
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public void UpdateAvailablePaks(string pakFileName)
         {
@@ -461,7 +508,7 @@ namespace ServerJsonEditor
                 //else
                 //    LocalModList.RemoveAt(i);
 
-                NotifyPropertyChanged("LocalModList");
+                NotifyOfPropertyChange("LocalModList");
             }
         }
 
@@ -479,7 +526,7 @@ namespace ServerJsonEditor
             modGametypeMapping.Add(newEntry, new ObservableCollection<TypeEntry>());
             CurrentModList.Add(newEntry);
 
-            NotifyPropertyChanged("CurrentModList");
+            NotifyOfPropertyChange("CurrentModList");
             UpdateAvailablePaks(pakFileName);
         }
         public void RemoveMod(ModEntry modToRemove)
@@ -487,27 +534,35 @@ namespace ServerJsonEditor
             modGametypeMapping.Remove(modToRemove);
             CurrentModList.Remove(modToRemove);
 
-            NotifyPropertyChanged("CurrentModList");
+            NotifyOfPropertyChange("CurrentModList");
             UpdateAvailablePaks(modToRemove.FileName);
         }
 
-        public void AddGametype(string gameVariantName)
+        public void AddGametype(string gameVariantName, ModEntry currentMod)
         {
+            var freshCommands = new ObservableCollection<ServerCommand>();
+            foreach (ServerCommand command in CommandDefaults)
+                freshCommands.Add(command.DeepClone());
+
             TypeEntry newEntry = new TypeEntry()
             {
                 TypeName = gameVariantName,
+                TypeDisplayName = "",
+                ModPackage = currentMod,
                 DuplicateAmount = 1,
-                Commands = new ObservableCollection<ServerCommand> { }
+                Commands = freshCommands,
+                CharacterOverrides = new ObservableCollection<CharacterOverride>(),
+                SpecificMaps = new ObservableCollection<MapEntry>()
             };
 
             //gametypeMapping.Add(newEntry, new ObservableCollection<TypeEntry>());
             CurrentGametypeList.Add(newEntry);
-            NotifyPropertyChanged("CurrentGametypeList");
+            NotifyOfPropertyChange("CurrentGametypeList");
         }
         public void RemoveGametype(TypeEntry typeToRemove)
         {
             CurrentGametypeList.Remove(typeToRemove);
-            NotifyPropertyChanged("CurrentGametypeList");
+            NotifyOfPropertyChange("CurrentGametypeList");
         }
 
         public void AddMap(string mapNameToAdd)
@@ -519,7 +574,7 @@ namespace ServerJsonEditor
             };
 
             CurrentSpecificMaps.Add(newEntry);
-            NotifyPropertyChanged("CurrentSpecificMaps");
+            NotifyOfPropertyChange("CurrentSpecificMaps");
 		}
 
             // Misc
@@ -569,9 +624,194 @@ namespace ServerJsonEditor
             GetPathCollections();
         }
 
-        internal async void Save()
-        {
+        internal void Save()
+		{
+			var modsJson = PrepareModsJson();
+            File.WriteAllText(ServerFolder + "\\mods.json", modsJson);
+            
+            var votingString = PrepareVotingJson();
+            File.WriteAllText(ServerFolder + "\\voting.json", votingString);
 
+            MessageBox.Show($"\"mods.json\" and \"voting.json\" have been saved to \n{ServerFolder}",
+                "Saved Files", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-    }
+
+        private string PrepareModsJson()
+		{
+			var modsTemp = new JSONClass();
+
+			foreach (var mod in modGametypeMapping.Keys)
+			{
+				var urlNode = new JSONClass
+				{
+					{ "package_url", mod.Link }
+				};
+
+				if (mod.FileName != "<none>")
+					modsTemp.Add(mod.FileName, urlNode);
+			}
+
+			modsTemp = new JSONClass
+			{
+				{ "mods", modsTemp }
+			};
+
+			var modString = modsTemp.ToString();
+			modString = JToken.Parse(modString).ToString(Formatting.Indented);
+
+            return modString;
+		}
+        
+        private string PrepareVotingJson()
+		{
+			var voting = new JSONClass();
+
+			JSONArray defaultMapsArray = PrepareDefaultMapsArray();
+			voting.Add("Maps", defaultMapsArray);
+
+			List<TypeEntry> allGametypes = new List<TypeEntry>();
+			foreach (ObservableCollection<TypeEntry> typeCollection in modGametypeMapping.Values)
+			{
+				foreach (TypeEntry typeEntry in typeCollection)
+				{
+					allGametypes.Add(typeEntry);
+				}
+			}
+			JSONArray gametypeArray = PrepareGametypeArray(allGametypes);
+			voting.Add("Types", gametypeArray);
+
+			// Format and write
+
+			var votingString = voting.ToString();
+			votingString = JToken.Parse(votingString).ToString(Formatting.Indented);
+
+			return votingString;
+		}
+
+		private JSONArray PrepareGametypeArray(List<TypeEntry> allGametypes)
+		{
+			var gametypeArray = new JSONArray();
+
+			foreach (TypeEntry type in allGametypes)
+			{
+				JSONClass typeValues = new JSONClass();
+
+				JSONArray commands = PrepareCommands(type);
+				if (commands.Count > 0)
+					typeValues.Add("commands", commands);
+
+				typeValues.Add("typeName", type.TypeName);
+
+				if (!string.IsNullOrEmpty(type.TypeDisplayName))
+					typeValues.Add("typeDisplayName", type.TypeDisplayName);
+
+                if (type.DuplicateAmount > 1)
+				{
+                    typeValues.Add("duplicateAmount", type.DuplicateAmount.ToString());
+                }
+
+				if (type.ModPackage.FileName != "<none>")
+				{
+					typeValues.Add("modPack", type.ModPackage.FileName);
+
+					string modDisplay = type.ModPackage.DisplayName;
+					if (!string.IsNullOrEmpty(modDisplay) && modDisplay != type.ModPackage.FileName)
+						typeValues.Add("modDisplayName", type.ModPackage.DisplayName);
+				}
+
+				JSONClass charOverrides = PrepareCharOverrides(type);
+				if (charOverrides.Count > 0)
+					typeValues.Add("characterOverrides", charOverrides);
+
+				JSONArray specificMaps = PrepareSpecificMaps(type);
+				if (specificMaps.Count > 0)
+					typeValues.Add("SpecificMaps", specificMaps);
+
+				gametypeArray.Add(typeValues);
+			}
+
+			return gametypeArray;
+		}
+
+		private JSONArray PrepareCommands(TypeEntry type)
+		{
+            JSONArray commandArray = new JSONArray();
+
+            foreach (ServerCommand currentCmd in type.Commands)
+			{
+                foreach (ServerCommand defaultCmd in CommandDefaults)
+				{
+                    if (currentCmd.Name == defaultCmd.Name && currentCmd.Enabled != defaultCmd.Enabled)
+					{
+                        string cmdAsString = currentCmd.Name + " ";
+
+                        if (currentCmd.Name == "Server.NumberOfTeams" && currentCmd.Enabled == true)
+                            cmdAsString += "4";
+                        else if (currentCmd.Enabled == true)
+                            cmdAsString += "1";
+                        else if (currentCmd.Enabled == false)
+                            cmdAsString += "0";
+
+                        commandArray.Add(cmdAsString);
+					}
+				}
+			}
+
+			return commandArray;
+		}
+
+		private static JSONArray PrepareSpecificMaps(TypeEntry type)
+		{
+			JSONArray specificMaps = new JSONArray();
+			foreach (var item in type.SpecificMaps)
+			{
+				JSONClass mapClass = new JSONClass();
+				if (!string.IsNullOrEmpty(item.DisplayName) && !string.IsNullOrEmpty(item.MapFileName))
+				{
+					mapClass.Add("displayName", item.DisplayName);
+					mapClass.Add("mapName", item.MapFileName);
+
+					specificMaps.Add(mapClass);
+				}
+			}
+
+			return specificMaps;
+		}
+
+		private static JSONClass PrepareCharOverrides(TypeEntry type)
+		{
+			JSONClass charOverrides = new JSONClass();
+			foreach (var item in type.CharacterOverrides)
+			{
+				JSONArray overrideArray = new JSONArray();
+				if (!string.IsNullOrEmpty(item.CharacterSet) && !string.IsNullOrEmpty(item.Character))
+				{
+					overrideArray.Add(item.CharacterSet);
+					overrideArray.Add(item.Character);
+
+					charOverrides.Add(item.Team, overrideArray);
+				}
+			}
+
+			return charOverrides;
+		}
+
+		private JSONArray PrepareDefaultMapsArray()
+		{
+			var defaultMapsArray = new JSONArray();
+
+			foreach (MapEntry map in VotingDefaultMaps)
+			{
+				var defaultMap = new JSONClass
+				{
+					{ "displayName", map.DisplayName },
+					{ "mapName", map.MapFileName }
+				};
+
+				defaultMapsArray.Add(defaultMap);
+			}
+
+			return defaultMapsArray;
+		}
+	}
 }

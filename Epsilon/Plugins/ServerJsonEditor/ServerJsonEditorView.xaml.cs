@@ -106,10 +106,11 @@ namespace ServerJsonEditor
         private void ClickedAddGametype(object sender, RoutedEventArgs e)
         {
             string gametypeNameToAdd = (string)(TypesCombobox.SelectedItem);
+            ModEntry modSelection = (ModEntry)ModsListBox.SelectedItem;
 
             if (!string.IsNullOrEmpty(gametypeNameToAdd))
 			{
-                ((ServerJsonEditorViewModel)DataContext).AddGametype(gametypeNameToAdd);
+                ((ServerJsonEditorViewModel)DataContext).AddGametype(gametypeNameToAdd, modSelection);
                 TypesCombobox.SelectedIndex = -1;
                 ModsListBox.Items.SortDescriptions.Add(new SortDescription("TypeName", ListSortDirection.Ascending));
             }
@@ -198,6 +199,9 @@ namespace ServerJsonEditor
 		{
             ReplaceTypeEntryOnSwitch();
             ((ServerJsonEditorViewModel)DataContext).Save();
+            TypeDataGrid.Visibility = Visibility.Collapsed;
+            TypesListBox.SelectedItem = -1;
+            ModsListBox.SelectedItem = -1;
         }
 
 		private void ReloadAllClicked(object sender, RoutedEventArgs e)
