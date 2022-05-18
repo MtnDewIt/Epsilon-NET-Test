@@ -32,7 +32,7 @@
                     VerticalAlignment="Stretch">
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBox
+                        <TextBox x:Name="SearchBox"
                             Width="200"
                             VerticalAlignment="Center"
                             Tag="Search..."

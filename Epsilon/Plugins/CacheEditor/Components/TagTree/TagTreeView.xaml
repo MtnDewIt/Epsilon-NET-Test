@@ -53,7 +53,7 @@
         </DrawingImage>
     </UserControl.Resources>
     <DockPanel>
-        <TextBox
+        <TextBox x:Name="SearchBox"
             Margin="0,-3,0,0"
             Padding="1,0,0,0"
             VerticalContentAlignment="Center"
