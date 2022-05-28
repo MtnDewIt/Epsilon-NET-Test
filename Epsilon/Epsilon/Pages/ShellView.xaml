@@ -11,7 +11,7 @@
     Height="720"
     MinWidth="500"
     MinHeight="281">
-    <DockPanel>
+    <DockPanel AllowDrop="true" Drop="Shell_Drop">
         <Grid
             HorizontalAlignment="Stretch"
             DockPanel.Dock="Top">
