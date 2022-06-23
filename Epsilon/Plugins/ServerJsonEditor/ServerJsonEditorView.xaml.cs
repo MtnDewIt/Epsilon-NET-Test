@@ -18,6 +18,7 @@ namespace ServerJsonEditor
         public string modsComboBoxSelection = null;
         public string typesComboBoxSelection = null;
         private ObservableCollection<TypeEntry> currentModGametypes = new ObservableCollection<TypeEntry>();
+        MapEntry copiedMap = null;
 
         public ServerJsonEditorView()
         {
@@ -130,6 +131,7 @@ namespace ServerJsonEditor
         private void ClickedRemoveGametype(object sender, RoutedEventArgs e)
         {
             TypeEntry gametypeToRemove = (TypeEntry)(TypesListBox.SelectedItem);
+            gametypeIndex = -1;
             ((ServerJsonEditorViewModel)DataContext).RemoveGametype(gametypeToRemove);
             TypesListBox.SelectedIndex = -1;
 
@@ -196,7 +198,9 @@ namespace ServerJsonEditor
             if (selectedTypeEntry != null)
 			{
                 DupeSlider.Value = selectedTypeEntry.DuplicateAmount;
-                ((ServerJsonEditorViewModel)DataContext).modGametypeMapping[selectedModEntry][gametypeIndex] = (TypeEntry)TypeDataGrid.DataContext;
+
+                if (gametypeIndex != -1)
+                    ((ServerJsonEditorViewModel)DataContext).modGametypeMapping[selectedModEntry][gametypeIndex] = (TypeEntry)TypeDataGrid.DataContext;
             }
         }
 
