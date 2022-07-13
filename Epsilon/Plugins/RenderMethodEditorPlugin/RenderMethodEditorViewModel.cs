@@ -52,47 +52,107 @@ namespace RenderMethodEditorPlugin
             if (templateName.Contains("ms30"))
                 templateTypeSplitIndex = 2;
 
-            string templateType = templateName.Split('\\')[templateTypeSplitIndex];
+            string templateType = templateName.Split('\\')[templateTypeSplitIndex].Split('_')[0];
 
-            MethodParser methodParser;
+            MethodParser methodParser = null;
             IShaderGenerator generator;
+            RenderMethodDefinition rmdf = null;
 
             using (var stream = _cache.OpenCacheRead())
             {
                 _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
+
+                if (_renderMethod.BaseRenderMethod != null)
+                {
+                    rmdf = cache.Deserialize<RenderMethodDefinition>(stream, _renderMethod.BaseRenderMethod);
+                }
             }
+
+            byte[] options = _renderMethod.Options.ConvertAll(x => (byte)x.OptionIndex).ToArray();
 
             switch (templateType)
             {
-                case "shader_templates":
-                    methodParser = new ShaderMethod();
+                case "beam":
+                    generator = new HaloShaderGenerator.Beam.BeamGenerator(options, true);
                     break;
-                case "particle_templates":
-                    methodParser = new ParticleMethod();
+                case "black":
+                    generator = new HaloShaderGenerator.Black.ShaderBlackGenerator();
                     break;
-                case "halogram_templates":
-                    methodParser = new HalogramMethod();
+                case "contrail":
+                    generator = new HaloShaderGenerator.Contrail.ContrailGenerator(options, true);
                     break;
-                case "decal_templates":
+                case "cortana":
+                    generator = new HaloShaderGenerator.Cortana.CortanaGenerator(options, true);
+                    break;
+                case "custom":
+                    generator = new HaloShaderGenerator.Custom.CustomGenerator(options, true);
+                    break;
+                case "decal":
                     methodParser = new DecalMethod();
+                    generator = new HaloShaderGenerator.Decal.DecalGenerator(options, true);
                     break;
-                case "screen_templates":
+                case "foliage":
+                    generator = new HaloShaderGenerator.Foliage.FoliageGenerator(options, true);
+                    break;
+                case "halogram":
+                    methodParser = new HalogramMethod();
+                    generator = new HaloShaderGenerator.Halogram.HalogramGenerator(options, true);
+                    break;
+                case "light_volume":
+                    generator = new HaloShaderGenerator.LightVolume.LightVolumeGenerator(options, true);
+                    break;
+                case "particle":
+                    methodParser = new ParticleMethod();
+                    generator = new HaloShaderGenerator.Particle.ParticleGenerator(options, true);
+                    break;
+                case "screen":
                     methodParser = new ScreenMethod();
+                    generator = new HaloShaderGenerator.Screen.ScreenGenerator(options, true);
+                    break;
+                case "shader":
+                    methodParser = new ShaderMethod();
+                    generator = new HaloShaderGenerator.Shader.ShaderGenerator(options, true);
+                    break;
+                case "terrain":
+                    generator = new HaloShaderGenerator.Terrain.TerrainGenerator(options, true);
+                    break;
+                case "water":
+                    generator = new HaloShaderGenerator.Water.WaterGenerator(options, true);
+                    break;
+                case "zonly":
+                    generator = new HaloShaderGenerator.ZOnly.ZOnlyGenerator(options, true);
                     break;
                 default:
                     return;
             }
-
-            generator = methodParser.BuildShaderGenerator(_renderMethod.Options);
 
             ShaderMethods = new ObservableCollection<Method>();
             for (int i = 0; i < _renderMethod.Options.Count; i++)
             {
                 var optionIndex = _renderMethod.Options[i].OptionIndex;
 
-                var methodInfo = methodParser.ParseMethod(i, optionIndex, generator);
-                if (methodInfo != null)
-                    ShaderMethods.Add(methodInfo);
+                if (methodParser != null)
+                {
+                    var methodInfo = methodParser.ParseMethod(i, optionIndex, generator);
+                    if (methodInfo != null)
+                        ShaderMethods.Add(methodInfo);
+                }
+                else if (rmdf != null) // pull from rmdf
+                {
+                    if (i >= 0 && i < generator.GetMethodCount() && i < rmdf.Categories.Count)
+                    {
+                        if (optionIndex >= 0 && optionIndex < generator.GetMethodOptionCount(i) && optionIndex < rmdf.Categories[i].ShaderOptions.Count)
+                        {
+                            var categoryName = cache.StringTable.GetString(rmdf.Categories[i].Name);
+                            var optionName = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[optionIndex].Name);
+
+                            var methodInfo = new Method(categoryName, optionName, "Description N/A", i, optionIndex);
+
+                            if (methodInfo != null)
+                                ShaderMethods.Add(methodInfo);
+                        }
+                    }
+                }
             }
 
             bool useRotation = false;
