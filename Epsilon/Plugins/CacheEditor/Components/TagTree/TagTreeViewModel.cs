@@ -58,7 +58,18 @@ namespace CacheEditor.Components.TagTree
 
             _cacheFile = cacheFile;
             _bitmapExtract = bitmapExtract;
+            _cacheFile.TagSerialized += _cacheFile_TagSaved;
             Refresh();
+        }
+
+        private void _cacheFile_TagSaved(object sender, CachedTag e)
+        {
+
+            if(FindTag(e) is TagTreeNode node && node != null)
+            {
+                node.Tag = e;
+                node.UpdateAppearance();
+            }
         }
 
         public TagTreeViewMode ViewMode
@@ -152,6 +163,11 @@ namespace CacheEditor.Components.TagTree
                 tagTreNode.IsExpanded = true;
                 tagTreNode = tagTreNode.Parent;
             }
+        }
+
+        public void UpdateNodeAppearance(ITagTree node)
+        {
+            ((TagTreeNode)node).UpdateAppearance();
         }
 
         #region Command Handlers

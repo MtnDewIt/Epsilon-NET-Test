@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EpsilonLib.Themes;
+using System.Collections.Generic;
 
 namespace EpsilonLib.Shell.TreeModels
 {
@@ -7,6 +8,7 @@ namespace EpsilonLib.Shell.TreeModels
         object Tag { get; }
         bool IsSelected { get; set; }
         bool IsExpanded { get; set; }
+        ColorHint TextColor { get; set; }
 
         IEnumerable<ITreeNode> Children { get; }
     }

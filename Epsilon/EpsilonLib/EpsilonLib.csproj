@@ -79,6 +79,8 @@
     <Compile Include="Core\DisabledPluginAttribute.cs" />
     <Compile Include="Options\OptionPageBase.cs" />
     <Compile Include="Shell\ClipboardEx.cs" />
+    <Compile Include="Themes\ColorHint.cs" />
+    <Compile Include="Themes\ColorHintConverter.cs" />
     <Compile Include="Utils\DispatcherEx.cs" />
     <Compile Include="Core\ExplicitViewAttribute.cs" />
     <Compile Include="Shell\TreeModels\ITreeEventSink.cs" />

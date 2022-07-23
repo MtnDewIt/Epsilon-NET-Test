@@ -8,6 +8,7 @@ namespace CacheEditor
     public interface ICacheFile
     {
         event EventHandler Reloaded;
+        event EventHandler<CachedTag> TagSerialized;
 
         FileInfo File { get; }
         GameCache Cache { get; }

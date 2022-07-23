@@ -33,6 +33,7 @@
                 <ResourceDictionary Source="Themes/Controls/WindowChrome.xaml" />
                 <ResourceDictionary Source="Themes/Controls/AvalonDock/AvalonDock.xaml" />
                 <ResourceDictionary Source="Themes/Controls/LoadingIndicator.xaml" />
+                <ResourceDictionary Source="Themes/ColorHints.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <Style TargetType="{x:Type EpsilonControls:TabControlEx}">

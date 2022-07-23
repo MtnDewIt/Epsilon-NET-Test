@@ -1,5 +1,7 @@
-﻿using System;
+﻿using EpsilonLib.Themes;
+using System;
 using TagTool.Cache;
+using TagTool.Cache.HaloOnline;
 
 namespace CacheEditor.Components.TagTree
 {
@@ -11,12 +13,27 @@ namespace CacheEditor.Components.TagTree
         {
             Tag = tag;
             _textDelegate = textDelegate;
-            UpdateName();
+
+            UpdateAppearance();
         }
 
         public void UpdateName()
         {
             Text = _textDelegate();
+        }
+
+        public override void UpdateAppearance()
+        {
+            UpdateName();
+            TextColor = DetermineTextColor();
+        }
+
+        private ColorHint DetermineTextColor()
+        {
+            if (Tag is CachedTagHaloOnline hoTag)
+                if (hoTag.IsEmpty())
+                    return ColorHint.Muted;
+            return ColorHint.Default;
         }
     }
 }

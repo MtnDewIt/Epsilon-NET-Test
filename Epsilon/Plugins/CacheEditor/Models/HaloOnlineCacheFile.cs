@@ -60,7 +60,7 @@ namespace CacheEditor
             }
         }
 
-        public async override Task SerializeTagAsync(CachedTag instance, object definition)
+        public async override Task DoSerializeTagAsync(CachedTag instance, object definition)
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {

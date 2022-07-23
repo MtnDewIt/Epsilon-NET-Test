@@ -8,6 +8,7 @@ namespace CacheEditor
     public class CacheFileBase : ICacheFile
     {
         public event EventHandler Reloaded;
+        public event EventHandler<CachedTag> TagSerialized;
 
         public CacheFileBase(FileInfo file, GameCache cache)
         {
@@ -36,6 +37,12 @@ namespace CacheEditor
         public virtual void ExtractTag(CachedTag tag, string filePath) => throw new NotSupportedException();
         public virtual void RenameTag(CachedTag tag, string newName) => throw new NotSupportedException();
         public virtual void DuplicateTag(CachedTag tag, string newName) => throw new NotSupportedException();
-        public virtual Task SerializeTagAsync(CachedTag instance, object definition) => throw new NotSupportedException();
+        public virtual async Task SerializeTagAsync(CachedTag instance, object definition)
+        {
+            await DoSerializeTagAsync(instance, definition);
+            TagSerialized?.Invoke(this, instance);
+        }
+
+        public virtual Task DoSerializeTagAsync(CachedTag instance, object definition) => throw new NotSupportedException();
     }
 }

@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:EpsilonBehaviors="clr-namespace:EpsilonLib.Behaviors;assembly=EpsilonLib"
     xmlns:EpsilonTreeModels="clr-namespace:EpsilonLib.Shell.TreeModels;assembly=EpsilonLib"
+    xmlns:ThemeCore="clr-namespace:EpsilonLib.Themes;assembly=EpsilonLib"
     xmlns:local="clr-namespace:CacheEditor.Components.TagTree">
     <UserControl.Resources>
         <DrawingImage x:Key="FolderOpened">
@@ -125,7 +126,7 @@
                 <Style
                     BasedOn="{StaticResource {x:Type TreeViewItem}}"
                     TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="TextElement.Foreground" Value="#d0d0d0" />
+                    <Setter Property="TextElement.Foreground" Value="{Binding TextColor, Converter={ThemeCore:ColorHintConverter}, FallbackValue=#d0d0d0}" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                     <EventSetter
