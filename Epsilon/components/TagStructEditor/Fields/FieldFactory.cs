@@ -187,6 +187,8 @@ namespace TagStructEditor.Fields
                 return new StringIdField(_cache.StringTable, info);
             else if (info.FieldType == typeof(RealArgbColor))
                 return new RealArgbColorField(info);
+            else if (info.FieldType == typeof(RealRgbaColor))
+                return new RealRgbaColorField(info);
             else if (info.FieldType == typeof(RealRgbColor))
                 return new RealRgbColorField(info);
             else if (info.FieldType == typeof(DatumHandle))

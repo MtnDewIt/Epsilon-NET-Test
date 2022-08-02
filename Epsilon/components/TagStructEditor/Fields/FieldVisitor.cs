@@ -15,6 +15,7 @@
         void Visit(RealRectangle3dField field);
         void Visit(RealRgbColorField field);
         void Visit(RealArgbColorField field);
+        void Visit(RealRgbaColorField field);
         void Visit(StringIdField field);
         void Visit(RealVector2dField field);
         void Visit(RealEulerAngles2dField field);
@@ -55,6 +56,7 @@
         public virtual void Visit(RealRectangle3dField field) { }
         public virtual void Visit(RealRgbColorField field) { }
         public virtual void Visit(RealArgbColorField field) { }
+        public virtual void Visit(RealRgbaColorField field) { }
         public virtual void Visit(StringIdField field) { }
         public virtual void Visit(RealVector2dField field) { }
         public virtual void Visit(RealEulerAngles2dField field) { }

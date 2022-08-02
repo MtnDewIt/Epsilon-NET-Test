@@ -128,6 +128,11 @@ namespace TagStructEditor.Helpers
                 ProcessValueField(field);
             }
 
+            public override void Visit(RealRgbaColorField field)
+            {
+                ProcessValueField(field);
+            }
+
             public override void Visit(RealVector2dField field)
             {
                 ProcessValueField(field);

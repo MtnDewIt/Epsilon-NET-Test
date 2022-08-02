@@ -332,6 +332,47 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  RealRgbaColor  -->
+    <DataTemplate DataType="{x:Type fields:RealRgbaColorField}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <!--  Red  -->
+            <TextBlock
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="R:" />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Red, StringFormat={StaticResource RealFormatString}}" />
+            <!--  Green  -->
+            <TextBlock
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="G:" />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Green, StringFormat={StaticResource RealFormatString}}" />
+            <!--  Blue  -->
+            <TextBlock
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="B:" />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Blue, StringFormat={StaticResource RealFormatString}}" />
+            <!--  Alpha  -->
+            <TextBlock
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="A:" />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Alpha, StringFormat={StaticResource RealFormatString}}" />
+
+            <TextBlock
+                Style="{StaticResource FieldTypeLabelStyle}"
+                Text="{Binding FieldTypeName}" />
+        </StackPanel>
+    </DataTemplate>
+
     <!--  RealRgbColor  -->
     <DataTemplate DataType="{x:Type fields:RealRgbColorField}">
         <StackPanel Orientation="Horizontal">
