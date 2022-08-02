@@ -1151,6 +1151,161 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  EmitterGpuInnardsYField  -->
+    <DataTemplate DataType="{x:Type fields:EmitterGpuInnardsYField}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock
+                Margin="0, 2"
+                Style="{StaticResource FieldLabelStyle}"
+                HorizontalAlignment="Left"
+                Text="[Innards Y]" />
+            <!--  FunctionIndexRed  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Function Index Red: " />
+                <TextBox
+                    Margin="0,2"
+                    Style="{StaticResource FieldTextBoxStyle}"
+                    Text="{Binding FunctionIndexRed}" />
+            </StackPanel>
+            <!--  InputIndexRed  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Input Index Red: " />
+                <ComboBox
+                    Margin="0,2"
+                    Width="220"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Source={local:EnumBindingSource {x:Static fields:EmitterGpuInnardsYField.ParticleStatesEnum}}}"
+                    SelectedValue="{Binding InputIndexRed}" />
+            </StackPanel>
+            <!--  IsConstant  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Is Constant: " />
+                <TextBox
+                    Margin="0,2"
+                    Style="{StaticResource FieldTextBoxStyle}"
+                    Text="{Binding IsConstant}" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <!--  EmitterGpuInnardsZField  -->
+    <DataTemplate DataType="{x:Type fields:EmitterGpuInnardsZField}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                HorizontalAlignment="Left"
+                Text="[Innards Z]" />
+            <!--  ModifierIndex  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Modifier Index: " />
+                <ComboBox
+                    Margin="0,2"
+                    Width="220"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Source={local:EnumBindingSource {x:Static fields:EmitterGpuInnardsZField.OutputModifierValueEnum}}}"
+                    SelectedValue="{Binding ModifierIndex}" />
+            </StackPanel>
+            <!--  InputIndexModifier  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Input Index Modifier: " />
+                <ComboBox
+                    Margin="0,2"
+                    Width="220"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Source={local:EnumBindingSource {x:Static fields:EmitterGpuInnardsZField.ParticleStatesEnum}}}"
+                    SelectedValue="{Binding InputIndexModifier}" />
+            </StackPanel>
+            <!--  FunctionIndexGreen  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Function Index Green: " />
+                <TextBox
+                    Margin="0,2"
+                    Style="{StaticResource FieldTextBoxStyle}"
+                    Text="{Binding FunctionIndexGreen}" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <!--  EmitterGpuInnardsWField  -->
+    <DataTemplate DataType="{x:Type fields:EmitterGpuInnardsWField}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                HorizontalAlignment="Left"
+                Text="[Innards W]" />
+            <!--  ColorIndexLo  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Color Index Lo: " />
+                <TextBox
+                    Margin="0,2"
+                    Style="{StaticResource FieldTextBoxStyle}"
+                    Text="{Binding ColorIndexLo}" />
+            </StackPanel>
+            <!--  ColorIndexHi  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Color Index Hi: " />
+                <TextBox
+                    Margin="0,2"
+                    Style="{StaticResource FieldTextBoxStyle}"
+                    Text="{Binding ColorIndexHi}" />
+            </StackPanel>
+            <!--  InputIndexGreen  -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Input Index Green: " />
+                <ComboBox
+                    Margin="0,2"
+                    Width="220"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Source={local:EnumBindingSource {x:Static fields:EmitterGpuInnardsWField.ParticleStatesEnum}}}"
+                    SelectedValue="{Binding InputIndexGreen}" />
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <!--  FunctionTypeRealField  -->
+    <DataTemplate DataType="{x:Type fields:FunctionTypeRealField}">
+        <StackPanel Orientation="Horizontal">
+            <!--  FunctionType  -->
+            <TextBlock
+                    Margin="0,2"
+                    Style="{StaticResource FieldLabelStyle}"
+                    Text="Function Type: " />
+            <ComboBox
+                    Margin="0,2"
+                    Width="220"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding Source={local:EnumBindingSource {x:Static fields:FunctionTypeRealField.FunctionTypeEnum}}}"
+                    SelectedValue="{Binding FunctionType}" />
+        </StackPanel>
+    </DataTemplate>
+
     <!--  IndexBufferIndex  -->
     <DataTemplate DataType="{x:Type fields:IndexBufferIndexField}">
         <StackPanel Orientation="Horizontal">

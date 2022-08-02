@@ -109,7 +109,11 @@
     <Compile Include="Common\PropertyChangedNotifier.cs" />
     <Compile Include="Controls\BlockHeaderDropdown.cs" />
     <Compile Include="Fields\Bsp3dNodeField.cs" />
+    <Compile Include="Fields\EmitterGpuInnardsWField.cs" />
+    <Compile Include="Fields\EmitterGpuInnardsYField.cs" />
+    <Compile Include="Fields\EmitterGpuInnardsZField.cs" />
     <Compile Include="Fields\FlagBitsField.cs" />
+    <Compile Include="Fields\FunctionTypeRealField.cs" />
     <Compile Include="Fields\IndexBufferField.cs" />
     <Compile Include="Fields\PlaneReferenceField.cs" />
     <Compile Include="Fields\RealRgbaColorField.cs" />

@@ -11,6 +11,7 @@ using TagTool.Shaders;
 using TagTool.Tags;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.TextureConstant;
 using static TagTool.Tags.Definitions.RenderMethodTemplate;
+using static TagTool.Tags.Definitions.Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData;
 
 namespace TagStructEditor.Fields
 {
@@ -145,6 +146,14 @@ namespace TagStructEditor.Fields
                 return new TagDataField(info);
             else if (info.FieldType == typeof(TagBlockIndex))
                 return new TagBlockIndexField(info);
+            else if (info.FieldType == typeof(Property.InnardsY))
+                return new EmitterGpuInnardsYField(info);
+            else if (info.FieldType == typeof(Property.InnardsZ))
+                return new EmitterGpuInnardsZField(info);
+            else if (info.FieldType == typeof(Property.InnardsW))
+                return new EmitterGpuInnardsWField(info);
+            else if (info.FieldType == typeof(Function.FunctionTypeReal))
+                return new FunctionTypeRealField(info);
             else if (info.FieldType == typeof(PackedSamplerAddressMode))
                 return new PackedSamplerAddressModeField(info, _cache.Version, _cache.Platform);
             else if (info.FieldType == typeof(PackedSamplerFilterMode))
