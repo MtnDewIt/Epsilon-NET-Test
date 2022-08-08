@@ -1,12 +1,9 @@
-﻿using CacheEditor.Properties;
-using EpsilonLib.Settings;
+﻿using EpsilonLib.Settings;
 using Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 
 namespace CacheEditor

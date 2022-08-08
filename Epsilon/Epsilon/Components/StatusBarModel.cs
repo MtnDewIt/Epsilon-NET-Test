@@ -1,11 +1,7 @@
-﻿using EpsilonLib.Core;
-using EpsilonLib.Shell;
+﻿using EpsilonLib.Shell;
 using EpsilonLib.Utils;
 using Stylet;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace Epsilon.Components
 {

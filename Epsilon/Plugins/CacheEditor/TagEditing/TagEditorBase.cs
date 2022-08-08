@@ -1,6 +1,4 @@
 ﻿using Stylet;
-using System;
-using TagTool.Cache;
 
 namespace CacheEditor.TagEditing
 {

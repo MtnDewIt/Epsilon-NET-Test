@@ -3,12 +3,9 @@ using EpsilonLib.Logging;
 using Host;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Epsilon
 {

@@ -1,14 +1,11 @@
 ﻿using CacheEditor;
 using EpsilonLib.Editors;
-using Microsoft.Win32;
 using Shared;
 using Stylet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TagTool.Cache;
 

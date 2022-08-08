@@ -1,10 +1,6 @@
 ﻿using HaloShaderGenerator.Generator;
 using HaloShaderGenerator.Decal;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static TagTool.Tags.Definitions.RenderMethod;
 
 namespace RenderMethodEditorPlugin.ShaderMethods.Decal

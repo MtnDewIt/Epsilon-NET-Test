@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;

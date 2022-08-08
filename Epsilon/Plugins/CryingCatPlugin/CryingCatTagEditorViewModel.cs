@@ -1,6 +1,5 @@
 ﻿using CacheEditor;
 using CacheEditor.TagEditing;
-using Stylet;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows;

@@ -1,5 +1,4 @@
 ﻿using CacheEditor;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using TagTool.Cache;

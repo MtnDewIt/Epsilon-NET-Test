@@ -1,5 +1,4 @@
 ﻿using Stylet;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace EpsilonLib.Options

@@ -4,7 +4,6 @@ using CacheEditor.RTE.UI;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
 using EpsilonLib.Commands;
-using EpsilonLib.Settings;
 using EpsilonLib.Utils;
 using Shared;
 using Stylet;

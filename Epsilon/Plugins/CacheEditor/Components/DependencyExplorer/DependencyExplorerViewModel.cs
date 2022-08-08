@@ -3,7 +3,6 @@ using EpsilonLib.Shell;
 using EpsilonLib.Shell.TreeModels;
 using Stylet;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;

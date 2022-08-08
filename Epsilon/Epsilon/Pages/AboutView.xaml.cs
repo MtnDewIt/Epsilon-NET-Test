@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
-using System.Windows;
 using System.Windows.Navigation;
 using WpfApp20;
 

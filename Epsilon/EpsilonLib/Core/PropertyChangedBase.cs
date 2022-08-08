@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-namespace EpsilonLib.Core
+﻿namespace EpsilonLib.Core
 {
     /*public class PropertyChangedBase : INotifyPropertyChanged
     {

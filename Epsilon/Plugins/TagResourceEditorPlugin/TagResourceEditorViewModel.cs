@@ -6,11 +6,9 @@ using Shared;
 using Stylet;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using TagStructEditor.Fields;
-using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagResourceEditorPlugin

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Cache.Gen3;
-using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Resources;
 using TagTool.Tags;
 using TagTool.Tags.Resources;

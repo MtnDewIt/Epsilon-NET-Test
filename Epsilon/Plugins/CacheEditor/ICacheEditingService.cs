@@ -1,8 +1,5 @@
 ﻿using EpsilonLib.Settings;
-using Shared;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using TagTool.Cache;
 
 namespace CacheEditor
 {

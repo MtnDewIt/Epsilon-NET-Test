@@ -1,5 +1,4 @@
-﻿using CacheEditor.Components.TagTree;
-using EpsilonLib.Shell;
+﻿using EpsilonLib.Shell;
 using System.ComponentModel.Composition;
 
 namespace CacheEditor

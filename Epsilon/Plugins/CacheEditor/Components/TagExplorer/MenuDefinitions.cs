@@ -1,7 +1,6 @@
 ﻿using CacheEditor.Components.TagExplorer.Commands;
 using CacheEditor.Components.TagTree.Commands;
 using EpsilonLib.Menus;
-using EpsilonLib.Shell;
 using EpsilonLib.Shell.Commands;
 
 namespace CacheEditor.Components.TagExplorer

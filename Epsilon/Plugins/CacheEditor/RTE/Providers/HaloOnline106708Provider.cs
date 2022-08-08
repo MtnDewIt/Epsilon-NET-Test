@@ -1,7 +1,5 @@
-﻿using EpsilonLib.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
