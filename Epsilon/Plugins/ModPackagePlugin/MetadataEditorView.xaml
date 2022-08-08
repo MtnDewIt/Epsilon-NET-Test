@@ -2,7 +2,6 @@
     x:Class="ModPackagePlugin.MetadataEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ModPackagePlugin"
     Padding="4"
     BorderBrush="#3F3F46"
     BorderThickness="1"

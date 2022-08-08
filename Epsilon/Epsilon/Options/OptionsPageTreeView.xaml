@@ -2,9 +2,7 @@
     x:Class="Epsilon.Options.OptionsPageTreeView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:coreTreeModels="clr-namespace:EpsilonLib.Shell.TreeModels;assembly=EpsilonLib"
-    xmlns:local="clr-namespace:Epsilon.Pages"
-    xmlns:s="https://github.com/canton7/Stylet">
+    xmlns:coreTreeModels="clr-namespace:EpsilonLib.Shell.TreeModels;assembly=EpsilonLib">
     <Grid>
         <TreeView
             coreTreeModels:TreeViewBehavior.Model="{Binding}"

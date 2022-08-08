@@ -2,7 +2,6 @@
     x:Class="CacheEditor.Options.GeneralOptionsPageView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:CacheEditor.Options"
     xmlns:tagtree="clr-namespace:CacheEditor.Components.TagTree">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

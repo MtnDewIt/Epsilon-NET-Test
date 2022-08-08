@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:CacheEditor"
     xmlns:s="https://github.com/canton7/Stylet"
-    xmlns:shared="clr-namespace:Shared;assembly=EpsilonLib"
     xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
     Margin="2">
     <UserControl.Resources>

@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:TagStructEditor="https://github.com/unk-1/tag-struct-editor"
     xmlns:local="clr-namespace:DefinitionEditor"
-    xmlns:shared="clr-namespace:DefinitionEditor"
     Background="Transparent"
     SnapsToDevicePixels="True">
 

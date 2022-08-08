@@ -2,9 +2,7 @@
     x:Class="CacheEditor.TagEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:CacheEditor"
-    xmlns:s="https://github.com/canton7/Stylet"
-    xmlns:shared="clr-namespace:EpsilonLib;assembly=EpsilonLib">
+    xmlns:s="https://github.com/canton7/Stylet">
     <TabControl
         ItemsSource="{Binding Items}"
         SelectedItem="{Binding ActiveItem}"

@@ -2,8 +2,7 @@
     x:Class="TagResourceEditorPlugin.TagResourceEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:TagStructEditor="https://github.com/unk-1/tag-struct-editor"
-    xmlns:local="clr-namespace:TagResourceEditorPlugin">
+    xmlns:TagStructEditor="https://github.com/unk-1/tag-struct-editor">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />

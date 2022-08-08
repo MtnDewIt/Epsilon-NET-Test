@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:WpfApp17">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="ListBorder" Color="#FF3F3F46" />
     <SolidColorBrush x:Key="TreeViewBackground" Color="#252526" />
     <SolidColorBrush x:Key="TreeViewForeground" Color="#F1F1F1" />

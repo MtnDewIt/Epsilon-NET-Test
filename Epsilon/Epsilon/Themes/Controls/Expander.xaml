@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:WpfApp13.Themes.Controls">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <SolidColorBrush x:Key="Expander.Static.Circle.Stroke" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.Static.Circle.Fill" Color="Transparent" />
