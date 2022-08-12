@@ -421,7 +421,7 @@ namespace ServerJsonEditor
                             DuplicateAmount = (dupeAmount == 0) ? 1 : dupeAmount,
                             ModPackage = mod,
                             Commands = GetCommands(typeElem["commands"]),
-                            SpecificMaps = CreateMapEntryCollection(typeElem["SpecificMaps"].AsArray),
+                            SpecificMaps = CreateMapEntryCollection(typeElem["specificMaps"].AsArray),
                             CharacterOverrides = GetCharacterOverrides(typeElem["characterOverrides"] as JSONClass)
                         });
                     }
@@ -737,7 +737,7 @@ namespace ServerJsonEditor
 
 				JSONArray specificMaps = PrepareSpecificMaps(type);
 				if (specificMaps.Count > 0)
-					typeValues.Add("SpecificMaps", specificMaps);
+					typeValues.Add("specificMaps", specificMaps);
 
 				gametypeArray.Add(typeValues);
 			}
