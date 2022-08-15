@@ -249,12 +249,12 @@
                     </StackPanel>
                     
                     <StackPanel x:Name="DupeAmountStack" Grid.Row="3" Margin="0" VerticalAlignment="Bottom" Orientation="Horizontal">
-                        <TextBlock Width="150" Text="Duplicate Amount" Padding="0,5" TextAlignment="Left"/>
+                        <TextBlock Width="150" Text="Random Chance Multiplier" Padding="0,5" TextAlignment="Left"/>
                         <TextBox x:Name="DuplicateAmountTextBox" Text="" HorizontalContentAlignment="Center"
                                  Width="50" Height="25" VerticalContentAlignment="Center"/>
                         <Slider x:Name="DupeSlider" Maximum="15" Width="150" Margin="10,0,0,0" VerticalAlignment="Center"
                                 TickPlacement="BottomRight" IsSnapToTickEnabled="True"
-                                Value="{Binding DuplicateAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Value="{Binding RandomChance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ValueChanged="DupeSlider_ValueChanged"/>
                     </StackPanel>
 

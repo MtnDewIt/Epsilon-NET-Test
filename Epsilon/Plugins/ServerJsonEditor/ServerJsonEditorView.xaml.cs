@@ -199,7 +199,7 @@ namespace ServerJsonEditor
         {
             if (selectedTypeEntry != null)
 			{
-                DupeSlider.Value = selectedTypeEntry.DuplicateAmount;
+                DupeSlider.Value = selectedTypeEntry.RandomChance;
 
                 if (gametypeIndex != -1)
                     ((ServerJsonEditorViewModel)DataContext).modGametypeMapping[selectedModEntry][gametypeIndex] = (TypeEntry)TypeDataGrid.DataContext;

@@ -40,7 +40,7 @@ namespace ServerJsonEditor
         {
             private string _typeName;
             private string _typeDisplayName;
-            private int _duplicateAmount;
+            private int _randomChance;
             private ModEntry _modPackage;
             private ObservableCollection<ServerCommand> _commands;
             private ObservableCollection<CharacterOverride> _characterOverrides;
@@ -48,7 +48,7 @@ namespace ServerJsonEditor
 
             public string TypeName { get => _typeName; set => _typeName = value; }
             public string TypeDisplayName { get => _typeDisplayName; set => _typeDisplayName = value; }
-            public int DuplicateAmount { get => _duplicateAmount; set => _duplicateAmount = value; }
+            public int RandomChance { get => _randomChance; set => _randomChance = value; }
             public ModEntry ModPackage { get => _modPackage; set => _modPackage = value; }
             public ObservableCollection<ServerCommand> Commands { get => _commands; set => _commands = value; }
             public ObservableCollection<CharacterOverride> CharacterOverrides { get => _characterOverrides; set => _characterOverrides = value; }
@@ -393,7 +393,7 @@ namespace ServerJsonEditor
             foreach (JSONNode typeElem in typeNodes)
             {
                 int dupeAmount = -1;
-                int.TryParse(typeElem["duplicateAmount"].Value.ToString(), out dupeAmount);
+                int.TryParse(typeElem["randomChance"].Value.ToString(), out dupeAmount);
 
                 for (int i = 0; i < modTypeDictionary.Count; i++)
                 {
@@ -418,7 +418,7 @@ namespace ServerJsonEditor
                         {
                             TypeName = typeElem["typeName"].ToString().Replace("\"", ""),
                             TypeDisplayName = typeElem["displayName"].ToString().Replace("\"", ""),
-                            DuplicateAmount = (dupeAmount == 0) ? 1 : dupeAmount,
+                            RandomChance = (dupeAmount == 0) ? 1 : dupeAmount,
                             ModPackage = mod,
                             Commands = GetCommands(typeElem["commands"]),
                             SpecificMaps = CreateMapEntryCollection(typeElem["specificMaps"].AsArray),
@@ -561,7 +561,7 @@ namespace ServerJsonEditor
                 TypeName = gameVariantName,
                 TypeDisplayName = "",
                 ModPackage = currentMod,
-                DuplicateAmount = 1,
+                RandomChance = 1,
                 Commands = freshCommands,
                 CharacterOverrides = new ObservableCollection<CharacterOverride>(),
                 SpecificMaps = new ObservableCollection<MapEntry>()
@@ -717,9 +717,9 @@ namespace ServerJsonEditor
 				if (!string.IsNullOrEmpty(type.TypeDisplayName))
 					typeValues.Add("displayName", type.TypeDisplayName);
 
-                if (type.DuplicateAmount > 1)
+                if (type.RandomChance > 1)
 				{
-                    typeValues.Add("duplicateAmount", type.DuplicateAmount.ToString());
+                    typeValues.Add("randomChance", type.RandomChance.ToString());
                 }
 
 				if (type.ModPackage.FileName != "<none>")
