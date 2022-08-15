@@ -964,6 +964,7 @@
                 Padding="6,3,3,3"
                 VerticalAlignment="Center"
                 DisplayMemberPath="TagAscii"
+                ToolTip="{Binding SelectedGroupName}"
                 ItemsSource="{Binding Groups, Mode=OneTime}"
                 SelectedItem="{Binding SelectedGroup}" />
             <ComboBox
@@ -976,6 +977,7 @@
                 IsEnabled="{Binding SelectedGroupValid}"
                 ItemsSource="{Binding SelectedGroup.Instances}"
                 SelectedItem="{Binding SelectedInstance}"
+                ToolTip="{Binding SelectedInstanceName}"
                 VirtualizingPanel.IsVirtualizing="True"
                 VirtualizingPanel.ScrollUnit="Item"
                 VirtualizingPanel.VirtualizationMode="Standard">
