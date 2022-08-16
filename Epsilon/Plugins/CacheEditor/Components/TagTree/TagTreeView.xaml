@@ -97,6 +97,7 @@
                             Source="{StaticResource Document}" />
                         <TextBlock
                             Text="{Binding Text}"
+                            ToolTip="{Binding Text}"
                             Margin="-1,-1,0,2"/>
                     </StackPanel>
                 </DataTemplate>
