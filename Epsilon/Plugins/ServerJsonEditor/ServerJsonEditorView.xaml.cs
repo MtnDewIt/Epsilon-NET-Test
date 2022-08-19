@@ -234,7 +234,7 @@ namespace ServerJsonEditor
                 ((ServerJsonEditorViewModel)DataContext).ReloadAll();
                 TypeDataGrid.Visibility = Visibility.Collapsed;
                 TypesListBox.SelectedItem = -1;
-                ModsListBox.SelectedItem = -1;
+                ModsListBox.SelectedItem = ModsListBox.Items[0];
             }
         }
 
