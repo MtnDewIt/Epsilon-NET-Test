@@ -299,8 +299,8 @@ namespace ServerJsonEditor
 
                 try
 				{
-                    votingDefaultMapsArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["Maps"].AsArray;
-                    votingTypesArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["Types"].AsArray;
+                    votingDefaultMapsArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["maps"].AsArray;
+                    votingTypesArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["types"].AsArray;
                 }
                 catch
 				{
@@ -679,7 +679,7 @@ namespace ServerJsonEditor
 			var voting = new JSONClass();
 
 			JSONArray defaultMapsArray = PrepareDefaultMapsArray();
-			voting.Add("Maps", defaultMapsArray);
+			voting.Add("maps", defaultMapsArray);
 
 			List<TypeEntry> allGametypes = new List<TypeEntry>();
 			foreach (ObservableCollection<TypeEntry> typeCollection in modGametypeMapping.Values)
@@ -690,7 +690,7 @@ namespace ServerJsonEditor
 				}
 			}
 			JSONArray gametypeArray = PrepareGametypeArray(allGametypes);
-			voting.Add("Types", gametypeArray);
+			voting.Add("types", gametypeArray);
 
 			// Format and write
 
