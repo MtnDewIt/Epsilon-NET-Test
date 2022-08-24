@@ -48,16 +48,10 @@ namespace RenderMethodEditorPlugin
 
             MethodParser methodParser = null;
             IShaderGenerator generator;
-            RenderMethodDefinition rmdf = null;
 
             using (var stream = _cache.OpenCacheRead())
             {
                 _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
-
-                if (_renderMethod.BaseRenderMethod != null)
-                {
-                    rmdf = cache.Deserialize<RenderMethodDefinition>(stream, _renderMethod.BaseRenderMethod);
-                }
             }
 
             byte[] options = _renderMethod.Options.ConvertAll(x => (byte)x.OptionIndex).ToArray();
@@ -119,9 +113,12 @@ namespace RenderMethodEditorPlugin
             }
 
             ShaderMethods = new ObservableCollection<Method>();
-            for (int i = 0; i < _renderMethod.Options.Count; i++)
+            for (int i = 0; i < generator.GetMethodCount(); i++)
             {
-                var optionIndex = _renderMethod.Options[i].OptionIndex;
+                short optionIndex = 0;
+                
+                if (i < _renderMethod.Options.Count)
+                    optionIndex = _renderMethod.Options[i].OptionIndex;
 
                 if (methodParser != null)
                 {
@@ -129,14 +126,14 @@ namespace RenderMethodEditorPlugin
                     if (methodInfo != null)
                         ShaderMethods.Add(methodInfo);
                 }
-                else if (rmdf != null) // pull from rmdf
+                else
                 {
-                    if (i >= 0 && i < generator.GetMethodCount() && i < rmdf.Categories.Count)
+                    if (i >= 0 && i < generator.GetMethodCount())
                     {
-                        if (optionIndex >= 0 && optionIndex < generator.GetMethodOptionCount(i) && optionIndex < rmdf.Categories[i].ShaderOptions.Count)
+                        if (optionIndex >= 0 && optionIndex < generator.GetMethodOptionCount(i))
                         {
-                            var categoryName = cache.StringTable.GetString(rmdf.Categories[i].Name);
-                            var optionName = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[optionIndex].Name);
+                            string categoryName = generator.GetMethodNames().GetValue(i).ToString().ToLower();
+                            string optionName = generator.GetMethodOptionNames(i).GetValue(optionIndex).ToString().ToLower();
 
                             var methodInfo = new Method(categoryName, optionName, "Description N/A", i, optionIndex);
 

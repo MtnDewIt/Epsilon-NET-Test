@@ -38,6 +38,8 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Shader
                     return ((Misc)optionIndex).ToString();
                 case HaloShaderGenerator.Shader.ShaderMethods.Distortion:
                     return ((HaloShaderGenerator.Shared.Distortion)optionIndex).ToString();
+                case HaloShaderGenerator.Shader.ShaderMethods.Soft_Fade:
+                    return ((HaloShaderGenerator.Shared.Soft_Fade)optionIndex).ToString();
             }
             return "";
         }
