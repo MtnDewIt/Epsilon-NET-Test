@@ -4,6 +4,7 @@ using CacheEditor.RTE.UI;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
 using EpsilonLib.Commands;
+using EpsilonLib.Shell;
 using EpsilonLib.Utils;
 using Shared;
 using Stylet;
@@ -13,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using TagStructEditor.Fields;
 using TagStructEditor.Helpers;
 using TagTool.Cache;
@@ -67,6 +69,36 @@ namespace DefinitionEditor
         }
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
+
+        internal bool PopulateContextMenu(ContextMenu ctxMenu, IField field)
+        {
+            field.PopulateContextMenu(ctxMenu);
+
+            if (RteHasTargets && SelectedRteTargetItem != null)
+            {
+                if (ctxMenu.Items.Count > 0)
+                    ctxMenu.Items.Add(new Separator());
+
+                ctxMenu.Items.Add(new MenuItem()
+                {
+                    Header = "Copy Memory Address",
+                    ToolTip = "Copies the memory address of this field",
+                    Command = new DelegateCommand(() => CopyFieldMemoryAddress(field))
+                });
+            }
+
+            return true;
+        }
+
+        private void CopyFieldMemoryAddress(IField field)
+        {
+            var helper = new RTEFieldHelper(SelectedRteTargetItem.Target, _cacheFile, _definitionData.GetType(), _instance);
+            uint address = helper.GetFieldMemoryAddress(field);
+            if (address == 0)
+                MessageBox.Show("Tag not loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            else
+                ClipboardEx.SetTextSafe($"{address:X8}");
+        }
 
         public StructField StructField { get; set; }
         public IField DisplayField { get; set; }

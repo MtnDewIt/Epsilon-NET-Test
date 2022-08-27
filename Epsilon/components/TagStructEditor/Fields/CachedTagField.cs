@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using TagStructEditor.Common;
 using TagTool.Cache;
 
@@ -125,6 +126,21 @@ namespace TagStructEditor.Fields
                 SelectedGroup = Groups.FirstOrDefault(item => ((TagTool.Cache.Gen3.TagGroupGen3)item.Group).Name == split.Last()) ?? SelectedGroup;
                 SelectedInstance = SelectedGroup.Instances.First(item => item.Name == split.First()) ?? SelectedInstance;
             }
+        }
+
+        protected override void OnPopulateContextMenu(ContextMenu menu)
+        {
+            if (menu.Items.Count > 0)
+                menu.Items.Add(new Separator());
+
+            menu.Items.Add(new MenuItem() { Header = "Copy Tag Name", Command = CopyTagNameCommand });
+            menu.Items.Add(new MenuItem() { Header = "Copy Tag Index", Command = CopyTagIndexCommand });
+            menu.Items.Add(new MenuItem() { Header = "Paste Tag Name", Command = PasteTagNameCommand });
+            menu.Items.Add(new Separator());
+            menu.Items.Add(new MenuItem() { Header = "Open in a new tab", Command = GotoCommand });
+            menu.Items.Add(new MenuItem() { Header = "Select a tag", ToolTip = "Select a tag", Command = BrowseCommand });
+            menu.Items.Add(new Separator());
+            menu.Items.Add(new MenuItem() { Header = "Null", ToolTip = "Null this tag reference", Command = NullCommand,  });
         }
     }
 }

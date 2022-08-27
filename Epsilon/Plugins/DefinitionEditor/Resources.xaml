@@ -993,33 +993,6 @@
                         <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ComboBox.ItemsPanel>
-                <ComboBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem
-                            Command="{Binding CopyTagNameCommand}"
-                            Header="Copy Tag Name" />
-                        <MenuItem
-                            Command="{Binding CopyTagIndexCommand}"
-                            Header="Copy Tag Index" />
-                        <MenuItem
-                            Command="{Binding PasteTagNameCommand}"
-                            Header="Paste Tag Name" />
-                        <Separator />
-                        <MenuItem
-                            Command="{Binding GotoCommand}"
-                            Header="Open in a new tab" />
-                        <Separator />
-                        <MenuItem
-                            Command="{Binding BrowseCommand}"
-                            Header="Browse"
-                            ToolTip="Select a tag" />
-                        <Separator />
-                        <MenuItem
-                            Command="{Binding NullCommand}"
-                            Header="Null"
-                            ToolTip="Null this tag reference" />
-                    </ContextMenu>
-                </ComboBox.ContextMenu>
             </ComboBox>
             <Button
                 Width="24"
@@ -1633,49 +1606,6 @@
             Header="{Binding}"
             IsExpanded="{Binding IsExpanded}"
             Style="{StaticResource ExpanderStyleBase}">
-            <Expander.ContextMenu>
-                <ContextMenu>
-                    <MenuItem
-                        Command="{Binding AddCommand, Mode=OneTime}"
-                        Header="Add"
-                        ToolTip="Add a new element" />
-                    <MenuItem
-                        Command="{Binding InsertCommand, Mode=OneTime}"
-                        Header="Insert"
-                        ToolTip="Insert a new element at the current index" />
-                    <MenuItem
-                        Command="{Binding DuplicateCommand, Mode=OneTime}"
-                        Header="Duplicate"
-                        ToolTip="Duplicate the element at the current index" />
-                    <MenuItem
-                        Command="{Binding DeleteCommand, Mode=OneTime}"
-                        Header="Delete"
-                        ToolTip="Delete the element at the current index" />
-                    <Separator />
-                    <MenuItem
-                        Command="{Binding ShiftUpCommand, Mode=OneTime}"
-                        Header="Shift Up"
-                        ToolTip="Shift the current element up one" />
-                    <MenuItem
-                        Command="{Binding ShiftDownCommand, Mode=OneTime}"
-                        Header="Shift Down"
-                        ToolTip="Shift the current element down one" />
-                    <Separator />
-                    <MenuItem
-                        Command="{Binding DeleteAllCommand, Mode=OneTime}"
-                        Header="Delete All"
-                        ToolTip="Delete all elements" />
-                    <Separator />
-                    <MenuItem
-                        Command="{Binding CollapseAllCommand, Mode=OneTime}"
-                        Header="Collapse All"
-                        ToolTip="Collapse all children" />
-                    <MenuItem
-                        Command="{Binding ExpandAllCommand, Mode=OneTime}"
-                        Header="Expand All"
-                        ToolTip="Expand all children" />
-                </ContextMenu>
-            </Expander.ContextMenu>
             <!--  Header  -->
             <Expander.HeaderTemplate>
                 <DataTemplate>

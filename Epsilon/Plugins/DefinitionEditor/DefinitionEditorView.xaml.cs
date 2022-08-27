@@ -1,7 +1,12 @@
-﻿using System.ComponentModel.Composition;
+﻿using EpsilonLib.Utils;
+using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using TagStructEditor.Fields;
 
 namespace DefinitionEditor
 {
@@ -46,6 +51,33 @@ namespace DefinitionEditor
                     e.Handled = true;
                 }
             }
+        }
+
+        private void structContainer_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            // If it's a textbox, just use the default context menu for now.
+            if (VisualTreeHelpers.FindAncestors<TextBox>((Visual)e.OriginalSource).FirstOrDefault() != null)
+                return;
+
+            // Search the ancestors for the closest field
+            var field = VisualTreeHelpers.FindAncestorDataContext<IField>((UIElement)e.OriginalSource);
+            if (field == null)
+                return;
+
+            if (!(DataContext is DefinitionEditorViewModel vm))
+                return;
+
+            // Build the context menu
+            var ctxMenu = new ContextMenu();
+            if (!vm.PopulateContextMenu(ctxMenu, field))
+                return;       
+            ctxMenu.Style = Application.Current.TryFindResource(typeof(ContextMenu)) as Style;
+            ctxMenu.Placement = PlacementMode.RelativePoint;
+            ctxMenu.HorizontalOffset = e.CursorLeft;
+            ctxMenu.VerticalOffset = e.CursorTop;
+            ctxMenu.PlacementTarget = (UIElement)e.OriginalSource;
+            ctxMenu.IsOpen = true;
+            e.Handled = true;
         }
 
         //private void DefinitionContent_KeyDown(object sender, KeyEventArgs e)

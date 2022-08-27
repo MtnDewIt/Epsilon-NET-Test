@@ -175,6 +175,7 @@
 
             <!--  Template Display  -->
             <TagStructEditor:StructEditorControl
+                ContextMenuOpening="structContainer_ContextMenuOpening"
                 x:Name="structContainer"
                 Grid.Column="1"
                 HorizontalAlignment="Stretch"

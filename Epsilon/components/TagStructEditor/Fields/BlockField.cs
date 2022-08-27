@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Windows.Controls;
 using TagStructEditor.Common;
 using TagStructEditor.Helpers;
 
@@ -54,7 +55,6 @@ namespace TagStructEditor.Fields
                 _isExpanded = value;
             }
         }
-
 
         public override void Accept(IFieldVisitor visitor)
         {
@@ -160,6 +160,25 @@ namespace TagStructEditor.Fields
         private void CollapseChildren()
         {
             FieldExpander.Expand(this, FieldExpander.ExpandTarget.All, FieldExpander.ExpandMode.Collapse);
+        }
+
+        protected override void OnPopulateContextMenu(ContextMenu menu)
+        {
+            if (menu.Items.Count > 0)
+                menu.Items.Add(new Separator());
+
+            menu.Items.Add(new MenuItem() { Header = "Add", ToolTip="Add a new element", Command = AddCommand });
+            menu.Items.Add(new MenuItem() { Header = "Insert", ToolTip = "Insert a new element at the current index", Command = InsertCommand });
+            menu.Items.Add(new MenuItem() { Header = "Delete", ToolTip = "Delete the element at the current index", Command = DeleteCommand });
+            menu.Items.Add(new MenuItem() { Header = "Duplicate", ToolTip = "Duplicate the element at the current index", Command = DuplicateCommand });
+            menu.Items.Add(new Separator());
+            menu.Items.Add(new MenuItem() { Header = "Shift Up", ToolTip = "Shift the current element up one", Command = ShiftUpCommand });
+            menu.Items.Add(new MenuItem() { Header = "Shift Down", ToolTip = "Shift the current element down one", Command = ShiftDownCommand });
+            menu.Items.Add(new Separator());
+            menu.Items.Add(new MenuItem() { Header = "Delete All", ToolTip = "Delete all elements", Command = DeleteAllCommand });
+            menu.Items.Add(new Separator());
+            menu.Items.Add(new MenuItem() { Header = "Collapse All", ToolTip = "Collapse all children", Command = CollapseAllCommand });
+            menu.Items.Add(new MenuItem() { Header = "Expand All", ToolTip = "Expand all children", Command = ExpandAllCommand });
         }
     }
 }

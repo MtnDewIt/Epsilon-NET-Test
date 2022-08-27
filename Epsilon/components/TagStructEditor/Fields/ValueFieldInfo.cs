@@ -10,6 +10,7 @@ namespace TagStructEditor.Fields
     {
         public ValueFieldFlags Flags { get; set; } = ValueFieldFlags.Default;
         public Type FieldType { get; set; }
+        public string ActualName { get; set; }
         public string Name { get; set; }
         public uint Offset { get; set; }
         public int Length { get; set; }

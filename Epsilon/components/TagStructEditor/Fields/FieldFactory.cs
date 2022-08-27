@@ -65,6 +65,7 @@ namespace TagStructEditor.Fields
                 var info = new ValueFieldInfo()
                 {
                     Name = name,
+                    ActualName = tagFieldInfo.Name,
                     FieldType = tagFieldInfo.FieldType,
                     ValueGetter = tagFieldInfo.GetValue,
                     ValueSetter = tagFieldInfo.SetValue,

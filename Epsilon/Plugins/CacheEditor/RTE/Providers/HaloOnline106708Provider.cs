@@ -50,23 +50,9 @@ namespace CacheEditor.RTE.Providers
                 {
                     modpak = (GameCacheModPackage)cache;
                     isModPackage = true;
-                }                 
-
-                #if DEBUG
-                {
-                    if (isModPackage && 
-                        !modpak.BaseCacheReference.TagCache.TryGetCachedTag(hoInstance.Index, out var baseTag))
-                    {
-                        int paktagcount = 0;
-                        for (var i = 0; i < tagindex; i++)
-                            if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
-                                paktagcount++;
-                        tagindex = 0xFFFE - paktagcount;
-                        //isModPackageTag = true;
-                    }
                 }
-                #endif
 
+                tagindex = ResolveTagIndex(tagindex, isModPackage, modpak);
                 var address = GetTagAddress(processStream, tagindex);
                 if (address == 0)
                     throw new RteProviderException(this, $"Tag '{hoInstance}' could not be located in the target process.");
@@ -202,6 +188,23 @@ namespace CacheEditor.RTE.Providers
             }
         }
 
+        private static int ResolveTagIndex(int tagindex, bool isModPackage, GameCacheModPackage modpak)
+        {
+#if DEBUG
+            if (isModPackage && !modpak.BaseCacheReference.TagCache.TryGetCachedTag(tagindex, out var baseTag))
+            {
+                int paktagcount = 0;
+                for (var i = 0; i < tagindex; i++)
+                    if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
+                        paktagcount++;
+                tagindex = 0xFFFE - paktagcount;
+                //isModPackageTag = true;
+            }
+#endif
+
+            return tagindex;
+        }
+
         private void ReadHeaderValues(EndianReader reader, ref uint currenttotalsize, ref uint headersize, ref List<uint> TagReferenceFixups)
         {
             currenttotalsize = reader.ReadUInt32();
@@ -259,6 +262,28 @@ namespace CacheEditor.RTE.Providers
             {
                 fs.Write(data, 0, data.Length);
             }
+        }
+
+        public ProcessMemoryStream CreateStream(IRteTarget target)
+        {
+            var process = Process.GetProcessById((int)target.Id);
+            if (process == null)
+                throw new RteTargetNotAvailableException(this, "Target process could not be found.");
+
+            return new ProcessMemoryStream(process);
+        }
+
+        public long GetTagMemoryAddress(ProcessMemoryStream stream, GameCache cache, CachedTag instance)
+        {
+            GameCacheModPackage modpak = null;
+            bool isModPackage = false;
+            if (cache is GameCacheModPackage)
+            {
+                modpak = (GameCacheModPackage)cache;
+                isModPackage = true;
+            }
+
+            return GetTagAddress(stream, ResolveTagIndex(instance.Index, isModPackage, modpak));
         }
     }
 }

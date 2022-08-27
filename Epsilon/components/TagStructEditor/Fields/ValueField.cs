@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls;
 using TagStructEditor.Common;
 using TagStructEditor.Helpers;
 using TagTool.Tags;
@@ -8,7 +9,7 @@ namespace TagStructEditor.Fields
     /// <summary>
     /// Base class for a Field that holds a value
     /// </summary>
-    public abstract class ValueField : PropertyChangedNotifier, IField
+    public abstract class ValueField : IField
     {
         public ValueField(ValueFieldInfo info)
         {
@@ -22,11 +23,6 @@ namespace TagStructEditor.Fields
         /// Flags for the value field
         /// </summary>
         public ValueFieldFlags FieldFlags => FieldInfo.Flags;
-
-        /// <summary>
-        /// The parent field if any
-        /// </summary>
-        public IField Parent { get; set; }
 
         /// <summary>
         /// The current owner of this field
@@ -48,6 +44,7 @@ namespace TagStructEditor.Fields
         /// </summary>
         public string Name { get; set; }
 
+
         /// <summary>
         /// Flag indicating whether this field should be highlighted
         /// </summary>
@@ -62,7 +59,7 @@ namespace TagStructEditor.Fields
 
         protected bool IsPopulating { get; private set; } = false;
 
-        void IField.Populate(object owner, object value)
+        public override void Populate(object owner, object value)
         {
             Owner = owner;
 
@@ -114,13 +111,14 @@ namespace TagStructEditor.Fields
         /// Traverses the field hierarchy, calling the corresponding Visit method on the passed in <see cref="IFieldVisitor"/>
         /// </summary>
         /// <param name="visitor"></param>
-        public abstract void Accept(IFieldVisitor visitor);
+        public abstract override void Accept(IFieldVisitor visitor);
 
         /// <summary>
         /// Called when the field should be populated with the given <paramref name="value"/>
         /// </summary>
         /// <param name="value">The value to populate the field with</param>
         protected abstract void OnPopulate(object value);
+
 
         public override string ToString() => $"{Name} : {GetType()}";
     } 
