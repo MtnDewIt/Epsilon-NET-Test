@@ -62,6 +62,7 @@ namespace TagStructEditor.Controls
             Update();
         }
 
+
         private void _combo_DropDownClosed(object sender, EventArgs e)
         {
             _dropdownIsOpen = false;
@@ -116,8 +117,12 @@ namespace TagStructEditor.Controls
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            if (!_combo.IsFocused && !_combo.IsMouseOver)
+            if (!_combo.IsDropDownOpen && !_combo.IsMouseOver)
                 return;
+
+            // take focus away from any inputs so that the value is saved
+            if(!IsFocused)
+                Focus();
 
             if (e.Delta > 0)
             {
