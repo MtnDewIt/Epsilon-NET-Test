@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EpsilonLib.Menus;
+using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Controls;
@@ -162,23 +163,20 @@ namespace TagStructEditor.Fields
             FieldExpander.Expand(this, FieldExpander.ExpandTarget.All, FieldExpander.ExpandMode.Collapse);
         }
 
-        protected override void OnPopulateContextMenu(ContextMenu menu)
+        protected override void OnPopulateContextMenu(EMenu menu)
         {
-            if (menu.Items.Count > 0)
-                menu.Items.Add(new Separator());
-
-            menu.Items.Add(new MenuItem() { Header = "Add", ToolTip="Add a new element", Command = AddCommand });
-            menu.Items.Add(new MenuItem() { Header = "Insert", ToolTip = "Insert a new element at the current index", Command = InsertCommand });
-            menu.Items.Add(new MenuItem() { Header = "Delete", ToolTip = "Delete the element at the current index", Command = DeleteCommand });
-            menu.Items.Add(new MenuItem() { Header = "Duplicate", ToolTip = "Duplicate the element at the current index", Command = DuplicateCommand });
-            menu.Items.Add(new Separator());
-            menu.Items.Add(new MenuItem() { Header = "Shift Up", ToolTip = "Shift the current element up one", Command = ShiftUpCommand });
-            menu.Items.Add(new MenuItem() { Header = "Shift Down", ToolTip = "Shift the current element down one", Command = ShiftDownCommand });
-            menu.Items.Add(new Separator());
-            menu.Items.Add(new MenuItem() { Header = "Delete All", ToolTip = "Delete all elements", Command = DeleteAllCommand });
-            menu.Items.Add(new Separator());
-            menu.Items.Add(new MenuItem() { Header = "Collapse All", ToolTip = "Collapse all children", Command = CollapseAllCommand });
-            menu.Items.Add(new MenuItem() { Header = "Expand All", ToolTip = "Expand all children", Command = ExpandAllCommand });
+            menu.Group("TagBlock1")
+                .Add("Add", tooltip: "Add a new element", command: AddCommand)
+                .Add("Insert", tooltip: "Insert a new element at the current index", command: InsertCommand)
+                .Add("Delete", tooltip: "Delete the element at the current index", command: DeleteCommand)
+                .Add("Duplicate", tooltip: "Duplicate the element at the current index", command: DuplicateCommand);
+            menu.Group("TagBlock2")
+                .Add("Shift Up", tooltip: "Shift the current element up one", command: ShiftUpCommand)
+                .Add("Shift Down", tooltip: "Shift the current element down one", command: ShiftDownCommand)
+                .Add("Delete All", tooltip: "Delete all elements", command: DeleteAllCommand);
+            menu.Group("TagBlock3")
+                .Add("Collapse All", tooltip: "Collapse all children", command: CollapseAllCommand)
+                .Add("Expand All", tooltip: "Expand all children", command: ExpandAllCommand);
         }
     }
 }

@@ -58,6 +58,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="EnumBindingSource.cs" />
+    <Compile Include="FieldHelper.cs" />
     <Compile Include="IFieldsValueChangeSink.cs" />
     <Compile Include="RTEFieldHelper.cs" />
     <Compile Include="Settings.cs" />

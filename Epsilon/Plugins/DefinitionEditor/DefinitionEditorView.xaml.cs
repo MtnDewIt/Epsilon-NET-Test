@@ -1,4 +1,5 @@
-﻿using EpsilonLib.Utils;
+﻿using EpsilonLib.Menus;
+using EpsilonLib.Utils;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
@@ -67,10 +68,17 @@ namespace DefinitionEditor
             if (!(DataContext is DefinitionEditorViewModel vm))
                 return;
 
-            // Build the context menu
+            // Build the context menu      
+            var menu = new EMenu();
+            if (!vm.PopulateContextMenu(menu, field))
+                return;
+
             var ctxMenu = new ContextMenu();
-            if (!vm.PopulateContextMenu(ctxMenu, field))
-                return;       
+            menu.PopulateTopLevelMenu(menu, ctxMenu.Items);
+            if (ctxMenu.Items.Count == 0)
+                return;
+
+           
             ctxMenu.Style = Application.Current.TryFindResource(typeof(ContextMenu)) as Style;
             ctxMenu.Placement = PlacementMode.RelativePoint;
             ctxMenu.HorizontalOffset = e.CursorLeft;

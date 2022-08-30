@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\DisabledPluginAttribute.cs" />
+    <Compile Include="Menus\SimpleMenu.cs" />
     <Compile Include="Options\OptionPageBase.cs" />
     <Compile Include="Shell\ClipboardEx.cs" />
     <Compile Include="Themes\ColorHint.cs" />

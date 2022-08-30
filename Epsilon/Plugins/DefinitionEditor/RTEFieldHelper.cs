@@ -28,10 +28,8 @@ namespace DefinitionEditor
 
         public uint GetFieldMemoryAddress(IField field)
         {
-            string fieldPath = GetFieldPath(field);
+            string fieldPath = FieldHelper.GetFieldPath(field);
             
-
-
             using (var stream = _target.Provider.CreateStream(_target))
             {
                 uint tagAddress = (uint)_target.Provider.GetTagMemoryAddress(stream, _cache.Cache, _tagInstance);
@@ -97,26 +95,6 @@ namespace DefinitionEditor
             }
 
             return address;
-        }
-
-
-        private string GetFieldPath(IField field)
-        {
-            var parts = new List<string>();
-            IField f = field;
-            while (f != null)
-            {
-                if (f is ValueField vf)
-                {
-                    if (vf is BlockField bf && vf != field)
-                        parts.Add($"{vf.FieldInfo.ActualName}[{bf.CurrentIndex}]");
-                    else
-                        parts.Add(vf.FieldInfo.ActualName);
-                }
-
-                f = f.Parent;
-            }
-            return string.Join(".", parts.AsEnumerable().Reverse().Where(x => !string.IsNullOrEmpty(x)));
         }
 
         private uint GetElementSize(Type type)

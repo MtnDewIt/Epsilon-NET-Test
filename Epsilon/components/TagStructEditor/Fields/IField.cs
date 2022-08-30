@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using EpsilonLib.Menus;
+using System.ComponentModel;
 using System.Windows.Controls;
 using TagStructEditor.Common;
 
@@ -28,13 +29,13 @@ namespace TagStructEditor.Fields
         /// Called when the context menu should be populated
         /// </summary>
         /// <param name="menu"></param>
-        protected virtual void OnPopulateContextMenu(ContextMenu menu) { }
+        protected virtual void OnPopulateContextMenu(EMenu menu) { }
 
         /// <summary>
         /// Populate the context menu for this field and its parents.
         /// </summary>
         /// <param name="menu"></param>
-        public void PopulateContextMenu(ContextMenu menu)
+        public void PopulateContextMenu(EMenu menu)
         {
             //var oldItemCount = menu.Items.Count;
             OnPopulateContextMenu(menu);

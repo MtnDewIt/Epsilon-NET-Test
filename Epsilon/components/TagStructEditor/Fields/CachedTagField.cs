@@ -1,4 +1,5 @@
-﻿using EpsilonLib.Shell;
+﻿using EpsilonLib.Menus;
+using EpsilonLib.Shell;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,19 +129,19 @@ namespace TagStructEditor.Fields
             }
         }
 
-        protected override void OnPopulateContextMenu(ContextMenu menu)
+        protected override void OnPopulateContextMenu(EMenu menu)
         {
-            if (menu.Items.Count > 0)
-                menu.Items.Add(new Separator());
+            menu.Group("Copy")
+                .Add("Copy Tag Name", command: CopyTagNameCommand)
+                .Add("Copy Tag Index", command: CopyTagIndexCommand)
+                .Add("Paste Tag Name", command: PasteTagNameCommand);
 
-            menu.Items.Add(new MenuItem() { Header = "Copy Tag Name", Command = CopyTagNameCommand });
-            menu.Items.Add(new MenuItem() { Header = "Copy Tag Index", Command = CopyTagIndexCommand });
-            menu.Items.Add(new MenuItem() { Header = "Paste Tag Name", Command = PasteTagNameCommand });
-            menu.Items.Add(new Separator());
-            menu.Items.Add(new MenuItem() { Header = "Open in a new tab", Command = GotoCommand });
-            menu.Items.Add(new MenuItem() { Header = "Select a tag", ToolTip = "Select a tag", Command = BrowseCommand });
-            menu.Items.Add(new Separator());
-            menu.Items.Add(new MenuItem() { Header = "Null", ToolTip = "Null this tag reference", Command = NullCommand,  });
+            menu.Group("CachedTag2")
+                .Add("Open in a new tab", command: GotoCommand)
+                .Add("Select a tag", tooltip: "Select a tag", command: BrowseCommand);
+
+            menu.Group("CachedTag3")
+                .Add("Null", tooltip: "Null this tag reference", command: NullCommand);
         }
     }
 }

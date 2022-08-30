@@ -4,6 +4,7 @@ using CacheEditor.RTE.UI;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
 using EpsilonLib.Commands;
+using EpsilonLib.Menus;
 using EpsilonLib.Shell;
 using EpsilonLib.Utils;
 using Shared;
@@ -14,7 +15,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using TagStructEditor.Fields;
 using TagStructEditor.Helpers;
 using TagTool.Cache;
@@ -70,24 +70,76 @@ namespace DefinitionEditor
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
 
-        internal bool PopulateContextMenu(ContextMenu ctxMenu, IField field)
+        private void PopulateCopyMenu(EMenu menu, IField field)
         {
-            field.PopulateContextMenu(ctxMenu);
+            
+        }
 
-            if (RteHasTargets && SelectedRteTargetItem != null)
+        internal bool PopulateContextMenu(EMenu menu, IField field)
+        {
+            if (field == null)
+                return false;
+
+            if (field is ValueField vf)
             {
-                if (ctxMenu.Items.Count > 0)
-                    ctxMenu.Items.Add(new Separator());
-
-                ctxMenu.Items.Add(new MenuItem()
-                {
-                    Header = "Copy Memory Address",
-                    ToolTip = "Copies the memory address of this field",
-                    Command = new DelegateCommand(() => CopyFieldMemoryAddress(field))
-                });
+                menu.Submenu("Field")
+                    .Group("Copy")
+                        .Add(text: "Copy Name",
+                                tooltip: "Copies the name of this field",
+                                command: new DelegateCommand(() => CopyFieldName(vf)))
+                        .Add(text: "Copy Path",
+                                tooltip: "Copies the path of this field",
+                                command: new DelegateCommand(() => CopyFieldPath(vf)))
+                        .Add(text: "Copy Path + Value",
+                                tooltip: "Copies the path and value of this field",
+                                command: new DelegateCommand(() => CopyFieldPathWithValue(vf)))
+                        .Add(text: "Copy Value",
+                                tooltip: "Copies the value of this field",
+                                command: new DelegateCommand(() => CopyFieldValue(vf)))
+                        .Add(text: "Copy Offset",
+                                tooltip: "Copies the offset of this field",
+                                command: new DelegateCommand(() => CopyFieldOffset(vf)));       
             }
 
+
+            //if (RteHasTargets && SelectedRteTargetItem != null)
+            //{
+                menu.Submenu("Field")
+                   .Group("Copy")
+                        .Add(text: "Copy Memory Address",
+                            tooltip: "Copies the memory address of this field",
+                            command: new DelegateCommand(() => CopyFieldMemoryAddress(field), () => RteHasTargets && SelectedRteTargetItem != null));
+            //}
+
+            field.PopulateContextMenu(menu);
+
             return true;
+        }
+
+        private void CopyFieldOffset(ValueField field)
+        {
+            ClipboardEx.SetTextSafe($"{((ValueField)field).FieldOffset:X}");
+        }
+
+        private void CopyFieldName(ValueField field)
+        {
+            ClipboardEx.SetTextSafe(((ValueField)field).FieldInfo.ActualName);
+        }
+
+        private void CopyFieldPath(ValueField field)
+        {
+            ClipboardEx.SetTextSafe(FieldHelper.GetFieldPath(field));
+        }
+
+        private void CopyFieldValue(ValueField field)
+        {
+            ClipboardEx.SetTextSafe(FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field));
+        }
+
+        private void CopyFieldPathWithValue(ValueField field)
+        {
+            var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
+            ClipboardEx.SetTextSafe($"{FieldHelper.GetFieldPath(field)} {value}");
         }
 
         private void CopyFieldMemoryAddress(IField field)
