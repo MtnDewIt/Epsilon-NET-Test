@@ -23,7 +23,8 @@ namespace BlamScriptEditorPlugin
 
     public string Decompile()
     {
-        using (var scriptFileStream = new MemoryStream())
+        var scriptFileStream = new MemoryStream();
+
         using (var scriptWriter = new StreamWriter(scriptFileStream))
         using (var scriptStringStream = new MemoryStream(Definition.ScriptStrings))
         using (var scriptStringReader = new BinaryReader(scriptStringStream))
@@ -82,8 +83,8 @@ namespace BlamScriptEditorPlugin
 
                 indentWriter.WriteLine();
             }
-            return Encoding.UTF8.GetString(scriptFileStream.ToArray());
         }
+        return Encoding.UTF8.GetString(scriptFileStream.ToArray());
     }
 
     private string ReadScriptString(BinaryReader reader, long address)
