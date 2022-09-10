@@ -2,6 +2,7 @@
     x:Class="TextEditor.Resources"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
     xmlns:controls="clr-namespace:TagStructEditor.Controls;assembly=TagStructEditor"
     xmlns:converters="clr-namespace:TagStructEditor.Converters;assembly=TagStructEditor"
     xmlns:fields="clr-namespace:TagStructEditor.Fields;assembly=TagStructEditor"
@@ -89,7 +90,8 @@
         BasedOn="{StaticResource FieldLabelStyle}"
         TargetType="{x:Type TextBlock}">
         <Setter Property="Width" Value="16" />
-        <Setter Property="Margin" Value="4,0,0,0" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+        <Setter Property="Foreground" Value="#A0A0A0" />
     </Style>
 
     <Style
@@ -175,6 +177,13 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
 
+    <Style
+        x:Key="ColorPickerStyle"
+        BasedOn="{StaticResource DefaultColorPickerStyle}"
+        TargetType="{x:Type colorpicker:PortableColorPicker}">
+        <Setter Property="Width" Value="40" />
+    </Style>
+    
     <!--  Control Templates  -->
     <ControlTemplate
         x:Key="NoScrollListBoxTemplate"
@@ -326,6 +335,11 @@
                 Style="{StaticResource InlineFieldTextBoxStyle}"
                 Text="{Binding Blue, StringFormat={StaticResource RealFormatString}}" />
 
+            <colorpicker:PortableColorPicker
+                Style="{StaticResource ColorPickerStyle}"
+                ColorState="{local:RealArgbColorBinder}"
+                ShowAlpha="True"/>
+
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
                 Text="{Binding FieldTypeName}" />
@@ -367,9 +381,15 @@
                 Style="{StaticResource InlineFieldTextBoxStyle}"
                 Text="{Binding Alpha, StringFormat={StaticResource RealFormatString}}" />
 
+            <colorpicker:PortableColorPicker
+                Style="{StaticResource ColorPickerStyle}"
+                ColorState="{local:RealRgbaColorBinder}"
+                ShowAlpha="True"/>
+            
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
                 Text="{Binding FieldTypeName}" />
+
         </StackPanel>
     </DataTemplate>
 
@@ -400,6 +420,11 @@
             <TextBox
                 Style="{StaticResource InlineFieldTextBoxStyle}"
                 Text="{Binding Blue, StringFormat={StaticResource RealFormatString}}" />
+
+            <colorpicker:PortableColorPicker
+                Style="{StaticResource ColorPickerStyle}"
+                ColorState="{local:RealRgbColorBinder}"
+                ShowAlpha="False"/>
 
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
@@ -446,6 +471,11 @@
                 Style="{StaticResource InlineFieldTextBoxStyle}"
                 Text="{Binding Blue}" />
 
+            <colorpicker:PortableColorPicker
+                Style="{StaticResource ColorPickerStyle}"
+                ColorState="{local:ArgbColorBinder}"
+                ShowAlpha="True"/>
+            
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
                 Text="{Binding FieldTypeName}" />
@@ -1489,8 +1519,9 @@
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <TextBlock
-                        Width="180"
+                        MinWidth="170"
                         Padding="0,4"
+                        Margin="0,0,10,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Text="{Binding Name, Mode=OneTime}" />
@@ -1514,16 +1545,14 @@
                                 Width="Auto"
                                 Margin="4,0"
                                 VerticalAlignment="Center"
-                                Style="{StaticResource InlineFieldLabelStyle}"
+                                Foreground="#A0A0A0"
                                 Text="Size:" />
-                            <TextBox
+                            <TextBlock
                                 x:Name="DataTextBox"
                                 Width="Auto"
-                                MinWidth="60"
-                                Margin="2,0"
+                                Margin="0,0,2,0"
                                 VerticalAlignment="Center"
                                 Focusable="False"
-                                IsReadOnly="True"
                                 Text="{Binding Path=Length, Mode=OneWay, StringFormat={}0x{0:X}}"
                                 TextWrapping="Wrap" />
                             <Button
@@ -1533,7 +1562,7 @@
                                 Command="{Binding ImportCommand}"
                                 Content="Import" />
                             <Button
-                                Margin="2,0"
+                                Margin="2,0,0,0"
                                 Padding="4,2"
                                 VerticalAlignment="Center"
                                 Command="{Binding ExportCommand}"

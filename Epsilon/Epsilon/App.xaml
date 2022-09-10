@@ -34,6 +34,7 @@
                 <ResourceDictionary Source="Themes/Controls/AvalonDock/AvalonDock.xaml" />
                 <ResourceDictionary Source="Themes/Controls/LoadingIndicator.xaml" />
                 <ResourceDictionary Source="Themes/ColorHints.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ColorPicker;component/Styles/DefaultColorPickerStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <Style TargetType="{x:Type EpsilonControls:TabControlEx}">
