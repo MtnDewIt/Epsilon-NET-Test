@@ -1632,6 +1632,7 @@
             x:Name="Expander"
             Background="#2d2d30"
             ContextMenuService.ShowOnDisabled="True"
+            HorizontalAlignment="Stretch"
             Header="{Binding}"
             IsExpanded="{Binding IsExpanded}"
             Style="{StaticResource ExpanderStyleBase}">
@@ -1649,7 +1650,6 @@
                         <!--  Name  -->
                         <TextBlock
                             x:Name="HeaderText"
-                            MinWidth="180"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Text="{Binding Name, Mode=OneTime}" />
