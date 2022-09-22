@@ -1628,11 +1628,10 @@
             </DataTemplate>
         </DataTemplate.Resources>
 
-        <Expander
+        <Expander MinWidth="672"
             x:Name="Expander"
             Background="#2d2d30"
             ContextMenuService.ShowOnDisabled="True"
-            HorizontalAlignment="Stretch"
             Header="{Binding}"
             IsExpanded="{Binding IsExpanded}"
             Style="{StaticResource ExpanderStyleBase}">
