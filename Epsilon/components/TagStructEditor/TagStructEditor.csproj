@@ -162,6 +162,9 @@
     <Compile Include="Fields\StructField.cs" />
     <Compile Include="Fields\TagFunctionField.cs" />
     <Compile Include="Fields\ValueField.cs" />
+    <Compile Include="GotoWindow.xaml.cs">
+      <DependentUpon>GotoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\FieldExpander.cs" />
     <Compile Include="Helpers\FieldSearch.cs" />
     <Compile Include="Fields\IFieldFactory.cs" />
@@ -171,6 +174,10 @@
     <Compile Include="Fields\FieldFactory.cs" />
     <Compile Include="Fields\FieldVisitor.cs" />
     <Compile Include="Common\TagList.cs" />
+    <Page Include="GotoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

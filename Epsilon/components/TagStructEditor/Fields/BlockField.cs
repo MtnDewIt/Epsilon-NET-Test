@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Media;
+using System.Windows;
 using System.Windows.Controls;
 using TagStructEditor.Common;
 using TagStructEditor.Helpers;
@@ -27,6 +29,7 @@ namespace TagStructEditor.Fields
             ShiftDownCommand = new DelegateCommand(() => Shift(1), () => CurrentElementValid && !IsFixedSize && CurrentIndex < Block.Count - 1);
             ExpandAllCommand = new DelegateCommand(ExpandChildren, () => CurrentElementValid);
             CollapseAllCommand = new DelegateCommand(CollapseChildren, () => CurrentElementValid);
+            GotoIndexCommand = new DelegateCommand(GotoIndex, () => Block.Count > 0);
         }
 
         public Type ElementType { get; set; }
@@ -44,6 +47,7 @@ namespace TagStructEditor.Fields
         public DelegateCommand ShiftUpCommand { get; set; }
         public DelegateCommand ExpandAllCommand { get; set; }
         public DelegateCommand CollapseAllCommand { get; set; }
+        public DelegateCommand GotoIndexCommand { get; set; }
 
         bool CurrentElementValid => Block != null && CurrentIndex != -1;
 
@@ -163,8 +167,27 @@ namespace TagStructEditor.Fields
             FieldExpander.Expand(this, FieldExpander.ExpandTarget.All, FieldExpander.ExpandMode.Collapse);
         }
 
+        private void GotoIndex()
+        {
+            var window = new GotoWindow();
+            window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            if(window.ShowDialog() == true)
+            {
+                if(!int.TryParse(window.txtInput.Text, out int index) || (index < 0 || index >= Block.Count))
+                {
+                    SystemSounds.Hand.Play();
+                    return;
+                }
+
+                CurrentIndex = index;
+            }
+        }
+
         protected override void OnPopulateContextMenu(EMenu menu)
         {
+            menu.Group("TagBlock10")
+                .Add("Go To Index", tooltip: "", command: GotoIndexCommand);
             menu.Group("TagBlock1")
                 .Add("Add", tooltip: "Add a new element", command: AddCommand)
                 .Add("Insert", tooltip: "Insert a new element at the current index", command: InsertCommand)

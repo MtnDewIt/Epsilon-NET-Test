@@ -95,7 +95,7 @@ namespace EpsilonLib.Menus
             var built = new MenuItem();
             built.Header = Text;
             built.Command = Command;
-            built.ToolTip = ToolTip;
+            built.ToolTip = string.IsNullOrEmpty(ToolTip) ? null : ToolTip;
             built.InputGestureText = Shortcut;
             built.IsEnabled = !IsDisabled;
 
