@@ -1,6 +1,7 @@
 ﻿using CacheEditor;
 using CacheEditor.TagEditing;
 using EpsilonLib.Logging;
+using EpsilonLib.Menus;
 using EpsilonLib.Settings;
 using Shared;
 using Stylet;
@@ -113,6 +114,15 @@ namespace TagResourceEditorPlugin
             {
                 return resourceReference.Gen3ResourceID.Index;
             }
+        }
+
+        internal bool PopulateContextMenu(EMenu menu, IField field)
+        {
+            if (field == null)
+                return false;
+
+            field.PopulateContextMenu(menu);
+            return true;
         }
     }
 }

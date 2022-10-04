@@ -26,6 +26,6 @@
             VerticalAlignment="Stretch"
             Field="{Binding DisplayField}"
             FocusedField="{Binding SearchResultField}"
-            IsVirtualizing="True" />
+            IsVirtualizing="True" ContextMenuOpening="structContainer_ContextMenuOpening" />
     </Grid>
 </UserControl>

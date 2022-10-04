@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TagStructEditor"
         mc:Ignorable="d"
-        Title="GotoWindow" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
+        Title="Go To Index" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
         Background="#2d2d30"
         Foreground="#f1f1f1">
     <Grid>
@@ -17,6 +17,5 @@
                 <Button x:Name="btnCancel" Width="60" Margin="2,0,0,0" Click="btnCancel_Click">Cancel</Button>
             </StackPanel>
         </StackPanel>
-        
     </Grid>
 </Window>
