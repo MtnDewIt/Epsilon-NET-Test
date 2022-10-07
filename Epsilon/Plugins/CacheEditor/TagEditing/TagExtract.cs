@@ -62,7 +62,7 @@ namespace CacheEditor.TagEditing
                 bitmapName += ".dds";
                 var outPath = Path.Combine(ddsOutDir, bitmapName);
 
-                var ddsFile = BitmapExtractor.ExtractBitmap(cache, bitmap, i);
+                var ddsFile = BitmapExtractor.ExtractBitmap(cache, bitmap, i, tag.Name);
 
                 if (ddsFile == null)
                     throw new Exception("Invalid bitmap data");
