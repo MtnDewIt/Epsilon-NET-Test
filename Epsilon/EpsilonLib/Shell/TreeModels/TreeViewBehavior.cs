@@ -109,7 +109,7 @@ namespace EpsilonLib.Shell.TreeModels
                 return new RoutedEventHandler((sender, e) =>
                 {
                     var treeViewItem = (e.OriginalSource as DependencyObject).FindAncestors<TreeViewItem>().FirstOrDefault();
-                    if(treeViewItem != null)
+                    if(treeViewItem != null && treeViewItem.IsMouseOver)
                         handler(new TreeNodeEventArgs(treeViewItem.DataContext as ITreeNode));
                 });
             }

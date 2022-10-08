@@ -62,7 +62,8 @@
             DockPanel.Dock="Top"
             Tag="Search..."
             Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
-        <TreeView
+        
+        <TreeView x:Name="TagTree"
             EpsilonBehaviors:ContextMenuBehavior.Menu="{Binding ContextMenu}"
             EpsilonTreeModels:TreeViewBehavior.Model="{Binding}"
             BorderThickness="0"

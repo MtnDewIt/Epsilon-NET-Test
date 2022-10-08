@@ -234,7 +234,8 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
-                Text="{Binding Name, Mode=OneTime}" />
+                Text="{Binding Name, Mode=OneTime}"
+                ToolTip="{Binding FieldInfo.Name}"/>
             <!--  Value  -->
             <TextBox
                 Style="{StaticResource FieldTextBoxStyle}"

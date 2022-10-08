@@ -7,6 +7,10 @@ using TagTool.Bitmaps;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
+using TagTool.Commands.Models;
+using TagTool.Commands.Sounds;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CacheEditor.TagEditing
 {
@@ -31,12 +35,62 @@ namespace CacheEditor.TagEditing
                 using (var stream = cache.OpenCacheRead())
                 {
                     var bitmap = cache.Deserialize<Bitmap>(stream, tag);
-                    ExractBitmap(cache, tag, bitmap, dialog.SelectedPath);
+                    ExtractBitmap(cache, tag, bitmap, dialog.SelectedPath);
                 }
             }
         }
 
-        private void ExractBitmap(GameCache cache, CachedTag tag, Bitmap bitmap, string directory = "bitmaps")
+        public void ExportJMS(GameCache cache, CachedTag tag, string type)
+        {
+            using (var dialog = new FolderBrowserDialog())
+            {
+                var result = dialog.ShowDialog();
+                if (result != DialogResult.OK)
+                    return;
+
+                var filename = tag.Name.Split('\\').Last() + "_" + type + ".jms";
+                var fullpath = Path.Combine(dialog.SelectedPath, tag.Name.Split('\\').Last(), filename);
+
+
+                using (var stream = cache.OpenCacheRead())
+                {
+                    var hlmt = cache.Deserialize<Model>(stream, tag);
+                    ExportJMSCommand exportJMSCommand = new ExportJMSCommand(cache, hlmt);
+                    exportJMSCommand.Execute(new List<string>() { type, fullpath });
+                }
+
+                _shell.StatusBar.ShowStatusText($"JMS Exported to \"{fullpath}\"");
+            }
+        }
+
+        public void ExtractSound(GameCache cache, CachedTag tag)
+        {
+            using (var dialog = new FolderBrowserDialog())
+            {
+                var result = dialog.ShowDialog();
+                if (result != DialogResult.OK)
+                    return;
+
+                var fullpath = dialog.SelectedPath;
+
+                using (var stream = cache.OpenCacheRead())
+                {
+                    var sound = cache.Deserialize<Sound>(stream, tag);
+
+                    //if (sound.PitchRanges?[0].Permutations.Count > 1)
+                    //    fullpath = Path.Combine(dialog.SelectedPath, tag.Name.Split('\\').Last());
+
+                    //Directory.CreateDirectory(fullpath);
+
+                    ExtractSoundCommand extractSoundCommand = new ExtractSoundCommand(cache, tag, sound);
+                    extractSoundCommand.Execute(new List<string>() { fullpath });
+                }
+
+                _shell.StatusBar.ShowStatusText($"Sound files extracted to \"{fullpath}\"");
+            }
+        }
+
+        private void ExtractBitmap(GameCache cache, CachedTag tag, Bitmap bitmap, string directory = "bitmaps")
         {
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);

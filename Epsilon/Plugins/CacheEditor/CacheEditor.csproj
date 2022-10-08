@@ -161,6 +161,10 @@
     <Compile Include="Components\TagExplorer\MenuDefinitions.cs" />
     <Compile Include="Components\TagTree\Commands\CopyTagNameCommand.cs" />
     <Compile Include="Components\TagTree\Commands\CopyTagIndexCommand.cs" />
+    <Compile Include="Components\TagTree\Commands\ExtractSoundCommand.cs" />
+    <Compile Include="Components\TagTree\Commands\ExportPhmoJMSCommand.cs" />
+    <Compile Include="Components\TagTree\Commands\ExportCollJMSCommand.cs" />
+    <Compile Include="Components\TagTree\Commands\ExportModeJMSCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ExtractBitmapCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ToggleGroupTagNameViewCommand.cs" />
     <Compile Include="Components\TagTree\Commands\ToggleGroupNameViewCommand.cs" />

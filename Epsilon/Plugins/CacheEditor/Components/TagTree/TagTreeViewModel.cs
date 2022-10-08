@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using TagTool.Cache;
-
+using TagTool.Tags.Definitions;
 
 namespace CacheEditor.Components.TagTree
 {
@@ -35,17 +35,22 @@ namespace CacheEditor.Components.TagTree
         ICommandHandler<CopyTagIndexCommand>,
         ICommandHandler<ToggleGroupNameViewCommand>,
         ICommandHandler<ToggleGroupTagNameViewCommand>,
-        ICommandHandler<ExtractBitmapCommand>
+        ICommandHandler<ExtractBitmapCommand>,
+        ICommandHandler<ExportModeJMSCommand>,
+        ICommandHandler<ExportCollJMSCommand>,
+        ICommandHandler<ExportPhmoJMSCommand>,
+        ICommandHandler<ExtractSoundCommand>
+
     {
         private ICacheFile _cacheFile;
         private string _filterText;
         private TagTreeViewMode _viewMode = TagTreeViewMode.Groups;
         private TagTreeGroupDisplayMode _groupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
-        private TagExtract _bitmapExtract;
+        private TagExtract _extraction;
 
         public MenuItemDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
 
-        public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile, TagExtract bitmapExtract = null)
+        public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile, TagExtract extraction = null)
         {
             _viewMode = cacheEditingService.Settings.Get(
                 Settings.TagTreeViewModeSetting.Key, 
@@ -56,7 +61,7 @@ namespace CacheEditor.Components.TagTree
                 (TagTreeGroupDisplayMode)Settings.TagTreeGroupDisplaySetting.DefaultValue);
 
             _cacheFile = cacheFile;
-            _bitmapExtract = bitmapExtract;
+            _extraction = extraction;
             _cacheFile.TagSerialized += _cacheFile_TagSaved;
             Refresh();
         }
@@ -252,7 +257,7 @@ namespace CacheEditor.Components.TagTree
         void ICommandHandler<ExtractBitmapCommand>.ExecuteCommand(Command command)
         {
             if (SelectedNode?.Tag is CachedTag tag)
-                _bitmapExtract.ExtractBitmap(_cacheFile.Cache, tag);
+                _extraction.ExtractBitmap(_cacheFile.Cache, tag);
         }
 
         void ICommandHandler<ExtractBitmapCommand>.UpdateCommand(Command command)
@@ -260,7 +265,78 @@ namespace CacheEditor.Components.TagTree
             command.IsVisible = SelectedNode?.Tag is CachedTag tag && tag.IsInGroup("bitm");
         }
 
-        #endregion
+        void ICommandHandler<ExportModeJMSCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode?.Tag is CachedTag tag)
+                _extraction.ExportJMS(_cacheFile.Cache, tag, "mode");
+        }
 
+        void ICommandHandler<ExportModeJMSCommand>.UpdateCommand(Command command)
+        {
+            using (var stream = _cacheFile.Cache.OpenCacheRead())
+            {
+                if (SelectedNode?.Tag is CachedTag tag && tag.IsInGroup("hlmt"))
+                {
+                    Model model = _cacheFile.Cache.Deserialize<Model>(stream, SelectedNode?.Tag as CachedTag);
+                    command.IsVisible = model.RenderModel != null;
+                }
+                else
+                    command.IsVisible = false;
+            }
+        }
+
+        void ICommandHandler<ExportCollJMSCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode?.Tag is CachedTag tag)
+                _extraction.ExportJMS(_cacheFile.Cache, tag, "coll");
+        }
+
+        void ICommandHandler<ExportCollJMSCommand>.UpdateCommand(Command command)
+        {
+            using (var stream = _cacheFile.Cache.OpenCacheRead())
+            {
+                if (SelectedNode?.Tag is CachedTag tag && tag.IsInGroup("hlmt"))
+                {
+                    Model model = _cacheFile.Cache.Deserialize<Model>(stream, SelectedNode?.Tag as CachedTag);
+                    command.IsVisible = model.CollisionModel != null;
+                }
+                else
+                    command.IsVisible = false;
+            }
+        }
+
+        void ICommandHandler<ExportPhmoJMSCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode?.Tag is CachedTag tag)
+                _extraction.ExportJMS(_cacheFile.Cache, tag, "phmo");
+        }
+
+        void ICommandHandler<ExportPhmoJMSCommand>.UpdateCommand(Command command)
+        {
+            using (var stream = _cacheFile.Cache.OpenCacheRead())
+            {
+                if (SelectedNode?.Tag is CachedTag tag && tag.IsInGroup("hlmt"))
+                {
+                    Model model = _cacheFile.Cache.Deserialize<Model>(stream, SelectedNode?.Tag as CachedTag);
+                    command.IsVisible = model.CollisionModel != null;
+                }
+                else
+                    command.IsVisible = false;
+            }
+        }
+
+        void ICommandHandler<ExtractSoundCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode?.Tag is CachedTag tag)
+                _extraction.ExtractSound(_cacheFile.Cache, tag);
+        }
+
+        void ICommandHandler<ExtractSoundCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = SelectedNode?.Tag is CachedTag tag && tag.IsInGroup("snd!");
+        }
+
+
+        #endregion
     }
 }

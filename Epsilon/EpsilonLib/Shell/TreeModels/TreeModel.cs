@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace EpsilonLib.Shell.TreeModels
 {
@@ -68,6 +71,12 @@ namespace EpsilonLib.Shell.TreeModels
         {
             SelectedNode = e.Node;
             NodeSelected?.Invoke(this, e);
+            NodeDoubleClicked?.Invoke(this, e);
+        }
+
+        public void SimulateDoubleClick(TreeNodeEventArgs e)
+        {
+            NodeDoubleClicked?.Invoke(this, e);
         }
     }
 }
