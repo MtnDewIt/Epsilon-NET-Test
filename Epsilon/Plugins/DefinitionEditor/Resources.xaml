@@ -204,6 +204,7 @@
 
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}"/>
             <TextBox
                 Style="{StaticResource FieldTextBoxStyle}"
@@ -221,6 +222,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <CheckBox
                 Width="100"
@@ -234,8 +236,8 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
-                Text="{Binding Name, Mode=OneTime}"
-                ToolTip="{Binding FieldInfo.Name}"/>
+                ToolTip="{Binding Name, Mode=OneTime}"
+                Text="{Binding Name, Mode=OneTime}"/>
             <!--  Value  -->
             <TextBox
                 Style="{StaticResource FieldTextBoxStyle}"
@@ -252,6 +254,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Value  -->
             <TextBox
@@ -269,6 +272,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Value  -->
             <TextBox
@@ -288,6 +292,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Value  -->
             <TextBox
@@ -306,6 +311,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Alpha  -->
             <TextBlock
@@ -352,6 +358,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Red  -->
             <TextBlock
@@ -399,6 +406,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Red  -->
             <TextBlock
@@ -438,6 +446,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Alpha  -->
             <TextBlock
@@ -488,6 +497,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  I  -->
             <TextBlock
@@ -521,6 +531,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  I  -->
             <TextBlock
@@ -561,6 +572,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  I  -->
             <TextBlock
@@ -601,6 +613,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  I  -->
             <TextBlock
@@ -634,6 +647,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  I  -->
             <TextBlock
@@ -660,6 +674,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  X  -->
             <TextBlock
@@ -693,6 +708,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  X  -->
             <TextBlock
@@ -719,6 +735,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Yaw  -->
             <TextBlock
@@ -752,6 +769,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Yaw  -->
             <TextBlock
@@ -778,6 +796,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  X  -->
             <TextBlock
@@ -805,6 +824,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Top  -->
             <TextBlock
@@ -850,6 +870,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  X0  -->
             <TextBlock
@@ -905,6 +926,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <ComboBox
                 Width="200"
@@ -921,6 +943,7 @@
             <TextBlock
                 VerticalAlignment="Top"
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <ListBox
                 Width="300"
@@ -955,6 +978,7 @@
             <TextBlock
                 VerticalAlignment="Top"
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <ListBox
                 Width="300"
@@ -988,6 +1012,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <ComboBox
                 Width="60"
@@ -995,7 +1020,7 @@
                 Padding="6,3,3,3"
                 VerticalAlignment="Center"
                 DisplayMemberPath="TagAscii"
-                ToolTip="{Binding SelectedGroup.TagAscii}"
+                ToolTip="{Binding SelectedGroup.Group}"
                 ItemsSource="{Binding Groups, Mode=OneTime}"
                 SelectedItem="{Binding SelectedGroup}" />
             <ComboBox
@@ -1090,6 +1115,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <ComboBox
                 VerticalAlignment="Center"
@@ -1112,6 +1138,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Salt  -->
             <TextBlock
@@ -1137,6 +1164,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Offset  -->
             <TextBlock
@@ -1317,6 +1345,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}"/>
             <TextBox
                 Style="{StaticResource FieldTextBoxStyle}"
@@ -1332,6 +1361,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Triangle Index  -->
             <TextBlock
@@ -1357,6 +1387,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  AddressU  -->
             <TextBlock
@@ -1389,6 +1420,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <!--  Filter Mode  -->
             <TextBlock
@@ -1420,6 +1452,7 @@
 
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
             <StackPanel Orientation="Vertical">
                 <StackPanel
@@ -1592,7 +1625,7 @@
     <!--  Inline Struct  -->
     <DataTemplate DataType="{x:Type fields:InlineStructField}">
         <Expander
-            MinWidth="250"
+            MinWidth="253"
             Header="{Binding}"
             IsExpanded="{Binding IsExpanded}"
             Style="{StaticResource ExpanderStyleBase}">
