@@ -230,10 +230,6 @@
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                             <Setter Property="Padding" Value="25,0,0,0" />
                         </Trigger>
-                        <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource TreeViewItemSelectionFill}" />
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <!-- <Setter TargetName="Hb" Property="Fill" Value="{DynamicResource MouseOver}" /> -->
                             <Setter Property="Foreground" Value="White" />
@@ -256,6 +252,14 @@
                                 <Condition Property="HasItems" Value="true"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="Foreground" Value="White"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasItems" Value="false"/>
+                                <Condition Property="IsSelected" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource TreeViewItemSelectionFill}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
