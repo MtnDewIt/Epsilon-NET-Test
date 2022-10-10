@@ -7,6 +7,7 @@ using Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Windows;
 
@@ -30,7 +31,10 @@ namespace Epsilon.Commands
 
         public async void ExecuteCommand(Command command)
         {
-            var filters = new List<string>();
+            var filters = new List<string>()
+            {
+                "Tag Cache (*.dat;*.map;*.pak)|*.dat;*.map;*.pak"
+            };
             var editorProviders = _editorService.EditorProviders.ToList();
             foreach (var provider in editorProviders)
             {
@@ -39,14 +43,32 @@ namespace Epsilon.Commands
             }
             var filterString = string.Join("|", filters.ToArray());
 
-            var dialog = new OpenFileDialog();
-            dialog.Filter = filterString;
+            var dialog = new OpenFileDialog
+            {
+                Filter = filterString
+            };
+
             if (dialog.ShowDialog() == false)
                 return;
 
-            var editorProviderIndex = dialog.FilterIndex - 1;
+            var editorProviderIndex = dialog.FilterIndex - 2;
+
             if (editorProviderIndex < 0)
-                return;
+            {
+                var ext = Path.GetExtension(dialog.FileName);
+                switch (ext)
+                {
+                    case ".dat":
+                    case ".map":
+                        editorProviderIndex = 0;
+                        break;
+                    case ".pak":
+                        editorProviderIndex = 1;
+                        break;
+                    default:
+                        return;
+                }
+            }
 
             var editorProvider = editorProviders[editorProviderIndex];
 
