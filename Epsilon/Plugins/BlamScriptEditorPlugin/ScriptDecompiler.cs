@@ -7,6 +7,7 @@ using TagTool.Scripting;
 using TagTool.Tags.Definitions;
 using System.CodeDom.Compiler;
 using System.Text;
+using System.Linq;
 
 namespace BlamScriptEditorPlugin
 {
@@ -37,9 +38,10 @@ namespace BlamScriptEditorPlugin
             // Export scenario script globals
             //
 
+            indentWriter.WriteLine("; Globals");
             foreach (var scriptGlobal in Definition.Globals)
             {
-                indentWriter.Write($"(global {GetHsTypeAsString(Cache.Version, scriptGlobal.Type).ToSnakeCase()} {scriptGlobal.Name}");
+                indentWriter.Write($"(global {GetHsTypeAsString(Cache.Version, scriptGlobal.Type).ToSnakeCase()} {scriptGlobal.Name} ");
 
                 var expr = Definition.ScriptExpressions[scriptGlobal.InitializationExpressionHandle.Index];
 
@@ -54,6 +56,7 @@ namespace BlamScriptEditorPlugin
             // Export scenario scripts
             //
 
+            indentWriter.WriteLine("; Scripts");
             foreach (var script in Definition.Scripts)
             {
                 indentWriter.Write($"(script {script.Type.ToString().ToSnakeCase()} {GetHsTypeAsString(Cache.Version, script.ReturnType).ToSnakeCase()} ");
@@ -79,9 +82,13 @@ namespace BlamScriptEditorPlugin
                     shouldSkip = true;
                 WriteExpression(expr, expr, scriptStringReader, indentWriter, shouldSkip);
 
-                indentWriter.WriteLine(')');
-
-                indentWriter.WriteLine();
+                if (script != Definition.Scripts.Last())
+                {
+                    indentWriter.WriteLine(')');
+                    indentWriter.WriteLine();
+                }
+                else
+                    indentWriter.Write(')');
             }
         }
         return Encoding.UTF8.GetString(scriptFileStream.ToArray());
@@ -116,18 +123,12 @@ namespace BlamScriptEditorPlugin
                 nextExprValid = GetHsTypeAsString(Cache.Version, Definition.ScriptExpressions[nextExpr].ValueType) != "Invalid";
 
             var valueType = GetHsTypeAsString(Cache.Version, expr.ValueType);
-
-            if (valueType != "FunctionName")
-                indentWriter.Write(" ");
-
             switch (valueType)
             {
                 case "FunctionName":
                     indentWriter.Write(expr.StringAddress == 0 ? OpcodeLookup(expr.Opcode) : ReadScriptString(stringReader, expr.StringAddress));
-                    if ((expr.Opcode == 0 || expr.Opcode == 1 || expr.Opcode == 22) && nextExprValid)
+                    if ((expr.Opcode == 0 || expr.Opcode == 1 || expr.Opcode == 22) && nextExprValid && parentExprk.Flags != HsSyntaxNodeFlags.ScriptReference)
                         indentWriter.WriteLine();
-                    else if (expr.Opcode < 19 && nextExprValid)
-                        indentWriter.Write(' ');
                     break; //Trust the string table, its faster than going through the dictionary with OpcodeLookup.
 
                 case "Boolean":
@@ -208,6 +209,8 @@ namespace BlamScriptEditorPlugin
                     break;
             }
 
+            if (nextExprValid && (parentExprk.Opcode != 0 || (parentExprk.Opcode == 0 && parentExprk.Flags == HsSyntaxNodeFlags.ScriptReference)) && parentExprk.Opcode != 1 && parentExprk.Opcode != 22)
+                indentWriter.Write(' ');
         }
 
         private void WriteGroupExpression(HsSyntaxNode parentExpr, HsSyntaxNode expr, BinaryReader stringReader, IndentedTextWriter indentWriter, bool shouldSkip)
@@ -232,8 +235,6 @@ namespace BlamScriptEditorPlugin
                     continue;
                 }
                 var nextExpr = Definition.ScriptExpressions[exprIndex];
-                if (prevExpr.Flags == HsSyntaxNodeFlags.GlobalsReference && (nextExpr.Flags == HsSyntaxNodeFlags.Group || nextExpr.Flags == HsSyntaxNodeFlags.ScriptReference))
-                    indentWriter.Write(' ');
                 WriteExpression(expr, nextExpr, stringReader, indentWriter, false);
                 prevExpr = nextExpr;
 
@@ -254,6 +255,12 @@ namespace BlamScriptEditorPlugin
 
         private void WriteExpression(HsSyntaxNode parentExpr, HsSyntaxNode expr, BinaryReader stringReader, IndentedTextWriter indentWriter, bool shouldSkip)
         {
+            var exprIndex = (ushort)(Definition.ScriptExpressions.IndexOf(expr));
+            var nextExpr = Definition.ScriptExpressions[exprIndex].NextExpressionHandle.Index;
+            var nextExprValid = false;
+            if (nextExpr < Definition.ScriptExpressions.Count)
+                nextExprValid = GetHsTypeAsString(Cache.Version, Definition.ScriptExpressions[nextExpr].ValueType) != "Invalid";
+
             switch (expr.Flags)
             {
                 case HsSyntaxNodeFlags.ScriptReference:
@@ -267,11 +274,10 @@ namespace BlamScriptEditorPlugin
 
                 case HsSyntaxNodeFlags.GlobalsReference:
                 case HsSyntaxNodeFlags.ParameterReference:
-                    if (parentExpr.Opcode > 19)
-                        indentWriter.Write(' ');
                     indentWriter.Write(expr.StringAddress == 0 ? "none" : ReadScriptString(stringReader, expr.StringAddress));
+                    if (nextExprValid)
+                        indentWriter.Write(' ');
                     break;
-
                 default:
                     indentWriter.Write($"<UNIMPLEMENTED EXPR: {expr.Flags.ToString()} {GetHsTypeAsString(Cache.Version, expr.ValueType)}>");
                     break;
