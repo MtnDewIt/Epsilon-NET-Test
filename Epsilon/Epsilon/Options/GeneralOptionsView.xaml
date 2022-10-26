@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <UserControl.Resources>
+        
         <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
@@ -12,28 +13,185 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
         <ControlTemplate x:Key="validationTemplate">
             <DockPanel>
                 <TextBlock Foreground="Red" FontSize="11">This is not a valid path to a tag cache.</TextBlock>
                 <AdornedElementPlaceholder/>
             </DockPanel>
         </ControlTemplate>
+
+        <DrawingImage x:Key="FolderClosed">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <DrawingGroup.Children>
+                        <GeometryDrawing
+                            Brush="#00FFFFFF"
+                            Geometry="F1M0,0L16,0 16,16 0,16z" />
+                        <GeometryDrawing
+                            Brush="#FFDBB679"
+                            Geometry="F1M2,3L8.374,3 8.874,4 2,4z M13.496,4L10,4 9.992,4 8.992,2 1.5,2C1.225,2,1,2.224,1,2.5L1,12.5C1,12.776,1.225,13,1.5,13L13.496,13C13.773,13,13.996,12.776,13.996,12.5L13.996,4.5C13.996,4.224,13.773,4,13.496,4" />
+                    </DrawingGroup.Children>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <Style x:Key="BrowseButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Width" Value="22"/>
+        </Style>
+
     </UserControl.Resources>
     
     <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+        
+        <!-- Startup Tag Cache -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="30">
             <TextBlock
-                Margin="4,4,10,4"
+                Margin="4,4,0,4"
                 Width="auto"
                 VerticalAlignment="Center"
-                Text="Default Tag Cache: "
+                Text="Startup Tag Cache: "
                 ToolTip="The cache file at this path will always open on Epsilon startup." />
-            <TextBox Validation.ErrorTemplate="{StaticResource validationTemplate}"
-                Style="{StaticResource textBoxInError}" Width="270" Background="#3e3e40" Foreground="#c8c8c8"
-                Text="{Binding DefaultCachePath, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                Margin="5" Padding="1,1,2,2"
-                VerticalAlignment="Center"
-                TextWrapping="NoWrap"/>
+
+            <TextBlock x:Name="DefaultCacheTextBlock"
+                       Width="250"
+                       TextTrimming="CharacterEllipsis"
+                       Focusable="False"
+                       Background="Transparent"
+                       Foreground="#c8c8c8"
+                       ToolTip="{Binding DefaultCachePath}"
+                       Text="{Binding DefaultCachePath, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                       Margin="5,5,0,5" Padding="1,1,2,2"
+                       VerticalAlignment="Center"
+                       TextWrapping="NoWrap"/>
+
+            <Button Name="DefaultCacheButton"
+                    Style="{StaticResource BrowseButtonStyle}"
+                    ToolTip="Browse for a default tag cache"
+                    Click="BrowseButtonClicked">
+                <Image Source="{StaticResource FolderClosed}"/>
+            </Button>
+
+            <Button Name="DefaultCacheClear"
+                    Style="{StaticResource BrowseButtonStyle}"
+                    ToolTip="Clear startup tag cache"
+                    Click="ClearFileClicked">
+                <TextBlock Text="X" FontFamily="Courier" Foreground="#999999" Margin="0" Padding="0"/>
+            </Button>
+
         </StackPanel>
+
+        <!-- Startup Mod Package -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30">
+            <TextBlock
+                Margin="4,4,0,4"
+                Width="auto"
+                VerticalAlignment="Center"
+                Text="Startup Mod Package: "
+                ToolTip="The mod package at this path will always open on Epsilon startup." />
+
+            <TextBlock x:Name="DefaultModPackageTextBlock"
+                       Width="237"
+                       TextTrimming="CharacterEllipsis"
+                       Focusable="False"
+                       Background="Transparent"
+                       Foreground="#c8c8c8"
+                       ToolTip="{Binding DefaultPakPath}"
+                       MaxWidth="253"
+                       Text="{Binding DefaultPakPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                       Margin="0" Padding="1,1,2,2"
+                       VerticalAlignment="Center"
+                       TextWrapping="NoWrap"/>
+
+            <Button Name="DefaultModPackageButton"
+                    Style="{StaticResource BrowseButtonStyle}"
+                    ToolTip="Browse for a default mod package"
+                    Click="BrowseButtonClicked">
+                <Image Source="{StaticResource FolderClosed}"/>
+            </Button>
+
+            <Button Name="DefaultPakClear"
+                    Style="{StaticResource BrowseButtonStyle}"
+                    ToolTip="Clear startup tag cache"
+                    Click="ClearFileClicked">
+                <TextBlock Text="X" FontFamily="Courier" Foreground="#999999" Margin="0" Padding="0"/>
+            </Button>
+            
+        </StackPanel>
+
+        <!-- Startup Window Location -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30">
+            <TextBlock
+                Margin="4,4,8,4"
+                Width="auto"
+                VerticalAlignment="Center"
+                Text="Window Startup Location: "
+                ToolTip="Epsilon will always open at this position onscreen." />
+
+            <TextBox x:Name="StartupLeftTextBox"
+                     Width="40"
+                     TextAlignment="Center"
+                     Text="{Binding StartupPositionLeft, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                     Margin="10,2,0,2"
+                     VerticalContentAlignment="Center"/>
+
+            <TextBox x:Name="StartupTopTextBox"
+                     Width="40"
+                     TextAlignment="Center"
+                     Text="{Binding StartupPositionTop, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                     Margin="10,2,0,2"
+                     VerticalContentAlignment="Center"/>
+            
+            <Button Name="SaveCurrentWindowPositionButton"
+                    Width="141"
+                    Padding="6,0"
+                    Margin="10,2,0,2"
+                    Content="Get Current Position"
+                    ToolTip="Get the current window position."
+                    Click="GetCurrentPositionClicked">
+            </Button>
+
+        </StackPanel>
+
+        <!-- Startup Dimensions -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30">
+            <TextBlock
+                    Margin="4,4,2,4"
+                    Width="auto"
+                    VerticalAlignment="Center"
+                    Text="Window Startup Dimensions: "
+                    ToolTip="Epsilon will always open with these dimensions." />
+
+            <TextBox x:Name="StartupHeightTextBox"
+                     Width="40"
+                     TextAlignment="Center"
+                     Text="{Binding StartupHeight, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                     Margin="0,2,0,2"
+                     VerticalContentAlignment="Center"/>
+
+            <TextBox x:Name="StartupWidthTextBox"
+                     Width="40"
+                     TextAlignment="Center"
+                     Text="{Binding StartupWidth, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
+                     Margin="10,2,0,2"
+                     VerticalContentAlignment="Center"/>
+
+            <Button Name="SaveCurrentDimensionsButton"
+                    Padding="6,0"
+                    Margin="10,2,0,2"
+                    Content="Get Current Dimensions"
+                    ToolTip="Get the current window dimensions."
+                    Click="GetCurrentDimensionsClicked">
+            </Button>
+
+        </StackPanel>
+        
     </StackPanel>
+    
 </UserControl>

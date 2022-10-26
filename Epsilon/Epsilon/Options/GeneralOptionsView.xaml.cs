@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using Microsoft.Win32;
+using System.ComponentModel.Composition;
 using System.Windows.Controls;
 
 namespace Epsilon.Options
@@ -10,6 +11,69 @@ namespace Epsilon.Options
         public GeneralOptionsView()
         {
             InitializeComponent();
+        }
+
+        private void BrowseButtonClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            string filter = "Default Cache (*.dat)|*.dat";
+            TextBlock textBlock = new TextBlock();
+
+            switch (((Button)sender).Name)
+            {
+                case "DefaultCacheButton":
+                    textBlock = DefaultCacheTextBlock;
+                    break;
+                case "DefaultModPackageButton":
+                    textBlock = DefaultModPackageTextBlock;
+                    filter = "Mod Package (*.pak)|*.pak";
+                    break;
+                default:
+                    break;
+            }
+
+            var dialog = new OpenFileDialog { Filter = filter };
+
+            if (dialog.ShowDialog() == false)
+                return;
+
+            textBlock.Text = dialog.FileName;
+        }
+
+        private void ClearFileClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            TextBlock textBlock = new TextBlock();
+
+            switch (((Button)sender).Name)
+            {
+                case "DefaultCacheClear":
+                    textBlock = DefaultCacheTextBlock;
+                    break;
+                case "DefaultPakClear":
+                    textBlock = DefaultModPackageTextBlock;
+                    break;
+                default:
+                    break;
+            }
+
+            textBlock.Text = "";
+        }
+
+        private void GetCurrentPositionClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            double left = System.Windows.Application.Current.MainWindow.Left;
+            double top = System.Windows.Application.Current.MainWindow.Top;
+
+            StartupLeftTextBox.Text = left.ToString();
+            StartupTopTextBox.Text = top.ToString();
+        }
+
+        private void GetCurrentDimensionsClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            double width = System.Windows.Application.Current.MainWindow.Width;
+            double height = System.Windows.Application.Current.MainWindow.Height;
+
+            StartupWidthTextBox.Text = width.ToString();
+            StartupHeightTextBox.Text = height.ToString();
         }
     }
 }

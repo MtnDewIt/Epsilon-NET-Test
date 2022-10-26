@@ -14,9 +14,11 @@
     <DockPanel>
         <!--  Toolbar  -->
         <Border
-            Padding="4,6,4,2"
+            Padding="5,4,4,3"
+            Margin="0"
             Background="Transparent"
-            BorderBrush="#333337"
+            BorderBrush="Black"
+            BorderThickness="0"
             DockPanel.Dock="Top"
             Style="{StaticResource ToolBarStyle}">
             <Grid DockPanel.Dock="Top">
@@ -26,51 +28,44 @@
                 </Grid.ColumnDefinitions>
 
                 <!--  Search  -->
-                <StackPanel
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="SearchBox"
+                
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+                    <TextBox x:Name="SearchBox"
                             Width="200"
                             VerticalAlignment="Center"
                             Tag="Search..."
-                            Margin="-2,1,2,0"
-                            Padding="1,0,0,0"
                             VerticalContentAlignment="Center"
                             Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.InputBindings>
-                                <KeyBinding
+                        <TextBox.InputBindings>
+                            <KeyBinding
                                     Key="Up"
                                     Command="{Binding SearchResults.PreviousCommand}" />
-                                <KeyBinding
+                            <KeyBinding
                                     Key="Down"
                                     Command="{Binding SearchResults.NextCommand}" />
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <ComboBox
-                            MinWidth="250"
-                            Margin="4,1,4,0"
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <ComboBox
+                            MinWidth="200"
+                            Margin="5,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             DisplayMemberPath="FieldName"
                             IsEnabled="{Binding SearchResults.HasResults, FallbackValue=False}"
                             ItemsSource="{Binding SearchResults.Results, Mode=OneWay}"
                             SelectedIndex="{Binding SearchResults.CurrentIndex, Mode=TwoWay}" />
-                    </StackPanel>
-
                 </StackPanel>
-
+                
                 <!--  Action Pane  -->
                 <StackPanel
                     Grid.Column="1"
-                    VerticalAlignment="Stretch"
+                    VerticalAlignment="Center"
                     Orientation="Horizontal">
 
                     <ComboBox
-                        MinWidth="45"
-                        MaxHeight="22"
-                        Margin="3,0,3,0"
+                        MinWidth="50"
+                        Margin="3,0"
+                        VerticalAlignment="Center"
                         DisplayMemberPath="DisplayName"
                         IsEnabled="{Binding RteHasTargets, FallbackValue=False}"
                         ItemsSource="{Binding RteTargetList}"
@@ -123,7 +118,6 @@
                                     ToolTip="Auto poke changes" />
                             </MenuItem>
                         </Menu>
-                        <Separator Margin="4,0,-3,0" />
                     </StackPanel>
 
                 </StackPanel>

@@ -11,6 +11,12 @@ namespace Epsilon.Options
         private readonly ISettingsCollection _settings;
         private string _defaultCachePath;
         private bool _defaultCachePathIsValid;
+        private string _defaultPakPath;
+        private bool _defaultPakPathIsValid;
+        private string _startupPositionLeft;
+        private string _startupPositionTop;
+        private string _startupWidth;
+        private string _startupHeight;
 
         [ImportingConstructor]
         public GeneralOptionsViewModel(ISettingsService settingsService) : base("General", "General")
@@ -23,25 +29,78 @@ namespace Epsilon.Options
             get => _defaultCachePath;
             set => SetOptionAndNotify(ref _defaultCachePath, value);
         }
-        public bool PathIsValid
+        public bool CachePathIsValid
         {
             get
             {
-                _defaultCachePathIsValid = File.Exists(@_defaultCachePath) && @_defaultCachePath.EndsWith(".dat");
+                _defaultCachePathIsValid = (File.Exists(@_defaultCachePath) && @_defaultCachePath.EndsWith(".dat") || @_defaultCachePath == "");
                 return _defaultCachePathIsValid;
             }
             set => SetOptionAndNotify(ref _defaultCachePathIsValid, value);
         }
 
+        public string DefaultPakPath
+        {
+            get => _defaultPakPath;
+            set => SetOptionAndNotify(ref _defaultPakPath, value);
+        }
+        public bool PakPathIsValid
+        {
+            get
+            {
+                _defaultPakPathIsValid = (File.Exists(@_defaultPakPath) && @_defaultPakPath.EndsWith(".pak") || @_defaultPakPath == "");
+                return _defaultPakPathIsValid;
+            }
+            set => SetOptionAndNotify(ref _defaultCachePathIsValid, value);
+        }
+
+        public string StartupPositionLeft
+        {
+            get => _startupPositionLeft;
+            set => SetOptionAndNotify(ref _startupPositionLeft, value);
+        }
+
+        public string StartupPositionTop
+        {
+            get => _startupPositionTop;
+            set => SetOptionAndNotify(ref _startupPositionTop, value);
+        }
+
+        public string StartupWidth
+        {
+            get => _startupWidth;
+            set => SetOptionAndNotify(ref _startupWidth, value);
+        }
+
+        public string StartupHeight
+        {
+            get => _startupHeight;
+            set => SetOptionAndNotify(ref _startupHeight, value);
+        }
+
         public override void Apply()
         {
-            if (PathIsValid)
+            if (CachePathIsValid)
                 _settings.Set(GeneralSettings.DefaultTagCacheSetting.Key, DefaultCachePath);
+            if (PakPathIsValid)
+                _settings.Set(GeneralSettings.DefaultPakSetting.Key, DefaultPakPath);
+
+            _settings.Set(GeneralSettings.StartupPositionLeftSetting.Key, StartupPositionLeft);
+            _settings.Set(GeneralSettings.StartupPositionTopSetting.Key, StartupPositionTop);
+
+            _settings.Set(GeneralSettings.StartupWidthSetting.Key, StartupHeight);
+            _settings.Set(GeneralSettings.StartupHeightSetting.Key, StartupWidth);
         }
 
         public override void Load()
         {
             DefaultCachePath = _settings.Get(GeneralSettings.DefaultTagCacheSetting.Key, "");
+            DefaultPakPath = _settings.Get(GeneralSettings.DefaultPakSetting.Key, "");
+            StartupPositionLeft = _settings.Get(GeneralSettings.StartupPositionLeftSetting.Key, "");
+            StartupPositionTop = _settings.Get(GeneralSettings.StartupPositionTopSetting.Key, "");
+            StartupWidth = _settings.Get(GeneralSettings.StartupWidthSetting.Key, "");
+            StartupHeight = _settings.Get(GeneralSettings.StartupHeightSetting.Key, "");
         }
     }
 }
+    

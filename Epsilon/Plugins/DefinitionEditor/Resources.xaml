@@ -1615,9 +1615,10 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
-    <!--  Struct  -->
+    <!--  Base Struct  -->
     <DataTemplate DataType="{x:Type fields:StructField}">
         <ListBox
+            Padding="8,4,0,4"
             ItemsSource="{Binding Fields}"
             Style="{StaticResource StructListBoxStyle}" />
     </DataTemplate>

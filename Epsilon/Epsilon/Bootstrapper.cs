@@ -26,6 +26,11 @@ namespace WpfApp20
         private IEditorService _editorService;
         private ISettingsCollection _settings;
         private string DefaultCachePath;
+        private string DefaultPakPath;
+        private double StartupPositionLeft;
+        private double StartupPositionTop;
+        private double StartupWidth;
+        private double StartupHeight;
 
         protected async override void Launch()
         {
@@ -49,12 +54,13 @@ namespace WpfApp20
 
             var providers = _editorService.EditorProviders.ToList();
 
-            if (DefaultCachePath != null && DefaultCachePath.Length > 0)
-            {
+            if (!string.IsNullOrWhiteSpace(DefaultCachePath))
                 OpenDefault(DefaultCachePath, providers.ElementAt(0));
-            }
 
             base.Launch();
+
+            if (!string.IsNullOrWhiteSpace(DefaultPakPath))
+                OpenDefault(DefaultPakPath, providers.ElementAt(1));
 
             PostLaunchInitShell();
         }
@@ -93,6 +99,7 @@ namespace WpfApp20
             _editorService = GetInstance<IEditorService>();
             _settings = GetInstance<ISettingsService>().GetCollection("General");
             DefaultCachePath = _settings.Get("DefaultTagCache", "");
+            DefaultPakPath = _settings.Get("DefaultModPackage", "");
 
             App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
             App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
@@ -109,6 +116,22 @@ namespace WpfApp20
                FrameworkPropertyMetadataOptions.AffectsMeasure |
                FrameworkPropertyMetadataOptions.AffectsRender |
                FrameworkPropertyMetadataOptions.Inherits));
+
+            double.TryParse(_settings.Get("StartupPositionLeft", ""), out StartupPositionLeft);
+            double.TryParse(_settings.Get("StartupPositionTop", ""), out StartupPositionTop);
+            if (StartupPositionLeft != 0 && StartupPositionTop != 0)
+            {
+                App.Current.MainWindow.Left = StartupPositionLeft;
+                App.Current.MainWindow.Top = StartupPositionTop;
+            }
+
+            double.TryParse(_settings.Get("StartupWidth", ""), out StartupWidth);
+            double.TryParse(_settings.Get("StartupHeight", ""), out StartupHeight);
+            if (StartupWidth > 281 && StartupHeight > 500)
+            {
+                App.Current.MainWindow.Width = StartupWidth;
+                App.Current.MainWindow.Height = StartupHeight;
+            }
         }
 
         private async void OpenDefault(string path, IEditorProvider editorProvider)
