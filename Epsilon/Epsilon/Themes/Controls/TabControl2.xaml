@@ -41,7 +41,7 @@
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 Panel.ZIndex="1"
-                                BorderBrush="#007ACC"
+                                BorderBrush="#2d2d30"
                                 BorderThickness="0,2,0,0">
                             <TabPanel Margin="0"
                                       IsItemsHost="true"
