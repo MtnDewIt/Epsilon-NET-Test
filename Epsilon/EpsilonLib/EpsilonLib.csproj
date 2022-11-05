@@ -77,6 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\DisabledPluginAttribute.cs" />
+    <Compile Include="Core\GlobalServiceProvider.cs" />
+    <Compile Include="Core\SessionStorage.cs" />
     <Compile Include="Menus\SimpleMenu.cs" />
     <Compile Include="Options\OptionPageBase.cs" />
     <Compile Include="Shell\ClipboardEx.cs" />

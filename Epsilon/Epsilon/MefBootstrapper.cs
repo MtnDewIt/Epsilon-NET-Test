@@ -1,4 +1,5 @@
 ﻿using Epsilon.Logging;
+using EpsilonLib.Core;
 using EpsilonLib.Logging;
 using Stylet;
 using System;
@@ -38,6 +39,7 @@ namespace WpfApp20
                 .OfType<ComposablePartCatalog>());
 
             _container = new CompositionContainer(catalog);
+            GlobalServiceProvider.Initialize(_container); // hurr durr service locator is an anti-pattern. fight me
 
             var batch = new CompositionBatch();
 
