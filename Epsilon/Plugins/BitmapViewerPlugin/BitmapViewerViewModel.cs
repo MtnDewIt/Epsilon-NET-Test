@@ -2,208 +2,185 @@
 using CacheEditor.TagEditing;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using TagTool.Bitmaps;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
+using static BitmapViewerPlugin.BitmapExtractionHelper;
 
 namespace BitmapViewerPlugin
 {
-
-    public partial class BitmapViewerViewModel : TagEditorPluginBase
+    public class BitmapViewerViewModel : TagEditorPluginBase
     {
-        public enum BitmapLoadState
+        public enum LoadStates
         {
             Success,
-            Loading,
-            Failed
+            Failed,
+            Loading
         }
 
-        private AsyncBitmapLoader _bitmapLoader;
-
+        private BitmapExtractionHelper _bitmapExtractor;
+        private BaseBitmap _cachedBaseBitmap;
+        private int _bitmapIndex;
+        private int _layerIndex;
         private int _mipmapLevel;
+        private BitmapSource _displayBitmap;
         private ObservableCollection<string> _bitmaps;
         private ObservableCollection<string> _layers;
         private ObservableCollection<string> _mipmapLevels;
-        private int _bitmapIndex;
-        private int _layerIndex;
         private string _format;
         private string _dimensions;
-        private BitmapSource _bitmapSource;
-        private BitmapLoadState _loadState = BitmapLoadState.Loading;
+        private CancellationTokenSource _loadCancelTokenSource = new CancellationTokenSource();
+        private LoadStates _loadingState;
+        private string _errorMessage;
+
+        public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, Bitmap definition)
+        {
+            _bitmapExtractor = new BitmapExtractionHelper(cacheFile, instance, definition);
+
+            PopulateBitmapList(definition);
+            LoadBitmapInBackground();
+        }
 
         public string Format
         {
-            get { return _format; }
-            set
-            {
-                _format = value;
-                NotifyOfPropertyChange();
-            }
+            get => _format;
+            set => SetAndNotify(ref _format, value);
         }
 
         public string Dimensions
         {
-            get { return _dimensions; }
-            set
-            {
-                _dimensions = value;
-                NotifyOfPropertyChange();
-            }
+            get => _dimensions;
+            set => SetAndNotify(ref _dimensions, value);
         }
 
         public ObservableCollection<string> Bitmaps
         {
-            get { return _bitmaps; }
-            set
-            {
-                _bitmaps = value;
-                NotifyOfPropertyChange();
-            }
+            get => _bitmaps;
+            set => SetAndNotify(ref _bitmaps, value);
         }
 
         public ObservableCollection<string> Layers
         {
-            get { return _layers; }
-            set
-            {
-                _layers = value;
-                NotifyOfPropertyChange();
-            }
+            get => _layers;
+            set => SetAndNotify(ref _layers, value);
         }
 
         public ObservableCollection<string> MipLevels
         {
-            get { return _mipmapLevels; }
-            set
-            {
-                _mipmapLevels = value;
-                NotifyOfPropertyChange();
-            }
+            get => _mipmapLevels;
+            set => SetAndNotify(ref _mipmapLevels, value);
         }
 
         public int BitmapIndex
         {
-            get { return _bitmapIndex; }
+            get => _bitmapIndex;
             set
             {
-                _bitmapIndex = value;
-                NotifyOfPropertyChange();
-                UpdateBitmapDisplay();
+                if (SetAndNotify(ref _bitmapIndex, value))
+                {
+                    _cachedBaseBitmap = null;
+                    _layerIndex = 0;
+                    _mipmapLevel = 0;
+                    LoadBitmapInBackground();
+
+                    NotifyOfPropertyChange(nameof(LayerIndex));
+                    NotifyOfPropertyChange(nameof(MipLevel));
+                }
             }
         }
 
         public int LayerIndex
         {
-            get { return _layerIndex; }
+            get => _layerIndex;
             set
             {
-                _layerIndex = value;
-                NotifyOfPropertyChange();
-                UpdateBitmapDisplay();
+                if (SetAndNotify(ref _layerIndex, value))
+                    LoadBitmapInBackground();
             }
         }
 
         public int MipLevel
         {
-            get { return _mipmapLevel; }
+            get => _mipmapLevel;
             set
             {
-                _mipmapLevel = value;
-                NotifyOfPropertyChange();
-                UpdateBitmapDisplay();
+                if (SetAndNotify(ref _mipmapLevel, value))
+                    LoadBitmapInBackground();
             }
         }
 
-        public BitmapSource BitmapSource
+        public BitmapSource DisplayBitmap
         {
-            get { return _bitmapSource; }
+            get => _displayBitmap;
+            set => SetAndNotify(ref _displayBitmap, value);
+        }
+
+        public LoadStates LoadingState
+        {
+            get => _loadingState;
             set
             {
-                _bitmapSource = value;
-                NotifyOfPropertyChange();
+                if (SetAndNotify(ref _loadingState, value))
+                    NotifyOfPropertyChange(nameof(IsLoaded));
             }
         }
 
-        public BitmapLoadState LoadState
+        public string ErrorMessage
         {
-            get { return _loadState; }
-            set
+            get => _errorMessage;
+            set => SetAndNotify(ref _errorMessage, value);
+        }
+
+        public bool IsLoaded => _loadingState != LoadStates.Loading;
+
+        private async void LoadBitmapInBackground()
+        {
+            _loadCancelTokenSource.Cancel();
+            _loadCancelTokenSource = new CancellationTokenSource();
+            CancellationToken cancelToken = _loadCancelTokenSource.Token;
+
+            try
             {
-                _loadState = value;
-                NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => IsLoaded);
-                NotifyOfPropertyChange(() => LoadingIndicatorVisibility);
+                LoadingState = LoadStates.Loading;
+
+                ExtractedBitmap data = await Task.Run(() =>
+                    _bitmapExtractor.GetBitmapData(_cachedBaseBitmap, BitmapIndex, LayerIndex, MipLevel));
+
+                if (!cancelToken.IsCancellationRequested)
+                {
+                    OnBitmapLoaded(data);
+                    LoadingState = LoadStates.Success;
+                }
             }
-        }
-
-        public bool IsLoaded
-            => LoadState == BitmapLoadState.Success;
-
-        public Visibility LoadingIndicatorVisibility
-            => LoadState == BitmapLoadState.Loading ? Visibility.Visible : Visibility.Collapsed;
-
-        public Task InitializeAsync(ICacheFile cacheFile, CachedTag tag, Bitmap bitmapGroup)
-        {
-            var newBitmaps = new ObservableCollection<string>();
-            for (int i = 0; i < bitmapGroup.Images.Count; i++)
-                newBitmaps.Add($"Bitmap: {i}");
-
-            Bitmaps = newBitmaps;
-            BitmapIndex = 0;
-
-            _bitmapLoader = new AsyncBitmapLoader(cacheFile, tag, bitmapGroup);
-            _bitmapLoader.BitmapLoadCompleted += _bitmapLoader_BitmapLoaded;
-            _bitmapLoader.BitmapLoadFailed += _bitmapLoader_BitmapLoadFailed;
-            _bitmapLoader.LoadBitmap(0, 0, 0);
-
-            return Task.CompletedTask;
-        }
-
-        private void _bitmapLoader_BitmapLoadFailed(string message)
-        {
-            LoadState = BitmapLoadState.Failed;
-        }
-
-        private void _bitmapLoader_BitmapLoaded(AsyncBitmapLoader.LoadResult result)
-        {
-            int mipmapCount = result.BaseBitmap.MipMapCount;
-            int layerCount = result.BaseBitmap.Type == BitmapType.CubeMap ? 6 : Math.Max(1, result.BaseBitmap.Depth);
-
-            if (result.BitmapDirty)
+            catch (Exception ex) when (!cancelToken.IsCancellationRequested)
             {
-                var newLayers = new ObservableCollection<string>();
-                for (int i = 0; i < layerCount; i++)
-                    newLayers.Add($"Layer: {i}");
-                Layers = newLayers;
-                LayerIndex = 0;
+                ErrorMessage = ex.ToString();
+                LoadingState = LoadStates.Failed;
             }
-
-            if (result.LayerDirty)
-            {
-                var newMipLevels = new ObservableCollection<string>();
-                for (int i = 0; i < mipmapCount; i++)
-                    newMipLevels.Add($"Level: {i}");
-                MipLevels = newMipLevels;
-                MipLevel = 0;
-            }
-
-            BitmapSource = new RawBitmapSource(result.MipData, result.MipWidth);
-            Dimensions = $"{result.MipWidth}x{result.MipHeight}";
-            Format = result.BaseBitmap.Format.ToString();
-            LoadState = BitmapLoadState.Success;
         }
 
-
-        private void UpdateBitmapDisplay()
+        private void OnBitmapLoaded(ExtractedBitmap bitmap)
         {
-            if (_bitmapLoader != null && BitmapIndex >= 0 && LayerIndex >= 0 && MipLevel >= 0)
-            {
-                LoadState = BitmapLoadState.Loading;
-                _bitmapLoader.LoadBitmap(BitmapIndex, LayerIndex, MipLevel);
-            }
+            _cachedBaseBitmap = bitmap.BaseBitmap;
+
+            DisplayBitmap = new RawBitmapSource(bitmap.MipData, bitmap.MipWidth);
+            Format = $"{_cachedBaseBitmap.Format}";
+            Dimensions = $"{bitmap.MipWidth}x{bitmap.MipHeight}";
+
+            int layerCount = _cachedBaseBitmap.Type == BitmapType.CubeMap ? 6 : _cachedBaseBitmap.Depth;
+            int mipLevelCount = _cachedBaseBitmap.MipMapCount;
+
+            Layers = new ObservableCollection<string>(Enumerable.Range(0, layerCount).Select((_, i) => $"Layer: {i}"));
+            MipLevels = new ObservableCollection<string>(Enumerable.Range(0, mipLevelCount).Select((_, i) => $"Level: {i}"));
+        }
+
+        private void PopulateBitmapList(Bitmap definition)
+        {
+            Bitmaps = new ObservableCollection<string>(Enumerable.Range(0, definition.Images.Count).Select((_, i) => $"Bitmap: {i}"));
         }
     }
 }

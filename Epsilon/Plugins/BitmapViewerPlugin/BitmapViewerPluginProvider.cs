@@ -26,8 +26,7 @@ namespace BitmapViewerPlugin
         public async Task<ITagEditorPlugin> CreateAsync(TagEditorContext context)
         {
             var definition = await context.DefinitionData as Bitmap;
-            var viewModel = new BitmapViewerViewModel();
-            await viewModel.InitializeAsync(context.CacheEditor.CacheFile, context.Instance, definition);
+            var viewModel = new BitmapViewerViewModel(context.CacheEditor.CacheFile, context.Instance, definition);
             return viewModel;
         }
 

@@ -27,21 +27,50 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border  Background="#252526"
-                 Grid.Row="1"
-                 MouseMove="Image_MouseMove">
-
+        <Border Background="#252526" Grid.Row="1" MouseMove="Image_MouseMove">
             <Grid>
+                <TextBlock Text="{Binding ErrorMessage}" Margin="4" FontSize="14" TextWrapping="Wrap">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding LoadingState}" Value="Failed">
+                                    <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-                <local:ZoomBorder x:Name="ZoomControl"
-                                  ClipToBounds="True">
-                    <Image ClipToBounds="True"
-                           x:Name="_image"
-                           Source="{Binding BitmapSource}"></Image>
+                <local:ZoomBorder x:Name="ZoomControl" ClipToBounds="True">
+                    <Image ClipToBounds="True" x:Name="_image" Source="{Binding DisplayBitmap}"
+                            RenderOptions.BitmapScalingMode="NearestNeighbor" ></Image>
+                    <local:ZoomBorder.Style>
+                        <Style>
+                            <Setter Property="FrameworkElement.Visibility" Value="Hidden" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding LoadingState}" Value="Success">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:ZoomBorder.Style>
                 </local:ZoomBorder>
-                <ProgressBar IsIndeterminate="True"
-                             VerticalAlignment="Top"
-                             Visibility="{Binding LoadingIndicatorVisibility}" />
+
+                <ProgressBar IsIndeterminate="True" VerticalAlignment="Top">
+                    <ProgressBar.Style>
+                        <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                            <Setter Property="FrameworkElement.Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding LoadingState}" Value="Loading">
+                                    <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
             </Grid>
         </Border>
 

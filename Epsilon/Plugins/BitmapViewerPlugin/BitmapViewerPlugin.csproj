@@ -54,7 +54,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncBitmapLoader.cs" />
+    <Compile Include="BitmapExtractionHelper.cs" />
     <Compile Include="BitmapViewerView.xaml.cs">
       <DependentUpon>BitmapViewerView.xaml</DependentUpon>
     </Compile>
