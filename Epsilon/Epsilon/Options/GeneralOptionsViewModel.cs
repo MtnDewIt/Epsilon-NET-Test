@@ -88,8 +88,8 @@ namespace Epsilon.Options
             _settings.Set(GeneralSettings.StartupPositionLeftSetting.Key, StartupPositionLeft);
             _settings.Set(GeneralSettings.StartupPositionTopSetting.Key, StartupPositionTop);
 
-            _settings.Set(GeneralSettings.StartupWidthSetting.Key, StartupHeight);
-            _settings.Set(GeneralSettings.StartupHeightSetting.Key, StartupWidth);
+            _settings.Set(GeneralSettings.StartupWidthSetting.Key, StartupWidth);
+            _settings.Set(GeneralSettings.StartupHeightSetting.Key, StartupHeight);
         }
 
         public override void Load()
