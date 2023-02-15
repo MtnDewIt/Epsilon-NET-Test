@@ -14,9 +14,9 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!--Margin="5"-->
-            <TextBlock Margin="5"
+            <TextBlock Padding="6,0,0,0"
                 VerticalAlignment="Center"
-                Foreground="Orange"
+                Foreground="Coral"
                 Text="WARNING: Tagtool support for scripts is very limited currently. Expect crashes and corruptions to occur." />
             <StackPanel
                 Grid.Column="1"
@@ -31,12 +31,15 @@
         </Grid>
         <!--Margin="2,0,0,0" Padding="2,2,0,0"-->
 
-        <TextBox
-            BorderThickness="0,1"
-            Padding="1,2,0,0"
-            Grid.Row="1"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"
-            Text="{Binding ScriptSourceCode}"
-            TextWrapping="Wrap" />
+        <TextBox x:Name="ScriptSourceTextBox"
+                 CommandManager.PreviewExecuted="ScriptSourceTextBox_PreviewExecuted"
+                 BorderThickness="0,1"
+                 Padding="3,3,0,0"
+                 Grid.Row="1"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding ScriptSourceCode, UpdateSourceTrigger=PropertyChanged}"
+                 KeyDown="ScriptKeyDownHandler"
+                 TextWrapping="Wrap" />
+        
     </Grid>
 </UserControl>
