@@ -78,7 +78,7 @@ namespace BlamScriptEditorPlugin
                     progress.Report("Compiling script...");
                     var cache = _cacheFile.Cache;
                     await CompileSourceCode(cache, _definition, ScriptSourceCode);
-                    progress.Report("Script Compiled");
+                    progress.Report("Script Compiled", true, 1);
                     await Task.Delay(TimeSpan.FromSeconds(2.5));
                 }
             }

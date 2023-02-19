@@ -28,7 +28,7 @@ namespace Shared
             _dispatcher.Invoke(() =>
             {
                 _statusBar.StatusText = statusText;
-                _statusBar.ProgressVisible = true;
+                _statusBar.ProgressVisible = (1 - completeFraction) > 0.001f;
                 _statusBar.ProgressIndeterminate = indeterminate;
                 _statusBar.ProgressPercent = (int)(completeFraction * 100);
             });
