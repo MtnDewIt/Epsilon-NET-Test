@@ -4,11 +4,13 @@ using EpsilonLib.Logging;
 using EpsilonLib.Shell;
 using Stylet;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using TagTool.Cache;
 
@@ -46,17 +48,8 @@ namespace CacheEditor
                 if (!provider.ValidForTag(context.CacheEditor.CacheFile, context.Instance))
                     continue;
 
-                var futurePlugin = provider.CreateAsync(context);
+                var futurePlugin = LoadPluginAsync(context, provider);
                 Items.Add(new TagEditorPluginTabViewModel(futurePlugin) { DisplayName = provider.DisplayName });
-
-                try
-                {
-                    (await futurePlugin).Client = this;
-                }
-                catch(Exception ex)
-                {
-                    Logger.Error($"failed to load tag editor plugin '{provider.DisplayName}'. Exception: {ex}");
-                }
             }
 
             // if a tab was opened previously and we have a tab with the same name, active that one.
@@ -67,6 +60,21 @@ namespace CacheEditor
 
             ActiveItem = tabToActivate;
             _pluginsLoaded = true;
+        }
+
+        private async Task<ITagEditorPlugin> LoadPluginAsync(TagEditorContext context, ITagEditorPluginProvider provider)
+        {
+            try
+            {
+                var plugin = await provider.CreateAsync(context);
+                plugin.Client = this;
+                return plugin;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"failed to load tag editor plugin '{provider.DisplayName}'. Exception: {ex}");
+                throw;
+            }
         }
 
         public void Close()

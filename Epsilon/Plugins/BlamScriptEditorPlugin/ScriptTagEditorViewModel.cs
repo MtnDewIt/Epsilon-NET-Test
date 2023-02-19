@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using TagTool.Cache;
 using TagTool.Scripting;
 using TagTool.Scripting.Compiler;
@@ -18,32 +19,43 @@ namespace BlamScriptEditorPlugin
         private readonly IShell _shell;
         private readonly ICacheFile _cacheFile;
         private Scenario _definition;
-        public string ScriptSourceCode { get; set; }
+        private string _scriptSourceCode;
+
+        public string ScriptSourceCode
+        {
+            get => _scriptSourceCode;
+            set => SetAndNotify(ref _scriptSourceCode, value);
+        }
 
         public ScriptTagEditorViewModel(IShell shell, ICacheFile cacheFile, Scenario definition)
         {
             _shell = shell;
             _cacheFile = cacheFile;
-            Load(cacheFile, definition);
+            _definition = definition;
         }
 
-        protected override void OnMessage(object sender, object message)
+        protected override async void OnMessage(object sender, object message)
         {
             if(message is DefinitionDataChangedEvent e)
             {
-                Load(_cacheFile, e.NewData as Scenario);
+                _definition = (Scenario)e.NewData;
+                Dispatcher.CurrentDispatcher.InvokeAsync(() => DecompileAsync());
             }
         }
 
-        private async void Load(ICacheFile cacheFile, Scenario definition)
+        public async Task LoadAsync()
         {
-            _definition = definition;
-            var decompiler = new ScriptDecompiler(cacheFile.Cache, definition);
+            await DecompileAsync();
+        }
+
+        private async Task DecompileAsync()
+        {
             try
             {
+                var decompiler = new ScriptDecompiler(_cacheFile.Cache, _definition);
                 ScriptSourceCode = await Task.Run(() =>
                 {
-                    using(var writer = new StringWriter())
+                    using (var writer = new StringWriter())
                     {
                         decompiler.DecompileScripts(writer);
                         return writer.ToString();

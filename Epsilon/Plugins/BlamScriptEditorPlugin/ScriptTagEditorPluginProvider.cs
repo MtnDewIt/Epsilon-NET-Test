@@ -26,7 +26,9 @@ namespace BlamScriptEditorPlugin
         public async Task<ITagEditorPlugin> CreateAsync(TagEditorContext context)
         {
             var definition = await context.DefinitionData as Scenario;
-            return await Task.Run(() => new ScriptTagEditorViewModel(_shell.Value, context.CacheEditor.CacheFile, definition));
+            var vm = new ScriptTagEditorViewModel(_shell.Value, context.CacheEditor.CacheFile, definition);
+            Task.Run(async () => await vm.LoadAsync());
+            return vm;
         }
 
         public bool ValidForTag(ICacheFile cache, CachedTag tag)
