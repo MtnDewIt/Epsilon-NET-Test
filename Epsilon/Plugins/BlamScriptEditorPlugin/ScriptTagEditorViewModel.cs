@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using TagTool.Cache;
+using TagTool.Scripting;
 using TagTool.Scripting.Compiler;
 using TagTool.Tags.Definitions;
 
@@ -40,7 +41,14 @@ namespace BlamScriptEditorPlugin
             var decompiler = new ScriptDecompiler(cacheFile.Cache, definition);
             try
             {
-                ScriptSourceCode = await Task.Run(() => decompiler.Decompile());
+                ScriptSourceCode = await Task.Run(() =>
+                {
+                    using(var writer = new StringWriter())
+                    {
+                        decompiler.DecompileScripts(writer);
+                        return writer.ToString();
+                    }
+                });
             }
             catch (Exception ex)
             {
