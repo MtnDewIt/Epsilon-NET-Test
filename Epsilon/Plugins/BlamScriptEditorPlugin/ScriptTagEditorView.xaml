@@ -2,7 +2,9 @@
     x:Class="BlamScriptEditorPlugin.ScriptTagEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:s="https://github.com/canton7/Stylet">
+    xmlns:s="https://github.com/canton7/Stylet"
+    xmlns:local="clr-namespace:BlamScriptEditorPlugin"
+    xmlns:AvalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -31,15 +33,21 @@
         </Grid>
         <!--Margin="2,0,0,0" Padding="2,2,0,0"-->
 
-        <TextBox x:Name="ScriptSourceTextBox"
-                 CommandManager.PreviewExecuted="ScriptSourceTextBox_PreviewExecuted"
-                 BorderThickness="0,1"
-                 Padding="3,3,0,0"
-                 Grid.Row="1"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 Text="{Binding ScriptSourceCode, UpdateSourceTrigger=PropertyChanged}"
-                 KeyDown="ScriptKeyDownHandler"
-                 TextWrapping="Wrap" />
+        <local:ScriptTextEditor
+                Grid.Row="1" Text="{Binding ScriptSourceCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                x:Name="ScriptSourceTextBox" Padding="0" BorderThickness="0" ShowLineNumbers="True" Background="#1e1e1e"
+                Foreground="#d4d4d4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                FontFamily="Consolas" FontSize="10pt" KeyDown="ScriptKeyDownHandler"
+                CommandManager.PreviewExecuted="ScriptSourceTextBox_PreviewExecuted" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <AvalonEdit:TextEditor.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="Cut" />
+                    <MenuItem Command="Copy" />
+                    <MenuItem Command="Paste" />
+                </ContextMenu>
+            </AvalonEdit:TextEditor.ContextMenu>
+        </local:ScriptTextEditor>
+       
         
     </Grid>
 </UserControl>
