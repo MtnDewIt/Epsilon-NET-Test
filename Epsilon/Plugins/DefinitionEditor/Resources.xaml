@@ -298,8 +298,8 @@
             <TextBox
                 Width="250"
                 Style="{StaticResource FieldTextBoxStyle}"
-                Text="{Binding Value, ValidatesOnExceptions=True}" />
-
+                ToolTip="{Binding UnicText, Mode=OneWay}"
+                Text="{Binding Value, ValidatesOnExceptions=True, Mode=TwoWay}" />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
                 Text="{Binding FieldTypeName}" />

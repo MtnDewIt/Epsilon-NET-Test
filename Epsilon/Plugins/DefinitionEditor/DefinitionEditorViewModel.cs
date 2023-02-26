@@ -3,6 +3,7 @@ using CacheEditor.RTE;
 using CacheEditor.RTE.UI;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
+using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
 using EpsilonLib.Menus;
 using EpsilonLib.Shell;
@@ -18,6 +19,12 @@ using System.Windows;
 using TagStructEditor.Fields;
 using TagStructEditor.Helpers;
 using TagTool.Cache;
+using TagTool.Common;
+using TagTool.Commands.Unicode;
+using TagTool.Commands.Common;
+using TagTool.Tags.Definitions;
+using CacheEditor.Views;
+using Microsoft.Xaml.Behaviors.Layout;
 
 namespace DefinitionEditor
 {
@@ -98,7 +105,18 @@ namespace DefinitionEditor
                                 command: new DelegateCommand(() => CopyFieldValue(vf)))
                         .Add(text: "Copy Offset",
                                 tooltip: "Copies the offset of this field",
-                                command: new DelegateCommand(() => CopyFieldOffset(vf)));       
+                                command: new DelegateCommand(() => CopyFieldOffset(vf)));
+
+                switch (field)
+                {
+                    case StringIdField stringid:
+                        {
+                            menu.Group("StringId").Add(text: "Edit Unicode String",
+                                tooltip: "Open a dialog to edit this StringID's string, if it exists.",
+                                command: new DelegateCommand(() => EditUnicString(stringid)));
+                            break;
+                        }
+                }
             }
 
 
@@ -384,5 +402,79 @@ namespace DefinitionEditor
                 set => SetAndNotify(ref _autopokeEnabled, value);
             }
         }
+
+        public bool BaseCacheModifyCheck(GameCache cache)
+        {
+            if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
+            {
+                var result = MessageBox.Show(
+                    "This action will modify your base cache. Are you sure you want to proceed?",
+                    "Warning",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.OK)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return true;
+        }
+
+        // field-specific methods and commands
+
+        private void EditUnicString(StringIdField stringid)
+        {
+            StringId id = _cacheFile.Cache.StringTable.GetStringId(stringid.Value);
+            stringid.UnicText = _cacheFile.Cache.StringTable.GetString(id);
+
+            using (var stream = _cacheFile.Cache.OpenCacheReadWrite())
+            {
+                LocalizedString locstr = null;
+                var unic = new MultilingualUnicodeStringList();
+
+                foreach (var unicTag in _cacheFile.Cache.TagCache.FindAllInGroup("unic"))
+                {
+                    unic = _cacheFile.Cache.Deserialize<MultilingualUnicodeStringList>(stream, unicTag);
+                    locstr = unic.Strings.SingleOrDefault(x => x.StringID == id);
+
+                    if (locstr != null)
+                    {
+                        var tempstring = unic.GetString(locstr, GameLanguage.English);
+                        tempstring = LocalizedStringPrinter.EncodeNonAsciiCharacters(unic.GetString(locstr, GameLanguage.English));
+                        stringid.UnicText = tempstring;
+
+                        var dialog = new InputDialogViewModel()
+                        {
+                            DisplayName = stringid.Value,
+                            Message = "Enter a new string for this StringID.",
+                            SubMessage = unicTag.ToString(),
+                            InputText = stringid.UnicText
+                        };
+
+                        if (_shell.ShowDialog(dialog) == true)
+                        {
+                            if (!BaseCacheModifyCheck(_cacheFile.Cache))
+                                return;
+
+                            var setstringcmd = new SetStringCommand(_cacheFile.Cache, unicTag, unic);
+                            bool success = (bool)setstringcmd.Execute(new List<string>() { "english", stringid.Value, dialog.InputText });
+
+                            if (success)
+                            {
+                                _cacheFile.Cache.Serialize(stream, unicTag, unic);
+                                _cacheFile.Cache.SaveStrings();
+                                stringid.UnicText = dialog.InputText;
+                            }
+                        }
+
+                        continue;
+                    }
+                }
+            }
+        }
+
+
     }
 }

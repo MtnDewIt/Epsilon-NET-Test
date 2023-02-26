@@ -249,14 +249,19 @@ namespace CacheEditor
         {
             if (TagTree.SelectedNode?.Tag is CachedTag tag)
             {
-                var vm = new RenameTagDialogViewModel();
-                vm.DisplayName = "Rename Tag";
-                vm.Message = "Enter the new name for the tag";
-                vm.Name = tag.Name;
+                var vm = new InputDialogViewModel()
+                {
+                    DisplayName = "Rename Tag",
+                    Message = "Enter a new name for this tag.",
+                    InputText = tag.Name
+                };
 
                 if (_shell.ShowDialog(vm) == true)
                 {
-                    _cacheFile.RenameTag(tag, vm.Name);
+                    if (!BaseCacheModifyCheck(_cacheFile.Cache))
+                        return;
+
+                    _cacheFile.RenameTag(tag, vm.InputText);
                     TagTree.Refresh();
                 }
             }
@@ -309,14 +314,17 @@ namespace CacheEditor
         {
             if (TagTree.SelectedNode?.Tag is CachedTag tag)
             {
-                var vm = new RenameTagDialogViewModel();
+                var vm = new InputDialogViewModel();
                 vm.DisplayName = "Duplicate Tag";
-                vm.Message = "Enter the name for the new tag";
-                vm.Name = tag.Name;
+                vm.Message = "Enter a name for the new tag.";
+                vm.InputText = tag.Name;
 
                 if (_shell.ShowDialog(vm) == true)
                 {
-                    _cacheFile.DuplicateTag(tag, vm.Name);
+                    if (!BaseCacheModifyCheck(_cacheFile.Cache))
+                        return;
+
+                    _cacheFile.DuplicateTag(tag, vm.InputText);
                     TagTree.Refresh();
                 }
             }
@@ -331,8 +339,12 @@ namespace CacheEditor
         {
             if (TagTree.SelectedNode?.Tag is CachedTag tag)
             {
+                if (!BaseCacheModifyCheck(_cacheFile.Cache))
+                    return;
+
                 var result = MessageBox.Show(
-                    $"Deleting tag '{Path.GetFileName(tag.Name)}.{tag.Group}'.\n\nClick OK to continue.",
+                    $"Are you sure you want to delete '{Path.GetFileName(tag.Name)}.{tag.Group}'?"
+                    + "\n\nClick OK to continue.",
                     "Warning", MessageBoxButton.OKCancel,
                     MessageBoxImage.Warning);
 
@@ -354,6 +366,25 @@ namespace CacheEditor
                     tagEditor.PostMessage(this, new DefinitionDataChangedEvent(data));
                 }
             }
+        }
+
+        public bool BaseCacheModifyCheck(GameCache cache)
+        {
+            if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
+            {
+                var result = MessageBox.Show(
+                    "This action will modify your base cache. Are you sure you want to proceed?",
+                    "Warning",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.OK)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return true;
         }
 
         #endregion

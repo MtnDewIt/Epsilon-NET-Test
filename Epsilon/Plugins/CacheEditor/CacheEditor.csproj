@@ -131,7 +131,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Dialogs\RenameTagDialogView.xaml">
+    <Page Include="Dialogs\InputDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -219,7 +219,7 @@
     <Compile Include="CacheEditorProvider.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Dialogs\BrowseTagDialogViewModel.cs" />
-    <Compile Include="Dialogs\RenameTagDialogViewModel.cs" />
+    <Compile Include="Dialogs\InputDialogViewModel.cs" />
     <Compile Include="Dialogs\BrowseTagDialogView.xaml.cs">
       <DependentUpon>BrowseTagDialogView.xaml</DependentUpon>
     </Compile>
@@ -240,8 +240,8 @@
     <Compile Include="Components\TagExplorer\TagExplorerViewModel.cs" />
     <Compile Include="TagEditing\TagEditorContext.cs" />
     <Compile Include="TagEditing\TagEditorPluginTabViewModel.cs" />
-    <Compile Include="Dialogs\RenameTagDialogView.xaml.cs">
-      <DependentUpon>RenameTagDialogView.xaml</DependentUpon>
+    <Compile Include="Dialogs\InputDialogView.xaml.cs">
+      <DependentUpon>InputDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TagEditing\TagEditorView.xaml.cs">
       <DependentUpon>TagEditorView.xaml</DependentUpon>

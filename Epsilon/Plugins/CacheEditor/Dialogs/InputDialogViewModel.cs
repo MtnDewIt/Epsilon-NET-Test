@@ -2,21 +2,28 @@
 
 namespace CacheEditor.ViewModels
 {
-    class RenameTagDialogViewModel : Screen
+    public class InputDialogViewModel : Screen
     {
-        private string _name;
+        private string _inputText;
         private string _message;
+        private string _subMessage;
 
-        public string Name
+        public string InputText
         {
-            get => _name;
-            set => SetAndNotify(ref _name, value);
+            get => _inputText;
+            set => SetAndNotify(ref _inputText, value);
         }
 
         public string Message
         {
             get => _message;
             set => SetAndNotify(ref _message, value);
+        }
+
+        public string SubMessage
+        {
+            get => _subMessage;
+            set => SetAndNotify(ref _subMessage, value);
         }
 
         public void Confirm()

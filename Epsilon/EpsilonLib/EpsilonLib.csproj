@@ -122,6 +122,7 @@
     <Compile Include="Shell\ShellProgressReporter.cs" />
     <Compile Include="Utils\VisualTreeHelpers.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\NullVisibilityConverter.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandAttributes.cs" />
     <Compile Include="Commands\CommandDefinition.cs" />

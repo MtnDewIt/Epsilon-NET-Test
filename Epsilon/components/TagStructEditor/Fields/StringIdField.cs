@@ -9,6 +9,7 @@ namespace TagStructEditor.Fields
         public readonly StringTable _stringTable;
 
         public string Value { get; set; }
+        public string UnicText { get; set; }
 
         public StringIdField(StringTable stringTable, ValueFieldInfo info) : base(info)
         {
@@ -26,7 +27,10 @@ namespace TagStructEditor.Fields
             if (stringId == StringId.Invalid)
                 Value = "";
             else
+            {
                 Value = _stringTable.GetString(stringId);
+                UnicText = null;
+            }
         }
 
         public void OnValueChanged()
