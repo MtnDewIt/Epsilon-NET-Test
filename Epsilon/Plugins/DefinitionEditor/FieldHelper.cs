@@ -24,6 +24,10 @@ namespace DefinitionEditor
 
                 f = f.Parent;
             }
+
+            if (field is TagFunctionField)
+                parts.Insert(0, "Data");
+
             return string.Join(".", parts.AsEnumerable().Reverse().Where(x => !string.IsNullOrEmpty(x)));
         }
 
@@ -64,6 +68,8 @@ namespace DefinitionEditor
                         return $"{argb.Alpha} {argb.Red} {argb.Green} {argb.Blue}";
                     case RealRgbColor realRgb:
                         return $"{realRgb.Red} {realRgb.Green} {realRgb.Blue}";
+                    case RealRgbaColor realRgba:
+                        return $"{realRgba.Red} {realRgba.Green} {realRgba.Blue} {realRgba.Alpha}";
                     case RealRectangle3d realRect3d:
                         return $"{realRect3d.X0} {realRect3d.X1} {realRect3d.Y0} {realRect3d.Y1} {realRect3d.Z0} {realRect3d.Z1}";
                     case Rectangle2d rect2d:
@@ -76,6 +82,8 @@ namespace DefinitionEditor
                         return $"{datumHandle.Salt} {datumHandle.Index}";
                     case StringId stringId:
                         return stringTable.GetString(stringId);
+                    case TagTool.Tags.TagFunction function:
+                        return FormatTagFunctionData(function);
                     default:
                         return $"{value}";
                 }
@@ -95,6 +103,15 @@ namespace DefinitionEditor
                         $"{matrix.m21} {matrix.m22} {matrix.m23}" +
                         $"{matrix.m31} {matrix.m32} {matrix.m33}" +
                         $"{matrix.m41} {matrix.m42} {matrix.m43}";
+                }
+
+                string FormatTagFunctionData(TagTool.Tags.TagFunction function)
+                {
+                    string valueString = "";
+                    foreach (var datum in function.Data)
+                        valueString += datum.ToString("X2");
+
+                    return valueString;
                 }
             }
         }
