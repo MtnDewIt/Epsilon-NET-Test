@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace EpsilonLib.Shell.TreeModels
 {
@@ -71,7 +72,9 @@ namespace EpsilonLib.Shell.TreeModels
         {
             SelectedNode = e.Node;
             NodeSelected?.Invoke(this, e);
-            NodeDoubleClicked?.Invoke(this, e);
+
+            if (Mouse.RightButton != MouseButtonState.Pressed)
+                NodeDoubleClicked?.Invoke(this, e);
         }
 
         public void SimulateDoubleClick(TreeNodeEventArgs e)
