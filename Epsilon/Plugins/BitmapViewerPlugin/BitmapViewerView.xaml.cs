@@ -54,7 +54,8 @@ namespace BitmapViewerPlugin
 
             bitmap.CopyPixels(rect, bytes, bytesPerPixel * bitmap.PixelWidth, 0);
 
-            color = Color.FromRgb(bytes[2], bytes[1], bytes[0]);
+            //color = Color.FromRgb(bytes[2], bytes[1], bytes[0]);
+            color = Color.FromArgb(bytes[3], bytes[2], bytes[1], bytes[0]);
 
             return color;
         }

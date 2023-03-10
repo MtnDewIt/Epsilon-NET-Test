@@ -10,6 +10,11 @@ namespace BitmapViewerPlugin
         private byte[] _buffer;
         private int _pixelWidth;
         private int _pixelHeight;
+        public bool channelR = true;
+        public bool channelG = true;
+        public bool channelB = true;
+        public bool channelA = true;
+        public bool linkColorChannels;
 
 
         public RawBitmapSource(byte[] buffer, int pixelWidth)
@@ -30,10 +35,22 @@ namespace BitmapViewerPlugin
                     for (int x = sourceRect.X; x < sourceRect.X + sourceRect.Width; x++)
                     {
                         byte* srcPtr = source + stride * y + 4 * x;
-                        *(dstPtr++) = (*(srcPtr + 0));
-                        *(dstPtr++) = (*(srcPtr + 1));
-                        *(dstPtr++) = (*(srcPtr + 2));
-                        *(dstPtr++) = 255; // ignore alpha for now until the decoders are fixed.
+
+                        //if (linkColorChannels)
+                        //{
+                        //    var singlecolor = (byte)(channelB ? (*(srcPtr + 0)) : 0);
+                        //
+                        //    *(dstPtr+1) = *(dstPtr+2) = *(dstPtr + 3) = singlecolor;
+                        //    *(dstPtr+4) = (byte)(channelA ? (*(srcPtr + 3)) : 255);
+                        //    dstPtr += 4;
+                        //    continue;
+                        //}
+
+                        *(dstPtr++) = (byte)(channelB ? (*(srcPtr + 0)) : 0);
+                        *(dstPtr++) = (byte)(channelG ? (*(srcPtr + 1)) : 0);
+                        *(dstPtr++) = (byte)(channelR ? (*(srcPtr + 2)) : 0);
+                        //*(dstPtr++) = 255; // ignore alpha for now until the decoders are fixed.
+                        *(dstPtr++) = (byte)(channelA ? (*(srcPtr + 3)) : 255);
                     }
                 }
             }

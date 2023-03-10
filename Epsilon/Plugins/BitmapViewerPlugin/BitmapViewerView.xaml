@@ -17,7 +17,24 @@
                     Value="4,0" />
             <Setter Property="VerticalAlignment"
                     Value="Center" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Background" Value="#007ACC"/>
+                    <Setter Property="BorderBrush" Value="#007ACC"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Foreground" Value="#C0C0C0"/>
+                    <Setter Property="Background" Value="#505050"/>
+                    <!--<Setter Property="BorderBrush" Value="Transparent"/>-->
+                </Trigger>
+            </Style.Triggers>
         </Style>
+        <DrawingBrush x:Key="Checkers" TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
+            <DrawingBrush.Drawing>
+                <GeometryDrawing Geometry="M0,0 H1 V1 H2 V2 H1 V1 H0Z" Brush="#20000000"/>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
     </UserControl.Resources>
 
     <Grid>
@@ -42,7 +59,7 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <local:ZoomBorder x:Name="ZoomControl" ClipToBounds="True">
+                <local:ZoomBorder x:Name="ZoomControl" ClipToBounds="True" Background="{StaticResource Checkers}">
                     <Image ClipToBounds="True" x:Name="_image" Source="{Binding DisplayBitmap}"
                             RenderOptions.BitmapScalingMode="NearestNeighbor" ></Image>
                     <local:ZoomBorder.Style>
@@ -108,20 +125,20 @@
                             Margin="4,0">
                     <ToggleButton x:Name="_toggleR"
                                   Content="R"
-                                  IsEnabled="False"
+                                  IsChecked="{Binding ChannelR}"
                                   Style="{StaticResource ComponentToggleButtonStyle}" />
                     <ToggleButton x:Name="_toggleG"
                                   Content="G"
-                                  IsEnabled="False"
+                                  IsChecked="{Binding ChannelG}"
                                   Style="{StaticResource ComponentToggleButtonStyle}" />
                     <ToggleButton x:Name="_toggleB"
                                   Content="B"
-                                  IsEnabled="False"
+                                  IsChecked="{Binding ChannelB}"
                                   Style="{StaticResource ComponentToggleButtonStyle}" />
                     <ToggleButton x:Name="_toggleA"
                                   Content="A"
-                                  Style="{StaticResource ComponentToggleButtonStyle}"
-                                  IsEnabled="False" />
+                                  IsChecked="{Binding ChannelA}"
+                                  Style="{StaticResource ComponentToggleButtonStyle}" />
                 </StackPanel>
 
             </Grid>

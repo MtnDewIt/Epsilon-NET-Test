@@ -36,6 +36,11 @@ namespace BitmapViewerPlugin
         private CancellationTokenSource _loadCancelTokenSource = new CancellationTokenSource();
         private LoadStates _loadingState;
         private string _errorMessage;
+        private bool _channelA = true;
+        private bool _channelR = true;
+        private bool _channelG = true;
+        private bool _channelB = true;
+        private bool _linkColorChannels;
 
         public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, Bitmap definition)
         {
@@ -113,6 +118,46 @@ namespace BitmapViewerPlugin
             }
         }
 
+        public bool ChannelA
+        {
+            get => _channelA;
+            set
+            {
+                if (SetAndNotify(ref _channelA, value))
+                    LoadBitmapInBackground();
+            }
+        }
+
+        public bool ChannelR
+        {
+            get => _channelR;
+            set
+            {
+                if (SetAndNotify(ref _channelR, value))
+                    LoadBitmapInBackground();
+            }
+        }
+
+        public bool ChannelG
+        {
+            get => _channelG;
+            set
+            {
+                if (SetAndNotify(ref _channelG, value))
+                    LoadBitmapInBackground();
+            }
+        }
+
+        public bool ChannelB
+        {
+            get => _channelB;
+            set
+            {
+                if (SetAndNotify(ref _channelB, value))
+                    LoadBitmapInBackground();
+            }
+        }
+
         public BitmapSource DisplayBitmap
         {
             get => _displayBitmap;
@@ -168,8 +213,14 @@ namespace BitmapViewerPlugin
             _cachedBaseBitmap = bitmap.BaseBitmap;
 
             DisplayBitmap = new RawBitmapSource(bitmap.MipData, bitmap.MipWidth);
-            Format = $"{_cachedBaseBitmap.Format}";
+            Format = $"{_cachedBaseBitmap.Format}".ToUpper();
             Dimensions = $"{bitmap.MipWidth}x{bitmap.MipHeight}";
+
+            ((RawBitmapSource)DisplayBitmap).channelR = _channelR;
+            ((RawBitmapSource)DisplayBitmap).channelG = _channelG;
+            ((RawBitmapSource)DisplayBitmap).channelB = _channelB;
+            ((RawBitmapSource)DisplayBitmap).channelA = _channelA;
+
 
             int layerCount = _cachedBaseBitmap.Type == BitmapType.CubeMap ? 6 : _cachedBaseBitmap.Depth;
             int mipLevelCount = _cachedBaseBitmap.MipMapCount;
