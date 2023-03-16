@@ -79,6 +79,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToVisibilityInverseConverter.cs" />
     <Compile Include="Core\DisabledPluginAttribute.cs" />
     <Compile Include="Core\GlobalServiceProvider.cs" />
     <Compile Include="Core\SessionStorage.cs" />

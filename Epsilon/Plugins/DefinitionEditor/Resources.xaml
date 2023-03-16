@@ -6,6 +6,7 @@
     xmlns:controls="clr-namespace:TagStructEditor.Controls;assembly=TagStructEditor"
     xmlns:converters="clr-namespace:TagStructEditor.Converters;assembly=TagStructEditor"
     xmlns:fields="clr-namespace:TagStructEditor.Fields;assembly=TagStructEditor"
+    xmlns:EpsilonConverters="clr-namespace:EpsilonLib.Converters;assembly=EpsilonLib"
     xmlns:local="clr-namespace:DefinitionEditor"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
@@ -571,37 +572,81 @@
     <DataTemplate DataType="{x:Type fields:RealQuaternionField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
-                Style="{StaticResource FieldLabelStyle}"
-                ToolTip="{Binding Name, Mode=OneTime}"
-                Text="{Binding Name, Mode=OneTime}" />
-            <!--  I  -->
-            <TextBlock
-                Style="{StaticResource InlineFieldLabelStyle}"
-                Text="I:" />
-            <TextBox
-                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
-                Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
-            <!--  J  -->
-            <TextBlock
-                Style="{StaticResource InlineFieldLabelStyle}"
-                Text="J:" />
-            <TextBox
-                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
-                Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
-            <!--  K  -->
-            <TextBlock
-                Style="{StaticResource InlineFieldLabelStyle}"
-                Text="K: " />
-            <TextBox
-                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
-                Text="{Binding K, StringFormat={StaticResource RealFormatString}}" />
-            <!--  W  -->
-            <TextBlock
-                Style="{StaticResource InlineFieldLabelStyle}"
-                Text="W: " />
-            <TextBox
-                Style="{StaticResource InlineFieldTextBoxFixedStyle}"
-                Text="{Binding W, StringFormat={StaticResource RealFormatString}}" />
+                    Style="{StaticResource FieldLabelStyle}"
+                    ToolTip="{Binding Name, Mode=OneTime}"
+                    Text="{Binding Name, Mode=OneTime}" />
+            <ToggleButton x:Name="SwitchViewButton"
+                      IsChecked="{Binding DegreeView, Mode=TwoWay}"
+                      ToolTip="Toggle display between degrees and real quaternion values.">
+                <ToggleButton.Style>
+                    <Style
+                        TargetType="{x:Type ToggleButton}"
+                        BasedOn="{StaticResource {x:Type ToggleButton}}">
+                        <Setter Property="Content" Value="Real QT:"/>
+                        <Setter Property="Background" Value="#333337" />
+                        <Setter Property="BorderBrush" Value="#434346" />
+                        <Setter Property="Padding" Value="4,2" />
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Content" Value="Degrees:"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <StackPanel
+                Orientation="Horizontal"
+                Visibility="{Binding DegreeView, Converter={EpsilonConverters:BoolToVisibilityConverter}}">
+                <TextBlock Width="auto"
+                    Style="{StaticResource InlineFieldLabelStyle}"
+                    Text="Roll " />
+                <TextBox Width="50"
+                    Style="{StaticResource InlineFieldTextBoxStyle}"
+                    Text="{Binding X}" />
+                <TextBlock Width="auto"
+                    Style="{StaticResource InlineFieldLabelStyle}"
+                    Text="Pitch " />
+                <TextBox Width="50"
+                    Style="{StaticResource InlineFieldTextBoxStyle}"
+                    Text="{Binding Y}" />
+                <TextBlock Width="auto"
+                    Style="{StaticResource InlineFieldLabelStyle}"
+                    Text="Yaw " />
+                <TextBox Width="50"
+                    Style="{StaticResource InlineFieldTextBoxStyle}"
+                    Text="{Binding Z}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Visibility="{Binding DegreeView, Converter={EpsilonConverters:BoolToVisibilityInverseConverter}}">
+                <!--  I  -->
+                <TextBlock Width="auto"
+                    Style="{StaticResource InlineFieldLabelStyle}"
+                    Text="I: " />
+                <TextBox
+                    Style="{StaticResource InlineFieldTextBoxFixedStyle}"
+                    Text="{Binding I, StringFormat={StaticResource RealFormatString}}" />
+                <!--  J  -->
+                <TextBlock Width="auto"
+                    Style="{StaticResource InlineFieldLabelStyle}"
+                    Text="J: " />
+                <TextBox
+                    Style="{StaticResource InlineFieldTextBoxFixedStyle}"
+                    Text="{Binding J, StringFormat={StaticResource RealFormatString}}" />
+                <!--  K  -->
+                <TextBlock Width="auto"
+                    Style="{StaticResource InlineFieldLabelStyle}"
+                    Text="K: " />
+                <TextBox
+                    Style="{StaticResource InlineFieldTextBoxFixedStyle}"
+                    Text="{Binding K, StringFormat={StaticResource RealFormatString}}" />
+                <!--  W  -->
+                <TextBlock Width="auto"
+                    Style="{StaticResource InlineFieldLabelStyle}"
+                    Text="W: " />
+                <TextBox
+                    Style="{StaticResource InlineFieldTextBoxFixedStyle}"
+                    Text="{Binding W, StringFormat={StaticResource RealFormatString}}" />
+            </StackPanel>
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
                 Text="{Binding FieldTypeName}" />
