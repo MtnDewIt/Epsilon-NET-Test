@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using TagStructEditor.Common;
 using TagTool.Cache;
+using TagTool.Tags.Definitions;
+using static TagTool.Tags.Definitions.Bitmap.Sequence;
 
 namespace TagStructEditor.Fields
 {
@@ -22,7 +24,9 @@ namespace TagStructEditor.Fields
         {
             _browseTagCallback = browseTagCallback;
 
-            Groups = tagList.Groups;
+            Groups = (info.Attribute.ValidTags == null) 
+                ? tagList.Groups 
+                : tagList.Groups.Where(x => info.Attribute.ValidTags.Contains(x.TagAscii));
 
             GotoCommand = new DelegateCommand(() => openTagCallback(SelectedInstance.Instance), () => SelectedInstance != null);
             NullCommand = new DelegateCommand(Null, () => SelectedGroup != null);
@@ -104,7 +108,11 @@ namespace TagStructEditor.Fields
             if (instance == null)
                 return;
 
-            SelectCachedTag(instance);
+            var group = ValidateTagGroup(instance.Group.ToString());
+            if (group != null)
+            {
+                SelectCachedTag(instance);
+            }
         }
 
         private void CopyTagName()
@@ -124,9 +132,57 @@ namespace TagStructEditor.Fields
                 return;
             else
             {
-                SelectedGroup = Groups.FirstOrDefault(item => ((TagTool.Cache.Gen3.TagGroupGen3)item.Group).Name == split.Last()) ?? SelectedGroup;
-                SelectedInstance = SelectedGroup.Instances.First(item => item.Name == split.First()) ?? SelectedInstance;
+                try
+                {
+                    var group = ValidateTagGroup(split.Last());
+                    if (group != null)
+                    {
+                        SelectedGroup = group;
+                        SelectedInstance = SelectedGroup.Instances.First(item => item.Name == split.First()) ?? SelectedInstance;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex is Exception)
+                        MessageBox.Show($"{Clipboard.GetText()} is not a valid tag name.", "Tag Not Found");
+                    else
+                        throw;
+                }
             }
+        }
+
+        public TagGroupItem ValidateTagGroup(string input)
+        {
+            // check long form
+            input = input.Trim();
+            TagGroupItem group = Groups.FirstOrDefault(item =>
+                ((TagTool.Cache.Gen3.TagGroupGen3)item.Group).Name == input);
+
+            // check abbreviations
+            if (group == null)
+            {
+                if (input.Length == 3)
+                    input += " ";
+
+                group = Groups.FirstOrDefault(item => item.TagAscii == input);
+            }
+
+            // alert if not found
+            if (group == null)
+            {
+                var validgroups = string.Join(", ", 
+                    Groups.Select(g => 
+                    ((TagTool.Cache.Gen3.TagGroupGen3)g.Group).Name + $" ({g.TagAscii})"));
+
+                if (Groups.Count() > 20)
+                    validgroups = "unspecified";
+
+                MessageBox.Show($"\'{input}\' is not a valid group for this tag reference."
+                    + $"\n\nValid tag groups: {validgroups}"
+                    , "Invalid Tag Group");
+            }
+
+            return group;
         }
 
         protected override void OnPopulateContextMenu(EMenu menu)

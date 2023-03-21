@@ -71,6 +71,7 @@ namespace TagStructEditor.Fields
                     ValueSetter = tagFieldInfo.SetValue,
                     Offset = tagFieldInfo.Offset,
                     ValueChanged = _config.ValueChanged,
+                    Attribute = attribute,
                     Length = attribute?.Length ?? 0
                 };
 

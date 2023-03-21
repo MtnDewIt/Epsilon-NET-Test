@@ -1,4 +1,5 @@
 ﻿using System;
+using TagTool.Tags;
 using static TagTool.Tags.TagFieldInfo;
 
 namespace TagStructEditor.Fields
@@ -17,6 +18,7 @@ namespace TagStructEditor.Fields
         public ValueSetter ValueSetter;
         public ValueGetter ValueGetter;
         public Action<ValueChangedEventArgs> ValueChanged;
+        public TagFieldAttribute Attribute;
     }
 
     [Flags]
