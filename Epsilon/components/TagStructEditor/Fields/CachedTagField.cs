@@ -26,7 +26,7 @@ namespace TagStructEditor.Fields
 
             Groups = (info.Attribute.ValidTags == null) 
                 ? tagList.Groups 
-                : tagList.Groups.Where(x => info.Attribute.ValidTags.Contains(x.TagAscii));
+                : GetValidGroups(info, tagList);
 
             GotoCommand = new DelegateCommand(() => openTagCallback(SelectedInstance.Instance), () => SelectedInstance != null);
             NullCommand = new DelegateCommand(Null, () => SelectedGroup != null);
@@ -34,6 +34,42 @@ namespace TagStructEditor.Fields
             CopyTagNameCommand = new DelegateCommand(CopyTagName, () => SelectedInstance != null);
             CopyTagIndexCommand = new DelegateCommand(CopyTagIndex, () => SelectedInstance != null);
             PasteTagNameCommand = new DelegateCommand(PasteTagName);
+        }
+
+        private IEnumerable<TagGroupItem> GetValidGroups(ValueFieldInfo info, TagList tagList )
+        {
+            var validTags = info.Attribute.ValidTags.ToList();
+            var parentTags = new string[] { "obje", "devi", "unit", "item", "rm  " };
+            var match = parentTags.FirstOrDefault(p => validTags.Contains(p));
+
+            if (!string.IsNullOrEmpty(match))
+            {
+                validTags.Remove(match);
+
+                switch(match)
+                {
+                    case "obje":
+                        validTags.AddRange( new string[] { "argd", "armr", "bipd", "bloc", 
+                            "cobj", "crea", "ctrl", "efsc", "gint", "mach", "proj", "scen", 
+                            "ssce", "term", "unit", "vehi", "weap"});
+                        break;
+                    case "rm  ":
+                        validTags.AddRange(new string[] { "rmbk", "rmcs", "rmct", "rmd ",
+                            "rmfl", "rmgl", "rmhg", "rmsh", "rmss", "rmtr", "rmw ", "rmzo" });
+                        break;
+                    case "devi":
+                        validTags.AddRange(new string[] { "argd", "ctrl", "mach", "term" });
+                        break;
+                    case "unit":
+                        validTags.AddRange(new string[] { "bipd", "gint", "vehi" });
+                        break;
+                    case "item":
+                        validTags.AddRange(new string[] { "eqip", "weap" }) ;
+                        break;
+                }
+            }
+
+            return tagList.Groups.Where(x => validTags.Contains(x.TagAscii));
         }
 
         public IEnumerable<TagGroupItem> Groups { get; set; }
