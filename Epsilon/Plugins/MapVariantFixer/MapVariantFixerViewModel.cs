@@ -26,6 +26,10 @@ namespace MapVariantFixer
         private string _output;
         private bool _inProgress;
         private Dictionary<int, string> _061_TagRemapping;
+        private readonly Dictionary<string, string> ObjeRenames = new Dictionary<string, string>()
+        {
+            { "objects\\equipment\\instantcover_equipment\\instantcover_equipment.eqip", "objects\\equipment\\instantcover_equipment\\instantcover_equipment_mp.eqip" }
+        };
 
         public MapVariantFixerViewModel(IShell shell, ICacheFile cacheFile)
         {
@@ -146,18 +150,21 @@ namespace MapVariantFixer
                     else
                     {
                         string newName = "";
+
                         if (name.StartsWith("ms30"))
-                        {
                             newName = name.Substring(5);
-                        }
                         else
-                        {
                             newName = $"ms30\\{name}";
-                        }
+                        
                         if (baseCache.TagCache.TryGetTag(newName, out tag))
                         {
                             blf.MapVariantTagNames.Names[i].Name = newName;
                             WriteLog($"Fixed name '{newName}'");
+                        }
+                        else if (ObjeRenames.TryGetValue(name, out var reName))
+                        {
+                            blf.MapVariantTagNames.Names[i].Name = reName;
+                            WriteLog($"Fixed name '{reName}'");
                         }
                         else
                         {
