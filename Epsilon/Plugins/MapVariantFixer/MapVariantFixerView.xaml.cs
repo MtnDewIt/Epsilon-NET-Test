@@ -42,6 +42,8 @@ namespace MapVariantFixer
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 (this.DataContext as MapVariantFixerViewModel).AddFiles(files);
             }
+
+            e.Handled = true;
         }
     }
 }

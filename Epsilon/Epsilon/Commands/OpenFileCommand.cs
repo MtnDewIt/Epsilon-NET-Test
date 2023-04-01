@@ -80,7 +80,7 @@ namespace Epsilon.Commands
             }
             catch(Exception ex)
             {
-                MessageBox.Show("An error occured while opening the file. Check the log for details", "Error", MessageBoxButton.OK,  MessageBoxImage.Error);
+                MessageBox.Show("An error occurred while opening the file. Check the log for details.", "Error", MessageBoxButton.OK,  MessageBoxImage.Error);
                 Logger.Error(ex.ToString());
             }
         }

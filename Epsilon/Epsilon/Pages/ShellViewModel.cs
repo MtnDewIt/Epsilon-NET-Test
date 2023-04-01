@@ -112,13 +112,14 @@ namespace Epsilon.Pages
         {
             var file = files[0];
 
+
             try
             {
                 await _editorService.Value.OpenFileAsync(file);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occured while opening the file. Check the log for details", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("An error occurred while opening the file. Check the log for details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Logger.Error(ex.ToString());
             }
         }
