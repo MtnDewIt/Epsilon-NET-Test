@@ -24,7 +24,7 @@ namespace TagStructEditor.Fields
         {
             _browseTagCallback = browseTagCallback;
 
-            Groups = (info.Attribute.ValidTags == null) 
+            Groups = (info.Attribute?.ValidTags == null) 
                 ? tagList.Groups 
                 : GetValidGroups(info, tagList);
 
