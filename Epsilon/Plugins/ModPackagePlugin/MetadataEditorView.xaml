@@ -6,65 +6,107 @@
     BorderBrush="#3F3F46"
     BorderThickness="1"
     Foreground="#f1f1f1">
+
+    <UserControl.Resources>
+
+        <Style TargetType="{x:Type DockPanel}">
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
+            TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type TextBox}}"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="#DCDCDC"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="1,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+    </UserControl.Resources>
+    
     <Grid>
-        <StackPanel>
-            <TextBlock
-                Margin="0,2"
-                Text="Version" />
-            <StackPanel
-                Margin="0,2"
-                Orientation="Horizontal">
-                <TextBlock
-                    VerticalAlignment="Center"
-                    Text="Major: " />
+        <StackPanel Orientation="Vertical" Margin="4">
+
+            <DockPanel>
+                <TextBlock Text="Name" />
                 <TextBox
-                    Width="40"
-                    Margin="2,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="{Binding Metadata.VersionMajor, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock
-                    Margin="4,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="Minor: " />
+                    MaxLength="31"
+                    Text="{Binding Metadata.Name, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <DockPanel>
+                <TextBlock Text="Author" />
                 <TextBox
-                    Width="40"
-                    Margin="2,0,0,0"
-                    VerticalAlignment="Center"
-                    Text="{Binding Metadata.VersionMinor, UpdateSourceTrigger=PropertyChanged}" />
-            </StackPanel>
-            <TextBlock
-                Margin="0,2"
-                Text="Name" />
-            <TextBox
-                Margin="0,2"
-                MaxLength="31"
-                Text="{Binding Metadata.Name, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock
-                Margin="0,2"
-                Text="Author" />
-            <TextBox
-                Margin="0,2"
                 MaxLength="31"
                 Text="{Binding Metadata.Author, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
 
-            <TextBlock
-                Margin="0,2"
-                Text="Description" />
+
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="Version" />
+                <TextBox
+                    MinWidth="10"
+                    Padding="0"
+                    BorderThickness="1,1,0,1"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Text="{Binding Metadata.VersionMajor, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    BorderThickness="0,1"
+                    Padding="0" Margin="-2,0,-4,0"
+                    Focusable="False"
+                    Text="." />
+                <TextBox
+                    MinWidth="20"
+                    Padding="0"
+                    BorderThickness="0,1,1,1"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Left"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Text="{Binding Metadata.VersionMinor, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <DockPanel Margin="0,6">
+                <TextBlock Text="Modes" VerticalAlignment="Top"/>
+                <StackPanel Orientation="Vertical" Margin="0,2,0,0">
+                    <CheckBox Content="Main Menu" IsChecked="{Binding Metadata.MainMenu}" />
+                    <CheckBox Content="Multiplayer" IsChecked="{Binding Metadata.Multiplayer}" />
+                    <CheckBox Content="Campaign" IsChecked="{Binding Metadata.Campaign}" />
+                    <CheckBox Content="Firefight" IsChecked="{Binding Metadata.Firefight}" />
+                </StackPanel>
+            </DockPanel>
+
+            <DockPanel Margin="0,6">
+                <TextBlock Text="Other Flags" VerticalAlignment="Top"/>
+                <StackPanel Orientation="Vertical" Margin="0,2,0,0">
+                    <CheckBox Content="Has Customizable Characters" IsChecked="{Binding Metadata.Character}" />
+                </StackPanel>
+            </DockPanel>
+
+            <TextBlock Text="Description" />
             <TextBox
                 Height="100"
-                Margin="0,2"
                 MaxLength="511"
                 MaxLines="4"
+                Padding="1"
                 Text="{Binding Metadata.Description, UpdateSourceTrigger=PropertyChanged}"
+                VerticalContentAlignment="Top"
                 TextWrapping="Wrap" />
-            <TextBlock
-                Margin="0,2"
-                Text="Website" />
+
+            <TextBlock Text="Website" />
             <TextBox
-                Margin="0,2"
                 MaxLength="511"
                 Text="{Binding Metadata.Website, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
 
+        </StackPanel>
     </Grid>
 </UserControl>

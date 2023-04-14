@@ -54,6 +54,9 @@ namespace ModPackagePlugin.Commands
         private async Task<GameCacheModPackage> CreateModPackageCacheAsync(GameCacheHaloOnline baseCache, FileInfo file, IProgressReporter progress)
         {
             GameCacheModPackage modCache = await Task.Run(() => CreateAndInitializePackage(baseCache, progress));
+            
+            modCache.BaseModPackage.Metadata.Name = file.Name.Split('.')[0];
+            modCache.BaseModPackage.Header.ModifierFlags |= ModifierFlags.multiplayer;
 
             progress.Report("Creating package file...");
             await Task.Run(() => modCache.SaveModPackage(file));

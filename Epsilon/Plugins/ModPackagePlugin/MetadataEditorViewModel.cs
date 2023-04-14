@@ -13,7 +13,7 @@ namespace ModPackagePlugin
             PreferredLocation = EpsilonLib.Shell.PaneLocation.Right;
             PreferredWidth = 420;
             Name = ToolName;
-            Metadata = new MetadataModel(package.Metadata);
+            Metadata = new MetadataModel(package.Metadata, package.Header);
             IsVisible = true;
         }
 
