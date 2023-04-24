@@ -301,6 +301,18 @@
                 Style="{StaticResource FieldTextBoxStyle}"
                 ToolTip="{Binding UnicText, Mode=OneWay}"
                 Text="{Binding Value, ValidatesOnExceptions=True, Mode=TwoWay}" />
+            <Button
+                Width="23"
+                Height="23"
+                Margin="4,0,0,0"
+                Padding="4,0,4,0"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                Command="{Binding AddStringIDCommand}"
+                FontSize="14"
+                FontFamily="Segoe UI"
+                Content="+"
+                ToolTip="StringID could not be found; click to create it." />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
                 Text="{Binding FieldTypeName}" />
