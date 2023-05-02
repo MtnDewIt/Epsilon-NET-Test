@@ -29,7 +29,7 @@
 
         <!-- #region ====================== Mod List Region ====================== -->
 
-        <ListBox x:Name="ModsListBox" Grid.Row="1" Grid.Column="0" Padding="5"
+        <ListBox x:Name="ModsListBox" Grid.Row="1" Grid.Column="0" Padding="5" BorderBrush="Black"
                  Height="auto" Margin="5,0,0,0" Focusable="True"
                  ItemsSource="{Binding CurrentModList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  SelectionChanged="ModsListBox_SelectionChanged">
@@ -52,8 +52,8 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBox x:Name="ModLinkTextBox" Text="{Binding Link}" Width="250" Margin="5,0,0,0" TextWrapping="Wrap"
-                                 Foreground="#909498" Background="Transparent" Tag="Paste link here...">
+                        <TextBox x:Name="ModLinkTextBox" Text="{Binding Link}" Width="300" Margin="2,0,0,0" TextWrapping="Wrap"
+                                 Foreground="#A0A4A8" Background="Transparent" Tag="Paste link here...">
                             <TextBox.Style>
                                 <Style>
                                     <Setter Property="TextBox.Background" Value="Transparent" />
@@ -124,8 +124,8 @@
 
         <!-- #region ====================== Gametype List Region ====================== -->
 
-        <ListBox x:Name="TypesListBox" Grid.Row="1" Grid.Column="2"
-                 Height="auto" Margin="0,0,0,0" Focusable="True"
+        <ListBox x:Name="TypesListBox" Grid.Row="1" Grid.Column="2" BorderBrush="Black" Padding="5"
+                 Height="auto" Margin="4,0,0,0" Focusable="True"
                  SelectionChanged="TypesListBox_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -212,19 +212,19 @@
 
         <!-- #region ====================== Gametype Properties Region ====================== -->
 
-        <Border BorderBrush="#3F3F46" BorderThickness="1" Width="400" Grid.Column="3" Grid.Row="1" VerticalAlignment="Stretch"
-                Background="#222222" HorizontalAlignment="Left" Padding="15,5,10,0">
+        <Border BorderBrush="Black" BorderThickness="1" Width="400" Grid.Column="3" Grid.Row="1" VerticalAlignment="Stretch"
+                Background="#222222" HorizontalAlignment="Left" Padding="15,5,10,0" Margin="4,0,0,0">
             <ItemsControl>
                 <Grid Name="TypeDataGrid" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="34" />
-                        <RowDefinition Height="34" />
-                        <RowDefinition Height="34" />
-                        <RowDefinition Height="34" />
-                        <RowDefinition Height="100" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="32" />
+                        <RowDefinition Height="110" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="30" />
+                        <RowDefinition Height="32" />
                     </Grid.RowDefinitions>
 
                     <StackPanel x:Name="TypeStack" Grid.Row="0" Margin="0" VerticalAlignment="Bottom" Orientation="Horizontal">
@@ -260,7 +260,7 @@
 
                     <StackPanel x:Name="CommandStack" Grid.Row="4" Height="auto" Margin="0" VerticalAlignment="Top" Orientation="Horizontal">
                         <TextBlock Width="150" Text="Commands" Padding="0,16,0,0" TextAlignment="Left"/>
-                        <ListBox x:Name="CommandListBox" Height="90" Width="215" Margin="0,10,0,0"
+                        <ListBox x:Name="CommandListBox" Height="100" Width="215" Margin="0,10,0,0"
                                  ItemsSource="{Binding Commands, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  SnapsToDevicePixels="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                             <ListBox.ItemContainerStyle>
@@ -342,7 +342,7 @@
 
                                         <TextBox Grid.Column="0" Text="{Binding DisplayName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Tag="Display Name"/>
-                                        <TextBlock Grid.Column="1" Text=" | " FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                        <TextBlock Grid.Column="1" Text="|" Foreground="#606060" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         <TextBox Grid.Column="2" Text="{Binding MapFileName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  VerticalContentAlignment="Center" HorizontalAlignment="Right" MinWidth="22" Tag="File Name "/>
                                     </Grid>
