@@ -111,6 +111,9 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       base.OnMouseRightButtonDown( e );
 
+      if (!(e.OriginalSource is Visual))
+        return;
+
       var parentDockingManager = ( ( Visual )e.OriginalSource ).FindVisualAncestor<DockingManager>();
       if( ( this.Model != null ) && ( this.Model.Root != null ) && ( this.Model.Root.Manager != null )
           && this.Model.Root.Manager.Equals( parentDockingManager ) )
