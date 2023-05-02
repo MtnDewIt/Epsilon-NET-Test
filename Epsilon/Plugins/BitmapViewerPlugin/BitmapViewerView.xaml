@@ -154,30 +154,46 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="120" />
                             <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="250" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="150" />
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem Grid.Column="0">
-                <TextBlock>
-                    <Run Text="Format:" />
-                    <Run Text="{Binding Format, Mode=OneWay}" />
-                </TextBlock>
+                <DockPanel>
+                    <TextBlock Foreground="DarkGray" Text="Format"/>
+                    <TextBlock Padding="5,0" Text="{Binding Format, Mode=OneWay}"/>
+                </DockPanel>
             </StatusBarItem>
             <StatusBarItem  Grid.Column="1">
-                <TextBlock>
-                    <Run Text="Size:" />
-                    <Run Text="{Binding Dimensions, Mode=OneWay}" />
-                </TextBlock>
+                <DockPanel>
+                    <TextBlock Foreground="DarkGray" Text="Mipsize"/>
+                    <TextBlock Padding="5,0" Text="{Binding Dimensions, Mode=OneWay}"/>
+                </DockPanel>
             </StatusBarItem>
             <StatusBarItem Grid.Column="2">
                 <TextBlock x:Name="_cursorPos" />
             </StatusBarItem>
             <StatusBarItem Grid.Column="3">
                 <TextBlock x:Name="_color" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="4" HorizontalAlignment="Right">
+                <DockPanel HorizontalAlignment="Right">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        TextAlignment="Left"
+                        Foreground="DarkGray"
+                        Text="Resource Size"/>
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        TextAlignment="Right"
+                        Padding="5,0,0,0"
+                        Width="auto"
+                        Text="{Binding ResourceSize, Mode=OneWay}"/>
+                </DockPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>

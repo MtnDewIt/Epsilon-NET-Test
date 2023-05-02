@@ -33,6 +33,7 @@ namespace BitmapViewerPlugin
         private ObservableCollection<string> _mipmapLevels;
         private string _format;
         private string _dimensions;
+        private string _resourceSize;
         private CancellationTokenSource _loadCancelTokenSource = new CancellationTokenSource();
         private LoadStates _loadingState;
         private string _errorMessage;
@@ -60,6 +61,12 @@ namespace BitmapViewerPlugin
         {
             get => _dimensions;
             set => SetAndNotify(ref _dimensions, value);
+        }
+
+        public string ResourceSize
+        {
+            get => _resourceSize;
+            set => SetAndNotify(ref _resourceSize, value);
         }
 
         public ObservableCollection<string> Bitmaps
@@ -215,6 +222,7 @@ namespace BitmapViewerPlugin
             DisplayBitmap = new RawBitmapSource(bitmap.MipData, bitmap.MipWidth);
             Format = $"{_cachedBaseBitmap.Format}".ToUpper();
             Dimensions = $"{bitmap.MipWidth}x{bitmap.MipHeight}";
+            ResourceSize = FormatResourceSize(bitmap.BaseBitmap.Data.Length);
 
             ((RawBitmapSource)DisplayBitmap).channelR = _channelR;
             ((RawBitmapSource)DisplayBitmap).channelG = _channelG;
@@ -227,6 +235,28 @@ namespace BitmapViewerPlugin
 
             Layers = new ObservableCollection<string>(Enumerable.Range(0, layerCount).Select((_, i) => $"Layer: {i}"));
             MipLevels = new ObservableCollection<string>(Enumerable.Range(0, mipLevelCount).Select((_, i) => $"Level: {i}"));
+        }
+
+        private string FormatResourceSize(float length)
+        {
+            string units;
+
+            if (length < 1024) // arbitrary
+                units = "bytes";
+            else
+            {
+                length /= 1024;
+                units = "KB";
+
+                if (length > 1024)
+                {
+                    length /= 1024;
+                    units = "MB";
+                }
+            }
+
+            length = (float)Math.Round(length, 1);
+            return $"{length} {units}";
         }
 
         private void PopulateBitmapList(Bitmap definition)
