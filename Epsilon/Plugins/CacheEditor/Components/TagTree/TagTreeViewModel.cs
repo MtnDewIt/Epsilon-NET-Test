@@ -7,6 +7,7 @@ using EpsilonLib.Shell;
 using EpsilonLib.Shell.Commands;
 using EpsilonLib.Shell.TreeModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -106,11 +107,27 @@ namespace CacheEditor.Components.TagTree
             }
         }
 
-        public new void Refresh()
+        public new void Refresh(bool retainState = false)
         {
+            var expandedNodes = new List<string>();
+            if (retainState)
+                expandedNodes = GetExpandedNodeNames();
+
             SelectedNode = null;
             var view = CreateView(_viewMode).BuildTree(_cacheFile.Cache, FilterTag);
             Nodes = new ObservableCollection<ITreeNode>(view);
+
+            if (retainState)
+            {
+                foreach (var node in Nodes)
+                {
+                    if (expandedNodes.Contains(((TagTreeNode)node).Text))
+                        node.IsExpanded = true;
+                }
+            }
+
+            if (Nodes.Count == 1)
+                Nodes.First().IsExpanded = true;
         }
 
         private bool FilterTag(CachedTag tag)
@@ -172,6 +189,18 @@ namespace CacheEditor.Components.TagTree
         public void UpdateNodeAppearance(ITagTree node)
         {
             ((TagTreeNode)node).UpdateAppearance();
+        }
+
+        List<string> GetExpandedNodeNames()
+        {
+            List<string> names = new List<string>();
+            foreach (var node in Nodes)
+            {
+                if (node.IsExpanded)
+                    names.Add(((TagTreeNode)node).Text);
+            }
+
+            return names;
         }
 
         #region Command Handlers

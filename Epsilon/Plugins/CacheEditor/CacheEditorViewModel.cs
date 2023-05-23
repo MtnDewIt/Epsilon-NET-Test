@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TagTool.Cache;
+using TagTool.Tags;
 
 namespace CacheEditor
 {
@@ -262,7 +263,7 @@ namespace CacheEditor
                         return;
 
                     _cacheFile.RenameTag(tag, vm.InputText);
-                    TagTree.Refresh();
+                    TagTree.Refresh(true);
                 }
             }
         }
@@ -325,7 +326,7 @@ namespace CacheEditor
                         return;
 
                     _cacheFile.DuplicateTag(tag, vm.InputText);
-                    TagTree.Refresh();
+                    TagTree.Refresh(true);
                 }
             }
         }
@@ -351,7 +352,7 @@ namespace CacheEditor
                 if (result == MessageBoxResult.OK)
                 {
                     _cacheFile.DeleteTag(tag);
-                    TagTree.Refresh();
+                    TagTree.Refresh(true);
                 }
             }
         }
