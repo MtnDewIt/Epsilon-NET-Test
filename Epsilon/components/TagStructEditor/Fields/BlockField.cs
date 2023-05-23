@@ -1,22 +1,30 @@
 ﻿using EpsilonLib.Menus;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using TagStructEditor.Common;
 using TagStructEditor.Helpers;
+using TagTool.Commands.Editing;
 
 namespace TagStructEditor.Fields
 {
     public class BlockField : ValueField, IExpandable
     {
         private bool _isExpanded = true;
+        private static ObservableNonGenericCollection CopiedBlocks = new ObservableNonGenericCollection();
+        private static Type CopiedBlockType;
+        private bool CanPaste = false;
 
         public BlockField(Type elementType, ValueFieldInfo info) : base(info)
         {
             ElementType = elementType;
+            CanPaste = CopiedBlockType != null 
+                && CopiedBlocks.Count > 0 
+                && CopiedBlockType == ElementType;
 
             Block = new ObservableNonGenericCollection();
             Block.CollectionChanged += Block_CollectionChanged;
@@ -30,7 +38,12 @@ namespace TagStructEditor.Fields
             ExpandAllCommand = new DelegateCommand(ExpandChildren, () => CurrentElementValid);
             CollapseAllCommand = new DelegateCommand(CollapseChildren, () => CurrentElementValid);
             GotoIndexCommand = new DelegateCommand(GotoIndex, () => Block.Count > 0);
+
+            CopyBlockCommand = new DelegateCommand(CopyBlock, () => CurrentElementValid && !IsFixedSize);
+            CopyRangeCommand = new DelegateCommand(CopyRange, () => CurrentElementValid && !IsFixedSize);
+            PasteBlocksAtEndCommand = new DelegateCommand(PasteBlocks, () => CurrentElementValid && !IsFixedSize && CanPaste);
         }
+
 
         public Type ElementType { get; set; }
         public IField Template { get; set; }
@@ -43,6 +56,9 @@ namespace TagStructEditor.Fields
         public DelegateCommand DeleteAllCommand { get; set; }
         public DelegateCommand InsertCommand { get; set; }
         public DelegateCommand DuplicateCommand { get; set; }
+        public DelegateCommand CopyBlockCommand { get; set; }
+        public DelegateCommand CopyRangeCommand { get; set; }
+        public DelegateCommand PasteBlocksAtEndCommand { get; set; }
         public DelegateCommand ShiftDownCommand { get; set; }
         public DelegateCommand ShiftUpCommand { get; set; }
         public DelegateCommand ExpandAllCommand { get; set; }
@@ -116,6 +132,9 @@ namespace TagStructEditor.Fields
             DeleteAllCommand.RaiseCanExecuteChanged();
             ShiftDownCommand.RaiseCanExecuteChanged();
             ShiftUpCommand.RaiseCanExecuteChanged();
+            CopyBlockCommand.RaiseCanExecuteChanged();
+            CopyRangeCommand.RaiseCanExecuteChanged();
+            PasteBlocksAtEndCommand.RaiseCanExecuteChanged();
         }
 
         public void OnCurrentIndexChanged()
@@ -150,6 +169,57 @@ namespace TagStructEditor.Fields
         private void Duplicate()
         {
             Block.Add(Block[CurrentIndex].DeepCloneV2());
+        }
+
+        private void CopyBlock()
+        {
+            CopiedBlocks.Clear();
+            CopiedBlocks.Add(Block[CurrentIndex].DeepCloneV2());
+            CopiedBlockType = ElementType;
+            CanPaste = true;
+            PasteBlocksAtEndCommand.RaiseCanExecuteChanged();
+        }
+
+        private void CopyRange()
+        {
+            int start = CurrentIndex;
+            int end = Block.Count;
+            int range = end - start;
+
+            // todo: dialog box
+
+            CopiedBlocks.Clear();
+
+            for (int i = 0; i < range; i++)
+            {
+                if (start + i >= Block.Count)
+                    break;
+
+                CopiedBlocks.Add(Block[start + i].DeepCloneV2());
+            }
+
+            CopiedBlockType = ElementType;
+            CanPaste = true;
+            PasteBlocksAtEndCommand.RaiseCanExecuteChanged();
+        }
+
+        private void PasteBlocks()
+        {
+            if (CopiedBlocks == null || CopiedBlocks.Count == 0)
+                return;
+
+            var newCurrentIndex = Block.Count;
+            for (int i = 0; i < CopiedBlocks.Count; i++)
+                Block.Add(CopiedBlocks[i]);
+
+            //to-do: implement pasting at desired index.
+            //insert changes collection during loop.
+            //var tempblocks = new ObservableNonGenericCollection();
+            //if (CurrentIndex < Block.Count - 1)
+            //{ 
+            //}
+
+            CurrentIndex = newCurrentIndex;
         }
 
         private void Shift(int direction)
@@ -198,6 +268,10 @@ namespace TagStructEditor.Fields
                 .Add("Shift Down", tooltip: "Shift the current element down one", command: ShiftDownCommand)
                 .Add("Delete All", tooltip: "Delete all elements", command: DeleteAllCommand);
             menu.Group("TagBlock3")
+                .Add("Copy Block", tooltip: "Copies a single block", command: CopyBlockCommand)
+                .Add("Copy Range...", tooltip: "Copies the entire set of blocks (for now)", command: CopyRangeCommand)
+                .Add("Paste Blocks At End", tooltip: "Append copied blocks to the end of the list", command: PasteBlocksAtEndCommand);
+            menu.Group("TagBlock4")
                 .Add("Collapse All", tooltip: "Collapse all children", command: CollapseAllCommand)
                 .Add("Expand All", tooltip: "Expand all children", command: ExpandAllCommand);
         }
