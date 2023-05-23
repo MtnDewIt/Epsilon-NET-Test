@@ -66,6 +66,9 @@
     <!--  Constants  -->
     <system:String x:Key="RealFormatString">{0}</system:String>
 
+    <Visibility x:Key="FieldOffsetVisibility">Collapsed</Visibility>
+    <Visibility x:Key="FieldTypeVisibility">Collapsed</Visibility>
+    
     <!--  Styles  -->
     <Style
         x:Key="FieldLabelStyle"
@@ -83,9 +86,21 @@
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Margin" Value="6,0,0,0" />
         <Setter Property="Foreground" Value="#A0A0A0" />
-        <Setter Property="Visibility" Value="{Binding TypeNameIsVisible, Converter={x:Static converters:BoolToVisbilityConverter.Instance}}" />
+        <Setter Property="Visibility" Value="{DynamicResource FieldTypeVisibility}" />
     </Style>
 
+    <Style x:Key="OffsetLabelStyle"
+        BasedOn="{StaticResource FieldTypeLabelStyle}"
+        TargetType="{x:Type TextBlock}">
+        <Setter Property="Padding" Value="0,1,0,0" />
+        <Setter Property="Margin" Value="0,0,6,0" />
+        <Setter Property="MinWidth" Value="35" />
+        <Setter Property="FontFamily" Value="Consolas" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Text" Value="{Binding Path=FieldOffset, Mode=OneWay, StringFormat={}0x{0:X}}" />
+        <Setter Property="Visibility" Value="{DynamicResource FieldOffsetVisibility}"/>
+    </Style>
+    
     <Style
         x:Key="InlineFieldLabelStyle"
         BasedOn="{StaticResource FieldLabelStyle}"
@@ -202,7 +217,8 @@
     <!--  Value Field  -->
     <DataTemplate DataType="{x:Type fields:ValueField}">
         <StackPanel Orientation="Horizontal">
-
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -222,6 +238,8 @@
     <DataTemplate DataType="{x:Type fields:BoolField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -235,6 +253,8 @@
     <!--  Float32  -->
     <DataTemplate DataType="{x:Type fields:Float32Field}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}" />
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -254,6 +274,8 @@
     <DataTemplate DataType="{x:Type fields:Float64Field}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -271,6 +293,8 @@
     <!--  String  -->
     <DataTemplate DataType="{x:Type fields:StringField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -291,6 +315,8 @@
     <!--  StringId  -->
     <DataTemplate DataType="{x:Type fields:StringIdField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -322,6 +348,8 @@
     <!--  RealArgbColor  -->
     <DataTemplate DataType="{x:Type fields:RealArgbColorField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -369,6 +397,8 @@
     <!--  RealRgbaColor  -->
     <DataTemplate DataType="{x:Type fields:RealRgbaColorField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -418,6 +448,8 @@
     <DataTemplate DataType="{x:Type fields:RealRgbColorField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -457,6 +489,8 @@
     <!--  ArgbColor  -->
     <DataTemplate DataType="{x:Type fields:ArgbColorField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -509,6 +543,8 @@
     <DataTemplate DataType="{x:Type fields:RealPlane2dField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -542,6 +578,8 @@
     <!--  RealPlane3d  -->
     <DataTemplate DataType="{x:Type fields:RealPlane3dField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -583,6 +621,8 @@
     <!--  RealQuaternion  -->
     <DataTemplate DataType="{x:Type fields:RealQuaternionField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                     Style="{StaticResource FieldLabelStyle}"
                     ToolTip="{Binding Name, Mode=OneTime}"
@@ -669,6 +709,8 @@
     <DataTemplate DataType="{x:Type fields:RealVector3dField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -703,6 +745,8 @@
     <DataTemplate DataType="{x:Type fields:RealVector2dField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -729,6 +773,8 @@
     <!--  RealPoint3d  -->
     <DataTemplate DataType="{x:Type fields:RealPoint3dField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -764,6 +810,8 @@
     <DataTemplate DataType="{x:Type fields:RealPoint2dField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -790,6 +838,8 @@
     <!--  RealEulerAngles3d  -->
     <DataTemplate DataType="{x:Type fields:RealEulerAngles3dField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -825,6 +875,8 @@
     <DataTemplate DataType="{x:Type fields:RealEulerAngles2dField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -851,6 +903,8 @@
     <!--  Point2d  -->
     <DataTemplate DataType="{x:Type fields:Point2dField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -879,6 +933,8 @@
     <!--  Rectangle2d  -->
     <DataTemplate DataType="{x:Type fields:Rectangle2dField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -925,6 +981,8 @@
     <!--  RealRectangle3d  -->
     <DataTemplate DataType="{x:Type fields:RealRectangle3dField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -982,6 +1040,8 @@
     <DataTemplate DataType="{x:Type fields:EnumField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -997,6 +1057,9 @@
     <!--  Flags  -->
     <DataTemplate DataType="{x:Type fields:FlagsField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                VerticalAlignment="Top"
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 VerticalAlignment="Top"
                 Style="{StaticResource FieldLabelStyle}"
@@ -1033,6 +1096,8 @@
     <DataTemplate DataType="{x:Type fields:FlagBitsField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 VerticalAlignment="Top"
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -1067,6 +1132,8 @@
     <!--  CachedTag  -->
     <DataTemplate DataType="{x:Type fields:CachedTagField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -1157,6 +1224,8 @@
     <DataTemplate DataType="{x:Type fields:GroupTagField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 Text="{Binding Name, Mode=OneTime}" />
             <ComboBox
@@ -1170,6 +1239,8 @@
     <!--  CacheAddress  -->
     <DataTemplate DataType="{x:Type fields:CacheAddressField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -1193,6 +1264,8 @@
     <!--  DatumHandle  -->
     <DataTemplate DataType="{x:Type fields:DatumHandleField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -1220,6 +1293,8 @@
     <DataTemplate DataType="{x:Type fields:TagBlockIndexField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -1245,6 +1320,8 @@
     <!--  EmitterGpuInnardsYField  -->
     <DataTemplate DataType="{x:Type fields:EmitterGpuInnardsYField}">
         <StackPanel Orientation="Vertical">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Margin="0, 2"
                 Style="{StaticResource FieldLabelStyle}"
@@ -1291,6 +1368,8 @@
     <!--  EmitterGpuInnardsZField  -->
     <DataTemplate DataType="{x:Type fields:EmitterGpuInnardsZField}">
         <StackPanel Orientation="Vertical">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 HorizontalAlignment="Left"
@@ -1339,6 +1418,8 @@
     <DataTemplate DataType="{x:Type fields:EmitterGpuInnardsWField}">
         <StackPanel Orientation="Vertical">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 HorizontalAlignment="Left"
                 Text="[Innards W]" />
@@ -1383,6 +1464,8 @@
     <!--  FunctionTypeRealField  -->
     <DataTemplate DataType="{x:Type fields:FunctionTypeRealField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <!--  FunctionType  -->
             <TextBlock
                     Margin="0,2"
@@ -1401,6 +1484,8 @@
     <DataTemplate DataType="{x:Type fields:IndexBufferIndexField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}"/>
@@ -1416,6 +1501,8 @@
     <!--  PlaneReference  -->
     <DataTemplate DataType="{x:Type fields:PlaneReferenceField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -1442,6 +1529,8 @@
     <!--  PackedSamplerAddressMode  -->
     <DataTemplate DataType="{x:Type fields:PackedSamplerAddressModeField}">
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
@@ -1476,6 +1565,8 @@
     <DataTemplate DataType="{x:Type fields:PackedSamplerFilterModeField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
@@ -1506,6 +1597,8 @@
     <DataTemplate DataType="{x:Type fields:Bsp3dNodeField}">
 
         <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
 
             <TextBlock
                 Style="{StaticResource FieldLabelStyle}"
@@ -1603,20 +1696,25 @@
 
     <!--  Data  -->
     <DataTemplate DataType="{x:Type fields:DataField}">
-        <Expander
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <Expander
             Header="{Binding}"
             IsExpanded="{Binding IsExpanded}"
             Style="{StaticResource ExpanderStyleBase}">
             <Expander.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock
-                        MinWidth="170"
-                        Padding="0,4"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="{Binding Name, Mode=OneTime}" />
-                </DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                MinWidth="170"
+                                Padding="0,4"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{Binding Name, Mode=OneTime}" />
+                        </StackPanel>
+                    </DataTemplate>
             </Expander.HeaderTemplate>
             <Border Padding="4">
                 <StackPanel Orientation="Horizontal">
@@ -1663,7 +1761,8 @@
                 </StackPanel>
             </Border>
         </Expander>
-        <DataTemplate.Triggers>
+        </StackPanel>
+                <DataTemplate.Triggers>
             <DataTrigger
                 Binding="{Binding IsExpanded}"
                 Value="True">
@@ -1683,27 +1782,32 @@
     <!--  Inline Struct  -->
     <DataTemplate DataType="{x:Type fields:InlineStructField}">
         <Expander
-            MinWidth="253"
-            Header="{Binding}"
-            IsExpanded="{Binding IsExpanded}"
-            Style="{StaticResource ExpanderStyleBase}">
-            <Expander.HeaderTemplate>
-                <DataTemplate>
-                    <TextBlock
+                MinWidth="253"
+                Header="{Binding}"
+                IsExpanded="{Binding IsExpanded}"
+                Style="{StaticResource ExpanderStyleBase}">
+                <Expander.HeaderTemplate>
+                    <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Style="{StaticResource OffsetLabelStyle}"/>
+                        <TextBlock
                         MinWidth="180"
                         Padding="0,4"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Text="{Binding Name, Mode=OneTime}" />
-                </DataTemplate>
-            </Expander.HeaderTemplate>
-            <Border Background="Transparent">
-                <ListBox
+                    </StackPanel>
+
+                    </DataTemplate>
+                </Expander.HeaderTemplate>
+                <Border Background="Transparent">
+                    <ListBox
                     ItemsSource="{Binding Fields}"
                     Style="{StaticResource StructListBoxStyle}"
                     Template="{StaticResource NoScrollListBoxTemplate}" />
-            </Border>
-        </Expander>
+                </Border>
+            </Expander>
     </DataTemplate>
 
     <!--  Block  -->
@@ -1719,19 +1823,20 @@
                     Template="{StaticResource NoScrollListBoxTemplate}" />
             </DataTemplate>
         </DataTemplate.Resources>
-
-        <Expander MinWidth="672"
-            x:Name="Expander"
-            Background="#2d2d30"
-            ContextMenuService.ShowOnDisabled="True"
-            Header="{Binding}"
-            IsExpanded="{Binding IsExpanded}"
-            Style="{StaticResource ExpanderStyleBase}">
+        <StackPanel Orientation="Horizontal">
+            <Expander MinWidth="672"
+                      x:Name="Expander"
+                      Background="#2d2d30"
+                      ContextMenuService.ShowOnDisabled="True"
+                      Header="{Binding}"
+                      IsExpanded="{Binding IsExpanded}"
+                      Style="{StaticResource ExpanderStyleBase}">
             <!--  Header  -->
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWayToSource}">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition
                                 Width="*"
                                 MinWidth="250" />
@@ -1740,13 +1845,16 @@
 
                         <!--  Name  -->
                         <TextBlock
+                            Style="{StaticResource OffsetLabelStyle}"/>
+                        <TextBlock
                             x:Name="HeaderText"
+                            Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Text="{Binding Name, Mode=OneTime}" />
 
                         <StackPanel
-                            Grid.Column="1"
+                            Grid.Column="2"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
                             <controls:BlockHeaderDropdown
@@ -1770,7 +1878,8 @@
                 <ContentPresenter Content="{Binding Template, Mode=OneTime}" />
             </Border>
         </Expander>
-        <DataTemplate.Triggers>
+            </StackPanel>
+                <DataTemplate.Triggers>
             <DataTrigger
                 Binding="{Binding CurrentIndex}"
                 Value="-1">
@@ -1868,7 +1977,7 @@
                         <Separator />
                         <Button
                             Command="{Binding Field.ShiftUpCommand, Mode=OneTime}"
-                            Content="Shit Up"
+                            Content="Shift Up"
                             Focusable="False"
                             ToolTip="Shift the current element up one" />
                         <Button

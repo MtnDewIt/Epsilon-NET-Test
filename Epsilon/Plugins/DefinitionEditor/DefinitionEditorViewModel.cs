@@ -46,7 +46,8 @@ namespace DefinitionEditor
             CachedTag instance,
             object definitionData,
             StructField structField,
-            IFieldsValueChangeSink changeSink)
+            IFieldsValueChangeSink changeSink,
+            TagStructEditor.Configuration config)
         {
             _shell = shell;
             _definitionData = definitionData;
@@ -61,7 +62,9 @@ namespace DefinitionEditor
             StructField = structField;
             DisplayField = StructField;
 
-    
+            FieldOffsetsVisible = config.DisplayFieldOffsets;
+            FieldTypesVisible = config.DisplayFieldTypes;
+
             ExpandAllCommand = new DelegateCommand(ExpandAll);
             CollapseAllCommand = new DelegateCommand(CollapseAll);
             PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
@@ -182,6 +185,9 @@ namespace DefinitionEditor
         public int BlockOutlineIndex { get; set; } = -1;
         public bool BlockOutlineVisible { get; set; }
 
+        public bool FieldOffsetsVisible { get; set; }
+        public bool FieldTypesVisible { get; set; }
+
         public NavigableSearchResults SearchResults { get; } = new NavigableSearchResults();
 
         public IRteService RteService { get; }
@@ -223,6 +229,16 @@ namespace DefinitionEditor
         public void OnBlockOutlineVisibleChanged()
         {
             DisplayField = StructField;
+        }
+
+        public void OnFieldTypesVisibleChanged()
+        {
+            Application.Current.Resources["FieldTypeVisibility"] = FieldTypesVisible ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void OnFieldOffsetsVisibleChanged()
+        {
+            Application.Current.Resources["FieldOffsetVisibility"] = FieldOffsetsVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void OnDisplayFieldChanged()

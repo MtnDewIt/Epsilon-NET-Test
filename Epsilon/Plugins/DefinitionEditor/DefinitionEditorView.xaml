@@ -106,6 +106,16 @@
                                     Header="Collapse All" />
                                 <Separator />
                                 <MenuItem
+                                    Header="Field Types"
+                                    IsCheckable="True"
+                                    IsChecked="{Binding FieldTypesVisible, Mode=TwoWay}"
+                                    ToolTip="Display field type labels to the right." />
+                                <MenuItem
+                                    Header="Field Offsets"
+                                    IsCheckable="True"
+                                    IsChecked="{Binding FieldOffsetsVisible, Mode=TwoWay}"
+                                    ToolTip="Display field relative offsets to the left." />
+                                <MenuItem
                                     Header="Block Outline"
                                     IsCheckable="True"
                                     IsChecked="{Binding BlockOutlineVisible, Mode=TwoWay}"
@@ -153,10 +163,19 @@
 
                     <ListBox.Resources>
                         <DataTemplate DataType="{x:Type local:BlockOutlineItem}">
-                            <TextBlock
-                                x:Name="label"
-                                Foreground="#F1F1F1"
-                                Text="{Binding Header}" />
+                            <DockPanel>
+                                <TextBlock
+                                    x:Name="offset"
+                                    Foreground="#A0A0A0"
+                                    Width="40"
+                                    Padding="0,2"
+                                    FontFamily="Consolas"
+                                    Text="{Binding Offset, StringFormat={}0x{0:X}}" />
+                                <TextBlock
+                                    x:Name="label"
+                                    Foreground="#F1F1F1"
+                                    Text="{Binding Header}" />
+                            </DockPanel>
                         </DataTemplate>
                     </ListBox.Resources>
                 </ListBox>

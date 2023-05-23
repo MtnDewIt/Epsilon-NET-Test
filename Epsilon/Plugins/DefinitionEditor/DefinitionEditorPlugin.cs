@@ -61,7 +61,8 @@ namespace DefinitionEditor
                 context.Instance,
                 definitionData,
                 field,
-                valueChangeSink);
+                valueChangeSink,
+                config);
         }
 
         private static StructField CreateField(TagEditorContext context, FieldFactory factory, object definitionData)

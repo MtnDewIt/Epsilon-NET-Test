@@ -59,8 +59,8 @@ namespace TagStructEditor.Fields
                 }
 
                 var name = tagFieldInfo.Name;
-                if (_config.DisplayFieldOffsets)
-                    name = $"[ 0x{tagFieldInfo.Offset:x} ] {name}";
+                //if (_config.DisplayFieldOffsets)
+                //    name = $"[ 0x{tagFieldInfo.Offset:x} ] {name}";
 
                 var info = new ValueFieldInfo()
                 {
