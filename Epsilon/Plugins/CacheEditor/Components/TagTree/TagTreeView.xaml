@@ -66,7 +66,8 @@
         <TreeView x:Name="TagTree"
             EpsilonBehaviors:ContextMenuBehavior.Menu="{Binding ContextMenu}"
             EpsilonTreeModels:TreeViewBehavior.Model="{Binding}"
-            BorderThickness="0"
+            BorderThickness="1"
+            BorderBrush="Black"
             PreviewMouseRightButtonDown="TreeView_PreviewMouseRightButtonDown"
             VirtualizingPanel.IsVirtualizing="True"
             VirtualizingPanel.VirtualizationMode="Recycling">
