@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using TagStructEditor.Fields;
+using TagTool.Common;
 
 namespace DefinitionEditor
 {
@@ -145,6 +146,55 @@ namespace DefinitionEditor
         {
             float[] newVals = new float[byteValues.Length];
             for(int i = 0; i < byteValues.Length; i++)
+            {
+                newVals[i] = System.Convert.ToSingle((byte)byteValues[i]) / 255;
+            }
+
+            return newVals;
+        }
+
+        public byte[] ColorStateToBytes(ColorState cs)
+        {
+            double[] oldVals = new double[] { cs.A, cs.RGB_R, cs.RGB_G, cs.RGB_B };
+            byte[] newVals = new byte[4];
+            for (int i = 0; i < 4; i++)
+            {
+                newVals[i] = System.Convert.ToByte(oldVals[i] * 255);
+            }
+
+            return newVals;
+        }
+    }
+
+    public class FunctionColorConverter : MarkupExtension, IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var argb = (ArgbColor)value;
+            var bytes = new byte[] { argb.Alpha, argb.Red, argb.Green, argb.Blue };
+            float[] floats = ByteToNormalizedFloat(bytes);
+
+            var cs = new ColorState();
+            cs.SetARGB(floats[0], floats[1], floats[2], floats[3]);
+            return cs;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            byte[] bytes = ColorStateToBytes((ColorState)value);
+            var argb = new ArgbColor() { Alpha = bytes[0], Red = bytes[1], Green = bytes[2], Blue = bytes[3] };
+            return argb;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return this;
+        }
+
+        public float[] ByteToNormalizedFloat(byte[] byteValues)
+        {
+            float[] newVals = new float[byteValues.Length];
+            for (int i = 0; i < byteValues.Length; i++)
             {
                 newVals[i] = System.Convert.ToSingle((byte)byteValues[i]) / 255;
             }

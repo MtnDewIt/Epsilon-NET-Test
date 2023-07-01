@@ -28,7 +28,7 @@ namespace TagStructEditor.Fields
             Data = (byte[])value;
         }
 
-        public void OnDataChanged()
+        public virtual void OnDataChanged()
         {
             SetActualValue(Data);
 
