@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using TagTool.Cache;
 
 namespace ModPackagePlugin
@@ -40,8 +41,24 @@ namespace ModPackagePlugin
                     return;
             }
 
-            var cache = await Task.Run(() => new GameCacheModPackage((GameCacheHaloOnlineBase)GameCache.Open(baseCacheFile), new FileInfo(fileName)));
-            shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new ModPackageCacheFile(file, cache));
+            if (!file.Exists)
+            {
+                MessageBox.Show($"Mod package not found at this location:\n\n{fileName}",
+                    "File Not Found", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            try
+            {
+                var cache = await Task.Run(() => new GameCacheModPackage((GameCacheHaloOnlineBase)GameCache.Open(baseCacheFile), file));
+                shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new ModPackageCacheFile(file, cache));
+            }
+            catch
+            {
+                MessageBox.Show( $"An error occurred while opening {fileName}. Mod package may be incompatible or corrupted.", 
+                    "Failed to open Mod Package", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
     }
 }

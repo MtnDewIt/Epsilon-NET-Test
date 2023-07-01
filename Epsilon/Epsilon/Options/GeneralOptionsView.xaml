@@ -82,7 +82,7 @@
                     Style="{StaticResource BrowseButtonStyle}"
                     ToolTip="Clear startup tag cache"
                     Click="ClearFileClicked">
-                <TextBlock Text="X" FontFamily="Courier" Foreground="#999999" Margin="0" Padding="0"/>
+                <TextBlock Text="✖" FontFamily="Courier" Foreground="#999999" Margin="0" Padding="0"/>
             </Button>
 
         </StackPanel>
@@ -118,9 +118,9 @@
 
             <Button Name="DefaultPakClear"
                     Style="{StaticResource BrowseButtonStyle}"
-                    ToolTip="Clear startup tag cache"
+                    ToolTip="Clear startup mod package"
                     Click="ClearFileClicked">
-                <TextBlock Text="X" FontFamily="Courier" Foreground="#999999" Margin="0" Padding="0"/>
+                <TextBlock Text="✖" FontFamily="Courier" Foreground="#999999" Margin="0" Padding="0"/>
             </Button>
             
         </StackPanel>
@@ -128,7 +128,7 @@
         <!-- Startup Window Location -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30">
             <TextBlock
-                Margin="4,4,8,4"
+                Margin="4,4,12,4"
                 Width="auto"
                 VerticalAlignment="Center"
                 Text="Window Startup Location: "
@@ -145,7 +145,7 @@
                      Width="40"
                      TextAlignment="Center"
                      Text="{Binding StartupPositionTop, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
-                     Margin="10,2,0,2"
+                     Margin="0,2,0,2"
                      VerticalContentAlignment="Center"/>
             
             <Button Name="SaveCurrentWindowPositionButton"
@@ -162,7 +162,7 @@
         <!-- Startup Dimensions -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="30">
             <TextBlock
-                    Margin="4,4,2,4"
+                    Margin="4,4,6,4"
                     Width="auto"
                     VerticalAlignment="Center"
                     Text="Window Startup Dimensions: "
@@ -179,7 +179,7 @@
                      Width="40"
                      TextAlignment="Center"
                      Text="{Binding StartupWidth, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"
-                     Margin="10,2,0,2"
+                     Margin="0,2,0,2"
                      VerticalContentAlignment="Center"/>
 
             <Button Name="SaveCurrentDimensionsButton"

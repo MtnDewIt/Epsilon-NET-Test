@@ -287,20 +287,30 @@ namespace ServerJsonEditor
             var serverDirectory = new DirectoryInfo(ServerFolder);
             if (serverDirectory.Exists)
             {
-				try
+                try
 				{
-                    var modtest = ((JSONClass)ParseJsonInitial(serverDirectory + "\\mods.json"))["mods"];
-                    modsJsonDictionary = ((JSONClass)modtest).ToDictionary();
+                    JSONNode mods;
+                    var path = "\\mods.json";
+
+                    if (!File.Exists(ServerFolder + path))
+                        path += ".example";
+
+                    mods = ((JSONClass)ParseJsonInitial(serverDirectory + path))["mods"];
+                    modsJsonDictionary = ((JSONClass)mods).ToDictionary();
                 }
 				catch
 				{
-                    MessageBox.Show($"mods.json has a formatting error and could not be parsed.", "Error in mods.json", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"mods.json has a formatting error and could not be parsed.", "Error in {path}", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
                 try
 				{
-                    votingDefaultMapsArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["maps"].AsArray;
-                    votingTypesArray = ((JSONClass)ParseJsonInitial(serverDirectory + "\\voting.json"))["types"].AsArray;
+                    var path = "\\voting.json";
+                    if (!File.Exists(ServerFolder + path))
+                        path += ".example";
+
+                    votingDefaultMapsArray = ((JSONClass)ParseJsonInitial(serverDirectory + path))["maps"].AsArray;
+                    votingTypesArray = ((JSONClass)ParseJsonInitial(serverDirectory + path))["types"].AsArray;
                 }
                 catch
 				{
@@ -308,7 +318,7 @@ namespace ServerJsonEditor
                 }
             }
             else
-                MessageBox.Show($"The directory \"{serverDirectory}\" could not be found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Server directory \"{serverDirectory}\" could not be found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             modGametypeMapping = CreateModEntryCollection(modsJsonDictionary, votingTypesArray);
             VotingDefaultMaps = CreateMapEntryCollection(votingDefaultMapsArray);

@@ -5,7 +5,7 @@
     Foreground="#f1f1f1"
     DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-    <Grid Width="auto" x:Name="mainGrid" Loaded="mainGrid_Loaded" HorizontalAlignment="Center">
+    <Grid Width="auto" x:Name="mainGrid" Loaded="mainGrid_Loaded" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350" />
             <ColumnDefinition Width="1" />

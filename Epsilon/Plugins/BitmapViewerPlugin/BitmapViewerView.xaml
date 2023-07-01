@@ -59,23 +59,25 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <local:ZoomBorder x:Name="ZoomControl" ClipToBounds="True" Background="{StaticResource Checkers}">
-                    <Image ClipToBounds="True" x:Name="_image" Source="{Binding DisplayBitmap}"
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <local:ZoomBorder x:Name="ZoomControl" ClipToBounds="True" Background="{StaticResource Checkers}">
+                        <Image ClipToBounds="True" x:Name="_image" Source="{Binding DisplayBitmap}"
                             RenderOptions.BitmapScalingMode="NearestNeighbor" ></Image>
-                    <local:ZoomBorder.Style>
-                        <Style>
-                            <Setter Property="FrameworkElement.Visibility" Value="Hidden" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding LoadingState}" Value="Success">
-                                    <DataTrigger.Setters>
-                                        <Setter Property="FrameworkElement.Visibility" Value="Visible" />
-                                    </DataTrigger.Setters>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </local:ZoomBorder.Style>
-                </local:ZoomBorder>
-
+                        <local:ZoomBorder.Style>
+                            <Style>
+                                <Setter Property="FrameworkElement.Visibility" Value="Hidden" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LoadingState}" Value="Success">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="FrameworkElement.Visibility" Value="Visible" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </local:ZoomBorder.Style>
+                    </local:ZoomBorder>
+                </Border>
+                
                 <ProgressBar IsIndeterminate="True" VerticalAlignment="Top">
                     <ProgressBar.Style>
                         <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
