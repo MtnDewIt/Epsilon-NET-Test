@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TagStructEditor.Fields;
 using TagTool.Cache;
@@ -84,6 +85,8 @@ namespace DefinitionEditor
                         return stringTable.GetString(stringId);
                     case TagTool.Tags.TagFunction function:
                         return FormatTagFunctionData(function);
+                    case Enum flags:
+                        return $"{string.Join("", value.ToString().Split(' '))}";
                     default:
                         return $"{value}";
                 }

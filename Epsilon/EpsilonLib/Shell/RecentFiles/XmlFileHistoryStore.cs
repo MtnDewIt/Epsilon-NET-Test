@@ -50,7 +50,12 @@ namespace Shared
         {
             return Task.Run(() =>
             {
-                using (var writer = XmlWriter.Create(File.CreateText("filehistory.xml")))
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
+
+                using (var writer = XmlWriter.Create(File.CreateText("filehistory.xml"), settings))
                 {
 
                     writer.WriteStartDocument();

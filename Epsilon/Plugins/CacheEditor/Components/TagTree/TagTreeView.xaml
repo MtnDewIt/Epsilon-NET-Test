@@ -73,16 +73,22 @@
             VirtualizingPanel.VirtualizationMode="Recycling">
 
             <TreeView.Resources>
+                
                 <HierarchicalDataTemplate
                     DataType="{x:Type local:TagTreeFolderNode}"
                     ItemsSource="{Binding Children}">
+                    
                     <StackPanel Orientation="Horizontal">
                         <Image
                             x:Name="Icon"
                             Margin="0,0,3,0"
+                            SnapsToDevicePixels="True"
                             Source="{StaticResource FolderClosed}" />
-                        <TextBlock Text="{Binding Text}" />
+                        <TextBlock
+                            Text="{Binding Text}"
+                            Margin="0,-1,0,0"/>
                     </StackPanel>
+                    
                     <HierarchicalDataTemplate.Triggers>
                         <DataTrigger
                             Binding="{Binding IsExpanded}"
@@ -90,12 +96,15 @@
                             <Setter TargetName="Icon" Property="Image.Source" Value="{StaticResource FolderOpened}" />
                         </DataTrigger>
                     </HierarchicalDataTemplate.Triggers>
+                    
                 </HierarchicalDataTemplate>
+                
                 <DataTemplate DataType="{x:Type local:TagTreeTagNode}">
                     <StackPanel Orientation="Horizontal">
                         <Image
                             x:Name="Icon"
                             Margin="0,0,3,0"
+                            SnapsToDevicePixels="True"
                             Source="{StaticResource Document}" />
                         <TextBlock
                             Text="{Binding Text}"
@@ -111,10 +120,11 @@
                         <Image
                             x:Name="Icon"
                             Margin="0,0,3,0"
+                            SnapsToDevicePixels="True"
                             Source="{StaticResource FolderClosed}" />
                         <TextBlock
                             Text="{Binding Text}"
-                            Margin="0,-1,0,0"/>
+                            Margin="0,-1,0,1"/>
                     </StackPanel>
                     <HierarchicalDataTemplate.Triggers>
                         <DataTrigger
@@ -124,7 +134,9 @@
                         </DataTrigger>
                     </HierarchicalDataTemplate.Triggers>
                 </HierarchicalDataTemplate>
+                
             </TreeView.Resources>
+            
             <TreeView.ItemContainerStyle>
                 <Style
                     BasedOn="{StaticResource {x:Type TreeViewItem}}"
@@ -137,6 +149,7 @@
                         Handler="TreeViewItem_RequestBringIntoView" />
                 </Style>
             </TreeView.ItemContainerStyle>
+            
         </TreeView>
     </DockPanel>
 </UserControl>

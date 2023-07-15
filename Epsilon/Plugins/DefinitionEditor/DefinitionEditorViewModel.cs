@@ -94,6 +94,9 @@ namespace DefinitionEditor
             {
                 menu.Submenu("Field")
                     .Group("Copy")
+                        .Add(text: "Copy SetField Command",
+                                tooltip: "Copies the value of this field",
+                                command: new DelegateCommand(() => CopySetFieldCommand(vf)))
                         .Add(text: "Copy Name",
                                 tooltip: "Copies the name of this field",
                                 command: new DelegateCommand(() => CopyFieldName(vf)))
@@ -161,6 +164,12 @@ namespace DefinitionEditor
         {
             var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
             ClipboardEx.SetTextSafe($"{FieldHelper.GetFieldPath(field)} {value}");
+        }
+
+        private void CopySetFieldCommand(ValueField field)
+        {
+            var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
+            ClipboardEx.SetTextSafe($"setfield {FieldHelper.GetFieldPath(field)} {value}\n");
         }
 
         private void CopyFieldMemoryAddress(IField field)

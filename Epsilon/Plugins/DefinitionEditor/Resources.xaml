@@ -1795,7 +1795,6 @@
             <Expander
                 BorderBrush="Black"
                 Header="{Binding}"
-                IsExpanded="True"
                 Style="{StaticResource ExpanderStyleBase}">
                 <Expander.HeaderTemplate>
                     <DataTemplate>

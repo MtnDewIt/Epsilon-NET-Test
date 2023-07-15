@@ -36,10 +36,10 @@
                         SnapsToDevicePixels="true">
                         <ScrollViewer
                             Name="_tv_scrollviewer_"
-                            Padding="1,5,1,1"
+                            Padding="0,5,0,0"
                             CanContentScroll="false"
                             Focusable="false"
-                            Margin="-1,0,0,0"
+                            Margin="0,0,0,0"
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
@@ -171,7 +171,7 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="Padding" Value="19,0,0,0" />
+        <Setter Property="Padding" Value="16,0,0,0" />
         <Setter Property="Foreground" Value="#f1f1f1" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
         <Setter Property="Template">
@@ -228,7 +228,10 @@
                         </Trigger>
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
-                            <Setter Property="Padding" Value="25,0,0,0" />
+                            <Setter Property="Padding" Value="17,0,0,0" />
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="true">
+                            <Setter TargetName="ItemsHost" Property="Margin" Value="10,0,0,0" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <!-- <Setter TargetName="Hb" Property="Fill" Value="{DynamicResource MouseOver}" /> -->
@@ -245,14 +248,13 @@
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="#FF656565" />
                         </Trigger>
-                        <MultiTrigger>
+                        <!--<MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="HasItems"  Value="true"/>
                                 <Condition Property="IsExpanded" Value="true"/>
-                                <Condition Property="HasItems" Value="true"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="Foreground" Value="White"/>
-                        </MultiTrigger>
+                        </MultiTrigger>-->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="HasItems" Value="false"/>
