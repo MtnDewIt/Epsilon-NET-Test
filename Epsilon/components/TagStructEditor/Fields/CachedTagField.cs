@@ -50,7 +50,7 @@ namespace TagStructEditor.Fields
                 {
                     case "obje":
                         validTags.AddRange( new string[] { "argd", "armr", "bipd", "bloc", 
-                            "cobj", "crea", "ctrl", "efsc", "gint", "mach", "proj", "scen", 
+                            "cobj", "crea", "ctrl", "efsc", "eqip", "gint", "mach", "proj", "scen", 
                             "ssce", "term", "unit", "vehi", "weap"});
                         break;
                     case "rm  ":
