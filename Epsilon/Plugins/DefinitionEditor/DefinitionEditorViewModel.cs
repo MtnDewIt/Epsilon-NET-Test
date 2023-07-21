@@ -25,6 +25,13 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using CacheEditor.Views;
 using Microsoft.Xaml.Behaviors.Layout;
+using System.IO;
+using TagTool.IO;
+using TagTool.Serialization;
+using TagTool.Tags;
+using System.Runtime.Remoting.Contexts;
+using static TagTool.Tags.Definitions.Model;
+using TagTool.Cache.HaloOnline;
 
 namespace DefinitionEditor
 {
@@ -124,11 +131,17 @@ namespace DefinitionEditor
                         }
                 }
             }
-
+            
+            if(field is ValueField value && !(value is BlockField) && !(value is DataField) && !(value is InlineStructField))
+            {
+                menu.Submenu("Field").Add(text: "Poke Field",
+                tooltip: "Pokes the current field to game memory",
+                command: new DelegateCommand(() => PokeField(value)));
+            }
 
             //if (RteHasTargets && SelectedRteTargetItem != null)
             //{
-                menu.Submenu("Field")
+            menu.Submenu("Field")
                    .Group("Copy")
                         .Add(text: "Copy Memory Address",
                             tooltip: "Copies the memory address of this field",
@@ -180,6 +193,64 @@ namespace DefinitionEditor
                 MessageBox.Show("Tag not loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             else
                 ClipboardEx.SetTextSafe($"{address:X8}");
+        }
+
+        private void PokeField(ValueField field)
+        {
+            if (SelectedRteTargetItem == null)
+            {
+                MessageBox.Show("Not attached to game instance!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var helper = new RTEFieldHelper(SelectedRteTargetItem.Target, _cacheFile, _definitionData.GetType(), _instance);
+            uint address = helper.GetFieldMemoryAddress(field);
+            if (address == 0)
+            {
+                MessageBox.Show("Tag not loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }              
+
+            GameCache editorCache = _cacheEditor.CacheFile.Cache;
+
+            //handle field types that will break things
+            var valueType = field.FieldType;
+            var fieldValue = field.FieldInfo.ValueGetter(field.Owner);
+            
+            //fixup modpak tagrefs
+            #if DEBUG
+            if(valueType == typeof(CachedTag) && editorCache is GameCacheModPackage)
+            {
+                CachedTag tagRef = (CachedTag)fieldValue;
+                //check if tagref references a modpak tag
+                if(editorCache.TagCache.TryGetCachedTag(tagRef.Index, out var taginstance) && 
+                    !((CachedTagHaloOnline)taginstance).IsEmpty())
+                {
+                    var modpaktagindices = editorCache.TagCache.NonNull().ToList();
+                    //find the index of our desired tag in relation to all modpak tags in the modpak that are not basecache tags
+                    int paktagcount = modpaktagindices.Count(x => x.Index < tagRef.Index);
+                    tagRef.Index = 0xFFFE - paktagcount;
+                    fieldValue = tagRef;
+                }
+            }
+            #endif
+
+            var stream = new MemoryStream();
+            var writer = new EndianWriter(stream, editorCache.Endianness);
+            var dataContext = new DataSerializationContext(writer, CacheAddressType.Memory, false);
+
+            var block = dataContext.CreateBlock();
+
+            _cacheEditor.CacheFile.Cache.Serializer.SerializeValue(dataContext, stream,
+                block, fieldValue, new TagFieldAttribute(),
+            field.FieldInfo.FieldType);
+            byte[] outData = block.Stream.ToArray();
+
+            using (var processStream = SelectedRteTargetItem.Target.Provider.CreateStream(SelectedRteTargetItem.Target))
+            {
+                processStream.Seek(address, SeekOrigin.Begin);
+                processStream.Write(outData, 0, outData.Length);
+                processStream.Flush();
+            }
         }
 
         public StructField StructField { get; set; }
@@ -279,7 +350,6 @@ namespace DefinitionEditor
             if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
                 PokeCommand.Execute(null);
         }
-
 
         private void ExpandAll()
         {
