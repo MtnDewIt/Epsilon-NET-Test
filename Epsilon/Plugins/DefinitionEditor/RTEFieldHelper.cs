@@ -8,6 +8,7 @@ using TagStructEditor.Fields;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.Tags;
+using TagStructEditor.Helpers;
 
 namespace DefinitionEditor
 {

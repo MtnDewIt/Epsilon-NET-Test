@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TagStructEditor.Fields;
 using TagTool.Cache;
 using TagTool.Common;
 
-namespace DefinitionEditor
+namespace TagStructEditor.Helpers
 {
-    internal class FieldHelper
+    public class FieldHelper
     {
         public static string GetFieldPath(IField field)
         {

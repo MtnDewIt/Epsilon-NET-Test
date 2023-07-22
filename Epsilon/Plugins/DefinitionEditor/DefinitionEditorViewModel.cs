@@ -32,6 +32,8 @@ using TagTool.Tags;
 using System.Runtime.Remoting.Contexts;
 using static TagTool.Tags.Definitions.Model;
 using TagTool.Cache.HaloOnline;
+using EpsilonLib.Logging;
+using System.Windows.Controls;
 
 namespace DefinitionEditor
 {
@@ -349,6 +351,12 @@ namespace DefinitionEditor
         {
             if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
                 PokeCommand.Execute(null);
+            if (e.Field is ValueField field && !(field is BlockField) && 
+                !(field is InlineStructField))
+            {
+                var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
+                Logger.LogCommand($"setfield {FieldHelper.GetFieldPath(field)} {value}");
+            }
         }
 
         private void ExpandAll()
@@ -412,6 +420,7 @@ namespace DefinitionEditor
                     await _cacheFile.SerializeTagAsync(_instance, _definitionData);
                 }
                 _shell.StatusBar.ShowStatusText("Saved Changes");
+                Logger.LogCommand("savetagchanges");
             }
             catch (Exception ex)
             {
@@ -463,6 +472,7 @@ namespace DefinitionEditor
                 _rteRefreshTimer.Dispose();
                 _rteRefreshTimer = null;
             }
+            Logger.LogCommand("exit");
         }
 
         protected override void OnMessage(object sender, object message)

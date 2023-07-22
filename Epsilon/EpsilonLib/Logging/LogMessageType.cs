@@ -6,6 +6,6 @@
         Info,
         Warning,
         Error,
-        Critical
+        Critical,
     }
 }

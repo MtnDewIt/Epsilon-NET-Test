@@ -14,5 +14,7 @@ namespace CacheEditor
 
         [ExportMenuItem]
         public static MenuItemDefinition ShowDependencyExplorerMenuItem = new CommandMenuItemDefinition<ShowDependencyExplorerCommand>(StandardMenus.ViewMenu, "CacheEditor.Tools");
+        [ExportMenuItem]
+        public static MenuItemDefinition ShowCommandLogMenuItem = new CommandMenuItemDefinition<ShowCommandLogCommand>(StandardMenus.ViewMenu, "CacheEditor.Tools");
     }
 }

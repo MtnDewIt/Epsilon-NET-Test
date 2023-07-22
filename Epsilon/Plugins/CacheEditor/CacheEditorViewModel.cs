@@ -3,6 +3,7 @@ using CacheEditor.Components.TagTree;
 using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
+using EpsilonLib.Logging;
 using EpsilonLib.Shell.TreeModels;
 using Microsoft.Win32;
 using Shared;
@@ -122,6 +123,7 @@ namespace CacheEditor
 
                 ActiveItem = new TagEditorViewModel(_cacheEditingService, context);
             }
+            Logger.LogCommand($"edittag {instance.Name}.{instance.Group.Tag}");
         }
 
         protected override void OnInitialActivate()
@@ -265,6 +267,7 @@ namespace CacheEditor
                     _cacheFile.RenameTag(tag, vm.InputText);
                     TagTree.Refresh(true);
                 }
+                Logger.LogCommand($"nametag {tag.Name}.{tag.Group} {vm.InputText}");
             }
         }
 
@@ -303,6 +306,7 @@ namespace CacheEditor
                     _cacheFile.ImportTag(tag, ofd.FileName);
                     MessageBox.Show("Tag imported successfully", "Tag Imported", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+                Logger.LogCommand($"importtag {tag.Name}.{tag.Group} {ofd.FileName}");
             }
         }
 
@@ -328,6 +332,7 @@ namespace CacheEditor
                     _cacheFile.DuplicateTag(tag, vm.InputText);
                     TagTree.Refresh(true);
                 }
+                Logger.LogCommand($"duplicatetag {tag.Name}.{tag.Group} {vm.InputText}");
             }
         }
 
@@ -354,6 +359,7 @@ namespace CacheEditor
                     _cacheFile.DeleteTag(tag);
                     TagTree.Refresh(true);
                 }
+                Logger.LogCommand($"deletetag {tag.Name}.{tag.Group}");
             }
         }
 

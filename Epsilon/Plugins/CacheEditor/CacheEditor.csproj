@@ -103,6 +103,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Components\CommandLog\CommandLogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\DependencyExplorer\DependencyExplorerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,11 +147,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Commands\ShowCommandLogCommand.cs" />
+    <Compile Include="Commands\ShowCommandLogCommandHandler.cs" />
     <Compile Include="Commands\ShowDependencyExplorerCommand.cs" />
     <Compile Include="Commands\ShowInfoWindowCommand.cs" />
     <Compile Include="Commands\ShowDependencyExplorerCommandHandler.cs" />
     <Compile Include="Commands\ShowInfoWindowCommandHandler.cs" />
     <Compile Include="Commands\ShowToolWindowCommandHandlerBase.cs" />
+    <Compile Include="Components\CommandLog\CommandLogToolProvider.cs" />
+    <Compile Include="Components\CommandLog\CommandLogView.xaml.cs">
+      <DependentUpon>CommandLogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\CommandLog\CommandLogViewModel.cs" />
     <Compile Include="Components\DependencyExplorer\DependencyExplorerToolProvider.cs" />
     <Compile Include="Components\DependencyExplorer\DependencyExplorerView.xaml.cs">
       <DependentUpon>DependencyExplorerView.xaml</DependentUpon>

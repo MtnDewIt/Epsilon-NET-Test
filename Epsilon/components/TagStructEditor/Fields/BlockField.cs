@@ -1,4 +1,5 @@
-﻿using EpsilonLib.Menus;
+﻿using EpsilonLib.Logging;
+using EpsilonLib.Menus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -149,26 +150,32 @@ namespace TagStructEditor.Fields
         private void Add()
         {
             Block.Add(Utils.ActivateType(ElementType));
+            Logger.LogCommand($"addblockelements {FieldHelper.GetFieldPath(Template)}");
         }
 
         private void Delete()
         {
             Block.RemoveAt(CurrentIndex);
+            Logger.LogCommand($"removeblockelements {FieldHelper.GetFieldPath(Template)} {CurrentIndex} 1");
         }
 
         private void DeleteAll()
         {
             Block.Clear();
+            Logger.LogCommand($"removeblockelements {FieldHelper.GetFieldPath(Template)} 0 *");
         }
 
         private void Insert()
         {
             Block.Insert(CurrentIndex, Utils.ActivateType(ElementType));
+            Logger.LogCommand($"addblockelements {FieldHelper.GetFieldPath(Template)} 1 {CurrentIndex}");
         }
 
         private void Duplicate()
         {
             Block.Add(Block[CurrentIndex].DeepCloneV2());
+            Logger.LogCommand($"copyblockelements {FieldHelper.GetFieldPath(Template)} {CurrentIndex} 1");
+            Logger.LogCommand($"pasteblockelements {FieldHelper.GetFieldPath(Template)}");
         }
 
         private void CopyBlock()
@@ -178,6 +185,7 @@ namespace TagStructEditor.Fields
             CopiedBlockType = ElementType;
             CanPaste = true;
             PasteBlocksAtEndCommand.RaiseCanExecuteChanged();
+            Logger.LogCommand($"copyblockelements {FieldHelper.GetFieldPath(Template)} {CurrentIndex} 1");
         }
 
         private void CopyRange()
@@ -201,6 +209,7 @@ namespace TagStructEditor.Fields
             CopiedBlockType = ElementType;
             CanPaste = true;
             PasteBlocksAtEndCommand.RaiseCanExecuteChanged();
+            Logger.LogCommand($"copyblockelements {FieldHelper.GetFieldPath(Template)} {CurrentIndex} *");
         }
 
         private void PasteBlocks()
@@ -220,11 +229,13 @@ namespace TagStructEditor.Fields
             //}
 
             CurrentIndex = newCurrentIndex;
+            Logger.LogCommand($"pasteblockelements {FieldHelper.GetFieldPath(Template)}");
         }
 
         private void Shift(int direction)
         {
             Block.Move(CurrentIndex, (CurrentIndex + direction));
+            Logger.LogCommand($"swapblockelements {FieldHelper.GetFieldPath(Template)} {CurrentIndex} {CurrentIndex + direction}");
         }
 
         private void ExpandChildren()

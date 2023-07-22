@@ -167,6 +167,7 @@
       <DependentUpon>GotoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FieldExpander.cs" />
+    <Compile Include="Helpers\FieldHelper.cs" />
     <Compile Include="Helpers\FieldSearch.cs" />
     <Compile Include="Fields\IFieldFactory.cs" />
     <Compile Include="Controls\StructEditorControl.cs" />
