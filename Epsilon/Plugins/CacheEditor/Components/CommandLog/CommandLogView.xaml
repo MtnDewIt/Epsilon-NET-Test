@@ -29,6 +29,8 @@
                 x:Name="tbSettingText"
                 Grid.Row="1"
                 IsReadOnly="True"
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Auto"
                 TextWrapping="NoWrap" />
         <Button
                 x:Name="clearText"
