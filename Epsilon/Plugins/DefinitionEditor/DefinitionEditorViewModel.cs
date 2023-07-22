@@ -355,7 +355,8 @@ namespace DefinitionEditor
                 !(field is InlineStructField))
             {
                 var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
-                Logger.LogCommand($"setfield {FieldHelper.GetFieldPath(field)} {value}");
+                Logger.LogCommand($"{_instance.Name}.{_instance.Group}", FieldHelper.GetFieldPath(field), Logger.CommandEvent.CommandType.setfield,
+                    $"setfield {FieldHelper.GetFieldPath(field)} {value}");
             }
         }
 
@@ -420,7 +421,7 @@ namespace DefinitionEditor
                     await _cacheFile.SerializeTagAsync(_instance, _definitionData);
                 }
                 _shell.StatusBar.ShowStatusText("Saved Changes");
-                Logger.LogCommand("savetagchanges");
+                Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.none, "savetagchanges");
             }
             catch (Exception ex)
             {
@@ -472,7 +473,7 @@ namespace DefinitionEditor
                 _rteRefreshTimer.Dispose();
                 _rteRefreshTimer = null;
             }
-            Logger.LogCommand("exit");
+            Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.none, "exit");
         }
 
         protected override void OnMessage(object sender, object message)

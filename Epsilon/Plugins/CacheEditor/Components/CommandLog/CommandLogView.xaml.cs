@@ -19,12 +19,12 @@ namespace CacheEditor.Components.CommandLog
         {
             InitializeComponent();
             Logger.CommandLogChanged += OnCommandLogChanged;
-            tbSettingText.Text = string.Join("\n",Logger.GetCommandLog());
+            tbSettingText.Text = Logger.GetCommandLogText();
             clearText.DataContext = new CommandLogControls();
         }
         private void OnCommandLogChanged(object sender, System.EventArgs e)
         {
-            tbSettingText.Text = string.Join("\n", Logger.GetCommandLog());
+            tbSettingText.Text = Logger.GetCommandLogText();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EpsilonLib.Logging;
 using System;
 using TagStructEditor.Common;
+using TagStructEditor.Helpers;
 using TagTool.Cache;
 using TagTool.Common;
 
@@ -72,7 +73,7 @@ namespace TagStructEditor.Fields
             Value = "default";  // resets failed validation appearance
             Value = stringid;   // set back to added stringid
 
-            Logger.LogCommand($"stringid add {Value}");
+            Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"stringid add {Value}");
         }
     }
 }
