@@ -351,8 +351,7 @@ namespace DefinitionEditor
         {
             if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
                 PokeCommand.Execute(null);
-            if (e.Field is ValueField field && !(field is BlockField) && 
-                !(field is InlineStructField))
+            if (e.Field is ValueField field && !(field is BlockField))
             {
                 var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
                 Logger.LogCommand($"{_instance.Name}.{_instance.Group}", FieldHelper.GetFieldPath(field), Logger.CommandEvent.CommandType.setfield,
