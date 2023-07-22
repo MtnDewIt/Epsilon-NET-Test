@@ -11,6 +11,7 @@ using TagTool.Cache;
 using TagTool.Cache.Gen3;
 using TagTool.Cache.HaloOnline;
 using TagTool.IO;
+using static TagTool.IO.ConsoleHistory;
 
 namespace ModPackagePlugin.Commands
 {
@@ -70,41 +71,8 @@ namespace ModPackagePlugin.Commands
         {
             var modCache = new GameCacheModPackage(baseCache);
 
-            modCache.BaseModPackage.CacheNames = new List<string>();
-            modCache.BaseModPackage.TagCachesStreams = new List<ExtantStream>();
-            modCache.BaseModPackage.TagCacheNames = new List<Dictionary<int, string>>();
-
             var referenceStream = new MemoryStream(); // will be reused by all base caches
-            var modTagCache = new TagCacheHaloOnline(baseCache.Version, referenceStream, modCache.BaseModPackage.StringTable);
-
-            var tagCount = baseCache.TagCache.Count;
-            for (var tagIndex = 0; tagIndex < tagCount; tagIndex++)
-            {
-                var srcTag = baseCache.TagCache.GetTag(tagIndex);
-
-                if (srcTag == null)
-                {
-                    modTagCache.AllocateTag(new TagGroupGen3());
-                    continue;
-                }
-
-                progress.Report($"Allocating tag ({tagIndex}/{tagCount}). '{srcTag}'...", false, (tagIndex + 1) / (float)tagCount);
-
-                var emptyTag = modTagCache.AllocateTag(srcTag.Group, srcTag.Name);
-                var cachedTagData = new CachedTagData
-                {
-                    Data = new byte[0],
-                    Group = (TagGroupGen3)emptyTag.Group
-                };
-
-                // TODO: defer this process until when they actually save through File -> Save
-
-                modTagCache.SetTagData(referenceStream, (CachedTagHaloOnline)emptyTag, cachedTagData);
-                if (!((CachedTagHaloOnline)emptyTag).IsEmpty())
-                {
-                    throw new InvalidOperationException("A tag in the base cache was empty");
-                }
-            }
+            TagTool.Commands.Modding.CreateModPackageCommand.BuildInitialTagCache(baseCache, modCache, referenceStream);
 
             referenceStream.Position = 0;
 
