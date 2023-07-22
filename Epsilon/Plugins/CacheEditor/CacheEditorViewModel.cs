@@ -264,10 +264,10 @@ namespace CacheEditor
                     if (!BaseCacheModifyCheck(_cacheFile.Cache))
                         return;
 
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"nametag {tag.Name}.{tag.Group} {vm.InputText}");
                     _cacheFile.RenameTag(tag, vm.InputText);
                     TagTree.Refresh(true);
                 }
-                Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"nametag {tag.Name}.{tag.Group} {vm.InputText}");
             }
         }
 
@@ -356,10 +356,10 @@ namespace CacheEditor
 
                 if (result == MessageBoxResult.OK)
                 {
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"deletetag {tag.Name}.{tag.Group}");
                     _cacheFile.DeleteTag(tag);
                     TagTree.Refresh(true);
-                }
-                Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"deletetag {tag.Name}.{tag.Group}");
+                }         
             }
         }
 
