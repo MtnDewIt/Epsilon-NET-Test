@@ -108,7 +108,8 @@ namespace TagStructEditor.Fields
                 Name = "[Value]",
                 FieldType = elementType,
                 ValueGetter = (owner) => blockField.Block[blockField.CurrentIndex],
-                ValueSetter = (owner, value) => blockField.Block[blockField.CurrentIndex] = value
+                ValueSetter = (owner, value) => blockField.Block[blockField.CurrentIndex] = value,
+                ValueChanged = _config.ValueChanged
             };
 
             if (elementType == typeof(TagBlockIndex))
