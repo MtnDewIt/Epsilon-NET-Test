@@ -14,7 +14,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             Name = ShaderStringConverter.ToPrettyFormat(name);
             TemplateIndex = templateIndex;
             Property = property;
-            Description = desc;
+            Description = desc ?? "No description available";
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using HaloShaderGenerator.Generator;
 using System.Collections.Generic;
+using TagTool.Cache;
+using TagTool.Tags.Definitions;
 using static TagTool.Tags.Definitions.RenderMethod;
 
 namespace RenderMethodEditorPlugin.ShaderMethods
@@ -25,13 +27,13 @@ namespace RenderMethodEditorPlugin.ShaderMethods
 
     abstract class MethodParser
     {
-        public Method ParseMethod(int methodIndex, int optionIndex, IShaderGenerator generator)
+        public Method ParseMethod(GameCache cache, RenderMethodDefinition rmdf, int methodIndex, int optionIndex)
         {
-            if (methodIndex >= 0 && methodIndex < generator.GetMethodCount())
+            if (methodIndex >= 0 && methodIndex < rmdf.Categories.Count)
             {
-                if (optionIndex >= 0 && optionIndex < generator.GetMethodOptionCount(methodIndex))
+                if (optionIndex >= 0 && optionIndex < rmdf.Categories[methodIndex].ShaderOptions.Count)
                 {
-                    return new Method(GetMethodName(methodIndex), GetOptionName(methodIndex, optionIndex), GetOptionDescription(methodIndex, optionIndex), methodIndex, optionIndex);
+                    return new Method(cache.StringTable.GetString(rmdf.Categories[methodIndex].Name), cache.StringTable.GetString(rmdf.Categories[methodIndex].ShaderOptions[optionIndex].Name), "", methodIndex, optionIndex);
                 }
             }
             return null;

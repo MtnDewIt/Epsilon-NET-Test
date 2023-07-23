@@ -32,7 +32,7 @@
         <DataTemplate DataType="{x:Type shader_parameters:FloatShaderParameter}">
             <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}" Margin="1">
                 <TextBlock Text="{Binding Name}" Width="250" Padding="0,2,10,0"/>
-                <TextBox Text="{Binding Value}" Width="50" HorizontalAlignment="Right" Padding="1,1,1,1"/>
+                <TextBox Text="{Binding Value}" Width="75" HorizontalAlignment="Right" Padding="1,1,1,1"/>
             </StackPanel>
         </DataTemplate>
 
@@ -144,7 +144,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Shader Methods" Grid.Row="0" FontWeight="Bold" Padding="3,10,0,0"/>
+        <TextBlock Text="Shader Options" Grid.Row="0" FontWeight="Bold" Padding="3,10,0,0"/>
         <ListView Margin="10" Name="shaderMethods" ItemsSource="{Binding ShaderMethods}" Grid.Row="1" Background="#FF2D2D30" Foreground="#f1f1f1">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -167,10 +167,10 @@
                     </GridView.ColumnHeaderContainerStyle>
 
                     <GridViewColumn Header="Index" Width="auto" DisplayMemberBinding="{Binding MethodIndex}"/>
-                    <GridViewColumn Header="Method Name" Width="200" DisplayMemberBinding="{Binding MethodName}" />
+                    <GridViewColumn Header="Category Name" Width="200" DisplayMemberBinding="{Binding MethodName}" />
                     <GridViewColumn Header="Index" Width="auto" DisplayMemberBinding="{Binding OptionIndex}" />
-                    <GridViewColumn Header="Method Option" Width="200" DisplayMemberBinding="{Binding MethodOption}" />
-                    <GridViewColumn Header="Method Description" DisplayMemberBinding="{Binding MethodDescription}" />
+                    <GridViewColumn Header="Selected Option" Width="200" DisplayMemberBinding="{Binding MethodOption}" />
+                    <GridViewColumn Header="Option Description" DisplayMemberBinding="{Binding MethodDescription}" />
                 </GridView>
             </ListView.View>
         </ListView>
