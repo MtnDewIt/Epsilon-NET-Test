@@ -20,6 +20,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epsilon", "Epsilon\Epsilon.
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpsilonLib", "EpsilonLib\EpsilonLib.csproj", "{110511DD-0A26-4843-9CC4-BF2CF42B8E44}"
+	ProjectSection(ProjectDependencies) = postProject
+		{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC} = {42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheEditor", "plugins\CacheEditor\CacheEditor.csproj", "{9DE40A24-8308-4C7D-B77E-71E9D389BBFA}"
 EndProject

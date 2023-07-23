@@ -133,7 +133,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.BooleanParameterNames[i].Name) == name)
                             {
                                 string description = $"Checkbox for on/off parameter \"{name}\"";
-                                ShaderParameters.Add(new BooleanShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                                ShaderParameters.Add(new BooleanShaderParameter(_renderMethod.ShaderProperties[0], name, description, i, cache, _renderMethodTemplate.BooleanParameterNames));
                                 break;
                             }
                         }

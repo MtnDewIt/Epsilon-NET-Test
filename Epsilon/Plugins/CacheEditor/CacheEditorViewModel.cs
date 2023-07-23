@@ -83,6 +83,8 @@ namespace CacheEditor
                 if(value is TagEditorViewModel)
                     CurrentTagChanged?.Invoke(this, EventArgs.Empty);
 
+                Logger.ActiveTag = (value as TagEditorViewModel)?.Tag;
+
                 NotifyOfPropertyChange();
             }
         }

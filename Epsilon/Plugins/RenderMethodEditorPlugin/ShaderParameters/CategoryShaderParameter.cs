@@ -1,4 +1,5 @@
-﻿using TagTool.Tags.Definitions;
+﻿using EpsilonLib.Logging;
+using TagTool.Tags.Definitions;
 
 namespace RenderMethodEditorPlugin.ShaderParameters
 {
@@ -13,6 +14,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                 Property.RealConstants[TemplateIndex].Arg1 = value;
                 Property.RealConstants[TemplateIndex].Arg2 = value;
                 Property.RealConstants[TemplateIndex].Arg3 = value;
+                Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
+                    Logger.CommandEvent.CommandType.setfield, $"setargument {Name} {value} {value} {value} {value}");
             } 
         }
 

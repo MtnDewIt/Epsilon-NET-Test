@@ -181,6 +181,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TagTool\TagTool\TagTool.csproj">
+      <Project>{42814dee-5a94-4901-bda9-28afd2d4f5ac}</Project>
+      <Name>TagTool</Name>
+    </ProjectReference>
     <ProjectReference Include="..\libs\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj">
       <Project>{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}</Project>
       <Name>Xceed.Wpf.AvalonDock</Name>

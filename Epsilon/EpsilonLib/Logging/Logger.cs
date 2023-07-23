@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Windows.Navigation;
+using TagTool.Cache;
 
 namespace EpsilonLib.Logging
 {
@@ -12,7 +13,7 @@ namespace EpsilonLib.Logging
 
         public static event EventHandler CommandLogChanged;
         private static List<CommandEvent> CommandLog = new List<CommandEvent>();
-
+        public static CachedTag ActiveTag;
         public static void Trace(string message) => Log(LogMessageType.Trace, message);
         public static void Info(string message) => Log(LogMessageType.Info, message);
         public static void Warn(string message) => Log(LogMessageType.Warning, message);

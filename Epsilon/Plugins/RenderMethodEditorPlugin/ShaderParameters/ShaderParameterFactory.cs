@@ -26,7 +26,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                         int booleanArgumentIndex = FindParameterIndexFromName(cache, template.BooleanParameterNames, paramName);
                         if (booleanArgumentIndex == -1)
                             continue;
-                        result.Add(new BooleanShaderParameter(property, paramName, desc, booleanArgumentIndex));
+                        result.Add(new BooleanShaderParameter(property, paramName, desc, booleanArgumentIndex, cache, template.BooleanParameterNames));
                         break;
 
                     case RegisterType.Vector:
