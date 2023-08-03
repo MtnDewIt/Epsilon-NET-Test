@@ -12,6 +12,7 @@ namespace EpsilonLib.Shell.TreeModels
         private bool _isExpanded;
         private IList<ITreeNode> _children;
         private string _text;
+        private string _altText;
         private ColorHint _textColor;
 
         public object Tag
@@ -42,6 +43,12 @@ namespace EpsilonLib.Shell.TreeModels
         {
             get => _text;
             set => SetAndNotify(ref _text, value);
+        }
+
+        public virtual string AltText
+        {
+            get => _altText;
+            set => SetAndNotify(ref _altText, value);
         }
 
         public virtual ColorHint TextColor

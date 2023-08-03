@@ -1,6 +1,7 @@
 ﻿using EpsilonLib.Options;
 using EpsilonLib.Shell.TreeModels;
 using Stylet;
+using System.Linq;
 
 namespace Epsilon.Options
 {
@@ -16,6 +17,11 @@ namespace Epsilon.Options
             DisplayName = "Options";
             CategoryTree = new OptionsPageTreeViewModel(optionsService.OptionPages);
             CategoryTree.NodeSelected += CategoryTree_NodeSelected;
+
+            foreach (var node in CategoryTree.Nodes.Where(x => x.Children != null))
+                node.IsExpanded = true;
+
+            CategoryTree.SelectedNode = CategoryTree.Nodes.FirstOrDefault();
         }
 
         private void CategoryTree_NodeSelected(object sender, TreeNodeEventArgs e)

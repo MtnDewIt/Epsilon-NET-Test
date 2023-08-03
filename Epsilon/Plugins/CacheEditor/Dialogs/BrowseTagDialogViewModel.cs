@@ -13,6 +13,7 @@ namespace CacheEditor
         {
             TagTree = new TagTreeViewModel(cacheEditingService, cacheFile);
             TagTree.NodeDoubleClicked += TagTree_NodeDoubleClicked;
+            DisplayName = "Tag Browser";
         }
 
         private void TagTree_NodeDoubleClicked(object sender, TreeNodeEventArgs e)

@@ -1,4 +1,5 @@
-﻿using EpsilonLib.Shell;
+﻿using EpsilonLib.Controls;
+using EpsilonLib.Shell;
 using System;
 using System.Media;
 using System.Windows;
@@ -9,7 +10,7 @@ namespace Epsilon
     /// <summary>
     /// Interaction logic for ExceptionDialog.xaml
     /// </summary>
-    public partial class ExceptionDialog : Window
+    public partial class ExceptionDialog : ChromeWindow
     {
         public Exception Exception { get; }
 

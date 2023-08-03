@@ -1,4 +1,5 @@
-﻿using Stylet;
+﻿using Newtonsoft.Json.Linq;
+using Stylet;
 using System.Runtime.CompilerServices;
 
 namespace EpsilonLib.Options
@@ -28,6 +29,27 @@ namespace EpsilonLib.Options
         {
             if (SetAndNotify(ref field, value, propertyName))
                 IsDirty = !_isLoading;
+        }
+
+        public string ShortenPath(string fullPath)
+        {
+            if (fullPath.Length < 50)
+                return fullPath;
+
+            string path = "";
+            string temp = "";
+            var split = fullPath.Split('\\');
+
+            for (int i = split.Length - 1; i >= 0; i--)
+            {
+                temp = "\\" + split[i] + temp;
+                if (temp.Length > 50)
+                    break;
+                else
+                    path = temp;
+            }
+
+            return "..." + path;
         }
 
         public abstract void Apply();

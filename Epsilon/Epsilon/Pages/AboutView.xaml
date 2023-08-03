@@ -1,7 +1,8 @@
-﻿<wpfapp20:ChromeWindow
+﻿<controls:ChromeWindow
     x:Class="Epsilon.Pages.AboutView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
     xmlns:wpfapp20="clr-namespace:WpfApp20"
     Title="About Epsilon"
     Width="320"
@@ -68,4 +69,4 @@
 
     </Grid>
 
-</wpfapp20:ChromeWindow>
+</controls:ChromeWindow>

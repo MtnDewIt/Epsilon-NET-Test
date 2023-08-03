@@ -11,6 +11,8 @@ namespace CacheEditor.Options
     {
         private TagTreeViewMode _tagTreeViewMode;
         private TagTreeGroupDisplayMode _tagTreeGroupDisplayMode;
+        private bool _showTagGroupAltNames;
+        private bool _baseCacheWarnings;
         private ISettingsCollection _settings;
 
         [ImportingConstructor]
@@ -31,16 +33,32 @@ namespace CacheEditor.Options
             set => SetOptionAndNotify(ref _tagTreeGroupDisplayMode, value);
         }
 
+        public bool ShowTagGroupAltNames
+        {
+            get => _showTagGroupAltNames;
+            set => SetOptionAndNotify(ref _showTagGroupAltNames, value);
+        }
+
+        public bool BaseCacheWarnings
+        {
+            get => _baseCacheWarnings;
+            set => SetOptionAndNotify(ref _baseCacheWarnings, value);
+        }
+
         public override void Apply()
         {
             _settings.Set(Components.TagTree.Settings.TagTreeViewModeSetting.Key, TagTreeViewMode);
             _settings.Set(Components.TagTree.Settings.TagTreeGroupDisplaySetting.Key, TagTreeGroupDisplayMode);
+            _settings.Set(Components.TagTree.Settings.ShowTagGroupAltNamesSetting.Key, ShowTagGroupAltNames);
+            _settings.Set(Components.TagTree.Settings.BaseCacheWarningsSetting.Key, BaseCacheWarnings);
         }
 
         public override void Load()
         {
             TagTreeViewMode = _settings.Get<TagTreeViewMode>(Components.TagTree.Settings.TagTreeViewModeSetting);
             TagTreeGroupDisplayMode = _settings.Get<TagTreeGroupDisplayMode>(Components.TagTree.Settings.TagTreeGroupDisplaySetting);
+            ShowTagGroupAltNames = _settings.Get<bool>(Components.TagTree.Settings.ShowTagGroupAltNamesSetting);
+            BaseCacheWarnings = _settings.Get<bool>(Components.TagTree.Settings.BaseCacheWarningsSetting);
         }
     }
 }

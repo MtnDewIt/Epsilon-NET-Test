@@ -1,6 +1,6 @@
 ﻿using Stylet;
 
-namespace CacheEditor.ViewModels
+namespace EpsilonLib.Dialogs
 {
     public class InputDialogViewModel : Screen
     {

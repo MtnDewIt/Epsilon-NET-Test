@@ -18,6 +18,9 @@ namespace Epsilon.Options
         private string _startupWidth;
         private string _startupHeight;
 
+        private string _defaultCacheShort;
+        public string _defaultPakShort;
+
         [ImportingConstructor]
         public GeneralOptionsViewModel(ISettingsService settingsService) : base("General", "General")
         {
@@ -27,8 +30,19 @@ namespace Epsilon.Options
         public string DefaultCachePath
         {
             get => _defaultCachePath;
-            set => SetOptionAndNotify(ref _defaultCachePath, value);
+            set
+            {
+                SetOptionAndNotify(ref _defaultCachePath, value);
+                DefaultCacheShort = ShortenPath(value);
+            }
         }
+
+        public string DefaultCacheShort
+        {
+            get => _defaultCacheShort;
+            set => SetOptionAndNotify(ref _defaultCacheShort, value);
+        }
+
         public bool CachePathIsValid
         {
             get
@@ -42,8 +56,19 @@ namespace Epsilon.Options
         public string DefaultPakPath
         {
             get => _defaultPakPath;
-            set => SetOptionAndNotify(ref _defaultPakPath, value);
+            set
+            {
+                SetOptionAndNotify(ref _defaultPakPath, value);
+                DefaultPakShort = ShortenPath(value);
+            }
         }
+
+        public string DefaultPakShort
+        {
+            get => _defaultPakShort;
+            set => SetOptionAndNotify(ref _defaultPakShort, value);
+        }
+
         public bool PakPathIsValid
         {
             get

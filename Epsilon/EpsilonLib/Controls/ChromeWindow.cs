@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 
-namespace WpfApp20
+namespace EpsilonLib.Controls
 {
     public class ChromeWindow : Window
     {

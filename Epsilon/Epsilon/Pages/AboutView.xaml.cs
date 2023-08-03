@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows.Navigation;
-using WpfApp20;
+using EpsilonLib.Controls;
 
 namespace Epsilon.Pages
 {

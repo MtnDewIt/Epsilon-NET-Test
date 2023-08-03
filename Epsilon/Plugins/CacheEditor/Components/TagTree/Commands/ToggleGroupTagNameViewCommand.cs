@@ -7,6 +7,6 @@ namespace CacheEditor.Components.TagTree.Commands
     {
         public override string Name => "TagTree.ToggleGroupTagNameView";
 
-        public override string DisplayText => "Group Tag Name";
+        public override string DisplayText => "Abbreviated";
     }
 }

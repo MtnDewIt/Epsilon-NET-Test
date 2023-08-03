@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
-using System.Windows;
+using EpsilonLib.Controls;
+using Stylet;
 
 namespace CacheEditor
 {
@@ -8,7 +9,7 @@ namespace CacheEditor
     /// </summary> 
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class BrowseTagDialogView : Window
+    public partial class BrowseTagDialogView : ChromeWindow
     {
         public BrowseTagDialogView()
         {

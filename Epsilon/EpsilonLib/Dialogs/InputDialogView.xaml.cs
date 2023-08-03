@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.Composition;
-using System.Windows;
+using EpsilonLib.Controls;
 
-namespace CacheEditor.Views
+namespace EpsilonLib.Dialogs
 {
     /// <summary>
     /// Interaction logic for RenameTagDialogView.xaml
     /// </summary>
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class InputDialogView : Window
+    public partial class InputDialogView : ChromeWindow
     {
         public InputDialogView()
         {

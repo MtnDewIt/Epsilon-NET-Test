@@ -150,7 +150,6 @@
     <Compile Include="Plugins\PluginLoaderException.cs" />
     <Compile Include="Themes\LayoutInitializer.cs" />
     <Compile Include="Themes\PanesStyleSelector.cs" />
-    <Compile Include="Themes\Controls\ChromeWindow.cs" />
     <Compile Include="ViewManager.cs" />
   </ItemGroup>
   <ItemGroup>

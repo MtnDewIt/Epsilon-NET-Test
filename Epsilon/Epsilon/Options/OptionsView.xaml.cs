@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.Composition;
-using System.Windows;
+using EpsilonLib.Controls;
 
 namespace Epsilon.Options
 {
@@ -8,7 +8,7 @@ namespace Epsilon.Options
     /// </summary>
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class OptionsView : Window
+    public partial class OptionsView : ChromeWindow
     {
         public OptionsView()
         {

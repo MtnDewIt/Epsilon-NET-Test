@@ -4,6 +4,7 @@ using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
 using EpsilonLib.Logging;
+using EpsilonLib.Settings;
 using EpsilonLib.Shell.TreeModels;
 using Microsoft.Win32;
 using Shared;
@@ -16,7 +17,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TagTool.Cache;
-using TagTool.Tags;
 
 namespace CacheEditor
 {
@@ -254,10 +254,10 @@ namespace CacheEditor
         {
             if (TagTree.SelectedNode?.Tag is CachedTag tag)
             {
-                var vm = new InputDialogViewModel()
+                var vm = new NameTagDialogViewModel()
                 {
                     DisplayName = "Rename Tag",
-                    Message = "Enter a new name for this tag.",
+                    Message = "Enter a new name for this tag:",
                     InputText = tag.Name
                 };
 
@@ -321,9 +321,9 @@ namespace CacheEditor
         {
             if (TagTree.SelectedNode?.Tag is CachedTag tag)
             {
-                var vm = new InputDialogViewModel();
+                var vm = new NameTagDialogViewModel();
                 vm.DisplayName = "Duplicate Tag";
-                vm.Message = "Enter a name for the new tag.";
+                vm.Message = "Enter a name for the duplicate:";
                 vm.InputText = tag.Name;
 
                 if (_shell.ShowDialog(vm) == true)
@@ -379,6 +379,11 @@ namespace CacheEditor
 
         public bool BaseCacheModifyCheck(GameCache cache)
         {
+            bool warningsEnabled = _cacheEditingService.Settings.Get<bool>(Components.TagTree.Settings.BaseCacheWarningsSetting);
+
+            if (!warningsEnabled)
+                return true;
+
             if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
             {
                 var result = MessageBox.Show(

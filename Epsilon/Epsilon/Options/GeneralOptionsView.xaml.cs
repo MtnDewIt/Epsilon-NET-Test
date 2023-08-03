@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace Epsilon.Options
@@ -31,12 +33,19 @@ namespace Epsilon.Options
                     break;
             }
 
-            var dialog = new OpenFileDialog { Filter = filter };
+            var dialog = new OpenFileDialog
+            {
+                Filter = filter,
+                //FileName = textBlock.Text.Split('\\').Last().Split('.').First()
+            };
+
+            if (!string.IsNullOrEmpty((string)textBlock.ToolTip))
+                dialog.InitialDirectory = new System.IO.FileInfo((string)textBlock.ToolTip).Directory.ToString();
 
             if (dialog.ShowDialog() == false)
                 return;
 
-            textBlock.Text = dialog.FileName;
+            textBlock.ToolTip = dialog.FileName;
         }
 
         private void ClearFileClicked(object sender, System.Windows.RoutedEventArgs e)
@@ -55,7 +64,7 @@ namespace Epsilon.Options
                     break;
             }
 
-            textBlock.Text = "";
+            textBlock.ToolTip = "";
         }
 
         private void GetCurrentPositionClicked(object sender, System.Windows.RoutedEventArgs e)

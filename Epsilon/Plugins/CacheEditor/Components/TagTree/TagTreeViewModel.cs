@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
 
@@ -48,6 +49,7 @@ namespace CacheEditor.Components.TagTree
         private TagTreeViewMode _viewMode = TagTreeViewMode.Groups;
         private TagTreeGroupDisplayMode _groupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
         private TagExtract _extraction;
+        private readonly ICacheEditingService _cacheEditingService;
 
         public MenuItemDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
 
@@ -61,6 +63,7 @@ namespace CacheEditor.Components.TagTree
                 Settings.TagTreeGroupDisplaySetting.Key,
                 (TagTreeGroupDisplayMode)Settings.TagTreeGroupDisplaySetting.DefaultValue);
 
+            _cacheEditingService = cacheEditingService;
             _cacheFile = cacheFile;
             _extraction = extraction;
             _cacheFile.TagSerialized += _cacheFile_TagSaved;
@@ -165,7 +168,11 @@ namespace CacheEditor.Components.TagTree
                 case TagTreeViewMode.Folders:
                     return new TagTreeFolderView();
                 case TagTreeViewMode.Groups:
-                    return new TagTreeGroupView(_groupDisplayMode);
+                    {
+                        bool showAltNames = _cacheEditingService.Settings.Get(
+                            Settings.ShowTagGroupAltNamesSetting.Key, (bool)Settings.ShowTagGroupAltNamesSetting.DefaultValue);
+                        return new TagTreeGroupView(_groupDisplayMode, showAltNames);
+                    }
                 default:
                     return null;
             }

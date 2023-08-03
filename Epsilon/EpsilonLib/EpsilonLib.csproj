@@ -79,10 +79,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ChromeWindow.cs" />
     <Compile Include="Converters\BoolToVisibilityInverseConverter.cs" />
+    <Compile Include="Converters\StringVisibilityConverter.cs" />
     <Compile Include="Core\DisabledPluginAttribute.cs" />
     <Compile Include="Core\GlobalServiceProvider.cs" />
     <Compile Include="Core\SessionStorage.cs" />
+    <Compile Include="Dialogs\InputDialogView.xaml.cs">
+      <DependentUpon>InputDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\InputDialogViewModel.cs" />
     <Compile Include="Menus\SimpleMenu.cs" />
     <Compile Include="Options\OptionPageBase.cs" />
     <Compile Include="Shell\ClipboardEx.cs" />
@@ -191,6 +197,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dialogs\InputDialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

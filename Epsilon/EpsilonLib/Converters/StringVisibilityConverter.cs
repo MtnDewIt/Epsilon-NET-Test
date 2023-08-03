@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace MapVariantFixer
+namespace EpsilonLib.Converters
 {
-    class EmptyStringToVisibilityConverter : MarkupExtension, IValueConverter
+    public class StringVisibilityConverter : MarkupExtension, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
