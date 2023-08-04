@@ -85,9 +85,13 @@
     <Compile Include="Core\DisabledPluginAttribute.cs" />
     <Compile Include="Core\GlobalServiceProvider.cs" />
     <Compile Include="Core\SessionStorage.cs" />
+    <Compile Include="Dialogs\AlertDialogView.xaml.cs">
+      <DependentUpon>AlertDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\InputDialogView.xaml.cs">
       <DependentUpon>InputDialogView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AlertDialogViewModel.cs" />
     <Compile Include="Dialogs\InputDialogViewModel.cs" />
     <Compile Include="Menus\SimpleMenu.cs" />
     <Compile Include="Options\OptionPageBase.cs" />
@@ -197,6 +201,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dialogs\AlertDialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\InputDialogView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,4 +1,5 @@
 ﻿using CacheEditor;
+using EpsilonLib.Dialogs;
 using EpsilonLib.Editors;
 using Shared;
 using Stylet;
@@ -43,8 +44,15 @@ namespace ModPackagePlugin
 
             if (!file.Exists)
             {
-                MessageBox.Show($"Mod package not found at this location:\n\n{fileName}",
-                    "File Not Found", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "File Not Found",
+                    Message = $"Mod package not found at this location:",
+                    SubMessage = fileName
+                };
+                shell.ShowDialog(alert);
+
                 return;
             }
 
@@ -55,8 +63,15 @@ namespace ModPackagePlugin
             }
             catch
             {
-                MessageBox.Show( $"An error occurred while opening {fileName}. Mod package may be incompatible or corrupted.", 
-                    "Failed to open Mod Package", MessageBoxButton.OK, MessageBoxImage.Error);
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "Failed to Open",
+                    Message = $"An error occurred while opening this mod package; it may be incompatible or corrupted.",
+                    SubMessage = fileName
+                };
+                shell.ShowDialog(alert);
+
                 return;
             }
         }

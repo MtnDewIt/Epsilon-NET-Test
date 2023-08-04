@@ -1,5 +1,6 @@
 ﻿using CacheEditor;
 using EpsilonLib.Commands;
+using EpsilonLib.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shared;
@@ -259,6 +260,7 @@ namespace ServerJsonEditor
 
             return itemList;
         }
+
         public object ParseJsonInitial(string path)
         {
             string contents;
@@ -272,16 +274,33 @@ namespace ServerJsonEditor
             catch (Exception ex)
             {
                 if (ex is FileNotFoundException || ex is DirectoryNotFoundException)
-                    MessageBox.Show($"JSON at \"{path}\" could not be found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                {
+                    var alert = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Error,
+                        DisplayName = "File Not Found",
+                        Message = $"JSON could not be found at the following path:",
+                        SubMessage = $"{path}"
+                    };
+                    _shell.ShowDialog(alert);
+                }
                 else
-                    MessageBox.Show($"JSON at \"{path}\" could not be parsed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                {
+                    var alert = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Error,
+                        Message = $"JSON at following path could not be parsed:",
+                        SubMessage = $"{path}"
+                    };
+                    _shell.ShowDialog(alert);
+                }
                 return null;
             };
 
             var json = JSON.Parse(contents);
-
             return json;
         }
+
         private void GetServerCollections()
         {
             var serverDirectory = new DirectoryInfo(ServerFolder);
@@ -300,7 +319,14 @@ namespace ServerJsonEditor
                 }
 				catch
 				{
-                    MessageBox.Show($"mods.json has a formatting error and could not be parsed.", "Error in {path}", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var alert = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Error,
+                        DisplayName = "Error in mods.json",
+                        Message = "mods.json has a formatting error and could not be parsed.",
+                        SubMessage = ServerFolder + "\\mods.json"
+                    };
+                    _shell.ShowDialog(alert);
                 }
 
                 try
@@ -314,11 +340,26 @@ namespace ServerJsonEditor
                 }
                 catch
 				{
-                    MessageBox.Show($"voting.json has a formatting error and could not be parsed.", "Error in voting.json", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var alert = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Error,
+                        DisplayName = "Error in voting.json",
+                        Message = $"voting.json has a formatting error and could not be parsed.",
+                        SubMessage = ServerFolder + "\\voting.json"
+                    };
+                    _shell.ShowDialog(alert);
                 }
             }
             else
-                MessageBox.Show($"Server directory \"{serverDirectory}\" could not be found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            {
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    Message = $"Server directory at the following path could not be found:",
+                    SubMessage = $"{serverDirectory}"
+                };
+                _shell.ShowDialog(alert);
+            }
 
             modGametypeMapping = CreateModEntryCollection(modsJsonDictionary, votingTypesArray);
             VotingDefaultMaps = CreateMapEntryCollection(votingDefaultMapsArray);
@@ -342,8 +383,15 @@ namespace ServerJsonEditor
                 LocalGametypeList = AddDirectoryNames(variantDirectory);
 
             if (!variantDirectory.Exists || LocalGametypeList.Count() == 0)
-                MessageBox.Show($"Couldn't find any game variants saved to your \"mods\\variants\" folder. Download or create some gametypes!",
-                    "No Gametypes Found", MessageBoxButton.OK, MessageBoxImage.Error);
+            {
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Standard,
+                    DisplayName = "No Gametypes Found",
+                    Message = $"Couldn't find any game variants saved to your \"mods\\variants\" folder. Download or create some gametypes!"
+                };
+                _shell.ShowDialog(alert);
+            }
 
             // Gather Available Pak Names
 
@@ -351,8 +399,15 @@ namespace ServerJsonEditor
             if (pakDirectory.Exists)
                 LocalModList = AddDirectoryNames(pakDirectory);
             if (!pakDirectory.Exists || LocalModList.Count() == 0)
-                MessageBox.Show($"Couldn't find any mod packages in your \"mods\\downloads\" folder. Download some mods!",
-                    "No Mod Packages Found", MessageBoxButton.OK, MessageBoxImage.Error);
+            {
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Standard,
+                    DisplayName = "No Mod Packages Found",
+                    Message = $"Couldn't find any mod packages in your \"mods\\downloads\" folder. Download some mods!"
+                };
+                _shell.ShowDialog(alert);
+            }
 
             CurrentModList = new ObservableCollection<ModEntry>(modGametypeMapping.Keys.ToList());
             NotifyOfPropertyChange("CurrentModList");
@@ -654,8 +709,13 @@ namespace ServerJsonEditor
             var votingString = PrepareVotingJson();
             File.WriteAllText(ServerFolder + "\\voting.json", votingString);
 
-            MessageBox.Show($"\"mods.json\" and \"voting.json\" have been saved to \n{ServerFolder}",
-                "Saved Files", MessageBoxButton.OK, MessageBoxImage.Information);
+            var alert = new AlertDialogViewModel
+            {
+                AlertType = Alert.Success,
+                Message = $"\"mods.json\" and \"voting.json\" have been saved to the following directory:",
+                SubMessage = $"{ServerFolder}"
+            };
+            _shell.ShowDialog(alert);
         }
 
         private string PrepareModsJson()

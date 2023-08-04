@@ -1,4 +1,5 @@
-﻿using EpsilonLib.Editors;
+﻿using EpsilonLib.Dialogs;
+using EpsilonLib.Editors;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,15 @@ namespace CacheEditor
 
             if(!file.Exists)
             {
-                MessageBox.Show($"Tag cache not found at this location:\n\n{fileName}",
-                    "File Not Found", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                var error = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "File Not Found",
+                    Message = $"Tag cache not found at this location:",
+                    SubMessage = $"{fileName}"
+                };
+                shell.ShowDialog(error);
+
                 return;
             }
 

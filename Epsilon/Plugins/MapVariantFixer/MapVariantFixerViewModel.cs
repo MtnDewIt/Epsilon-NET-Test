@@ -1,5 +1,6 @@
 ﻿using CacheEditor;
 using EpsilonLib.Commands;
+using EpsilonLib.Dialogs;
 using Shared;
 using Stylet;
 using System;
@@ -101,7 +102,13 @@ namespace MapVariantFixer
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("One or more map variants failed. Check the output for details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var alert = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Error,
+                        Message = "One or more map variants failed. Check the output for details."
+                    };
+                    _shell.ShowDialog(alert);
+
                     WriteLog(ex.ToString());
                 }
                 finally

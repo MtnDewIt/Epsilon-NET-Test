@@ -1,4 +1,5 @@
 ﻿using Epsilon.Components;
+using EpsilonLib.Dialogs;
 using EpsilonLib.Editors;
 using EpsilonLib.Logging;
 using EpsilonLib.Menus;
@@ -119,7 +120,13 @@ namespace Epsilon.Pages
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while opening the file. Check the log for details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    Message = "An error occurred while opening the file. Check the log for details."
+                };
+                ShowDialog(alert);
+
                 Logger.Error(ex.ToString());
             }
         }

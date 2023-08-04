@@ -1,6 +1,7 @@
 ﻿using CacheEditor;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
+using EpsilonLib.Dialogs;
 using Shared;
 using System;
 using System.IO;
@@ -84,7 +85,12 @@ namespace BlamScriptEditorPlugin
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An exception occured while attempting to compile script\n{ex}");
+                var error = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    Message = $"An exception occured while attempting to compile script\n{ex}"
+                };
+                _shell.ShowDialog(error);
             }
         }
 

@@ -3,6 +3,7 @@ using CacheEditor.Components.TagTree;
 using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
+using EpsilonLib.Dialogs;
 using EpsilonLib.Logging;
 using EpsilonLib.Settings;
 using EpsilonLib.Shell.TreeModels;
@@ -287,7 +288,13 @@ namespace CacheEditor
                 if(ofd.ShowDialog() == true)
                 {
                     _cacheFile.ExtractTag(tag, ofd.FileName);
-                    MessageBox.Show("Tag extracted successfully", "Tag Extracted", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    var success = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Success,
+                        Message = "Tag extracted successfully."
+                    };
+                    _shell.ShowDialog(success);
                 }
             }
         }
@@ -306,7 +313,13 @@ namespace CacheEditor
                 if (ofd.ShowDialog() == true)
                 {
                     _cacheFile.ImportTag(tag, ofd.FileName);
-                    MessageBox.Show("Tag imported successfully", "Tag Imported", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    var success = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Success,
+                        Message = "Tag imported successfully."
+                    };
+                    _shell.ShowDialog(success);
                 }
                 Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"importtag {tag.Name}.{tag.Group} {ofd.FileName}");
             }
@@ -350,13 +363,13 @@ namespace CacheEditor
                 if (!BaseCacheModifyCheck(_cacheFile.Cache))
                     return;
 
-                var result = MessageBox.Show(
-                    $"Are you sure you want to delete '{Path.GetFileName(tag.Name)}.{tag.Group}'?"
-                    + "\n\nClick OK to continue.",
-                    "Warning", MessageBoxButton.OKCancel,
-                    MessageBoxImage.Warning);
+                var warning = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Warning,
+                    Message = $"Are you sure you want to delete '{Path.GetFileName(tag.Name)}.{tag.Group}'?"
+                };
 
-                if (result == MessageBoxResult.OK)
+                if (_shell.ShowDialog(warning) == true)
                 {
                     Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"deletetag {tag.Name}.{tag.Group}");
                     _cacheFile.DeleteTag(tag);
@@ -386,13 +399,13 @@ namespace CacheEditor
 
             if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
             {
-                var result = MessageBox.Show(
-                    "This action will modify your base cache. Are you sure you want to proceed?",
-                    "Warning",
-                    MessageBoxButton.OKCancel,
-                    MessageBoxImage.Warning);
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Warning,
+                    Message = "This action will modify your base cache. Are you sure you want to proceed?"
+                };
 
-                if (result == MessageBoxResult.OK)
+                if (_shell.ShowDialog(alert) == true)
                     return true;
                 else
                     return false;
@@ -400,6 +413,9 @@ namespace CacheEditor
             else
                 return true;
         }
+
+
+        public MessageBox asdfj;
 
         #endregion
     }

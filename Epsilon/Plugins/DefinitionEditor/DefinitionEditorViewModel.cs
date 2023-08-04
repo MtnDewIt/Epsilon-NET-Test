@@ -23,17 +23,13 @@ using TagTool.Common;
 using TagTool.Commands.Unicode;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
-using CacheEditor.Views;
-using Microsoft.Xaml.Behaviors.Layout;
 using System.IO;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using System.Runtime.Remoting.Contexts;
-using static TagTool.Tags.Definitions.Model;
 using TagTool.Cache.HaloOnline;
 using EpsilonLib.Logging;
-using System.Windows.Controls;
+using EpsilonLib.Dialogs;
 
 namespace DefinitionEditor
 {
@@ -192,7 +188,16 @@ namespace DefinitionEditor
             var helper = new RTEFieldHelper(SelectedRteTargetItem.Target, _cacheFile, _definitionData.GetType(), _instance);
             uint address = helper.GetFieldMemoryAddress(field);
             if (address == 0)
-                MessageBox.Show("Tag not loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            {
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "Failed to Copy Address",
+                    Message = $"Tag not loaded."
+                };
+
+                _shell.ShowDialog(alert);
+            }
             else
                 ClipboardEx.SetTextSafe($"{address:X8}");
         }
@@ -201,14 +206,28 @@ namespace DefinitionEditor
         {
             if (SelectedRteTargetItem == null)
             {
-                MessageBox.Show("Not attached to game instance!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "Failed to Poke",
+                    Message = $"Not attached to game instance!",
+                };
+
+                _shell.ShowDialog(alert);
                 return;
             }
             var helper = new RTEFieldHelper(SelectedRteTargetItem.Target, _cacheFile, _definitionData.GetType(), _instance);
             uint address = helper.GetFieldMemoryAddress(field);
             if (address == 0)
             {
-                MessageBox.Show("Tag not loaded", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "Failed to Poke",
+                    Message = $"Tag not loaded!",
+                };
+
+                _shell.ShowDialog(alert);
                 return;
             }              
 
@@ -425,7 +444,15 @@ namespace DefinitionEditor
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                MessageBox.Show($"An exception was thrown while attempting to save tag changes.\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+               
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    Message = $"An exception was thrown while attempting to save tag changes.",
+                    SubMessage = ex.Message
+                };
+
+                _shell.ShowDialog(alert);
             }
         }
 
@@ -443,7 +470,15 @@ namespace DefinitionEditor
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                MessageBox.Show($"An exception was thrown while attempting to poke tag changes.\n\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    Message = $"An exception was thrown while attempting to poke tag changes.",
+                    SubMessage = ex.Message
+                };
+
+                _shell.ShowDialog(alert);
             }
         }
 
@@ -512,13 +547,13 @@ namespace DefinitionEditor
         {
             if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
             {
-                var result = MessageBox.Show(
-                    "This action will modify your base cache. Are you sure you want to proceed?",
-                    "Warning",
-                    MessageBoxButton.OKCancel,
-                    MessageBoxImage.Warning);
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Warning,
+                    Message = "This action will modify your base cache. Are you sure you want to proceed?"
+                };
 
-                if (result == MessageBoxResult.OK)
+                if (_shell.ShowDialog(alert) == true)
                     return true;
                 else
                     return false;
@@ -550,7 +585,7 @@ namespace DefinitionEditor
                         tempstring = LocalizedStringPrinter.EncodeNonAsciiCharacters(unic.GetString(locstr, GameLanguage.English));
                         stringid.UnicText = tempstring;
 
-                        var dialog = new InputDialogViewModel()
+                        var dialog = new NameTagDialogViewModel()
                         {
                             DisplayName = stringid.Value,
                             Message = "Enter a new string for this StringID.",

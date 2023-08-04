@@ -1,5 +1,6 @@
 ﻿using CacheEditor;
 using CacheEditor.TagEditing;
+using EpsilonLib.Dialogs;
 using EpsilonLib.Logging;
 using EpsilonLib.Menus;
 using EpsilonLib.Settings;
@@ -75,7 +76,14 @@ namespace TagResourceEditorPlugin
                 catch (Exception ex)
                 {
                     Logger.Error(ex.ToString());
-                    MessageBox.Show($"An exception occured while loading the resource:\n\n{ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    var alert = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Error,
+                        Message = "An exception occured while loading the resource:",
+                        SubMessage = $"{ex}"
+                    };
+                    _shell.ShowDialog(alert);
                 }
             }
         }
