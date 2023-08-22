@@ -295,6 +295,7 @@ namespace CacheEditor
                         Message = "Tag extracted successfully."
                     };
                     _shell.ShowDialog(success);
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"extracttag {tag.Name}.{tag.Group} {ofd.FileName}");
                 }
             }
         }
@@ -320,8 +321,8 @@ namespace CacheEditor
                         Message = "Tag imported successfully."
                     };
                     _shell.ShowDialog(success);
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"importtag {tag.Name}.{tag.Group} {ofd.FileName}");
                 }
-                Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"importtag {tag.Name}.{tag.Group} {ofd.FileName}");
             }
         }
 
@@ -346,8 +347,8 @@ namespace CacheEditor
 
                     _cacheFile.DuplicateTag(tag, vm.InputText);
                     TagTree.Refresh(true);
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"duplicatetag {tag.Name}.{tag.Group} {vm.InputText}");
                 }
-                Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"duplicatetag {tag.Name}.{tag.Group} {vm.InputText}");
             }
         }
 

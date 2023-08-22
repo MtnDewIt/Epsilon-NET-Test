@@ -56,6 +56,9 @@ namespace DefinitionEditor
 
         private void structContainer_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
+            if (!(e.OriginalSource is Visual))
+                return;
+
             // If it's a textbox, just use the default context menu for now.
             if (VisualTreeHelpers.FindAncestors<TextBox>((Visual)e.OriginalSource).FirstOrDefault() != null)
                 return;

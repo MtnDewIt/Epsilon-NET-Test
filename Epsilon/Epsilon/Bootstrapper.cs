@@ -6,10 +6,10 @@ using EpsilonLib.Logging;
 using EpsilonLib.Menus;
 using EpsilonLib.Settings;
 using Shared;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -136,15 +136,12 @@ namespace WpfApp20
 
         private async void OpenDefault(string path, IEditorProvider editorProvider)
         {
-            try
-            {
+
+            if(File.Exists(path))
                 await _editorService.OpenFileWithEditorAsync(path, editorProvider.Id);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Path to default cache is invalid: \n\"{path}\"", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Logger.Error(ex.ToString());
-            }
+            else
+                MessageBox.Show($"Startup cache or mod package could not be found at the following location:" + 
+                        $"\n\n{path}", "File Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
