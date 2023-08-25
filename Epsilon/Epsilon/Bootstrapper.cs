@@ -54,15 +54,12 @@ namespace WpfApp20
 
             var providers = _editorService.EditorProviders.ToList();
 
-            if (!string.IsNullOrWhiteSpace(DefaultCachePath))
-                OpenDefault(DefaultCachePath, providers.ElementAt(0));
-
             base.Launch();
 
-            if (!string.IsNullOrWhiteSpace(DefaultPakPath))
-                OpenDefault(DefaultPakPath, providers.ElementAt(1));
-
             PostLaunchInitShell();
+
+            await OpenDefault(DefaultCachePath, providers.ElementAt(0));
+            await OpenDefault(DefaultPakPath, providers.ElementAt(1));
         }
 
         private void RegisterAdditionalLoggers()
@@ -134,8 +131,10 @@ namespace WpfApp20
             }
         }
 
-        private async void OpenDefault(string path, IEditorProvider editorProvider)
+        private async Task OpenDefault(string path, IEditorProvider editorProvider)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                return;
 
             if(File.Exists(path))
                 await _editorService.OpenFileWithEditorAsync(path, editorProvider.Id);

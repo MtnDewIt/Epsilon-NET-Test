@@ -218,7 +218,7 @@ namespace ServerJsonEditor
             _shell = shell;
             _cacheFile = cacheFile;
             DisplayName = "Server Voting Editor";
-            ServerFolder = Path.Combine(_cacheFile.File.Directory.Parent.FullName, @"mods\server");
+            ServerFolder = Path.Combine(_cacheFile.File.Directory.Parent.FullName, @"data\server");
 
             GetServerCollections();
             GetPathCollections();
@@ -236,13 +236,13 @@ namespace ServerJsonEditor
 
             switch (directory.Name)
             {
-                case "maps":
+                case "map_variants":
                     criterion = "sandbox.map";
                     break;
-                case "variants":
+                case "game_variants":
                     criterion = "variant.";
                     break;
-                case "downloads":
+                case "mods":
                     criterion = ".pak";
                     break;
             }
@@ -252,7 +252,7 @@ namespace ServerJsonEditor
                 string[] dirSplit = file.Directory.ToString().Split('\\');
                 string name = dirSplit[dirSplit.Count() - countTrim];
 
-                if (directory.Name == "downloads")
+                if (directory.Name == "mods")
                     name = file.Name.Split('.')[0];
 
                 itemList.Add(name);
@@ -372,13 +372,13 @@ namespace ServerJsonEditor
 
             // Gather Available Map Names
 
-            var mapDirectory = new DirectoryInfo(Path.Combine(fullPath, "..\\mods\\maps"));
+            var mapDirectory = new DirectoryInfo(Path.Combine(fullPath, "..\\data\\map_variants"));
             if (mapDirectory.Exists)
                 LocalMapList = AddDirectoryNames(mapDirectory);
 
             // Gather Available Variant Names
 
-            var variantDirectory = new DirectoryInfo(Path.Combine(fullPath, "..\\mods\\variants"));
+            var variantDirectory = new DirectoryInfo(Path.Combine(fullPath, "..\\data\\game_variants"));
             if (variantDirectory.Exists)
                 LocalGametypeList = AddDirectoryNames(variantDirectory);
 
@@ -388,14 +388,14 @@ namespace ServerJsonEditor
                 {
                     AlertType = Alert.Standard,
                     DisplayName = "No Gametypes Found",
-                    Message = $"Couldn't find any game variants saved to your \"mods\\variants\" folder. Download or create some gametypes!"
+                    Message = $"Couldn't find any game variants saved to your \"data\\game_variants\" folder. Download or create some gametypes!"
                 };
                 _shell.ShowDialog(alert);
             }
 
             // Gather Available Pak Names
 
-            var pakDirectory = new DirectoryInfo(Path.Combine(fullPath, "..\\mods\\downloads"));
+            var pakDirectory = new DirectoryInfo(Path.Combine(fullPath, "..\\mods"));
             if (pakDirectory.Exists)
                 LocalModList = AddDirectoryNames(pakDirectory);
             if (!pakDirectory.Exists || LocalModList.Count() == 0)
@@ -404,7 +404,7 @@ namespace ServerJsonEditor
                 {
                     AlertType = Alert.Standard,
                     DisplayName = "No Mod Packages Found",
-                    Message = $"Couldn't find any mod packages in your \"mods\\downloads\" folder. Download some mods!"
+                    Message = $"Couldn't find any mod packages in your \"mods\" folder. Download or create some mods!"
                 };
                 _shell.ShowDialog(alert);
             }

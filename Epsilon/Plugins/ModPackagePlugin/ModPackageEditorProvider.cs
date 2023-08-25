@@ -35,7 +35,7 @@ namespace ModPackagePlugin
         public async Task OpenFileAsync(IShell shell, string fileName)
         {
             var file = new FileInfo(fileName);
-            FileInfo baseCacheFile = new FileInfo(Path.Combine(file.Directory.FullName, "..\\..\\maps\\tags.dat"));
+            FileInfo baseCacheFile = new FileInfo(Path.Combine(file.Directory.FullName, "..\\maps\\tags.dat"));
             if (!baseCacheFile.Exists)
             {
                 if (!FileDialogs.RunBrowseCacheDialog(out baseCacheFile))

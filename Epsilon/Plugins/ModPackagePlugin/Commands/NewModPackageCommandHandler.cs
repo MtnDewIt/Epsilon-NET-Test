@@ -37,7 +37,7 @@ namespace ModPackagePlugin.Commands
             if (!FileDialogs.RunBrowseCacheDialog(out FileInfo baseCacheFile))
                 return;
 
-            var directory = Path.GetFullPath($"{baseCacheFile.Directory.FullName}\\..\\mods\\downloads");
+            var directory = Path.GetFullPath($"{baseCacheFile.Directory.FullName}\\..\\mods");
             if (!FileDialogs.RunSaveDialog(out FileInfo modpackageFile, initialDirectory: directory))
                 return;
 
