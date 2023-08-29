@@ -29,7 +29,9 @@ namespace MapVariantFixer
         private Dictionary<int, string> _061_TagRemapping;
         private readonly Dictionary<string, string> ObjeRenames = new Dictionary<string, string>()
         {
-            { "objects\\equipment\\instantcover_equipment\\instantcover_equipment.eqip", "objects\\equipment\\instantcover_equipment\\instantcover_equipment_mp.eqip" }
+            { "objects\\equipment\\instantcover_equipment\\instantcover_equipment.eqip", "objects\\equipment\\instantcover_equipment\\instantcover_equipment_mp.eqip" },
+            { "objects\\levels\\multi\\cyberdyne\\cyber_monitor_med\\cyber_monitor.scen", "objects\\levels\\solo\\020_base\\monitor_med\\monitor_med.scen" },
+            { "objects\\levels\\multi\\s3d_turf\\s3d_turf_turf_crate_large\\s3d_turf_turf_crate_large.bloc", "objects\\levels\\multi\\s3d_turf\\turf_crate_large\\turf_crate_large.bloc" }
         };
 
         public MapVariantFixerViewModel(IShell shell, ICacheFile cacheFile)
@@ -43,7 +45,7 @@ namespace MapVariantFixer
 
             Files.CollectionChanged += Files_CollectionChanged;
 
-            var sandboxMapsDir = new DirectoryInfo(Path.Combine(_cacheFile.File.Directory.FullName, "..\\mods\\maps"));
+            var sandboxMapsDir = new DirectoryInfo(Path.Combine(_cacheFile.File.Directory.FullName, "..\\data\\map_variants"));
             if (sandboxMapsDir.Exists)
                 AddFilesRecursive(sandboxMapsDir);
         }

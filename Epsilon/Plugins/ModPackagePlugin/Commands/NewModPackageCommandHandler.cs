@@ -1,5 +1,6 @@
 ﻿using CacheEditor;
 using EpsilonLib.Commands;
+using EpsilonLib.Settings;
 using Shared;
 using Stylet;
 using System;
@@ -21,20 +22,26 @@ namespace ModPackagePlugin.Commands
         private readonly Lazy<IShell> _shell;
         private readonly ICacheEditingService _editingService;
         private readonly IFileHistoryService _fileHistory;
+        private readonly ISettingsService _settingsService;
 
         [ImportingConstructor]
-        public NewModPackageCommandHandler(Lazy<IShell> shell, ICacheEditingService editingService, IFileHistoryService fileHistory)
+        public NewModPackageCommandHandler(Lazy<IShell> shell, ICacheEditingService editingService, IFileHistoryService fileHistory, ISettingsService settingsService)
         {
             _shell = shell;
             _editingService = editingService;
             _fileHistory = fileHistory;
+            _settingsService = settingsService;
         }
 
         public async void ExecuteCommand(Command command)
         {
             var shell = _shell.Value;
+            var baseCachePath = _settingsService.GetCollection("General").Get("DefaultTagCache", "");
+            FileInfo baseCacheFile;
 
-            if (!FileDialogs.RunBrowseCacheDialog(out FileInfo baseCacheFile))
+            if (File.Exists(baseCachePath))
+                baseCacheFile = new FileInfo(baseCachePath);
+            else if (!FileDialogs.RunBrowseCacheDialog(out baseCacheFile))
                 return;
 
             var directory = Path.GetFullPath($"{baseCacheFile.Directory.FullName}\\..\\mods");
