@@ -6,6 +6,7 @@
     xmlns:EpsilonControls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
     xmlns:EpsilonConverters="clr-namespace:EpsilonLib.Converters;assembly=EpsilonLib"
     xmlns:local="clr-namespace:WpfApp20"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:s="https://github.com/canton7/Stylet">
     <Application.Resources>
         <ResourceDictionary>
@@ -111,6 +112,7 @@
                 BasedOn="{StaticResource {x:Type Window}}"
                 TargetType="{x:Type Window}">
                 <Setter Property="Background" Value="#2d2d30" />
+                <Setter Property="Topmost" Value="{DynamicResource AlwaysOnTop}" />
             </Style>
 
             <Style
@@ -139,6 +141,9 @@
                 <Setter Property="FontFamily" Value="Bahnschrift Light" />
             </Style>
 
+            <!--< Settings and Theme Options />-->
+            <System:Boolean x:Key="AlwaysOnTop">false</System:Boolean>
+            
         </ResourceDictionary>
 
     </Application.Resources>

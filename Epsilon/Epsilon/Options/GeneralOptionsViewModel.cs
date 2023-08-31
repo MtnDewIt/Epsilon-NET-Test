@@ -2,6 +2,7 @@
 using EpsilonLib.Settings;
 using System.IO;
 using System.ComponentModel.Composition;
+using System.Windows;
 
 namespace Epsilon.Options
 {
@@ -17,6 +18,7 @@ namespace Epsilon.Options
         private string _startupPositionTop;
         private string _startupWidth;
         private string _startupHeight;
+        private bool _alwaysOnTop;
 
         private string _defaultCacheShort;
         public string _defaultPakShort;
@@ -103,6 +105,12 @@ namespace Epsilon.Options
             set => SetOptionAndNotify(ref _startupHeight, value);
         }
 
+        public bool AlwaysOnTop
+        {
+            get => _alwaysOnTop;
+            set => SetOptionAndNotify(ref _alwaysOnTop, value);
+        }
+
         public override void Apply()
         {
             if (CachePathIsValid)
@@ -115,6 +123,9 @@ namespace Epsilon.Options
 
             _settings.Set(GeneralSettings.StartupWidthSetting.Key, StartupWidth);
             _settings.Set(GeneralSettings.StartupHeightSetting.Key, StartupHeight);
+
+            _settings.Set(GeneralSettings.AlwaysOnTopSetting.Key, AlwaysOnTop);
+            Application.Current.Resources["AlwaysOnTop"] = AlwaysOnTop;
         }
 
         public override void Load()
@@ -125,6 +136,7 @@ namespace Epsilon.Options
             StartupPositionTop = _settings.Get(GeneralSettings.StartupPositionTopSetting.Key, "");
             StartupWidth = _settings.Get(GeneralSettings.StartupWidthSetting.Key, "");
             StartupHeight = _settings.Get(GeneralSettings.StartupHeightSetting.Key, "");
+            AlwaysOnTop = _settings.Get(GeneralSettings.AlwaysOnTopSetting.Key, false);
         }
     }
 }

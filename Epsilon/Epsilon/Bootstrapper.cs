@@ -31,6 +31,7 @@ namespace WpfApp20
         private double StartupPositionTop;
         private double StartupWidth;
         private double StartupHeight;
+        private bool AlwaysOnTop;
 
         protected async override void Launch()
         {
@@ -53,6 +54,8 @@ namespace WpfApp20
             };
 
             var providers = _editorService.EditorProviders.ToList();
+
+            FrameworkCompatibilityPreferences.KeepTextBoxDisplaySynchronizedWithTextProperty = false;
 
             base.Launch();
 
@@ -97,16 +100,16 @@ namespace WpfApp20
             _settings = GetInstance<ISettingsService>().GetCollection("General");
             DefaultCachePath = _settings.Get("DefaultTagCache", "");
             DefaultPakPath = _settings.Get("DefaultModPackage", "");
+            AlwaysOnTop = _settings.Get("AlwaysOnTop", false);
 
             App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
             App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
             App.Current.Resources.Add(SystemParameters.MenuPopupAnimationKey, PopupAnimation.None);
+            App.Current.Resources["AlwaysOnTop"] = AlwaysOnTop;
         }
 
         private void PostLaunchInitShell()
         {
-            FrameworkCompatibilityPreferences.KeepTextBoxDisplaySynchronizedWithTextProperty = false;
-
             // better font rendering
             TextOptions.TextFormattingModeProperty.OverrideMetadata(typeof(Window),
                new FrameworkPropertyMetadata(TextFormattingMode.Display,

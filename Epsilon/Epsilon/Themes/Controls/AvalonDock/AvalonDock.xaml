@@ -1574,6 +1574,7 @@
         TargetType="{x:Type avalonDockControls:LayoutDocumentFloatingWindowControl}">
         <Setter Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor1}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor6}" />
+        <Setter Property="Topmost" Value="{DynamicResource AlwaysOnTop}"/>
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>
@@ -1744,6 +1745,7 @@
         TargetType="{x:Type avalonDockControls:LayoutAnchorableFloatingWindowControl}">
         <Setter Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor1}" />
         <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor6}" />
+        <Setter Property="Topmost" Value="{DynamicResource AlwaysOnTop}"/>
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="shell:WindowChrome.WindowChrome">
             <Setter.Value>

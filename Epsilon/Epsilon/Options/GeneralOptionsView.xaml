@@ -212,6 +212,14 @@
                     VerticalContentAlignment="Center"/>
             </DockPanel>
         </DockPanel>
+
+        <DockPanel>
+            <CheckBox
+                VerticalAlignment="Center"
+                Content="Always On Top"
+                ToolTip="Keep Epsilon on top of all other windows."
+                IsChecked="{Binding AlwaysOnTop, Mode=TwoWay}" />
+        </DockPanel>
         
     </StackPanel>
     

@@ -12,5 +12,6 @@ namespace Epsilon.Options
         public static SettingDefinition StartupPositionTopSetting = new SettingDefinition("StartupPositionTop", "");
         public static SettingDefinition StartupWidthSetting = new SettingDefinition("StartupWidth", "");
         public static SettingDefinition StartupHeightSetting = new SettingDefinition("StartupHeight", "");
+        public static SettingDefinition AlwaysOnTopSetting = new SettingDefinition("AlwaysOnTop", "");
     }
 }

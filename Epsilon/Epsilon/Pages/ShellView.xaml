@@ -8,6 +8,7 @@
     xmlns:s="https://github.com/canton7/Stylet"
     xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
     Title="{Binding Title}"
+    Topmost="{DynamicResource AlwaysOnTop}"
     Width="1280"
     Height="800"
     MinWidth="500"
