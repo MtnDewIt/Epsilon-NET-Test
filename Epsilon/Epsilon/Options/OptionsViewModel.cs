@@ -1,7 +1,12 @@
 ﻿using EpsilonLib.Options;
 using EpsilonLib.Shell.TreeModels;
 using Stylet;
+using System;
 using System.Linq;
+using System.Windows.Media;
+using System.Windows;
+using Xceed.Wpf.AvalonDock.Themes;
+using EpsilonLib.Settings;
 
 namespace Epsilon.Options
 {
@@ -49,6 +54,9 @@ namespace Epsilon.Options
 
         public void Cancel()
         {
+            GeneralOptionsViewModel general = (GeneralOptionsViewModel)_optionsService.OptionPages.First();
+            general.RevertAppearance();
+
             RequestClose(false);
         }
     }

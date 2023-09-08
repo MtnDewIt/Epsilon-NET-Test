@@ -20,12 +20,12 @@
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Background" Value="#007ACC"/>
-                    <Setter Property="BorderBrush" Value="#007ACC"/>
+                    <Setter Property="Background" Value="{DynamicResource Inset}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                 </Trigger>
                 <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Foreground" Value="#C0C0C0"/>
-                    <Setter Property="Background" Value="#505050"/>
+                    <!--<Setter Property="Foreground" Value="#C0C0C0"/>-->
+                    <Setter Property="Background" Value="Transparent"/>
                     <!--<Setter Property="BorderBrush" Value="Transparent"/>-->
                 </Trigger>
             </Style.Triggers>

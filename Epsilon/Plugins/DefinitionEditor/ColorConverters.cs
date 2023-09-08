@@ -1,9 +1,11 @@
 ﻿using ColorPicker.Models;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+using System.Windows.Media;
 using TagStructEditor.Fields;
 using TagTool.Common;
 
@@ -210,6 +212,57 @@ namespace DefinitionEditor
             {
                 newVals[i] = System.Convert.ToByte(oldVals[i] * 255);
             }
+
+            return newVals;
+        }
+    }
+
+    public class HexColorConverter : MarkupExtension, IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string hex = value == null ? "#AA6611" : (string)value;
+
+            Color color = (Color)ColorConverter.ConvertFromString(hex);
+
+            var cs = new ColorState();
+            cs.SetARGB(color.A/255f, color.R/255f, color.G/255f, color.B/255f);
+            return cs;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            byte[] bytes = ColorStateToBytes((ColorState)value);
+            string hex = "#";
+
+            foreach (var b in bytes)
+                hex += b.ToString("X2");
+
+            return hex;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return this;
+        }
+
+        public float[] ByteToNormalizedFloat(byte[] byteValues)
+        {
+            float[] newVals = new float[byteValues.Length];
+
+            for (int i = 0; i < byteValues.Length; i++)
+                newVals[i] = System.Convert.ToSingle((byte)byteValues[i]) / 255;
+
+            return newVals;
+        }
+
+        public byte[] ColorStateToBytes(ColorState cs)
+        {
+            double[] oldVals = new double[] { cs.RGB_R, cs.RGB_G, cs.RGB_B };
+            byte[] newVals = new byte[3];
+
+            for (int i = 0; i < 3; i++)
+                newVals[i] = System.Convert.ToByte(oldVals[i] * 255);
 
             return newVals;
         }

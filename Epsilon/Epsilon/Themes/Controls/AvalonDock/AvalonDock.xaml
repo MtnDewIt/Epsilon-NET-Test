@@ -61,7 +61,7 @@
             <DataTrigger
                 Binding="{Binding IsActive}"
                 Value="True">
-                <Setter TargetName="border" Property="BorderBrush" Value="#007acc" />
+                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Accent}" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
@@ -287,8 +287,8 @@
                                     <DataTrigger
                                         Binding="{Binding IsActive}"
                                         Value="True">
-                                        <Setter Property="Background" Value="#007acc" />
-                                        <Setter Property="BorderBrush" Value="#007acc" />
+                                        <Setter Property="Background" Value="{DynamicResource Accent}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
                                         <Setter Property="Foreground" Value="#f1f1f1" />
                                         <Setter Property="Panel.ZIndex" Value="1" />
                                     </DataTrigger>
@@ -297,8 +297,8 @@
                                             <Condition Property="IsMouseOver" Value="true" />
                                             <Condition Property="Selector.IsSelected" Value="false" />
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="BorderBrush" Value="#FF1C97EA" />
-                                        <Setter Property="Background" Value="#FF1C97EA" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource MouseOver}" />
+                                        <Setter Property="Background" Value="{DynamicResource MouseOver}" />
                                         <Setter Property="Foreground" Value="#f1f1f1" />
                                         <Setter Property="Panel.ZIndex" Value="0" />
                                     </MultiTrigger>
@@ -425,7 +425,7 @@
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="Selector.IsSelected" Value="true">
-                                        <Setter Property="Foreground" Value="#007acc" />
+                                        <Setter Property="Foreground" Value="{DynamicResource Accent}" />
                                         <Setter Property="Background" Value="Transparent" />
                                         <Setter Property="BorderBrush" Value="#3f3f46" />
                                         <Setter Property="BorderThickness" Value="1,0,1,1" />
@@ -445,10 +445,10 @@
                                             <Condition Property="Selector.IsSelected" Value="false" />
 
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor4}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource Inset}" />
                                         <Setter Property="Panel.ZIndex" Value="0" />
                                         <Setter Property="Background" Value="#3e3e40" />
-                                        <Setter Property="Foreground" Value="#FF0097FB" />
+                                        <Setter Property="Foreground" Value="{DynamicResource Accent}" />
                                     </MultiTrigger>
                                     <Trigger Property="IsEnabled" Value="false">
                                         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
@@ -610,7 +610,7 @@
                         <DataTrigger
                             Binding="{Binding Model.IsActive, RelativeSource={RelativeSource Mode=Self}}"
                             Value="True">
-                            <Setter Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}" />
+                            <Setter Property="Background" Value="{DynamicResource Accent}" />
                         </DataTrigger>
                         <DataTrigger
                             Binding="{Binding Model.IsActive, RelativeSource={RelativeSource Mode=Self}}"
@@ -716,8 +716,8 @@
 
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Bd" Property="Background" Value="#2D2D30" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="#FF007ACC" />
-                <Setter TargetName="Bd" Property="TextElement.Foreground" Value="#FF007ACC" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Accent}" />
+                <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource Accent}" />
             </Trigger>
 
         </ControlTemplate.Triggers>
@@ -728,12 +728,12 @@
             Width="32"
             Height="32"
             Background="#232324">
-            <Rectangle Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#007acc" />
+            <Rectangle Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Accent}" />
             <Rectangle Width="22" Height="20" Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#232324" />
             <Line
                 Margin="0,4,0,4"
                 HorizontalAlignment="Center"
-                Stroke="#007acc"
+                Stroke="{DynamicResource Accent}"
                 StrokeDashArray="1 1"
                 Y2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" />
         </Grid>
@@ -744,12 +744,12 @@
             Width="32"
             Height="32"
             Background="#232324">
-            <Rectangle Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#007acc" />
+            <Rectangle Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Accent}" />
             <Rectangle Width="22" Height="20" Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#232324" />
             <Line
                 Margin="4,2,4,0"
                 VerticalAlignment="Center"
-                Stroke="#007acc"
+                Stroke="{DynamicResource Accent}"
                 StrokeDashArray="1 1"
                 X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" />
         </Grid>
@@ -773,7 +773,7 @@
                 Background="#232324"
                 CornerRadius="4">
                 <Grid>
-                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#007acc" />
+                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="{DynamicResource Accent}" />
                     <Rectangle Width="9" Height="22" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#232324" />
 
                     <Polygon
@@ -803,7 +803,7 @@
                 Background="#232324"
                 CornerRadius="4">
                 <Grid>
-                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#007acc" />
+                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="{DynamicResource Accent}" />
                     <Rectangle Width="9" Height="22" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#232324" />
 
                     <Polygon
@@ -824,7 +824,7 @@
                 Background="#232324"
                 CornerRadius="4">
                 <Grid>
-                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#007acc" />
+                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="{DynamicResource Accent}" />
                     <Rectangle Width="10" Height="20" Margin="5,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#232324" />
 
                     <Polygon
@@ -854,7 +854,7 @@
                 Background="#232324"
                 CornerRadius="4">
                 <Grid>
-                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#007acc" />
+                    <Rectangle Width="12" Height="24" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="{DynamicResource Accent}" />
                     <Rectangle Width="10" Height="20" Margin="5,0,0,2" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#232324" />
 
                     <Polygon
@@ -872,7 +872,7 @@
             Width="32"
             Height="32"
             Background="#232324">
-            <Rectangle Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#007acc" />
+            <Rectangle Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Accent}" />
             <Rectangle Width="22" Height="20" Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#232324" />
         </Grid>
     </ControlTemplate>
@@ -892,8 +892,8 @@
                         Opacity="0.7">
                         <Path
                             x:Name="PART_PreviewBox"
-                            Fill="#007acc"
-                            Stroke="#007acc"
+                            Fill="{DynamicResource Accent}"
+                            Stroke="{DynamicResource Accent}"
                             StrokeThickness="2" />
                         <Grid x:Name="PART_DockingManagerDropTargets">
                             <ContentControl
@@ -1712,8 +1712,8 @@
                         <DataTrigger
                             Binding="{Binding RelativeSource={RelativeSource Self}, Path=Model.RootDocument.IsActive}"
                             Value="True">
-                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}" />
-                            <Setter TargetName="Header" Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}" />
+                            <Setter TargetName="bd" Property="Background" Value="{DynamicResource Accent}" />
+                            <Setter TargetName="Header" Property="Background" Value="{DynamicResource Accent}" />
                             <Setter TargetName="Header" Property="TextElement.Foreground" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor1}" />
                         </DataTrigger>
 
@@ -1886,7 +1886,7 @@
                         <DataTrigger
                             Binding="{Binding RelativeSource={RelativeSource Self}, Path=Model.SinglePane.SelectedContent.IsActive}"
                             Value="True">
-                            <Setter TargetName="Header" Property="Background" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}" />
+                            <Setter TargetName="Header" Property="Background" Value="{DynamicResource Accent}" />
                             <Setter TargetName="Header" Property="TextElement.Foreground" Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor1}" />
                             <Setter TargetName="PART_ImgPinClose" Property="Source" Value="Images/PinClose_Dark.png" />
                             <Setter TargetName="PART_ImgPinRestore" Property="Source" Value="Images/PinRestore_Dark.png" />

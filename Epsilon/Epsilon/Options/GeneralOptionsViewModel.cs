@@ -3,6 +3,12 @@ using EpsilonLib.Settings;
 using System.IO;
 using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Media;
+using WpfApp20;
+using System.Windows.Controls;
+using System;
+using System.Linq;
+using Epsilon.Pages;
 
 namespace Epsilon.Options
 {
@@ -21,13 +27,49 @@ namespace Epsilon.Options
         private bool _alwaysOnTop;
 
         private string _defaultCacheShort;
-        public string _defaultPakShort;
+        private string _defaultPakShort;
+
+        private string _accentColorHex;
+        private string _theme;
 
         [ImportingConstructor]
         public GeneralOptionsViewModel(ISettingsService settingsService) : base("General", "General")
         {
             _settings = settingsService.GetCollection(GeneralSettings.CollectionKey);
         }
+
+        public string AccentColorHex
+        {
+            get => _accentColorHex;
+            set
+            {
+                SetOptionAndNotify(ref _accentColorHex, value);
+                UpdateAppearance(AccentColorHex, Theme);
+            }
+        }
+
+        public string Theme = "Default";
+
+        private void UpdateAppearance(string accentColorHex, string theme)
+        {
+            Application.Current.Resources["AccentColor"] = (Color)ColorConverter.ConvertFromString(accentColorHex);
+
+            var mergedDictionary = Application.Current.Resources.MergedDictionaries;
+            mergedDictionary.RemoveAt(mergedDictionary.Count - 1);
+
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("/Epsilon;component/Themes/" + theme + ".xaml", UriKind.Relative)
+            });
+        }
+
+        public void RevertAppearance()
+        {
+            string og_accent = _settings.Get(GeneralSettings.AccentColorSetting.Key, "#007ACC");
+            string og_theme = "Default";
+            UpdateAppearance(og_accent, og_theme);
+        }
+
 
         public string DefaultCachePath
         {
@@ -125,6 +167,8 @@ namespace Epsilon.Options
             _settings.Set(GeneralSettings.StartupHeightSetting.Key, StartupHeight);
 
             _settings.Set(GeneralSettings.AlwaysOnTopSetting.Key, AlwaysOnTop);
+            _settings.Set(GeneralSettings.AccentColorSetting.Key, AccentColorHex);
+
             Application.Current.Resources["AlwaysOnTop"] = AlwaysOnTop;
         }
 
@@ -137,6 +181,7 @@ namespace Epsilon.Options
             StartupWidth = _settings.Get(GeneralSettings.StartupWidthSetting.Key, "");
             StartupHeight = _settings.Get(GeneralSettings.StartupHeightSetting.Key, "");
             AlwaysOnTop = _settings.Get(GeneralSettings.AlwaysOnTopSetting.Key, false);
+            AccentColorHex = _settings.Get(GeneralSettings.AccentColorSetting.Key, "#007ACC");
         }
     }
 }

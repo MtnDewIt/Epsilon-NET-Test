@@ -288,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -305,6 +309,10 @@
     <ProjectReference Include="..\libs\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj">
       <Project>{db81988f-e0f2-45a0-a1fd-8c37f3d35244}</Project>
       <Name>Xceed.Wpf.AvalonDock</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\plugins\DefinitionEditor\DefinitionEditor.csproj">
+      <Project>{cdce8946-359a-488f-802e-cb664b6f97df}</Project>
+      <Name>DefinitionEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

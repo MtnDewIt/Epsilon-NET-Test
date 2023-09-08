@@ -7,9 +7,9 @@
     <SolidColorBrush x:Key="ProgressBar.Border" Color="#FF3F3F46" />
 
     <Style TargetType="{x:Type ProgressBar}">
-        <Setter Property="Foreground" Value="{StaticResource ProgressBar.Progress}" />
-        <Setter Property="Background" Value="{StaticResource ProgressBar.Background}" />
-        <Setter Property="BorderBrush" Value="{StaticResource ProgressBar.Border}" />
+        <Setter Property="Foreground" Value="{DynamicResource ProgressBar.Progress}" />
+        <Setter Property="Background" Value="{DynamicResource ProgressBar.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ProgressBar.Border}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>

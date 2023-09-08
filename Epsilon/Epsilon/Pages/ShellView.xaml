@@ -41,7 +41,7 @@
 
         <StatusBar
             Height="Auto"
-            Background="#FF007ACC"
+            Background="{DynamicResource Accent}"
             BorderThickness="0"
             DockPanel.Dock="Bottom">
             <StatusBarItem>

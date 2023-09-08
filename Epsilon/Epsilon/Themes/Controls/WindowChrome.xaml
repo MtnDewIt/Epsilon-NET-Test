@@ -49,15 +49,15 @@
                         </Trigger>
                         <Trigger Property="IsFocused" Value="true">
                             <Setter TargetName="border" Property="Background" Value="#FF3F3F46" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="#FF0097FB" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Accent}" />
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FFF1F1F1" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="border" Property="Background" Value="#20ffffff" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="#FF007ACC" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="#FF007ACC" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource Accent}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Accent}" />
                             <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FFF1F1F1" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
@@ -107,7 +107,7 @@
         BasedOn="{StaticResource {x:Type Window}}"
         TargetType="{x:Type controls:ChromeWindow}">
         <Setter Property="Background" Value="#2d2d30" />
-        <Setter Property="BorderBrush" Value="#FF007ACC" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>

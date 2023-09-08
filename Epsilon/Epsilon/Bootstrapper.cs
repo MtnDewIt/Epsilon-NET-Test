@@ -6,6 +6,7 @@ using EpsilonLib.Logging;
 using EpsilonLib.Menus;
 using EpsilonLib.Settings;
 using Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -32,6 +33,7 @@ namespace WpfApp20
         private double StartupWidth;
         private double StartupHeight;
         private bool AlwaysOnTop;
+        private string AccentColor;
 
         protected async override void Launch()
         {
@@ -101,6 +103,7 @@ namespace WpfApp20
             DefaultCachePath = _settings.Get("DefaultTagCache", "");
             DefaultPakPath = _settings.Get("DefaultModPackage", "");
             AlwaysOnTop = _settings.Get("AlwaysOnTop", false);
+            AccentColor = _settings.Get("AccentColor", "#007ACC");
 
             App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
             App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
@@ -132,6 +135,8 @@ namespace WpfApp20
                 App.Current.MainWindow.Width = StartupWidth;
                 App.Current.MainWindow.Height = StartupHeight;
             }
+
+            InitAppearance();
         }
 
         private async Task OpenDefault(string path, IEditorProvider editorProvider)
@@ -144,6 +149,17 @@ namespace WpfApp20
             else
                 MessageBox.Show($"Startup cache or mod package could not be found at the following location:" + 
                         $"\n\n{path}", "File Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void InitAppearance()
+        {
+            App.Current.Resources["AccentColor"] = (Color)ColorConverter.ConvertFromString(AccentColor);
+
+            var epsilonTheme = "Default";
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("/Epsilon;component/Themes/" + epsilonTheme.ToString() + ".xaml", UriKind.Relative)
+            });
         }
     }
 }

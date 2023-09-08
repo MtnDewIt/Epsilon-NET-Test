@@ -1,6 +1,8 @@
 ﻿<UserControl
     x:Class="Epsilon.Options.GeneralOptionsView"
     xmlns:converters="clr-namespace:EpsilonLib.Converters;assembly=EpsilonLib"
+    xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+    xmlns:colorconverters="clr-namespace:DefinitionEditor;assembly=DefinitionEditor"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
@@ -58,11 +60,11 @@
     
     <StackPanel>
         
-        <!-- Startup Tag Cache -->
+        <!-- Default Tag Cache -->
         <DockPanel>
             <TextBlock
                 VerticalAlignment="Center"
-                Text="Startup Tag Cache"
+                Text="Default Tag Cache"
                 ToolTip="This tag cache opens automatically on startup." />
             <Button
                 Name="DefaultCacheButton"
@@ -221,6 +223,30 @@
                 IsChecked="{Binding AlwaysOnTop, Mode=TwoWay}" />
         </DockPanel>
         
+        <Separator Margin="0,0,0,8" Background="#3F3F46"/>
+
+        <!-- Accent Color -->
+        <DockPanel LastChildFill="False">
+            <TextBlock
+                VerticalAlignment="Center"
+                Text="Accent Color"
+                ToolTip="Pick a color (may be overridden by theme)" />
+            <colorpicker:PortableColorPicker
+                Name="AccentColorPicker"
+                Width="80"
+                Style="{StaticResource ColorPickerStyle}"
+                ColorState="{Binding AccentColorHex, UpdateSourceTrigger=PropertyChanged, 
+                    Mode=TwoWay, Converter={colorconverters:HexColorConverter}}"
+                DockPanel.Dock="Right"
+                ShowAlpha="False"/>
+            <TextBlock
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                Margin="0,0,4,0"
+                Opacity="0.6"
+                Text="{Binding AccentColorHex}" />
+        </DockPanel>
+
     </StackPanel>
     
 </UserControl>

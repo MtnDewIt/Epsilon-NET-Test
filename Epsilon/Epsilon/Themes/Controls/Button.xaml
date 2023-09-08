@@ -17,20 +17,10 @@
         </Setter>
     </Style>
 
-    <SolidColorBrush x:Key="Button.Static.Background" Color="#3f3f46" />
-    <SolidColorBrush x:Key="Button.Static.Border" Color="#555555" />
-    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#3F3F46" />
-    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#007ACC" />
-    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#007ACC" />
-    <SolidColorBrush x:Key="Button.Pressed.Border" Color="#007ACC" />
-    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#2D2D30" />
-    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#3F3F46" />
-    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#656565" />
-
     <Style x:Key="BaseButtonStyle" TargetType="{x:Type ButtonBase}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
-        <Setter Property="Background" Value="{StaticResource Button.Static.Background}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}" />
+        <Setter Property="Background" Value="{DynamicResource Button.Static.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Button.Static.Border}" />
         <Setter Property="Foreground" Value="#FFF1F1F1" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -56,20 +46,20 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsDefaulted" Value="true">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Button.Defaulted.Border}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource Button.MouseOver.Background}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource Button.MouseOver.Background}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Button.MouseOver.Border}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource Button.Pressed.Background}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource Button.Pressed.Background}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Button.Pressed.Border}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource Button.Disabled.Background}" />
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />
-                            <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{StaticResource Button.Disabled.Foreground}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource Button.Disabled.Background}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Button.Disabled.Border}" />
+                            <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{DynamicResource Button.Disabled.Foreground}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -95,24 +85,11 @@
         BasedOn="{StaticResource BaseButtonStyle}"
         TargetType="{x:Type Button}" />
 
-    <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#2D2D30" />
-    <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070" />
-    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#F1F1F1" />
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#1F1F20" />
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#007ACC" />
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#F1F1F1" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#007ACC" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#007ACC" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#F1F1F1 " />
-    <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#2D2D30" />
-    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#434346" />
-    <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#656565" />
-
 
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
-        <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}" />
-        <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}" />
+        <Setter Property="Background" Value="{DynamicResource OptionMark.Static.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource OptionMark.Static.Border}" />
         <Setter Property="Foreground" Value="#F1F1F1" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
@@ -141,13 +118,13 @@
                                     Width="10"
                                     Height="10"
                                     Data="M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z"
-                                    Fill="{StaticResource OptionMark.Static.Glyph}"
+                                    Fill="{DynamicResource OptionMark.Static.Glyph}"
                                     Opacity="0"
                                     Stretch="None" />
                                 <Rectangle
                                     x:Name="indeterminateMark"
                                     Margin="2"
-                                    Fill="{StaticResource OptionMark.Static.Glyph}"
+                                    Fill="{DynamicResource OptionMark.Static.Glyph}"
                                     Opacity="0" />
                             </Grid>
                         </Border>
@@ -167,22 +144,22 @@
                             <Setter Property="Padding" Value="4,-1,0,0" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource OptionMark.MouseOver.Background}" />
-                            <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{StaticResource OptionMark.MouseOver.Border}" />
-                            <Setter TargetName="optionMark" Property="Fill" Value="{StaticResource OptionMark.MouseOver.Glyph}" />
-                            <Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource OptionMark.MouseOver.Glyph}" />
+                            <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource OptionMark.MouseOver.Background}" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{DynamicResource OptionMark.MouseOver.Border}" />
+                            <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource OptionMark.MouseOver.Glyph}" />
+                            <Setter TargetName="indeterminateMark" Property="Fill" Value="{DynamicResource OptionMark.MouseOver.Glyph}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource OptionMark.Disabled.Background}" />
-                            <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{StaticResource OptionMark.Disabled.Border}" />
-                            <Setter TargetName="optionMark" Property="Fill" Value="{StaticResource OptionMark.Disabled.Glyph}" />
-                            <Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource OptionMark.Disabled.Glyph}" />
+                            <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource OptionMark.Disabled.Background}" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{DynamicResource OptionMark.Disabled.Border}" />
+                            <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource OptionMark.Disabled.Glyph}" />
+                            <Setter TargetName="indeterminateMark" Property="Fill" Value="{DynamicResource OptionMark.Disabled.Glyph}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource OptionMark.Pressed.Background}" />
-                            <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{StaticResource OptionMark.Pressed.Border}" />
-                            <Setter TargetName="optionMark" Property="Fill" Value="{StaticResource OptionMark.Pressed.Glyph}" />
-                            <Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource OptionMark.Pressed.Glyph}" />
+                            <Setter TargetName="checkBoxBorder" Property="Background" Value="{DynamicResource OptionMark.Pressed.Background}" />
+                            <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{DynamicResource OptionMark.Pressed.Border}" />
+                            <Setter TargetName="optionMark" Property="Fill" Value="{DynamicResource OptionMark.Pressed.Glyph}" />
+                            <Setter TargetName="indeterminateMark" Property="Fill" Value="{DynamicResource OptionMark.Pressed.Glyph}" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="true">
                             <Setter TargetName="optionMark" Property="Opacity" Value="1" />
