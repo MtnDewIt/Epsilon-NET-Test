@@ -97,23 +97,36 @@ namespace DefinitionEditor
 
             if (field is ValueField vf)
             {
-                menu.Submenu("Field")
-                    .Group("Copy")
+                bool blockOrStruct = (field is InlineStructField) || (field is BlockField);
+                if (!blockOrStruct)
+                {
+                    menu.Submenu("Field").Group("Copy")
                         .Add(text: "Copy SetField Command",
                                 tooltip: "Copies the value of this field",
-                                command: new DelegateCommand(() => CopySetFieldCommand(vf)))
+                                command: new DelegateCommand(() => CopySetFieldCommand(vf)));
+                }
+
+                menu.Submenu("Field")
+                    .Group("Copy")
                         .Add(text: "Copy Name",
                                 tooltip: "Copies the name of this field",
                                 command: new DelegateCommand(() => CopyFieldName(vf)))
                         .Add(text: "Copy Path",
                                 tooltip: "Copies the path of this field",
-                                command: new DelegateCommand(() => CopyFieldPath(vf)))
+                                command: new DelegateCommand(() => CopyFieldPath(vf)));
+
+                if (!blockOrStruct)
+                {
+                    menu.Submenu("Field").Group("Copy")
                         .Add(text: "Copy Path + Value",
                                 tooltip: "Copies the path and value of this field",
                                 command: new DelegateCommand(() => CopyFieldPathWithValue(vf)))
                         .Add(text: "Copy Value",
                                 tooltip: "Copies the value of this field",
-                                command: new DelegateCommand(() => CopyFieldValue(vf)))
+                                command: new DelegateCommand(() => CopyFieldValue(vf)));
+                }
+
+                menu.Submenu("Field").Group("Copy")
                         .Add(text: "Copy Offset",
                                 tooltip: "Copies the offset of this field",
                                 command: new DelegateCommand(() => CopyFieldOffset(vf)));
