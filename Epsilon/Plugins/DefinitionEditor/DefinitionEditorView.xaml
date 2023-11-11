@@ -35,7 +35,7 @@
                             VerticalAlignment="Center"
                             Tag="Search..."
                             VerticalContentAlignment="Center"
-                            Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}">
+                            Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged, Delay=75}">
                         <TextBox.InputBindings>
                             <KeyBinding
                                     Key="Up"
@@ -89,7 +89,7 @@
                         VerticalAlignment="Center"
                         Command="{Binding ReloadCommand}"
                         Content="Reload"
-                        ToolTip="Reload from disk" />
+                        ToolTip="Reload tag definition from disk" />
                     <Separator Margin="4,0" />
                     <StackPanel
                         VerticalAlignment="Stretch"
