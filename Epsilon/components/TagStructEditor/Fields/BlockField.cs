@@ -42,7 +42,7 @@ namespace TagStructEditor.Fields
 
             CopyBlockCommand = new DelegateCommand(CopyBlock, () => CurrentElementValid && !IsFixedSize);
             CopyRangeCommand = new DelegateCommand(CopyRange, () => CurrentElementValid && !IsFixedSize);
-            PasteBlocksAtEndCommand = new DelegateCommand(PasteBlocks, () => CurrentElementValid && !IsFixedSize && CanPaste);
+            PasteBlocksAtEndCommand = new DelegateCommand(PasteBlocks, () => Block != null && !IsFixedSize && CanPaste);
         }
 
 
