@@ -13,6 +13,9 @@ namespace ModPackagePlugin
         public static MenuItemDefinition CacheSelectionMenu = new CommandMenuItemDefinition<TagCacheCommandList>(ModPackageMenu, null);
 
         [ExportMenuItem]
+        public static MenuItemDefinition ReloadModPackageMenuItem = new CommandMenuItemDefinition<ReloadModPackageCommand>(ModPackageMenu, null);
+
+        [ExportMenuItem]
         public static MenuItemDefinition NewModPackageMenuItem = new CommandMenuItemDefinition<NewModPackageCommand>(StandardMenus.FileNewMenu, null);
     }
 }

@@ -115,5 +115,7 @@ namespace CacheEditor
                     plugin.OnMessage(sender, message);
             }
         }
+
+        public override string ToString() => Tag.ToString();
     }
 }

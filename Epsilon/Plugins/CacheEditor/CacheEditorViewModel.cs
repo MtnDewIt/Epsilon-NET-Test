@@ -129,6 +129,15 @@ namespace CacheEditor
             Logger.LogCommand($"{instance.Name}.{instance.Group}", null, Logger.CommandEvent.CommandType.none, $"edittag {instance.Name}.{instance.Group}");
         }
 
+        public List<string> GetOpenTagNames()
+        {
+            List<string> names = new List<string>();
+            foreach(var item in Documents)
+                names.Add(item.ToString());
+
+            return names;
+        }
+
         protected override void OnInitialActivate()
         {
             base.OnInitialActivate();
