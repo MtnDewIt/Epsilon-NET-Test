@@ -63,7 +63,10 @@ namespace EpsilonLib.Shell.TreeModels
 
         #region ITreeEventSink Members
         object ITreeViewEventSink.Source { get; set; }
-        void ITreeViewEventSink.NodeDoubleClicked(TreeNodeEventArgs e) => OnNodeDoubleClicked(e);
+        void ITreeViewEventSink.NodeDoubleClicked(TreeNodeEventArgs e)
+        {
+            //OnNodeDoubleClicked(e);
+        }
         void ITreeViewEventSink.NodeSelected(TreeNodeEventArgs e) => OnNodeSelected(e);
         #endregion
 
