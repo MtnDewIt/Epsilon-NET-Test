@@ -42,7 +42,7 @@
                                 Grid.Column="0"
                                 Panel.ZIndex="1"
                                 BorderBrush="#2d2d30"
-                                BorderThickness="0,2,0,0">
+                                BorderThickness="0,0,0,0">
                             <TabPanel Margin="0"
                                       IsItemsHost="true"
                                       KeyboardNavigation.TabIndex="1" />
@@ -52,7 +52,7 @@
                                 Grid.Column="0"
                                 Background="Transparent"
                                 BorderBrush="#3F3F46"
-                                BorderThickness="1,0,1,0"
+                                BorderThickness="1,0,1,1"
                                 Margin="2,0,2,0"
                                 KeyboardNavigation.DirectionalNavigation="Contained"
                                 KeyboardNavigation.TabIndex="2"

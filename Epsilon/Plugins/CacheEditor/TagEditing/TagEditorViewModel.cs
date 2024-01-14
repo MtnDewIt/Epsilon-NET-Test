@@ -23,7 +23,8 @@ namespace CacheEditor
         private ICacheEditingService _cacheEditingService;
 
         public CachedTag Tag;
-        
+        public string FullName { get; set; }
+
         public ICommand CloseCommand { get; set; }
         public ICommand CopyTagNameCommand { get; set; }
         public ICommand CopyTagIndexCommand { get; set; }
@@ -33,6 +34,7 @@ namespace CacheEditor
             _cacheEditingService = cacheEditingService;
             Tag = context.Instance;
             DisplayName = $"{Path.GetFileName(Tag.Name)}.{Tag.Group.Tag}";
+            FullName = $"{Tag.Name}.{Tag.Group.Tag}";
 
             CloseCommand = new DelegateCommand(Close);
             CopyTagNameCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"{Tag}"));

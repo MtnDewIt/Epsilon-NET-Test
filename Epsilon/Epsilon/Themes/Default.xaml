@@ -14,6 +14,15 @@
     <!-- Text -->
     <SolidColorBrush x:Key="Foreground" Color="#F1F1F1" />
 
+    <!-- ToolTip -->
+    <SolidColorBrush x:Key="ToolTipForeground" Color="#E1E1E1" />
+    <SolidColorBrush x:Key="ToolTipBackground" Color="#1B1B1C" />
+    <SolidColorBrush x:Key="ToolTipBorder" Color="#767676" />
+    
+    <!-- Template Colors -->
+    <Color x:Key="DarkBorderColor" A="255" R="63" G="63" B="70"/> <!-- #3F3F46 -->
+    <Color x:Key="BorderColor" A="255" R="67" G="67" B="70"/> <!-- #434346 -->
+
     <!-- Button -->
 
     <SolidColorBrush x:Key="Button.Static.Background" Color="#3f3f46" />
@@ -39,7 +48,7 @@
     <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#F1F1F1 " />
     <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#2D2D30" />
-    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#434346" />
+    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="{DynamicResource BorderColor}" />
     <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#656565" />
 
     <!--    Combobox    -->
@@ -75,7 +84,7 @@
     <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Button.Border" Color="{DynamicResource AccentColor}" />
 
     <SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="#2D2D30" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="#434346" />
+    <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="{DynamicResource BorderColor}" />
     <SolidColorBrush x:Key="ComboBox.Disabled.Glyph" Color="#656565" />
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background" Color="#FFFFFFFF" />
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border" Color="#FFBFBFBF" />
@@ -135,7 +144,7 @@
 
     <SolidColorBrush x:Key="ProgressBar.Progress" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="ProgressBar.Background" Color="#252526" />
-    <SolidColorBrush x:Key="ProgressBar.Border" Color="#FF3F3F46" />
+    <SolidColorBrush x:Key="ProgressBar.Border" Color="{DynamicResource DarkBorderColor}" />
 
     <!-- Scrollbar -->
 
@@ -208,6 +217,9 @@
     
     
     
+    <!-- BEGIN OLD -->
+    <!-- BEGIN OLD -->
+    <!-- BEGIN OLD -->
     <!-- BEGIN OLD -->
     
     <!--   Window    -->

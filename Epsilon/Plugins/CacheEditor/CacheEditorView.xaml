@@ -37,6 +37,7 @@
                                 <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
                                 <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}" />
                                 <Setter Property="IsActive" Value="{Binding Model.IsActive}" />
+                                <Setter Property="ToolTip" Value="{Binding Model.FullName, Mode=OneWay}" />
                             </Style>
                         </local:PanesStyleSelector.DocumentStyle>
                         <local:PanesStyleSelector.ToolStyle>
@@ -48,6 +49,7 @@
                                 <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}" />
                                 <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}" />
                                 <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}" />
+                                <Setter Property="ToolTip" Value="{Binding Model.FullName, Mode=OneWay}" />
                             </Style>
                         </local:PanesStyleSelector.ToolStyle>
                     </local:PanesStyleSelector>

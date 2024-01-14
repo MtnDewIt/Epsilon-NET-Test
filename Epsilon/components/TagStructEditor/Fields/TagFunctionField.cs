@@ -56,7 +56,7 @@ namespace TagStructEditor.Fields
             TagFunction = (TagFunction)value;
             base.OnPopulate(TagFunction.Data);
 
-            if (Data != null)
+            if (Data != null && Data.Length > 0)
                 UpdateHeaderFromData();
         }
 

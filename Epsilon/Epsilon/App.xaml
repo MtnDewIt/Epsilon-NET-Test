@@ -122,6 +122,16 @@
                 <Setter Property="ItemContainerStyle" Value="{StaticResource MenuItemStyle}" />
             </Style>
 
+            <Style TargetType="{x:Type ToolTip}" >
+                <Setter Property="HasDropShadow" Value="True" />
+                <Setter Property="Foreground" Value="{DynamicResource ToolTipForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ToolTipBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ToolTipBorder}" />
+                <Setter Property="VerticalOffset" Value="-15" />
+                <Setter Property="HorizontalOffset" Value="15" />
+                <!--<Setter Property="PlacementRectangle" Value="True" />-->
+            </Style>
+            
             <Style x:Key="EpsilonIcon" TargetType="{x:Type Image}">
                 <Setter Property="Width" Value="24" />
                 <Setter Property="Height" Value="24" />
