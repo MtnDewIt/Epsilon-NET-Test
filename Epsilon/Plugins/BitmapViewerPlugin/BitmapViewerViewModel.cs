@@ -10,6 +10,7 @@ using TagTool.Bitmaps;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
 using static BitmapViewerPlugin.BitmapExtractionHelper;
+using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
 
 namespace BitmapViewerPlugin
 {
@@ -44,6 +45,14 @@ namespace BitmapViewerPlugin
         private bool _linkColorChannels;
 
         public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, Bitmap definition)
+        {
+            _bitmapExtractor = new BitmapExtractionHelper(cacheFile, instance, definition);
+
+            PopulateBitmapList(definition);
+            LoadBitmapInBackground();
+        }
+
+        public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, BitmapGen2 definition)
         {
             _bitmapExtractor = new BitmapExtractionHelper(cacheFile, instance, definition);
 
@@ -262,6 +271,11 @@ namespace BitmapViewerPlugin
         private void PopulateBitmapList(Bitmap definition)
         {
             Bitmaps = new ObservableCollection<string>(Enumerable.Range(0, definition.Images.Count).Select((_, i) => $"Bitmap: {i}"));
+        }
+
+        private void PopulateBitmapList(BitmapGen2 definition)
+        {
+            Bitmaps = new ObservableCollection<string>(Enumerable.Range(0, definition.Bitmaps.Count).Select((_, i) => $"Bitmap: {i}"));
         }
     }
 }

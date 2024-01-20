@@ -25,9 +25,16 @@ namespace BitmapViewerPlugin
 
         public async Task<ITagEditorPlugin> CreateAsync(TagEditorContext context)
         {
-            var definition = await context.DefinitionData as Bitmap;
-            var viewModel = new BitmapViewerViewModel(context.CacheEditor.CacheFile, context.Instance, definition);
-            return viewModel;
+            if(CacheVersionDetection.IsInGen(CacheGeneration.Second, context.CacheEditor.CacheFile.Cache.Version))
+            {
+                var definition = await context.DefinitionData as TagTool.Tags.Definitions.Gen2.Bitmap;
+                return new BitmapViewerViewModel(context.CacheEditor.CacheFile, context.Instance, definition);
+            }
+            else
+            {
+                var definition = await context.DefinitionData as Bitmap;
+                return new BitmapViewerViewModel(context.CacheEditor.CacheFile, context.Instance, definition);
+            }
         }
 
         public bool ValidForTag(ICacheFile cache, CachedTag tag)
