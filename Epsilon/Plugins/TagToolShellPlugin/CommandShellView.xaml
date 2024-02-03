@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock
+            x:Name="contextTextBlock"
             Grid.Row="0"
             Padding="4"
             VerticalAlignment="Center"
@@ -44,6 +45,7 @@
         </TextBox>
 
         <TextBox
+            x:Name="inputField"
             Grid.Row="3"
             Padding="4"
             local:TextBoxBehavior.CaretIndex="{Binding InputTextCaretPosition, Mode=TwoWay}"

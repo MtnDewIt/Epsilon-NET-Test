@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace TagToolShellPlugin
@@ -59,13 +60,13 @@ namespace TagToolShellPlugin
 
         private void CommandShellView_Loaded(object sender, RoutedEventArgs e)
         {
-            //throw new NotImplementedException();
+            inputField.Focus();
         }
 
 
         private void CommandShellView_Unloaded(object sender, RoutedEventArgs e)
         {
-            
+            Keyboard.ClearFocus();
         }
 
         private void CommandShellView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
