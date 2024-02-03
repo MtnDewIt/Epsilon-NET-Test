@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TagStructEditor.Fields;
 using TagTool.Cache;
 using TagTool.Common;
+using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.TextureConstant;
 
 namespace TagStructEditor.Helpers
 {
@@ -89,6 +90,8 @@ namespace TagStructEditor.Helpers
                         return FormatTagFunctionData(function);
                     case Enum flags:
                         return $"{string.Join("", value.ToString().Split(' '))}";
+                    case PackedSamplerAddressMode packedAddressMode:
+                        return $"{packedAddressMode.AddressU} {packedAddressMode.AddressV}";
                     default:
                         return $"{value}";
                 }
