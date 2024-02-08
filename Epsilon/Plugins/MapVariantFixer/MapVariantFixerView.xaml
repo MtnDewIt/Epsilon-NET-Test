@@ -36,7 +36,7 @@
             <TextBlock
                 Margin="4,0"
                 VerticalAlignment="Center"
-                Text="Drag files and folders into the list below" />
+                Text="Drag files and folders into the list below." />
 
         </StackPanel>
 
@@ -77,7 +77,7 @@
 
         <Grid Grid.Row="4">
             <TextBlock
-                Margin="0,4"
+                Margin="2,4"
                 Foreground="#888"
                 Text="{Binding CacheFilePath, StringFormat={}Base Cache: {0}}" />
         </Grid>

@@ -177,7 +177,8 @@ namespace MapVariantFixer
                         }
                         else
                         {
-                            throw new Exception($"Missing tag {name} in the base cache. Reach out to a dev for help.");
+                            // do nothing if name not found.
+                            WriteLog($"Object not found in base cache, leaving as is - '{name}'");
                         }
                     }
                 }

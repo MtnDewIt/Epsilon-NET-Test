@@ -3,6 +3,7 @@ using EpsilonLib.Commands;
 using Shared;
 using System;
 using System.ComponentModel.Composition;
+using TagTool.Cache;
 
 namespace MapVariantFixer
 {
@@ -31,7 +32,8 @@ namespace MapVariantFixer
         public void UpdateCommand(Command command)
         {
             command.IsVisible = _cacheEditingService.ActiveCacheEditor != null && 
-                _cacheEditingService.ActiveCacheEditor.CacheFile.Cache.Version == TagTool.Cache.CacheVersion.HaloOnlineED;
+                _cacheEditingService.ActiveCacheEditor.CacheFile.Cache.Version == TagTool.Cache.CacheVersion.HaloOnlineED
+                && !(_cacheEditingService.ActiveCacheEditor.CacheFile.Cache is GameCacheModPackage);
         }
     }
 }
