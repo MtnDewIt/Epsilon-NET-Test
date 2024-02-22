@@ -27,7 +27,7 @@
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor1" Color="#2d2d30" />
 
-    <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor2" Color="#f1f1f1" />
+    <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor2" Color="{DynamicResource ForegroundColor}" />
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor3" Color="#007acc" />
 
@@ -536,7 +536,7 @@
                                     <Path
                                         x:Name="PART_ImgMenuPin"
                                         Data="M 0,0 L 3.5,4 L 7,0 Z"
-                                        Fill="White"
+                                        Fill="{DynamicResource Title}"
                                         Stretch="UniformToFill" />
                                 </Viewbox>
                             </avalonDockControls:DropDownButton>
@@ -559,7 +559,7 @@
                                     <Path
                                         x:Name="PART_ImgAutoHidePin"
                                         Data="M11 9V2H6v7H5v1h3v4h1v-4h3V9h-1zM9 8H7V3h2v5z"
-                                        Fill="White"
+                                        Fill="{DynamicResource Title}"
                                         Stretch="UniformToFill" />
                                 </Viewbox>
                             </Button>
@@ -584,7 +584,7 @@
                                         Height="10"
                                         
                                         Data="F1M8.707,8L11.353,10.646 10.646,11.354 8,8.707 5.353,11.354 4.646,10.646 7.293,8 4.646,5.354 5.353,4.646 8,7.293 10.646,4.646 11.353,5.354z"
-                                        Fill="#f1f1f1"
+                                        Fill="{DynamicResource Title}"
                                         Stretch="UniformToFill" />
                                 </Viewbox>
                             </Button>
@@ -1150,6 +1150,7 @@
     <DataTemplate x:Key="AvalonDock_ThemeMetro_DocumentHeaderTemplate">
         <TextBlock
             Text="{Binding Title}"
+            Foreground="{DynamicResource Title}"
             Margin="2,0,-3,0"
             TextTrimming="CharacterEllipsis" />
     </DataTemplate>
@@ -1184,6 +1185,7 @@
         <TextBlock
             VerticalAlignment="Center"
             Text="{Binding Title}"
+            Foreground="{DynamicResource Title}"
             TextTrimming="CharacterEllipsis" />
     </DataTemplate>
 
@@ -1191,6 +1193,7 @@
         <TextBlock
             VerticalAlignment="Center"
             Text="{Binding Title}"
+            Foreground="{DynamicResource Title}"
             Margin="2,-1,0,-1"
             TextTrimming="CharacterEllipsis" />
     </DataTemplate>
@@ -1438,7 +1441,7 @@
                                         Width="8"
                                         Height="8"
                                         Data="F1M8.707,8L11.353,10.646 10.646,11.354 8,8.707 5.353,11.354 4.646,10.646 7.293,8 4.646,5.354 5.353,4.646 8,7.293 10.646,4.646 11.353,5.354z"
-                                        Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
+                                        Fill="{DynamicResource Title}"
                                         Stretch="Fill" />
                                 </Button>
                             </Grid>
@@ -1799,6 +1802,7 @@
                                         <avalonDockControls:DropDownButton
                                             x:Name="SinglePaneContextMenu"
                                             Grid.Column="1"
+                                            Foreground="{DynamicResource Foreground}"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             HorizontalContentAlignment="Center"

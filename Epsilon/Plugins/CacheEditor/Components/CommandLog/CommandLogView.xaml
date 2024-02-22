@@ -6,7 +6,7 @@
     Padding="4"
     BorderBrush="#3F3F46"
     BorderThickness="1"
-    Foreground="#f1f1f1" av:DesignHeight="103.353">
+    Foreground="{DynamicResource Foreground}" av:DesignHeight="103.353">
     <UserControl.Resources>
         <Style
             x:Key="CommandTextBoxItemStyle"

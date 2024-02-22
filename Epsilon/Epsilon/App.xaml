@@ -147,7 +147,7 @@
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="FontSize" Value="16" />
-                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Foreground" Value="{DynamicResource Title}" />
                 <Setter Property="FontFamily" Value="Bahnschrift Light" />
             </Style>
 

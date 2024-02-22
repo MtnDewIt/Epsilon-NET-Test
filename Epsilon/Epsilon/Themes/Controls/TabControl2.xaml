@@ -17,7 +17,7 @@
         <Setter Property="Background" Value="{DynamicResource TabItem2.Selected.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TabItem2.Selected.Border}" />
         <Setter Property="BorderThickness" Value="0,1,0,0" />
-        <Setter Property="Foreground" Value="#f1f1f1" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
@@ -107,7 +107,7 @@
 
     <Style TargetType="{x:Type TabItem}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
-        <Setter Property="Foreground" Value="#f1f1f1" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="Background" Value="{DynamicResource TabItem2.Static.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TabItem2.Static.Border}" />
         <Setter Property="Margin" Value="0" />

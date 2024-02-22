@@ -16,7 +16,7 @@
         <Setter Property="Background" Value="{DynamicResource ListBox.Static.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource ListBox.Static.Border}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="#FFF1F1F1" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />

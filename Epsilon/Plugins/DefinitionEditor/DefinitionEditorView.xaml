@@ -173,7 +173,7 @@
                                     Text="{Binding Offset, StringFormat={}0x{0:X}}" />
                                 <TextBlock
                                     x:Name="label"
-                                    Foreground="#F1F1F1"
+                                    Foreground="{DynamicResource Foreground}"
                                     Text="{Binding Header}" />
                             </DockPanel>
                         </DataTemplate>

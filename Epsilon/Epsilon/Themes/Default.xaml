@@ -12,8 +12,12 @@
     <SolidColorBrush x:Key="MouseOver" Color="{DynamicResource MouseOverColor}"/>
 
     <!-- Text -->
-    <SolidColorBrush x:Key="Foreground" Color="#F1F1F1" />
-
+    <Color x:Key="ForegroundColor" A="255" R="241" G="241" B="241"/>
+    <SolidColorBrush x:Key="Foreground" Color="{DynamicResource ForegroundColor}" />
+    <SolidColorBrush x:Key="Title" Color="#FFFFFF"/>
+    
+    <!--<SolidColorBrush x:Key="Foreground" Color="#F1F1F1" />-->
+    
     <!-- ToolTip -->
     <SolidColorBrush x:Key="ToolTipForeground" Color="#E1E1E1" />
     <SolidColorBrush x:Key="ToolTipBackground" Color="#1B1B1C" />
@@ -23,6 +27,10 @@
     <Color x:Key="DarkBorderColor" A="255" R="63" G="63" B="70"/> <!-- #3F3F46 -->
     <Color x:Key="BorderColor" A="255" R="67" G="67" B="70"/> <!-- #434346 -->
 
+    <!-- Menu -->
+    <SolidColorBrush x:Key="MenuBackground" Color="#FF2d2d2d" />
+    <SolidColorBrush x:Key="MenuForeground" Color="{DynamicResource ForegroundColor}" />
+    
     <!-- Button -->
 
     <SolidColorBrush x:Key="Button.Static.Background" Color="#3f3f46" />
@@ -40,13 +48,13 @@
 
     <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#2D2D30" />
     <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070" />
-    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#F1F1F1" />
+    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="{DynamicResource ForegroundColor}"/>
     <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#1F1F20" />
     <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="{DynamicResource AccentColor}" />
-    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#F1F1F1" />
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="{DynamicResource ForegroundColor}" />
     <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="{DynamicResource AccentColor}" />
-    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#F1F1F1 " />
+    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="{DynamicResource ForegroundColor}" />
     <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#2D2D30" />
     <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="{DynamicResource BorderColor}" />
     <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#656565" />
@@ -199,7 +207,7 @@
     <!-- TreeView -->
     <SolidColorBrush x:Key="ListBorder" Color="#FF3F3F46" />
     <SolidColorBrush x:Key="TreeViewBackground" Color="#252526" />
-    <SolidColorBrush x:Key="TreeViewForeground" Color="#F1F1F1" />
+    <SolidColorBrush x:Key="TreeViewForeground" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="TreeViewItemSelectionFill" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="SelectedItemActiveBrushKey" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="SelectedItemActiveTextBrushKey" Color="#FFFFFFFF" />
@@ -232,7 +240,6 @@
     
     <!--    General    -->
     
-    <SolidColorBrush x:Key="TitleColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="Border" Color="#656570"/>
     <SolidColorBrush x:Key="BorderDark" Color="#E4E4FF" Opacity="0.27"/>
     <SolidColorBrush x:Key="BorderDarker" Color="#3F3F46"/>

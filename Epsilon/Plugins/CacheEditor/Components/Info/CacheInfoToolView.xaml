@@ -5,7 +5,7 @@
     Padding="4"
     Background="#262626"
     FontSize="14"
-    Foreground="#f1f1f1">
+    Foreground="{DynamicResource Foreground}">
     <Grid>
         <StackPanel>
             <StackPanel Orientation="Horizontal">

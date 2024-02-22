@@ -2,7 +2,7 @@
     x:Class="ServerJsonEditor.ServerJsonEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Foreground="#f1f1f1"
+    Foreground="{DynamicResource Foreground}"
     DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <Grid Width="auto" x:Name="mainGrid" Loaded="mainGrid_Loaded" HorizontalAlignment="Stretch">

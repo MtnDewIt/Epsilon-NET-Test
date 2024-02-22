@@ -2,16 +2,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
-    <SolidColorBrush x:Key="MenuBackground" Color="#FF2d2d2d" />
-    <SolidColorBrush x:Key="MenuForeground" Color="#FFF1F1F1" />
 
     <Style x:Key="{x:Type Menu}" TargetType="{x:Type Menu}">
-        <Setter Property="Background" Value="{StaticResource MenuBackground}" />
+        <Setter Property="Background" Value="{DynamicResource MenuBackground}" />
         <Setter Property="FontFamily" Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
         <Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.MenuFontSizeKey}}" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />
         <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}" />
-        <Setter Property="Foreground" Value="{StaticResource MenuForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Menu}">
@@ -267,7 +265,7 @@
                 <Setter TargetName="InnerBorder" Property="Stroke" Value="Transparent" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="#F1F1F1" />
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
                 <Setter TargetName="GlyphPanel" Property="Fill" Value="Transparent" />
             </Trigger>
         </ControlTemplate.Triggers>
@@ -650,7 +648,7 @@
                 <Setter TargetName="Bg" Property="Stroke" Value="Transparent" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="#F1F1F1" />
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
                 <Setter TargetName="GlyphPanel" Property="Background" Value="{StaticResource SubMenuBackgroundBrush}" />
                 <Setter TargetName="GlyphPanel" Property="BorderBrush" Value="{StaticResource SubMenuBackgroundBrush}" />
                 <Setter TargetName="Glyph" Property="Fill" Value="#848589" />
@@ -695,7 +693,7 @@
         <Setter Property="FontSize" Value="{DynamicResource {x:Static SystemFonts.MenuFontSizeKey}}" />
         <Setter Property="FontStyle" Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />
         <Setter Property="FontWeight" Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}" />
-        <Setter Property="Foreground" Value="{StaticResource MenuForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource MenuForeground}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{StaticResource SubMenuBorderBrush}" />

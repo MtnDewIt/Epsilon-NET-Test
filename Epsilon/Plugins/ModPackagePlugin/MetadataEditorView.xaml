@@ -5,7 +5,7 @@
     Padding="4"
     BorderBrush="#3F3F46"
     BorderThickness="1"
-    Foreground="#f1f1f1">
+    Foreground="{DynamicResource Foreground}">
 
     <UserControl.Resources>
 
@@ -23,7 +23,6 @@
 
         <Style BasedOn="{StaticResource {x:Type TextBox}}"
             TargetType="{x:Type TextBox}">
-            <Setter Property="Foreground" Value="#DCDCDC"/>
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="1,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>

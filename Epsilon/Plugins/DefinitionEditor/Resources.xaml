@@ -44,7 +44,7 @@
                                             Margin="8,2,0,0"
                                             VerticalAlignment="Center"
                                             Data="M 0 0 L 3 3 L 6 0 Z"
-                                            Fill="#FFF1F1F1" />
+                                            Fill="{DynamicResource Foreground}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </Setter.Value>
@@ -115,9 +115,10 @@
         BasedOn="{StaticResource {x:Type TextBox}}"
         TargetType="{x:Type TextBox}">
         <Setter Property="Width" Value="70" />
+        <Setter Property="Height" Value="22" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="2,1" />
+        <Setter Property="Padding" Value="1,1" />
     </Style>
 
     <Style
@@ -334,16 +335,17 @@
                 ToolTip="{Binding UnicText, Mode=OneWay}"
                 Text="{Binding Value, ValidatesOnExceptions=True, Mode=TwoWay}" />
             <Button
-                Width="23"
-                Height="23"
+                Width="22"
+                Height="22"
                 Margin="4,0,0,0"
-                Padding="4,0,4,0"
+                Padding="2,0,2,0"
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Center"
                 Command="{Binding AddStringIDCommand}"
-                FontSize="14"
-                FontFamily="Segoe UI"
-                Content="+"
+                FontSize="16"
+                Content="＋"
                 ToolTip="StringID could not be found; click to create it." />
             <TextBlock
                 Style="{StaticResource FieldTypeLabelStyle}"
@@ -1713,6 +1715,7 @@
                 BorderThickness="1">
                 <Expander
                     BorderBrush="Black"
+                    BorderThickness="0"
                     Header="{Binding}"
                     IsExpanded="{Binding IsExpanded}"
                     Style="{StaticResource ExpanderStyleBase}">
@@ -1794,6 +1797,7 @@
             BorderThickness="1">
             <Expander
                 BorderBrush="Black"
+                BorderThickness="0"
                 Header="{Binding}"
                 Style="{StaticResource ExpanderStyleBase}">
                 <Expander.HeaderTemplate>
@@ -2010,6 +2014,7 @@
             <Expander
                 Padding="0"
                 BorderBrush="Black"
+                BorderThickness="0"
                 MinWidth="253"
                 Header="{Binding}"
                 IsExpanded="{Binding IsExpanded}"
@@ -2051,7 +2056,7 @@
                     Margin="0"
                     BorderThickness="0"
                     BorderBrush="Transparent"
-                    Background="#1C000000"
+                    Background="#18000000"
                     ItemsSource="{Binding Fields}"
                     Style="{StaticResource StructListBoxStyle}"
                     Template="{StaticResource NoScrollListBoxTemplate}" />
@@ -2067,6 +2072,7 @@
                       x:Name="Expander"
                       Background="#2d2d30"
                       BorderBrush="#11DDFFDD"
+                      BorderThickness="0"
                       ContextMenuService.ShowOnDisabled="True"
                       Header="{Binding}"
                       IsExpanded="{Binding IsExpanded}"

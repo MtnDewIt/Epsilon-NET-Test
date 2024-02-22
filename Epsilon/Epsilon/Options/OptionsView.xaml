@@ -8,7 +8,7 @@
     Height="480"
     ResizeMode="NoResize"
     Background="#2d2d30"
-    TextElement.Foreground="#f1f1f1">
+    TextElement.Foreground="{DynamicResource Foreground}">
 
     <Window.Resources>
         <Style TargetType="StackPanel">

@@ -19,7 +19,7 @@
                     Value="Center" />
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Foreground" Value="{DynamicResource Foreground}"/>
                     <Setter Property="Background" Value="{DynamicResource Inset}"/>
                     <Setter Property="BorderBrush" Value="{DynamicResource Accent}"/>
                 </Trigger>
@@ -147,7 +147,7 @@
         </Border>
         <StatusBar Grid.Row="2"
                    Background="#252526"
-                   Foreground="#f1f1f1"
+                   Foreground="{DynamicResource Foreground}"
                    BorderBrush="#2d2d30"
                    BorderThickness="0,1,0,0"
                    Padding="4,2">

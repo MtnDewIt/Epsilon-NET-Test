@@ -4,13 +4,13 @@
 
     <SolidColorBrush x:Key="Expander.Static.Circle.Stroke" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.Static.Circle.Fill" Color="Transparent" />
-    <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="#f1f1f1" />
+    <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="{DynamicResource ForegroundColor}" />
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="Transparent" />
-    <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#007ACC" />
+    <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="Expander.Pressed.Circle.Stroke" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.Pressed.Circle.Fill" Color="Transparent" />
-    <SolidColorBrush x:Key="Expander.Pressed.Arrow.Stroke" Color="#007ACC" />
+    <SolidColorBrush x:Key="Expander.Pressed.Arrow.Stroke" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="Expander.Disabled.Circle.Stroke" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.Disabled.Circle.Fill" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="#656565" />
@@ -59,7 +59,7 @@
                                 VerticalAlignment="Center"
                                 Data="M 1,1.5 L 4.5,5 L 8,1.5"
                                 SnapsToDevicePixels="false"
-                                Stroke="{DynamicResource Expander.Static.Arrow.Stroke}"
+                                Stroke="{DynamicResource Foreground}"
                                 StrokeThickness="2" />
                             <ContentPresenter
                                 Grid.Column="1"
@@ -129,7 +129,7 @@
                                     VerticalAlignment="Center"
                                     Data="M 1,1.5 L 4.5,5 L 8,1.5"
                                     SnapsToDevicePixels="false"
-                                    Stroke="{StaticResource Expander.Static.Arrow.Stroke}"
+                                    Stroke="{DynamicResource Expander.Static.Arrow.Stroke}"
                                     StrokeThickness="2" />
                             </Grid>
                             <ContentPresenter
@@ -311,7 +311,7 @@
 
 
     <Style x:Key="{x:Type Expander}" TargetType="{x:Type Expander}">
-        <Setter Property="Foreground" Value="#f1f1f1" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="Background" Value="#2d2d30" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />

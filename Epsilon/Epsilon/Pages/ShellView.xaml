@@ -48,6 +48,7 @@
                 <TextBlock
                     Margin="3,0,0,0"
                     FontSize="14"
+                    Foreground="{DynamicResource Title}"
                     Text="{Binding StatusBar.StatusText}" />
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">

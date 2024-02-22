@@ -8,12 +8,13 @@
     
     Title="{Binding DisplayName}"
     ResizeMode="NoResize"
+    MinWidth="300"
     MaxWidth="400"
     Height="150"
     SizeToContent="WidthAndHeight"
     ContentRendered="Window_ContentRendered"
     Background="#2d2d30"
-    Foreground="#f1f1f1">
+    Foreground="{DynamicResource Foreground}">
 
     <Grid Margin="4">
         <Grid.RowDefinitions>
@@ -35,7 +36,7 @@
             Text="{Binding DisplayName}" />
 
         <Path
-            RenderTransformOrigin="0.5, 0.5"
+            RenderTransformOrigin="0.5, 0.7"
             Data="{Binding Icon}"
             Grid.Row="1"
             Fill="{Binding IconColor}"
@@ -46,9 +47,9 @@
             </Path.RenderTransform>
         </Path>
 
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <StackPanel Grid.Row="1" Grid.Column="1" MinHeight="60">
             <TextBlock
-                Margin="8"
+                Margin="8,8,8,4"
                 TextWrapping="Wrap"
                 Text="{Binding Message}" />
             <TextBlock

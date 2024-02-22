@@ -152,10 +152,11 @@
                                         Data="{StaticResource ChromeMinimize}"
                                         SnapsToDevicePixels="True"
                                         RenderOptions.EdgeMode="Aliased"
-                                        Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                                        Fill="{DynamicResource Title}" />
                                 </Button>
                                 <ToggleButton
                                     x:Name="maximizeRestoreButton"
+                                    Foreground="{DynamicResource Title}"
                                     Command="{Binding MaximizeRestoreCommand, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                     IsChecked="{Binding IsMaximized, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ToggleButton.ContentTemplate>
@@ -164,7 +165,7 @@
                                                 Data="{Binding}"
                                                 SnapsToDevicePixels="True"
                                                 RenderOptions.EdgeMode="Aliased"
-                                                Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
+                                                Fill="{DynamicResource Title}" />
                                         </DataTemplate>
                                     </ToggleButton.ContentTemplate>
                                     <ToggleButton.Style>
@@ -187,7 +188,7 @@
                                     <Path
                                         Data="{StaticResource ChromeClose}"
                                         SnapsToDevicePixels="True"
-                                        Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                                        Fill="{DynamicResource Title}" />
                                 </Button>
                             </StackPanel>
                             <ContentPresenter />

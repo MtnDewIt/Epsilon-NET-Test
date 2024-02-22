@@ -8,7 +8,7 @@
     Width="320"
     Height="300"
     Background="#2d2d30"
-    Foreground="#f1f1f1"
+    Foreground="{DynamicResource Foreground}"
     Hyperlink.RequestNavigate="Hyperlink_RequestNavigate"
     ResizeMode="NoResize"
     WindowStyle="None">

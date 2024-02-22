@@ -12,7 +12,7 @@
     SizeToContent="WidthAndHeight"
     ContentRendered="Window_ContentRendered"
     Background="#2d2d30"
-    Foreground="#f1f1f1">
+    Foreground="{DynamicResource Foreground}">
     <Grid Margin="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
