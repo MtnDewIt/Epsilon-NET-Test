@@ -400,7 +400,7 @@
                     <Setter Property="BorderThickness" Value="0,1,0,0" />
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="Foreground" Value="#d0d0d0" />
+                    <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                     <Setter Property="ToolTip" Value="{Binding ToolTip}" />
                     <Setter Property="Template">

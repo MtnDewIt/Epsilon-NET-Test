@@ -357,17 +357,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd $(SolutionDir)..\TagTool\TagTool\bin\x64
-
-IF $(ConfigurationName) == Debug (
-    xcopy "Debug\Physics" "$(ProjectDir)$(OutDir)Physics" /e /i /h /Y
-    xcopy "Debug\Tools" "$(ProjectDir)$(OutDir)Tools" /e /i /h /Y
-) ELSE (
-    xcopy "Release\Physics" "$(ProjectDir)$(OutDir)Physics" /e /i /h /Y
-    xcopy "Release\Tools" "$(ProjectDir)$(OutDir)Tools" /e /i /h /Y
-)
-
-cd $(ProjectDir)$(OutDir)\Tools
+    <PostBuildEvent>cd $(ProjectDir)$(OutDir)\Tools
 move "fmod.dll" $(ProjectDir)$(OutDir)
 move "LZ4.dll" $(ProjectDir)$(OutDir)
 move "assimp.dll" $(ProjectDir)$(OutDir)

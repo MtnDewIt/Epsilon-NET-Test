@@ -16,7 +16,7 @@
             <Setter Property="AnchorableHeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Title}" Foreground="{DynamicResource Foreground}"/>
+                        <TextBlock Text="{Binding Title}" />
                     </DataTemplate>
                 </Setter.Value>
 
