@@ -265,7 +265,7 @@
                 <Setter TargetName="InnerBorder" Property="Stroke" Value="Transparent" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+                <Setter Property="Foreground" Value="#FF9A9A9A" />
                 <Setter TargetName="GlyphPanel" Property="Fill" Value="Transparent" />
             </Trigger>
         </ControlTemplate.Triggers>
@@ -648,7 +648,7 @@
                 <Setter TargetName="Bg" Property="Stroke" Value="Transparent" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
+                <Setter Property="Foreground" Value="#FF9A9A9A" />
                 <Setter TargetName="GlyphPanel" Property="Background" Value="{StaticResource SubMenuBackgroundBrush}" />
                 <Setter TargetName="GlyphPanel" Property="BorderBrush" Value="{StaticResource SubMenuBackgroundBrush}" />
                 <Setter TargetName="Glyph" Property="Fill" Value="#848589" />

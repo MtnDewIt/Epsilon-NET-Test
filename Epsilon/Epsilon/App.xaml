@@ -93,6 +93,7 @@
                 <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
                 <Setter Property="Command" Value="{Binding Command}" />
                 <Setter Property="InputGestureText" Value="{Binding InputGestureText}" />
+                <Setter Property="Foreground" Value="{DynamicResource MenuForeground}" />
                 <Style.Triggers>
                     <DataTrigger
                         Binding="{Binding IsSeparator}"
