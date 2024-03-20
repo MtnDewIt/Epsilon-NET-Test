@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static TagTool.Tags.Definitions.RenderMethodTemplate;
+using TagTool.Common;
 
 namespace TagStructEditor.Fields
 {
