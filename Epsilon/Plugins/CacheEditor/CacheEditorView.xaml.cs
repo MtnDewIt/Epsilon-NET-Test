@@ -19,7 +19,7 @@ namespace CacheEditor
         {
             InitializeComponent();
 
-            EventManager.RegisterClassHandler(typeof(Window), Window.PreviewKeyUpEvent, new KeyEventHandler(OnWindowKeyUp));
+            EventManager.RegisterClassHandler(typeof(Window), Window.PreviewKeyDownEvent, new KeyEventHandler(OnWindowKeyDown));
         }
 
         private void DockingManager_ActiveContentChanged(object sender, EventArgs e)
@@ -27,7 +27,7 @@ namespace CacheEditor
             var dockingManager = (DockingManager)sender;
             Debug.WriteLine($"Active Content {dockingManager.ActiveContent}");
         }
-        private void OnWindowKeyUp(object sender, KeyEventArgs e)
+        private void OnWindowKeyDown(object sender, KeyEventArgs e)
         {
             // ctrl-W to close current tag
 
