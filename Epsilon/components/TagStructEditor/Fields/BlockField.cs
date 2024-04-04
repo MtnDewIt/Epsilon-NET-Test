@@ -149,47 +149,48 @@ namespace TagStructEditor.Fields
 
         private void Add()
         {
-            Block.Add(Utils.ActivateType(ElementType));
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"addblockelements {FieldHelper.GetFieldPath(Template.Parent)}");
+            Block.Add(Utils.ActivateType(ElementType));            
         }
 
         private void Delete()
         {
-            Block.RemoveAt(CurrentIndex);
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"removeblockelements {FieldHelper.GetFieldPath(Template.Parent)} {CurrentIndex} 1");
+            Block.RemoveAt(CurrentIndex);           
         }
 
         private void DeleteAll()
         {
-            Block.Clear();
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"removeblockelements {FieldHelper.GetFieldPath(Template.Parent)} 0 *");
+            Block.Clear();          
         }
 
         private void Insert()
         {
-            Block.Insert(CurrentIndex, Utils.ActivateType(ElementType));
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"addblockelements {FieldHelper.GetFieldPath(Template.Parent)} 1 {CurrentIndex}");
+            Block.Insert(CurrentIndex, Utils.ActivateType(ElementType));           
         }
 
         private void Duplicate()
         {
-            Block.Add(Block[CurrentIndex].DeepCloneV2());
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"copyblockelements {FieldHelper.GetFieldPath(Template.Parent)} {CurrentIndex} 1");
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"pasteblockelements {FieldHelper.GetFieldPath(Template.Parent)}");
+            Block.Add(Block[CurrentIndex].DeepCloneV2());
         }
 
         private void CopyBlock()
         {
+            Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"copyblockelements {FieldHelper.GetFieldPath(Template.Parent)} {CurrentIndex} 1");
             CopiedBlocks.Clear();
             CopiedBlocks.Add(Block[CurrentIndex].DeepCloneV2());
             CopiedBlockType = ElementType;
             CanPaste = true;
             PasteBlocksAtEndCommand.RaiseCanExecuteChanged();
-            Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"copyblockelements {FieldHelper.GetFieldPath(Template.Parent)} {CurrentIndex} 1");
         }
 
         private void CopyRange()
         {
+            Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"copyblockelements {FieldHelper.GetFieldPath(Template.Parent)} {CurrentIndex} *");
             int start = CurrentIndex;
             int end = Block.Count;
             int range = end - start;
@@ -209,7 +210,6 @@ namespace TagStructEditor.Fields
             CopiedBlockType = ElementType;
             CanPaste = true;
             PasteBlocksAtEndCommand.RaiseCanExecuteChanged();
-            Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"copyblockelements {FieldHelper.GetFieldPath(Template.Parent)} {CurrentIndex} *");
         }
 
         private void PasteBlocks()
@@ -217,6 +217,7 @@ namespace TagStructEditor.Fields
             if (CopiedBlocks == null || CopiedBlocks.Count == 0)
                 return;
 
+            Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"pasteblockelements {FieldHelper.GetFieldPath(Template.Parent)}");
             var newCurrentIndex = Block.Count;
             for (int i = 0; i < CopiedBlocks.Count; i++)
                 Block.Add(CopiedBlocks[i]);
@@ -228,14 +229,13 @@ namespace TagStructEditor.Fields
             //{ 
             //}
 
-            CurrentIndex = newCurrentIndex;
-            Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"pasteblockelements {FieldHelper.GetFieldPath(Template.Parent)}");
+            CurrentIndex = newCurrentIndex;            
         }
 
         private void Shift(int direction)
         {
-            Block.Move(CurrentIndex, (CurrentIndex + direction));
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", FieldHelper.GetFieldPath(Template.Parent), Logger.CommandEvent.CommandType.none, $"swapblockelements {FieldHelper.GetFieldPath(Template.Parent)} {CurrentIndex} {CurrentIndex + direction}");
+            Block.Move(CurrentIndex, (CurrentIndex + direction));        
         }
 
         private void ExpandChildren()
