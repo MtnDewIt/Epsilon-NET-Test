@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace TagToolShellPlugin
 {
-    public interface ICommandShell
+    public interface ICommandShell : IDisposable
     {
         string ContextDisplayName { get; }
         event EventHandler ContextChanged;

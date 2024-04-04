@@ -6,9 +6,9 @@ using System.Windows.Input;
 
 namespace TagToolShellPlugin
 {
-    public class CommandShellViewModel : Screen
+    public class CommandShellViewModel : Screen, IDisposable
     {
-        private readonly ICommandShell _shell;
+        private ICommandShell _shell;
         private readonly DelegateCommand _executeCommand;
         private readonly DelegateCommand<string> _navigateHistoryCommand;
         private string _inputText;
@@ -97,6 +97,11 @@ namespace TagToolShellPlugin
         private void Shell_OutputReceived(object sender, CommandShellOutputEventArgs e)
         {
             OutputReceived?.Invoke(this, e);
+        }
+        public void Dispose()
+        {
+            _shell.Dispose();
+            _shell = null;
         }
     }
 }

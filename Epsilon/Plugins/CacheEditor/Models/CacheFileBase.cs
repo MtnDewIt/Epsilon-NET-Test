@@ -23,7 +23,7 @@ namespace CacheEditor
         }
 
         public FileInfo File { get; }
-        public GameCache Cache { get; protected set; }
+        public GameCache Cache { get; set; }
 
         public virtual bool CanExtractTag => false;
         public virtual bool CanRenameTag => false;

@@ -1,6 +1,7 @@
 ﻿using CacheEditor;
 using EpsilonLib.Shell;
 using System.ComponentModel.Composition;
+using TagTool.Commands.Common;
 
 namespace TagToolShellPlugin
 {
@@ -39,6 +40,13 @@ namespace TagToolShellPlugin
         }
 
         public override bool InitialAutoHidden => true;
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+            _shellViewModel.Dispose();
+            _shellViewModel = null;
+        }
     }
 
     [Export(typeof(ICacheEditorToolProvider))]

@@ -31,9 +31,9 @@ namespace CacheEditor
         ICommandHandler<ImportTagCommand>,
         ICommandHandler<DeleteTagCommand>
     {
-        private readonly ICacheEditingService _cacheEditingService;
-        private readonly IShell _shell;
-        private readonly ICacheFile _cacheFile;
+        private ICacheEditingService _cacheEditingService;
+        private IShell _shell;
+        private ICacheFile _cacheFile;
         public static int _counter;
 
         public int Counter => _counter;
@@ -180,6 +180,12 @@ namespace CacheEditor
         {
             base.OnClose();
             TagTree.NodeDoubleClicked -= TagTree_ItemDoubleClicked;
+            TagTree.Dispose();
+            TagTree = null;
+            _shell = null;
+            _cacheFile.Cache = null;
+            _cacheFile = null;
+            _cacheEditingService = null;
             CloseAllPanes();
         }
 

@@ -16,9 +16,9 @@ namespace TagToolShellPlugin
         public string OutputLine { get; set; }
     }
 
-    public sealed class TagToolCommandShell : ICommandShell
+    public sealed class TagToolCommandShell : ICommandShell, IDisposable
     {
-        private readonly CommandRunner _commandRunner;
+        private CommandRunner _commandRunner;
 
         public event EventHandler<CommandShellOutputEventArgs> OutputReceived;
         public event EventHandler ContextChanged;
@@ -45,6 +45,12 @@ namespace TagToolShellPlugin
 
             if (_commandRunner.ContextStack.Context != oldContext)
                 ContextChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Dispose()
+        {
+            _commandRunner.ContextStack = null;
+            _commandRunner = null;
         }
 
         private void Console_OnOutputLine(string line)

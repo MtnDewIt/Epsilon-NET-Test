@@ -41,7 +41,8 @@ namespace CacheEditor.Components.TagTree
         ICommandHandler<ExportModeJMSCommand>,
         ICommandHandler<ExportCollJMSCommand>,
         ICommandHandler<ExportPhmoJMSCommand>,
-        ICommandHandler<ExtractSoundCommand>
+        ICommandHandler<ExtractSoundCommand>,
+        IDisposable
 
     {
         private ICacheFile _cacheFile;
@@ -49,7 +50,7 @@ namespace CacheEditor.Components.TagTree
         private TagTreeViewMode _viewMode = TagTreeViewMode.Groups;
         private TagTreeGroupDisplayMode _groupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
         private TagExtract _extraction;
-        private readonly ICacheEditingService _cacheEditingService;
+        private ICacheEditingService _cacheEditingService;
 
         public MenuItemDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
 
@@ -374,5 +375,13 @@ namespace CacheEditor.Components.TagTree
 
 
         #endregion
+
+        public void Dispose()
+        {
+            Nodes = null;
+            _cacheFile.Cache = null;
+            _cacheFile = null;
+            _cacheEditingService = null;
+        }
     }
 }

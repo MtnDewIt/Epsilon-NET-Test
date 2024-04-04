@@ -11,7 +11,7 @@ namespace CacheEditor
         event EventHandler<CachedTag> TagSerialized;
 
         FileInfo File { get; }
-        GameCache Cache { get; }
+        GameCache Cache { get; set; }
 
         bool CanExtractTag { get; }
         bool CanRenameTag { get; }
