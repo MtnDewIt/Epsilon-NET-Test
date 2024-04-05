@@ -9,7 +9,7 @@ using System.Linq;
 namespace CacheEditor
 {
     [Export(typeof(ICacheEditingService))]
-    class CacheEditingService : ICacheEditingService
+    class CacheEditingService : ICacheEditingService, IDisposable
     {
         private ICacheEditor _activeEditor;
         private Lazy<IShell> _shell;
@@ -22,7 +22,7 @@ namespace CacheEditor
             set => _activeEditor = value;
         }
 
-        public IEnumerable<ICacheEditorToolProvider> Tools { get; }
+        public IEnumerable<ICacheEditorToolProvider> Tools { get; set; }
 
         [ImportingConstructor]
         public CacheEditingService(
@@ -40,6 +40,11 @@ namespace CacheEditor
         public ICacheEditor CreateEditor(ICacheFile cacheFile)
         {
             return new CacheEditorViewModel(_shell.Value, this, cacheFile);
+        }
+
+        public void Dispose()
+        {
+            ActiveCacheEditor = null;
         }
     }
 }

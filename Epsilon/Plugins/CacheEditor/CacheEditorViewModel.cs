@@ -62,7 +62,7 @@ namespace CacheEditor
         public IObservableCollection<IScreen> Documents => Items;
         public IObservableCollection<ICacheEditorTool> Tools { get; } = new BindableCollection<ICacheEditorTool>();
         public ICommand CloseCommand { get; }
-        public TagTreeViewModel TagTree { get; }
+        public TagTreeViewModel TagTree { get; set; }
         public event EventHandler CurrentTagChanged;
         public CachedTag CurrentTag => (ActiveItem as TagEditorViewModel)?.Tag;
 
@@ -185,6 +185,7 @@ namespace CacheEditor
             _shell = null;
             _cacheFile.Cache = null;
             _cacheFile = null;
+            _cacheEditingService.Dispose();
             _cacheEditingService = null;
             CloseAllPanes();
         }
