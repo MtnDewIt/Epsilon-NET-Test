@@ -379,8 +379,11 @@ namespace CacheEditor.Components.TagTree
         public void Dispose()
         {
             Nodes = null;
-            _cacheFile.Cache = null;
-            _cacheFile = null;
+            if(_cacheFile != null)
+            {
+                _cacheFile.Cache = null;
+                _cacheFile = null;
+            }
             _cacheEditingService = null;
         }
     }

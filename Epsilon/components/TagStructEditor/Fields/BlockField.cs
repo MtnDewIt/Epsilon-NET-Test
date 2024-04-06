@@ -49,7 +49,7 @@ namespace TagStructEditor.Fields
         public Type ElementType { get; set; }
         public IField Template { get; set; }
         public int CurrentIndex { get; set; } = -1;
-        public ObservableNonGenericCollection Block { get; } = new ObservableNonGenericCollection();
+        public ObservableNonGenericCollection Block { get; set; } = new ObservableNonGenericCollection();
         public bool IsFixedSize { get; set; }
 
         public DelegateCommand AddCommand { get; }
@@ -285,6 +285,13 @@ namespace TagStructEditor.Fields
             menu.Group("TagBlock4")
                 .Add("Collapse All", tooltip: "Collapse all children", command: CollapseAllCommand)
                 .Add("Expand All", tooltip: "Expand all children", command: ExpandAllCommand);
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
+            Block.BaseCollection.Clear();
+            Block = null;
+            Template.Dispose();
         }
     }
 }

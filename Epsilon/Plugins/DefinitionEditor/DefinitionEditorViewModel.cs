@@ -507,11 +507,15 @@ namespace DefinitionEditor
 
         protected override void OnClose()
         {
+            Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.none, "exit");
             base.OnClose();
+            DisplayField?.Dispose();
             DisplayField = null;
+            StructField?.Dispose();
             StructField = null;
             _cacheFile = null;
-            _cacheFile = null;
+            _cacheEditor = null;
+            _instance = null;
 
             _changeSink.ValueChanged -= Field_ValueChanged;
 
@@ -519,8 +523,7 @@ namespace DefinitionEditor
             {
                 _rteRefreshTimer.Dispose();
                 _rteRefreshTimer = null;
-            }
-            Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.none, "exit");
+            }         
         }
 
         protected override void OnMessage(object sender, object message)

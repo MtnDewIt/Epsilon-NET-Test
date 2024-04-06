@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using TagStructEditor.Fields;
 using TagTool.Tags;
 
@@ -18,7 +19,7 @@ namespace TagResourceEditorPlugin
     partial class TagResourceEditorViewModel : TagEditorPluginBase
     {
         private readonly IShell _shell;
-        private readonly ICacheFile _cacheFile;
+        private ICacheFile _cacheFile;
         private TagResourceItem _activeItem;
         private IField _displayField;
         private ISettingsService _settings;
@@ -131,6 +132,17 @@ namespace TagResourceEditorPlugin
 
             field.PopulateContextMenu(menu);
             return true;
+        }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+            _cacheFile = null;
+            if(_activeItem != null)
+                _activeItem.Resource = null;
+            _activeItem = null;
+            _displayField?.Dispose();
+            Items?.Clear();
         }
     }
 }

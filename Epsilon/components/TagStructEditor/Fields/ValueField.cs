@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using TagStructEditor.Common;
 using TagStructEditor.Helpers;
@@ -77,7 +78,7 @@ namespace TagStructEditor.Fields
         public virtual void SetActualValue(object value)
         {
             // ignore changing the actual value OnPopulate
-            if (IsPopulating)
+            if (IsPopulating || FieldInfo.ValueGetter == null || FieldInfo.ValueSetter == null)
                 return;
 
             var oldvalue = FieldInfo.ValueGetter(Owner);
@@ -121,5 +122,11 @@ namespace TagStructEditor.Fields
 
 
         public override string ToString() => $"{Name} : {GetType()}";
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            FieldInfo.Dispose();
+        }
     } 
 }

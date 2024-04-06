@@ -12,6 +12,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
+using CacheEditor;
 
 namespace RenderMethodEditorPlugin
 {
@@ -211,6 +212,19 @@ namespace RenderMethodEditorPlugin
             {
                Load(_cache, (RenderMethod)e.NewData);
             }
+        }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+            _renderMethod = null;
+            _cache = null;
+            _renderMethodTemplate = null;
+            _renderMethodDefinition = null;
+            _shaderProperty = null;
+            BooleanConstants.Clear();
+            ShaderMethods.Clear();
+            ShaderParameters.Clear();
         }
     }
 

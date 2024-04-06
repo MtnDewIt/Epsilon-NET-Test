@@ -19,5 +19,11 @@ namespace TagStructEditor.Fields
         {
             base.SetActualValue(new TagData() { Data = (byte[])value });
         }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            Data = null;
+        }
     }
 }

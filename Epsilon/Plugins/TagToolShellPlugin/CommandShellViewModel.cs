@@ -100,7 +100,7 @@ namespace TagToolShellPlugin
         }
         public void Dispose()
         {
-            _shell.Dispose();
+            _shell?.Dispose();
             _shell = null;
         }
     }

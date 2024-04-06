@@ -7,7 +7,7 @@ namespace TagStructEditor.Fields
     /// <summary>
     /// Info used to construct a <see cref="ValueField"/>
     /// </summary>
-    public class ValueFieldInfo
+    public class ValueFieldInfo : IDisposable
     {
         public ValueFieldFlags Flags { get; set; } = ValueFieldFlags.Default;
         public Type FieldType { get; set; }
@@ -19,6 +19,14 @@ namespace TagStructEditor.Fields
         public ValueGetter ValueGetter;
         public Action<ValueChangedEventArgs> ValueChanged;
         public TagFieldAttribute Attribute;
+
+        public void Dispose()
+        {
+            ValueChanged = null;
+            ValueGetter = null;
+            ValueSetter = null;
+            Attribute = null;
+        }
     }
 
     [Flags]

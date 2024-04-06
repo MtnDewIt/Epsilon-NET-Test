@@ -235,5 +235,15 @@ namespace TagStructEditor.Fields
             menu.Group("CachedTag3")
                 .Add("Null", tooltip: "Null this tag reference", command: NullCommand);
         }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            foreach (var group in Groups)
+                group.Instances.Clear();
+            Groups = null;
+            SelectedGroup = null;
+            SelectedInstance = null;
+        }
     }
 }

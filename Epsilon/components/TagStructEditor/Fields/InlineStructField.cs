@@ -30,5 +30,13 @@ namespace TagStructEditor.Fields
         {
             visitor.Visit(this);
         }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            foreach (var field in Fields)
+                field.Dispose();
+            Fields.Clear();
+        }
     }
 }

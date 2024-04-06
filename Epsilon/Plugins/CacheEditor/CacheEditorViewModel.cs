@@ -84,7 +84,8 @@ namespace CacheEditor
                 if(value is TagEditorViewModel)
                     CurrentTagChanged?.Invoke(this, EventArgs.Empty);
 
-                Logger.ActiveTag = (value as TagEditorViewModel)?.Tag;
+                if(value is TagEditorViewModel)
+                    Logger.ActiveTag = (value as TagEditorViewModel).Tag;
 
                 NotifyOfPropertyChange();
             }
@@ -180,13 +181,14 @@ namespace CacheEditor
         {
             base.OnClose();
             TagTree.NodeDoubleClicked -= TagTree_ItemDoubleClicked;
-            TagTree.Dispose();
+            TagTree?.Dispose();
             TagTree = null;
             _shell = null;
             _cacheFile.Cache = null;
             _cacheFile = null;
-            _cacheEditingService.Dispose();
+            _cacheEditingService?.Dispose();
             _cacheEditingService = null;
+            PluginStorage?.Clear();
             CloseAllPanes();
         }
 

@@ -1,11 +1,13 @@
 ﻿using EpsilonLib.Menus;
+using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using TagStructEditor.Common;
 
 namespace TagStructEditor.Fields
 {
-    public abstract class IField : PropertyChangedNotifier
+    public abstract class IField : PropertyChangedNotifier, IDisposable
     {
         /// <summary>
         /// The Parent <see cref="IField" /> this field
@@ -46,5 +48,7 @@ namespace TagStructEditor.Fields
             //if (Parent != null)
             //    Parent.PopulateContextMenu(menu);
         }
+
+        public virtual void Dispose() { }
     }
 }

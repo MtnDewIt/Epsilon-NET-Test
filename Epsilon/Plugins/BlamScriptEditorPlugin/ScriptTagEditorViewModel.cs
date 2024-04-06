@@ -18,7 +18,7 @@ namespace BlamScriptEditorPlugin
     class ScriptTagEditorViewModel : TagEditorPluginBase
     {
         private readonly IShell _shell;
-        private readonly ICacheFile _cacheFile;
+        private ICacheFile _cacheFile;
         private Scenario _definition;
         private string _scriptSourceCode;
 
@@ -113,6 +113,13 @@ namespace BlamScriptEditorPlugin
                 if (file.Exists)
                     file.Delete();
             }
+        }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+            _cacheFile = null;
+            _definition = null;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace CacheEditor
     {
         public const string ToolName = "CacheEditor.TagExplorer";
 
-        public ITagTree TagTree { get; }
+        public ITagTree TagTree { get; set; }
 
         public TagExplorerViewModel(ITagTree tagTree)
         {
@@ -18,6 +18,12 @@ namespace CacheEditor
             TagTree = tagTree;
             IsVisible = true;
             IsActive = true;
+        }
+        protected override void OnClose()
+        {
+            base.OnClose();
+            TagTree?.Dispose();
+            TagTree = null;
         }
     }
 
