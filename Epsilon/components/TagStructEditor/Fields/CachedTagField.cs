@@ -239,8 +239,8 @@ namespace TagStructEditor.Fields
         public override void Dispose()
         {
             base.Dispose();
-            foreach (var group in Groups)
-                group.Instances.Clear();
+            //foreach (var group in Groups)
+            //    group.Instances.Clear();
             Groups = null;
             SelectedGroup = null;
             SelectedInstance = null;
