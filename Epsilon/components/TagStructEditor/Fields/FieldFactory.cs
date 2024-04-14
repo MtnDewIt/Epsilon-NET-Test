@@ -54,7 +54,9 @@ namespace TagStructEditor.Fields
 
                 if (attribute != null)
                 {
-                    if (attribute.Flags.HasFlag(TagFieldFlags.Padding) || attribute.Flags.HasFlag(TagFieldFlags.Runtime))
+                    if (attribute.Flags.HasFlag(TagFieldFlags.Padding)
+                        || attribute.Flags.HasFlag(TagFieldFlags.Runtime)
+                        || attribute.Flags.HasFlag(TagFieldFlags.Hidden))
                         continue;
                 }
 
