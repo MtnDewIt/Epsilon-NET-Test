@@ -248,7 +248,8 @@
                                 <Condition Property="HasItems" Value="false"/>
                                 <Condition Property="IsSelected" Value="true"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource TreeViewItemSelectionFill}" />
+                            <Setter TargetName="Bd" Property="Background" Value="Transparent" />
+                            <Setter TargetName="Hb" Property="Fill" Value="{DynamicResource TreeViewItemSelectionFill}" />
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>

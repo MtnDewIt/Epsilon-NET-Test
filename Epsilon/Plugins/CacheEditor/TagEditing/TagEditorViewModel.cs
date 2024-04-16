@@ -2,6 +2,7 @@
 using EpsilonLib.Core;
 using EpsilonLib.Logging;
 using EpsilonLib.Shell;
+using EpsilonLib.Shell.TreeModels;
 using Stylet;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace CacheEditor
         public ICommand CloseCommand { get; set; }
         public ICommand CopyTagNameCommand { get; set; }
         public ICommand CopyTagIndexCommand { get; set; }
+        public ICommand TagTreeDeselect { get; set; }
 
         public TagEditorViewModel(ICacheEditingService cacheEditingService, TagEditorContext context)
         {
@@ -39,6 +41,7 @@ namespace CacheEditor
             CloseCommand = new DelegateCommand(Close);
             CopyTagNameCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"{Tag}"));
             CopyTagIndexCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"0x{Tag.Index:X08}"));
+            TagTreeDeselect = new DelegateCommand(() => (context.CacheEditor.TagTree as TreeModel).SelectedNode = null);
 
             LoadPlugins(context);
         }
@@ -82,6 +85,7 @@ namespace CacheEditor
         public void Close()
         {
             RequestClose();
+            TagTreeDeselect.Execute(null);
         }
 
         protected override void OnClose()
