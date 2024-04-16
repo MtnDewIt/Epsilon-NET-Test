@@ -43,8 +43,9 @@ namespace ServerJsonEditor
 
         public void UpdateCommand(Command command)
         {
-            command.IsVisible = _cacheEditingService.ActiveCacheEditor != null &&
-                _cacheEditingService.ActiveCacheEditor.CacheFile.Cache.Version == TagTool.Cache.CacheVersion.HaloOnlineED;
+            //command.IsVisible = _cacheEditingService.ActiveCacheEditor != null &&
+            //    _cacheEditingService.ActiveCacheEditor.CacheFile.Cache.Version == TagTool.Cache.CacheVersion.HaloOnlineED;
+            command.IsVisible = false;
         }
     }
 }
