@@ -30,6 +30,7 @@ using TagTool.Tags;
 using TagTool.Cache.HaloOnline;
 using EpsilonLib.Logging;
 using EpsilonLib.Dialogs;
+using System.Windows.Data;
 
 namespace DefinitionEditor
 {
@@ -516,6 +517,8 @@ namespace DefinitionEditor
             _cacheFile = null;
             _cacheEditor = null;
             _instance = null;
+            _blockOutline = null;
+            RuntimeTagData = null;
 
             _changeSink.ValueChanged -= Field_ValueChanged;
 

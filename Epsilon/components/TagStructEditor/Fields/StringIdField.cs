@@ -9,7 +9,7 @@ namespace TagStructEditor.Fields
 {
     public class StringIdField : ValueField
     {
-        public readonly StringTable _stringTable;
+        public StringTable _stringTable;
 
         public string Value { get; set; }
         public string UnicText { get; set; }
@@ -74,6 +74,12 @@ namespace TagStructEditor.Fields
             Value = stringid;   // set back to added stringid
 
             Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"stringid add {Value}");
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _stringTable = null;
         }
     }
 }

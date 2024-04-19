@@ -135,35 +135,7 @@ namespace CacheEditor.RTE.Providers
                 {
                     process.Resume();
                     throw new RteProviderException(this, $"Error: Loaded tag has changed size since initial poke! Try closing and reopening the tag.");
-                }
-
-                //fixup modpak tagrefs
-                #if DEBUG
-                if(isModPackage)
-                {
-                    //a list of all modpak tags in the modpak that are not basecache tags
-                    List<int> modpaktagindices = new List<int>();
-                    for (var i = 0; i < modpak.TagCache.Count; i++)
-                        if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
-                            modpaktagindices.Add(i);
-
-                    foreach (uint tagreffixup in TagReferenceFixups)
-                    {
-                        int editortagref = BitConverter.ToInt32(editordata, (int)(tagreffixup - headersize));
-
-                        //patching all tagrefs by default because they are runtime fields and we need to be able to reset them to default values
-                        if (!modpak.BaseCacheReference.TagCache.TryGetCachedTag(editortagref, out var baseTag))
-                        {
-                            //find the index of our desired tag in relation to all modpak tags in the modpak that are not basecache tags
-                            int paktagcount = modpaktagindices.Count(x => x < editortagref);
-                            editortagref = 0xFFFE - paktagcount;
-
-                            byte[] newvalue = BitConverter.GetBytes(editortagref);
-                            newvalue.CopyTo(CurrentRuntimeTagData, tagreffixup - headersize);
-                        }
-                    }
-                }
-                #endif
+                }               
 
                 //write diffed bytes only
                 int patchedbytes = 0;
@@ -176,6 +148,33 @@ namespace CacheEditor.RTE.Providers
                         patchedbytes++;
                     }
                 }
+
+                //fixup modpak tagrefs
+                #if DEBUG
+                if (isModPackage)
+                {
+                    //a list of all modpak tags in the modpak that are not basecache tags
+                    List<int> modpaktagindices = new List<int>();
+                    for (var i = 0; i < modpak.TagCache.Count; i++)
+                        if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
+                            modpaktagindices.Add(i);
+
+                    foreach (uint tagreffixup in TagReferenceFixups)
+                    {
+                        int editortagref = BitConverter.ToInt32(editordata, (int)(tagreffixup - headersize));
+
+                        if (modpaktagindices.Contains(editortagref))
+                        {
+                            //find the index of our desired tag in relation to all modpak tags in the modpak that are not basecache tags
+                            int paktagcount = modpaktagindices.Count(x => x < editortagref);
+                            editortagref = 0xFFFE - paktagcount;
+
+                            byte[] newvalue = BitConverter.GetBytes(editortagref);
+                            newvalue.CopyTo(CurrentRuntimeTagData, tagreffixup - headersize);
+                        }
+                    }
+                }
+                #endif
 
                 processStream.Seek(address + headersize, SeekOrigin.Begin);
                 processStream.Write(CurrentRuntimeTagData, 0, CurrentRuntimeTagData.Length);

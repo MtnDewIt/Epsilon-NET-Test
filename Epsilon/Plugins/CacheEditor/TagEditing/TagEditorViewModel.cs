@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Linq;
 using TagTool.Cache;
 
 namespace CacheEditor
@@ -22,6 +23,7 @@ namespace CacheEditor
         private static readonly object LastOpenedTabKey = new object();
         private bool _pluginsLoaded = false;
         private ICacheEditingService _cacheEditingService;
+        public IObservableCollection<TagEditorPluginTabViewModel> Documents => Items;
 
         public CachedTag Tag;
         public string FullName { get; set; }
@@ -91,6 +93,9 @@ namespace CacheEditor
         protected override void OnClose()
         {
             base.OnClose();
+            foreach (var document in Documents)
+                ((IScreen)document).Close();
+            Documents.Clear();
         }
 
         protected override void OnActivate()
