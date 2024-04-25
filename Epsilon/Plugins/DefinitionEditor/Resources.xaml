@@ -1326,6 +1326,34 @@
         </StackPanel>
     </DataTemplate>
 
+    <!--  TagBlockIndexGen2  -->
+    <DataTemplate DataType="{x:Type fields:TagBlockIndexGen2Field}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Style="{StaticResource OffsetLabelStyle}"/>
+            <TextBlock
+                Style="{StaticResource FieldLabelStyle}"
+                ToolTip="{Binding Name, Mode=OneTime}"
+                Text="{Binding Name, Mode=OneTime}" />
+            <!--  Offset  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Offset: " />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Offset}" />
+            <!--  Count  -->
+            <TextBlock
+                Width="Auto"
+                Style="{StaticResource InlineFieldLabelStyle}"
+                Text="Count: " />
+            <TextBox
+                Style="{StaticResource InlineFieldTextBoxStyle}"
+                Text="{Binding Count}" />
+        </StackPanel>
+    </DataTemplate>
+
     <!--  EmitterGpuInnardsYField  -->
     <DataTemplate DataType="{x:Type fields:EmitterGpuInnardsYField}">
         <StackPanel Orientation="Vertical">
