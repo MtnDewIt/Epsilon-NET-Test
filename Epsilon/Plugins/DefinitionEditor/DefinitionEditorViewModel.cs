@@ -675,6 +675,11 @@ namespace DefinitionEditor
 							SaveCommand.Execute(null); 
 					}
 				}
+				if (e.DefinitionEditorPokeRequested) {
+					if (PokeCommand.CanExecute(null)) {
+						PokeCommand.Execute(null);
+					}
+				}
 			}
 		}
 

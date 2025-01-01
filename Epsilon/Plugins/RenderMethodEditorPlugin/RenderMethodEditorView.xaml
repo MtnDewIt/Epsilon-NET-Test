@@ -182,7 +182,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Shader Parameters" FontWeight="Bold" Padding="3,10,0,7" HorizontalAlignment="Left" Grid.ColumnSpan="1"/>
-            <Button Content="Save Changes" Click="{s:Action SaveChanges}" Padding="5,2" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Grid.Column="2" Margin="0,3,12,3"/>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Width="267" FlowDirection="RightToLeft" Margin="0,0,8,0">
+                <Button Content="Save Changes" Click="{s:Action SaveChanges}" Padding="5,2" HorizontalContentAlignment="Center" Height="27" HorizontalAlignment="Center"/>
+                <Button Content="Poke Changes" Click="{s:Action PokeChanges}" Padding="5,2" HorizontalContentAlignment="Center" Height="27" HorizontalAlignment="Center" Margin="8,0,0,0"/>
+            </StackPanel>
         </Grid>
         <ListBox ItemsSource="{Binding ShaderParameters}" Grid.Row="3"/>
 

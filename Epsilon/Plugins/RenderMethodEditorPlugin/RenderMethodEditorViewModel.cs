@@ -230,6 +230,29 @@ namespace RenderMethodEditorPlugin
 			}
         }
 
+        public async void PokeChanges() {
+			try {
+				using (IProgressReporter progress = Shell.CreateProgressScope()) {
+					progress.Report("Poking Render Method Tag Changes...");
+					PostMessage(
+						this,
+						new DefinitionDataChangedEvent(_renderMethod) {
+							DefinitionEditorPokeRequested = true
+						});
+					progress.Report("Render Method Tag Changes Poked", true, 1);
+					await Task.Delay(TimeSpan.FromSeconds(1));
+				}
+			}
+			catch (Exception ex) {
+				AlertDialogViewModel error = new AlertDialogViewModel
+				{
+					AlertType = Alert.Error,
+					Message = $"An exception occured while attempting to poke Render Method Tag Changes\n{ex}"
+				};
+				Shell.ShowDialog(error);
+			}
+		}
+
         public override void OnMessage(object sender, object message)
         {
             if (message is DefinitionDataChangedEvent e)
