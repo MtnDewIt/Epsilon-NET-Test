@@ -1,20 +1,23 @@
 ﻿using EpsilonLib.Settings;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using TagTool.Tags;
 
 
 namespace CacheEditor
 {
     [Export(typeof(ICacheEditingService))]
     class CacheEditingService : ICacheEditingService, IDisposable
-    {
+	{
         private ICacheEditor _activeEditor;
         private Lazy<IShell> _shell;
 
-        public ISettingsCollection Settings { get; }
+        public const string SettingsKey = "CacheEditor";
+		public ISettingsCollection Settings { get; }
         public IReadOnlyList<ITagEditorPluginProvider> TagEditorPlugins { get; }
         public ICacheEditor ActiveCacheEditor 
         {
@@ -24,15 +27,15 @@ namespace CacheEditor
 
         public IEnumerable<ICacheEditorToolProvider> Tools { get; set; }
 
-        [ImportingConstructor]
+		[ImportingConstructor]
         public CacheEditingService(
             Lazy<IShell> shell,
-            ISettingsService settingsService,
+			ISettingsService settingsService,
             [ImportMany] IEnumerable<ITagEditorPluginProvider> tagEditorPlugins,
             [ImportMany] IEnumerable<ICacheEditorToolProvider> tools)
         {
             _shell = shell;
-            Settings = settingsService.GetCollection("CacheEditor");
+            Settings = settingsService.GetCollection(SettingsKey);
             TagEditorPlugins = tagEditorPlugins.OrderBy(x => x.SortOrder).ToList();
             Tools = tools;
         }

@@ -37,9 +37,9 @@ namespace Epsilon.Options
         private string _theme;
 
         [ImportingConstructor]
-        public GeneralOptionsViewModel(ISettingsService settingsService) : base("General", "General")
+        public GeneralOptionsViewModel(ISettingsService settingsService) : base(Settings.CollectionKey, Settings.CollectionKey)
         {
-            _settings = settingsService.GetCollection(GeneralSettings.CollectionKey);
+            _settings = settingsService.GetCollection(Settings.CollectionKey);
         }
 
         public string AccentColorHex
@@ -69,7 +69,7 @@ namespace Epsilon.Options
 
         public void RevertAppearance()
         {
-            string og_accent = _settings.Get(GeneralSettings.AccentColor);
+            string og_accent = _settings.Get(Settings.AccentColor);
 			string og_theme = "Default";
             UpdateAppearance(og_accent, og_theme);
         }
@@ -183,35 +183,35 @@ namespace Epsilon.Options
 		public override void Apply()
         {
             if (CachePathIsValid)
-                _settings.Set(GeneralSettings.DefaultTagCache.Key, DefaultCachePath);
+                _settings.Set(Settings.DefaultTagCache.Key, DefaultCachePath);
             if (PakPathIsValid)
-                _settings.Set(GeneralSettings.DefaultPak.Key, DefaultPakPath);
+                _settings.Set(Settings.DefaultPak.Key, DefaultPakPath);
 			if (PakCachePathIsValid)
-				_settings.Set(GeneralSettings.DefaultPakCache.Key, DefaultPakCachePath);
+				_settings.Set(Settings.DefaultPakCache.Key, DefaultPakCachePath);
 
-			_settings.Set(GeneralSettings.StartupPositionLeft.Key, StartupPositionLeft);
-            _settings.Set(GeneralSettings.StartupPositionTop.Key, StartupPositionTop);
+			_settings.Set(Settings.StartupPositionLeft.Key, StartupPositionLeft);
+            _settings.Set(Settings.StartupPositionTop.Key, StartupPositionTop);
 
-            _settings.Set(GeneralSettings.StartupWidth.Key, StartupWidth);
-            _settings.Set(GeneralSettings.StartupHeight.Key, StartupHeight);
+            _settings.Set(Settings.StartupWidth.Key, StartupWidth);
+            _settings.Set(Settings.StartupHeight.Key, StartupHeight);
 
-            _settings.SetBool(GeneralSettings.AlwaysOnTop.Key, AlwaysOnTop);
-            _settings.Set(GeneralSettings.AccentColor.Key, AccentColorHex);
+            _settings.SetBool(Settings.AlwaysOnTop.Key, AlwaysOnTop);
+            _settings.Set(Settings.AccentColor.Key, AccentColorHex);
 
             Application.Current.Resources["AlwaysOnTop"] = AlwaysOnTop;
         }
 
         public override void Load()
         {
-            DefaultCachePath = _settings.Get(GeneralSettings.DefaultTagCache);
-            DefaultPakPath = _settings.Get(GeneralSettings.DefaultPak);
-			DefaultPakCachePath = _settings.Get(GeneralSettings.DefaultPakCache);
-			StartupPositionLeft = _settings.Get(GeneralSettings.StartupPositionLeft);
-            StartupPositionTop = _settings.Get(GeneralSettings.StartupPositionTop);
-            StartupWidth = _settings.Get(GeneralSettings.StartupWidth);
-            StartupHeight = _settings.Get(GeneralSettings.StartupHeight);
-            AlwaysOnTop = _settings.GetBool(GeneralSettings.AlwaysOnTop);
-            AccentColorHex = _settings.Get(GeneralSettings.AccentColor);
+            DefaultCachePath = _settings.Get(Settings.DefaultTagCache);
+            DefaultPakPath = _settings.Get(Settings.DefaultPak);
+			DefaultPakCachePath = _settings.Get(Settings.DefaultPakCache);
+			StartupPositionLeft = _settings.Get(Settings.StartupPositionLeft);
+            StartupPositionTop = _settings.Get(Settings.StartupPositionTop);
+            StartupWidth = _settings.Get(Settings.StartupWidth);
+            StartupHeight = _settings.Get(Settings.StartupHeight);
+            AlwaysOnTop = _settings.GetBool(Settings.AlwaysOnTop);
+            AccentColorHex = _settings.Get(Settings.AccentColor);
         }
     }
 }

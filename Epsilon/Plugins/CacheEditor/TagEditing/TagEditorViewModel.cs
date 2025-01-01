@@ -1,31 +1,36 @@
 ﻿using EpsilonLib.Commands;
 using EpsilonLib.Core;
-using EpsilonLib.Logging;
 using EpsilonLib.Shell;
 using EpsilonLib.Shell.TreeModels;
 using Stylet;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml.Linq;
 using TagTool.Cache;
 
 namespace CacheEditor
 {
-    class TagEditorViewModel : Conductor<TagEditorPluginTabViewModel>.Collection.OneActive, ITagEditorPluginClient
+	public class TagEditorViewModel : Conductor<TagEditorPluginTabViewModel>.Collection.OneActive, ITagEditorPluginClient
     {
+
+        public TagEditorContext tagEditorContext;
+
         private static readonly object LastOpenedTabKey = new object();
         private bool _pluginsLoaded = false;
         private ICacheEditingService _cacheEditingService;
         public IObservableCollection<TagEditorPluginTabViewModel> Documents => Items;
 
-        public CachedTag Tag;
+		private ITagEditorPlugin _content;
+		public ITagEditorPlugin Content { 
+            get { return _content; } 
+            set { SetAndNotify(ref _content, value); }
+		}
+
+		private ICacheEditor _cacheEditor;
+        public ICacheEditor CacheEditor { get { return _cacheEditor; } }
+
+		public CachedTag Tag;
         public string FullName { get; set; }
 
         public ICommand CloseCommand { get; set; }
@@ -33,11 +38,13 @@ namespace CacheEditor
         public ICommand CopyTagIndexCommand { get; set; }
         public ICommand TagTreeDeselect { get; set; }
 
-        public TagEditorViewModel(ICacheEditingService cacheEditingService, TagEditorContext context)
+        public TagEditorViewModel (TagEditorContext context, ICacheEditingService cacheEditingService)
         {
             _cacheEditingService = cacheEditingService;
-            Tag = context.Instance;
-            DisplayName = $"{Path.GetFileName(Tag.Name)}.{Tag.Group.Tag}";
+			_cacheEditor = context.CacheEditor;
+			Tag = context.Instance;
+            context.ViewModel = this;
+			DisplayName = $"{Path.GetFileName(Tag.Name)}.{Tag.Group.Tag}";
             FullName = $"{Tag.Name}.{Tag.Group.Tag}";
 
             CloseCommand = new DelegateCommand(Close);
@@ -46,42 +53,30 @@ namespace CacheEditor
             TagTreeDeselect = new DelegateCommand(() => (context.CacheEditor.TagTree as TreeModel).SelectedNode = null);
 
             LoadPlugins(context);
-        }
+		}
 
         private async void LoadPlugins(TagEditorContext context)
         {
-            foreach(var provider in _cacheEditingService.TagEditorPlugins)
-            {
-                if (!provider.ValidForTag(context.CacheEditor.CacheFile, context.Instance))
-                    continue;
+            foreach (ITagEditorPluginProvider provider in _cacheEditingService.TagEditorPlugins) {
+                
+                if (!provider.ValidForTag(context.CacheEditor.CacheFile, context.Instance)) { continue; }
 
-                var futurePlugin = LoadPluginAsync(context, provider);
-                Items.Add(new TagEditorPluginTabViewModel(futurePlugin) { DisplayName = provider.DisplayName });
-            }
+                if (provider is ITagEditorPluginProvider) {
+                    Task<ITagEditorPlugin> futurePlugin = provider.CreateAsync(context);
+					TagEditorPluginTabViewModel tab = new TagEditorPluginTabViewModel(futurePlugin, this) { DisplayName = provider.DisplayName };
+					Items.Add(tab);					
+                    // Instead of ->    Content = futurePlugin.Result;
+					// The Content property is set in the constructor of TagEditorPluginTabViewModel
+				}
+			}
 
-            // if a tab was opened previously and we have a tab with the same name, active that one.
-            // otherwse just activate the first.
-            var sessionStore = GlobalServiceProvider.GetService<ISessionStore>();
+			// if a tab was opened previously and we have a tab with the same name, active that one. otherwse just activate the first.
+			ISessionStore sessionStore = GlobalServiceProvider.GetService<ISessionStore>();
             sessionStore.TryGetItem(LastOpenedTabKey, out string lastOpenedTab);
-            var tabToActivate = Items.FirstOrDefault(x => x.DisplayName == lastOpenedTab) ?? Items.FirstOrDefault();
+			TagEditorPluginTabViewModel tabToActivate = Items.FirstOrDefault(x => x.DisplayName == lastOpenedTab) ?? Items.FirstOrDefault();
 
             ActiveItem = tabToActivate;
             _pluginsLoaded = true;
-        }
-
-        private async Task<ITagEditorPlugin> LoadPluginAsync(TagEditorContext context, ITagEditorPluginProvider provider)
-        {
-            try
-            {
-                var plugin = await provider.CreateAsync(context);
-                plugin.Client = this;
-                return plugin;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"failed to load tag editor plugin '{provider.DisplayName}'. Exception: {ex}");
-                throw;
-            }
         }
 
         public void Close()
@@ -93,7 +88,7 @@ namespace CacheEditor
         protected override void OnClose()
         {
             base.OnClose();
-            foreach (var document in Documents)
+            foreach (TagEditorPluginTabViewModel document in Documents)
                 ((IScreen)document).Close();
             Documents.Clear();
         }
@@ -103,30 +98,27 @@ namespace CacheEditor
             base.OnActivate();
         }
 
-
         public override void ActivateItem(TagEditorPluginTabViewModel item)
         {
             base.ActivateItem(item);
 
             if (item != null && _pluginsLoaded)
             {
-                // store the last opened tab name
-                var sessionStore = GlobalServiceProvider.GetService<ISessionStore>();
+				// store the last opened tab name
+				ISessionStore sessionStore = GlobalServiceProvider.GetService<ISessionStore>();
                 sessionStore.StoreItem(LastOpenedTabKey, item.DisplayName);
             }
         }
 
         async void ITagEditorPluginClient.PostMessage(object sender, object message)
         {
-            foreach(var tab in Items)
+            foreach(TagEditorPluginTabViewModel tab in Items)
             {
-                var plugin = await tab.LoadTask;
-
-                if (plugin != sender)
-                    plugin.OnMessage(sender, message);
+                ITagEditorPlugin plugin =  tab.Content  ??  await tab.LoadTask;
+				if (plugin != null && plugin != sender) { plugin.OnMessage(sender, message); }
             }
         }
 
-        public override string ToString() => Tag.ToString();
+        public override string ToString() { return Tag?.ToString() ?? string.Empty; }
     }
 }

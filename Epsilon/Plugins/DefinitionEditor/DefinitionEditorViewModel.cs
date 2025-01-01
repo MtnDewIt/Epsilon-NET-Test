@@ -1,20 +1,10 @@
-﻿#define DEBUG
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows;
+﻿#undef DEBUG
 using CacheEditor;
 using CacheEditor.RTE;
 using CacheEditor.RTE.UI;
-using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
-using DefinitionEditor;
-using EpsilonLib.Commands;
+using DefinitionEditor.RTE;
 using EpsilonLib.Dialogs;
 using EpsilonLib.Logging;
 using EpsilonLib.Menus;
@@ -22,6 +12,14 @@ using EpsilonLib.Shell;
 using EpsilonLib.Utils;
 using Shared;
 using Stylet;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows;
 using TagStructEditor;
 using TagStructEditor.Fields;
 using TagStructEditor.Helpers;
@@ -34,12 +32,10 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using System.Windows.Data;
-using DefinitionEditor.RTE;
 
 namespace DefinitionEditor
 {
-	public class DefinitionEditorViewModel : TagEditorPluginBase
+	public class DefinitionEditorViewModel : TagEditorPlugin, ITagEditorPlugin
 	{
 
 		public class SearchResultItem
@@ -72,10 +68,7 @@ namespace DefinitionEditor
 			}
 		}
 
-		private IShell _shell;
-		private ICacheEditor _cacheEditor;
 		private ICacheFile _cacheFile;
-		private CachedTag _instance;
 		private object _definitionData;
 		private IFieldsValueChangeSink _changeSink;
 
@@ -243,15 +236,15 @@ namespace DefinitionEditor
 			}
 		}
 
-		public DelegateCommand ExpandAllCommand { get; }
+		public EpsilonLib.Commands.DelegateCommand ExpandAllCommand { get; }
 
-		public DelegateCommand CollapseAllCommand { get; }
+		public EpsilonLib.Commands.DelegateCommand CollapseAllCommand { get; }
 
-		public DelegateCommand SaveCommand { get; }
+		public EpsilonLib.Commands.DelegateCommand SaveCommand { get; }
 
-		public DelegateCommand PokeCommand { get; }
+		public EpsilonLib.Commands.DelegateCommand PokeCommand { get; }
 
-		public DelegateCommand ReloadCommand { get; }
+		public EpsilonLib.Commands.DelegateCommand ReloadCommand { get; }
 
 		public List<BlockOutlineItem> BlockOutline {
 			get {
@@ -268,43 +261,57 @@ namespace DefinitionEditor
 			}
 		}
 
+		
 
-		public DefinitionEditorViewModel(
-			IShell shell,
-			IRteService rteService,
-			ICacheEditor cacheEditor,
-			ICacheFile cacheFile,
-			CachedTag instance,
-			object definitionData,
-			StructField structField,
-			IFieldsValueChangeSink changeSink,
-			TagStructEditor.Configuration config) {
-			_shell = shell;
-			_definitionData = definitionData;
-			_cacheEditor = cacheEditor;
-			_cacheFile = cacheFile;
-			_changeSink = changeSink;
+		[ImportingConstructor]
+		public DefinitionEditorViewModel(TagEditorContext context, params object[] args) : base(context) {
+			TagEditorContext = context;
+			// args[0] IRteService	_rteService
+
+			// validate that we have args[0] and it's the correct type
+			if (args.Length < 1 || !( args[0] is IRteService )) {
+				throw new ArgumentException("Invalid arguments passed to DefinitionEditorViewModel.");
+			}
+
+			ValueChangedSink valueChangeSink = new ValueChangedSink();
+			Configuration config = new TagStructEditor.Configuration()
+			{
+				OpenTag = context.CacheEditor.OpenTag,
+				BrowseTag = context.CacheEditor.RunBrowseTagDialog,
+				ValueChanged = valueChangeSink.Invoke
+			};
+			TagStructEditor.Settings.Load(config);
+
+			PerCacheDefinitionEditorContext ctx = context.GetDefinitionEditorContext();
+			FieldFactory factory = new FieldFactory(ctx.Cache, ctx.TagList, config);
+			StructField field = context.CreateField(factory);
+
+			_shell = context.Shell;
+			_definitionData = context.DefinitionData;
+			_cacheEditor = context.CacheEditor;
+			_cacheFile = context.CacheEditor.CacheFile;
+			_changeSink = valueChangeSink;
 			_changeSink.ValueChanged += Field_ValueChanged;
-			RteService = rteService;
+			RteService = args[0] as IRteService;
 
-			_instance = instance;
+			_instance = context.Instance;
 
-			StructField = structField;
+			StructField = field;
 			DisplayField = StructField;
 
 			FieldOffsetsVisible = config.DisplayFieldOffsets;
 			FieldTypesVisible = config.DisplayFieldTypes;
 
-			ExpandAllCommand = new DelegateCommand(ExpandAll);
-			CollapseAllCommand = new DelegateCommand(CollapseAll);
+			ExpandAllCommand = new EpsilonLib.Commands.DelegateCommand(ExpandAll);
+			CollapseAllCommand = new EpsilonLib.Commands.DelegateCommand(CollapseAll);
 
-			PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
-			SaveCommand = new DelegateCommand(SaveChanges, () => _cacheFile.CanSerializeTags);
-			ReloadCommand = new DelegateCommand(_cacheEditor.ReloadCurrentTag);
+			PokeCommand = new EpsilonLib.Commands.DelegateCommand(PokeChanges, () => RteTargetList.Any());
+			SaveCommand = new EpsilonLib.Commands.DelegateCommand(SaveChanges, () => _cacheFile.CanSerializeTags);
+			ReloadCommand = new EpsilonLib.Commands.DelegateCommand(_cacheEditor.ReloadCurrentTag);
 
 			SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
 
-			RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
+			RteTargetList = new TargetListModel(RteService.GetTargetList(context.CacheEditor.CacheFile));
 			RteHasTargets = RteTargetList.Any();
 
 			RuntimeTagData = new byte[0];
@@ -321,7 +328,7 @@ namespace DefinitionEditor
 
 					_ = menu.Submenu(EpsilonLib.Menus.Item.k_FieldEditor)
 
-						.Add("Poke Field", new DelegateCommand(delegate { PokeField(value); }),
+						.Add("Poke Field", new EpsilonLib.Commands.DelegateCommand(delegate { PokeField(value); }),
 							 "Pokes the current field to game memory")
 
 						.AddSeparator();
@@ -334,7 +341,7 @@ namespace DefinitionEditor
 
 					_ = menu.Submenu(EpsilonLib.Menus.Item.k_FieldEditor)
 
-						.Add("Edit Unicode String", new DelegateCommand(delegate { EditUnicString(stringIdField); }),
+						.Add("Edit Unicode String", new EpsilonLib.Commands.DelegateCommand(delegate { EditUnicString(stringIdField); }),
 							 "Open a dialog to edit this StringID's string, if it exists.")
 
 						.AddSeparator();
@@ -345,17 +352,17 @@ namespace DefinitionEditor
 
 					_ = menu.Submenu(EpsilonLib.Menus.Item.k_FieldEditor)
 
-							.Add("Copy SetField Command", new DelegateCommand(delegate { CopySetFieldCommand(vf); }),
+							.Add("Copy SetField Command", new EpsilonLib.Commands.DelegateCommand(delegate { CopySetFieldCommand(vf); }),
 								 "Copies the value of this field");
 
 				}
 				
 				_ = menu.Submenu(EpsilonLib.Menus.Item.k_FieldEditor)
 
-						.Add("Copy Name", new DelegateCommand(delegate { CopyFieldName(vf); }),
+						.Add("Copy Name", new EpsilonLib.Commands.DelegateCommand(delegate { CopyFieldName(vf); }),
 							 "Copies the name of this field")
 						
-						.Add("Copy Path", new DelegateCommand(delegate { CopyFieldPath(vf); }),
+						.Add("Copy Path", new EpsilonLib.Commands.DelegateCommand(delegate { CopyFieldPath(vf); }),
 							 "Copies the path of this field");
 
 				if (!blockOrStruct) {
@@ -363,24 +370,24 @@ namespace DefinitionEditor
 					_ = menu
 						.Submenu(EpsilonLib.Menus.Item.k_FieldEditor)
 
-							.Add("Copy Value", new DelegateCommand(delegate { CopyFieldValue(vf); }),
+							.Add("Copy Value", new EpsilonLib.Commands.DelegateCommand(delegate { CopyFieldValue(vf); }),
 								 "Copies the value of this field")
 
-							.Add("Copy Path + Value", new DelegateCommand(delegate { CopyFieldPathWithValue(vf); }),
+							.Add("Copy Path + Value", new EpsilonLib.Commands.DelegateCommand(delegate { CopyFieldPathWithValue(vf); }),
 								 "Copies the path and value of this field");
 
 				}
 
 				_ = menu.Submenu(EpsilonLib.Menus.Item.k_FieldEditor)
 					
-					.Add("Copy Offset", new DelegateCommand(delegate { CopyFieldOffset(vf); }),
+					.Add("Copy Offset", new EpsilonLib.Commands.DelegateCommand(delegate { CopyFieldOffset(vf); }),
 						 "Copies the offset of this field");
 
 			}
 
 			_ = menu.Submenu(EpsilonLib.Menus.Item.k_FieldEditor)
 
-				.Add("Copy Memory Address", new DelegateCommand(delegate { CopyFieldMemoryAddress(field); }, RteHasValidTargets), 
+				.Add("Copy Memory Address", new EpsilonLib.Commands.DelegateCommand(delegate { CopyFieldMemoryAddress(field); }, RteHasValidTargets), 
 					 "Copies the memory address of this field");
 
 			field.PopulateContextMenu(menu);
@@ -657,10 +664,17 @@ namespace DefinitionEditor
 			}
 		}
 
-		protected override void OnMessage(object sender, object message) {
+		public override void OnMessage(object sender, object message) {
 			if (message is DefinitionDataChangedEvent e) {
-				_definitionData = e.NewData;
-				StructField.Populate(null, e.NewData);
+				if (e.NewData != null) {
+					_definitionData = e.NewData;
+					StructField.Populate(null, e.NewData);
+				}
+				if (e.DefinitionEditorSaveRequested) {
+					if (SaveCommand.CanExecute(null)) {
+							SaveCommand.Execute(null); 
+					}
+				}
 			}
 		}
 
@@ -722,6 +736,15 @@ namespace DefinitionEditor
 			}
 		}
 
+		private readonly IRteService _rteService;
+
+		public new string DisplayName => "Definition";
+
+		public new int SortOrder => -1;
+
+		public override bool ValidForTag(ICacheFile cache, CachedTag tag) {
+			return true;
+		}
 
 	}
 }

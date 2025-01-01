@@ -9,31 +9,23 @@ using TagTool.Tags.Definitions;
 namespace BlamScriptEditorPlugin
 {
     [Export(typeof(ITagEditorPluginProvider))]
-    class ScriptTagEditorPluginProvider : ITagEditorPluginProvider
+    public class ScriptTagEditorPluginProvider : ITagEditorPluginProvider
     {
-        private readonly Lazy<IShell> _shell;
 
-        [ImportingConstructor]
-        public ScriptTagEditorPluginProvider(Lazy<IShell> shell)
-        {
-            _shell = shell;
-        }
+		public string DisplayName => "Scripts";
+		public int SortOrder => 2;
 
-        public string DisplayName => "Scripts";
-
-        public int SortOrder => 2;
+		public ScriptTagEditorPluginProvider() { }
 
         public async Task<ITagEditorPlugin> CreateAsync(TagEditorContext context)
         {
-            var definition = await context.DefinitionData as Scenario;
-            var vm = new ScriptTagEditorViewModel(_shell.Value, context.CacheEditor.CacheFile, definition);
-            Task.Run(async () => await vm.LoadAsync());
+			ScriptTagEditorViewModel vm = new ScriptTagEditorViewModel(context);
+            await vm.LoadAsync();
             return vm;
         }
 
-        public bool ValidForTag(ICacheFile cache, CachedTag tag)
-        {
-            return tag.IsInGroup("scnr");
+        public bool ValidForTag(ICacheFile cache, CachedTag tag) { 
+            return tag?.IsInGroup("scnr") ?? false; 
         }
     }
 }

@@ -9,15 +9,14 @@ using System.Threading.Tasks;
 namespace EpsilonLib.Editors
 {
     [Export(typeof(IEditorService))]
-    class EditorService : IEditorService
+    public class EditorService : IEditorService
     {
         private readonly Lazy<IShell> _shell;
-        private readonly IEditorProvider[] _providers;
         private readonly IFileHistoryService _fileHistory;
-
+        private readonly IEditorProvider[] _providers;
         public IEnumerable<IEditorProvider> EditorProviders => _providers;
 
-        [ImportingConstructor]
+		[ImportingConstructor]
         public EditorService(
             [Import] Lazy<IShell> shell,
             [ImportMany]IEditorProvider[] providers,
@@ -59,7 +58,7 @@ namespace EpsilonLib.Editors
 			var file = new FileInfo(filePath);
             foreach(var provider in EditorProviders)
             {
-                if (provider.FileExtensions.Contains(file.Extension)){
+                if (provider.FileExtensions.Contains(file.Extension)){ 
                     return OpenFileWithEditorAsync(provider.Id, filePath); 
                 }
             }

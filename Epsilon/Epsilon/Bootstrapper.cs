@@ -14,6 +14,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -69,12 +70,33 @@ namespace WpfApp20
 		}
 		
 		private void UnhandledExceptionDisplay(object sender, DispatcherUnhandledExceptionEventArgs args) {
-			ExceptionDialog dialog = new ExceptionDialog(args.Exception);
-			dialog.Owner = App.Current.MainWindow;
-			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-			if (dialog.ShowDialog() == false) {
-				args.Handled = true;
+			try {
+				ExceptionDialog dialog = new ExceptionDialog(args.Exception);
+				dialog.Owner = App.Current.MainWindow;
+				dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+				if (dialog.ShowDialog() == false) {
+					args.Handled = true;
+				}
 			}
+			catch {
+				// Extensive Console.WriteLine output for args.Exception:
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("An unhandled exception occurred:");
+				sb.AppendLine(args.Exception.Message);
+				sb.AppendLine("Stack Trace:");
+				sb.AppendLine(args.Exception.StackTrace);
+				Exception inner = args.Exception.InnerException;
+				while (inner != null) {
+					sb.AppendLine("Inner Exception:");
+					sb.AppendLine(inner.Message);
+					sb.AppendLine(inner.StackTrace);
+					inner = inner.InnerException;
+				}
+				Console.WriteLine(sb.ToString());
+				MessageBox.Show("An unhandled exception occurred before the application finished initializing. Check the console for details.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+			args.Handled = true;
+			return;
 		}
 
 		protected override void ConfigureIoC(CompositionBatch batch) {
@@ -100,19 +122,19 @@ namespace WpfApp20
 			foreach (ResourceDictionary dict in GetInstances<ResourceDictionary>()) {
 				App.Current.Resources.MergedDictionaries.Add(dict);
 			}
-
+			
 			_editorService = GetInstance<IEditorService>();
-			_settings = GetInstance<ISettingsService>().GetCollection(GeneralSettings.CollectionKey);
-			DefaultCachePath = _settings.Get(GeneralSettings.DefaultTagCache);
-			DefaultPakPath = _settings.Get(GeneralSettings.DefaultPak);
-			DefaultPakCachePath = _settings.Get(GeneralSettings.DefaultPakCache);
-			AlwaysOnTop = _settings.GetBool(GeneralSettings.AlwaysOnTop);
-			AccentColor = _settings.Get(GeneralSettings.AccentColor);
-
+			_settings = GetInstance<ISettingsService>().GetCollection(Settings.CollectionKey);
+			DefaultCachePath = _settings.Get(Settings.DefaultTagCache);
+			DefaultPakPath = _settings.Get(Settings.DefaultPak);
+			DefaultPakCachePath = _settings.Get(Settings.DefaultPakCache);
+			AlwaysOnTop = _settings.GetBool(Settings.AlwaysOnTop);
+			AccentColor = _settings.Get(Settings.AccentColor);
+			
 			App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
 			App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
 			App.Current.Resources.Add(SystemParameters.MenuPopupAnimationKey, PopupAnimation.None);
-			App.Current.Resources[GeneralSettings.AlwaysOnTop.Key] = AlwaysOnTop;
+			App.Current.Resources[Settings.AlwaysOnTop.Key] = AlwaysOnTop;
 		}
 
 		private void PostLaunchInitShell() {
@@ -125,14 +147,14 @@ namespace WpfApp20
 			   FrameworkPropertyMetadataOptions.AffectsRender |
 			   FrameworkPropertyMetadataOptions.Inherits));
 			
-			if (_settings.TryGetDouble(GeneralSettings.StartupPositionLeft, out StartupPositionLeft)
-			&&  _settings.TryGetDouble(GeneralSettings.StartupPositionTop,  out StartupPositionTop)) {
+			if (_settings.TryGetDouble(Settings.StartupPositionLeft, out StartupPositionLeft)
+			&&  _settings.TryGetDouble(Settings.StartupPositionTop,  out StartupPositionTop)) {
 				App.Current.MainWindow.Left = StartupPositionLeft;
 				App.Current.MainWindow.Top = StartupPositionTop;
 			}
 
-			StartupWidth = _settings.GetDouble(GeneralSettings.StartupWidth);
-			StartupHeight = _settings.GetDouble(GeneralSettings.StartupHeight);
+			StartupWidth = _settings.GetDouble(Settings.StartupWidth);
+			StartupHeight = _settings.GetDouble(Settings.StartupHeight);
 			if (StartupWidth > 281 && StartupHeight > 500) {
 				App.Current.MainWindow.Width = StartupWidth;
 				App.Current.MainWindow.Height = StartupHeight;
@@ -156,7 +178,7 @@ namespace WpfApp20
 		}
 
 		private void InitAppearance() {
-			App.Current.Resources[GeneralSettings.AccentColor.Key] = (Color)ColorConverter.ConvertFromString(AccentColor);
+			App.Current.Resources[Settings.AccentColor.Key] = (Color)ColorConverter.ConvertFromString(AccentColor);
 
 			string epsilonTheme = "Default";
 			Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary {

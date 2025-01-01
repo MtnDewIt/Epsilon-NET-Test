@@ -8,33 +8,39 @@ using System.IO;
 namespace EpsilonLib.Settings
 {
     [Export(typeof(ISettingsService))]
-    class SettingsService : ISettingsService
+    public class SettingsService : ISettingsService
     {
-        private const string FilePath = "settings.json";
-        private const string SettingsVersionKey = "SettingsVersion";
-		private SettingsCollection _rootCollection;
-
+        
+        private static SettingsService _instance;
+        public static SettingsService Instance => _instance ?? ( _instance = new SettingsService() );
         public event EventHandler<SettingChangedEventArgs> SettingChanged;
 
-        public SettingsService()
+		private const string FilePath = "settings.json";
+        private const string SettingsVersionKey = "SettingsVersion";
+		private static SettingsCollection _rootCollection;
+
+        public SettingsService() { }
+
+        static SettingsService()
         {
-            _rootCollection = new SettingsCollection(this, new JObject());
+			Serializer.Formatting = Formatting.Indented;
+			Serializer.Converters.Add(new StringEnumConverter());
+			_rootCollection = new SettingsCollection(new JObject());
             Load(FilePath);
         }
 
-        public readonly static JsonSerializer Serializer = JsonSerializer.CreateDefault();
-        static SettingsService()
-        {
-            Serializer.Formatting = Formatting.Indented;
-            Serializer.Converters.Add(new StringEnumConverter());
-        }
+		public readonly static JsonSerializer Serializer = JsonSerializer.CreateDefault();
 
-        public ISettingsCollection GetCollection(string key)
+        public static ISettingsCollection GetCollection(params string[] keys) {
+            if (keys == null || keys.Length == 0 || string.IsNullOrEmpty(keys[0])) { return null; }
+			return _rootCollection.GetCollection(keys[0]);
+		}
+		public ISettingsCollection GetCollection(string key)
         {
             return _rootCollection.GetCollection(key);
         }
 
-        private void Load(string filePath)
+        private static void Load(string filePath)
         {
             if (!File.Exists(filePath))
                 return;
@@ -42,7 +48,7 @@ namespace EpsilonLib.Settings
 			using (JsonReader reader = new JsonTextReader(File.OpenText(filePath)))
             {
                 reader.Read();
-                _rootCollection = new SettingsCollection(this, JObject.ReadFrom(reader));
+                _rootCollection = new SettingsCollection(JObject.ReadFrom(reader));
             }
 
 			// 12/05/24 Breaking change to how settings are stored
@@ -55,7 +61,7 @@ namespace EpsilonLib.Settings
 
 		}
 
-        private void Save(string filePath)
+        private static void Save(string filePath)
         {
             using (JsonWriter writer = new JsonTextWriter(File.CreateText(filePath)))
             {
@@ -65,10 +71,10 @@ namespace EpsilonLib.Settings
                
         }
 
-        internal void NotifySettingChanged(SettingsCollection collection, string key)
+        internal static void NotifySettingChanged(SettingsCollection collection, string key)
         {
             Save(FilePath);
-            SettingChanged?.Invoke(this, new SettingChangedEventArgs(collection, key));
+            Instance.SettingChanged?.Invoke(collection, new SettingChangedEventArgs(collection, key));
         }
     }
 }

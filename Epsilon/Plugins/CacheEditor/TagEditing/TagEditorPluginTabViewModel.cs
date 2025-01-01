@@ -1,44 +1,29 @@
-﻿using Stylet;
+﻿using CacheEditor.TagEditing;
+using Stylet;
 using System;
 using System.Threading.Tasks;
+using TagTool.Tags;
 
 namespace CacheEditor
 {
-    class TagEditorPluginTabViewModel : Screen
-    {
-        private IScreen _content;
+    public class TagEditorPluginTabViewModel : Screen {
+
+        private ITagEditorPlugin _content;
+        public ITagEditorPlugin Content { get { return _content; } set { SetAndNotify(ref _content, value); } }
 
         public Task<ITagEditorPlugin> LoadTask { get; }
-
-        public IScreen Content
-        {
-            get => _content;
-            set => SetAndNotify(ref _content, value);
-        }
-
-        public TagEditorPluginTabViewModel(Task<ITagEditorPlugin> futurePlugin)
-        {
+        private async void DoLoadingAsync(Task<ITagEditorPlugin> futurePlugin, TagEditorViewModel parent) { 
+            Content = await futurePlugin;
+			Content.Client = parent;
+			parent.Content = _content;
+		}
+        
+        public TagEditorPluginTabViewModel(Task<ITagEditorPlugin> futurePlugin, TagEditorViewModel parent) {
             LoadTask = futurePlugin;
-            DoLoadingAsync(futurePlugin); 
-        }
+            DoLoadingAsync(futurePlugin, parent);
+		}
 
-        private async void DoLoadingAsync(Task<ITagEditorPlugin> futurePlugin)
-        {
-            try
-            {
-                var plugin = await futurePlugin;
-                Content = plugin;
-            }
-            catch(Exception ex)
-            {
-                Content = new TagEditorPluginErrorViewModel(ex);
-            }
-        }
+        protected override void OnClose() { _content?.Close(); _content = null; }
 
-        protected override void OnClose()
-        {
-            _content?.Close();
-            _content = null;
-        }
     }
 }

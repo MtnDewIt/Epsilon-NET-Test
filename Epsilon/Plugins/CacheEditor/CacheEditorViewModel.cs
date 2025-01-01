@@ -33,7 +33,7 @@ namespace CacheEditor
     {
         private ICacheEditingService _cacheEditingService;
         private IShell _shell;
-        private ICacheFile _cacheFile;
+		private ICacheFile _cacheFile;
         public static int _counter;
 
         public int Counter => _counter;
@@ -51,7 +51,7 @@ namespace CacheEditor
             cacheFile.Reloaded += CacheFile_Reloaded;
 
             DisplayName = _cacheFile.File.Name;
-            TagTree = new TagTreeViewModel(_cacheEditingService, _cacheFile, new TagEditing.TagExtract(_shell));
+            TagTree = new TagTreeViewModel(_cacheEditingService, _cacheFile, new TagExtract(_shell));
             TagTree.ContextMenu = Components.TagExplorer.MenuDefinitions.ContextMenu;
             TagTree.NodeActivated += TagTree_ItemAttemptOpen;
             CloseCommand = new DelegateCommand(Close);
@@ -122,21 +122,19 @@ namespace CacheEditor
             using (IProgressReporter progress = _shell.CreateProgressScope())
             {
                 progress.Report($"Deserializing Tag '{instance}'...");
-				Task<object> futureDefinitionData = Task.Run(() =>
+				
+                Task<object> futureDefinitionData = Task.Run(() =>
                 {
                     using (Stream stream = CacheFile.Cache.OpenCacheRead()) {
 						return CacheFile.Cache.Deserialize(stream, instance);
 					}
 				});
+				
+				ActiveItem = new TagEditorViewModel(
+                    new TagEditorContext(this, _shell, null, instance, futureDefinitionData), 
+                    _cacheEditingService
+                );
 
-				TagEditorContext context = new TagEditorContext()
-                {
-                    CacheEditor = this,
-                    DefinitionData = futureDefinitionData,
-                    Instance = instance
-                };
-
-                ActiveItem = new TagEditorViewModel(_cacheEditingService, context);
             }
             Logger.LogCommand($"{instance.Name}.{instance.Group}", null, Logger.CommandEvent.CommandType.none, $"edittag {instance.Name}.{instance.Group}");
         }

@@ -1,16 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TagTool.Cache;
 
 namespace CacheEditor
 {
-    public interface ITagEditorPluginProvider
-    {
+	public interface ITagEditorPluginProvider
+	{
         string DisplayName { get; }
-
         int SortOrder { get; }
 
-        Task<ITagEditorPlugin> CreateAsync(TagEditorContext context);
+		Task<ITagEditorPlugin> CreateAsync(TagEditorContext context);
 
-        bool ValidForTag(ICacheFile cache, CachedTag tag);
-    }
+		bool ValidForTag(ICacheFile cache, CachedTag tag);
+
+	}
 }

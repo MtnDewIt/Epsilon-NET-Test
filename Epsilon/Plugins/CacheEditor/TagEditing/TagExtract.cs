@@ -12,7 +12,7 @@ using TagTool.Commands.Sounds;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CacheEditor.TagEditing
+namespace CacheEditor
 {
     [Export]
     class TagExtract

@@ -2,20 +2,22 @@
 using CacheEditor.TagEditing;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TagTool.Bitmaps;
 using TagTool.Cache;
+using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using static BitmapViewerPlugin.BitmapExtractionHelper;
 using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
 
 namespace BitmapViewerPlugin
 {
-    public class BitmapViewerViewModel : TagEditorPluginBase
-    {
+    public class BitmapViewerViewModel : TagEditorPlugin
+	{
         public enum LoadStates
         {
             Success,
@@ -42,21 +44,17 @@ namespace BitmapViewerPlugin
         private bool _channelR = true;
         private bool _channelG = true;
         private bool _channelB = true;
-        private bool _linkColorChannels;
 
-        public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, Bitmap definition)
-        {
-            _bitmapExtractor = new BitmapExtractionHelper(cacheFile, instance, definition);
-
-            PopulateBitmapList(definition);
-            LoadBitmapInBackground();
-        }
-
-        public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, BitmapGen2 definition)
-        {
-            _bitmapExtractor = new BitmapExtractionHelper(cacheFile, instance, definition);
-
-            PopulateBitmapList(definition);
+		public BitmapViewerViewModel(TagEditorContext context) : base(context) {
+            TagEditorContext = context;
+			if (context.DefinitionData is Bitmap definition) {
+                _bitmapExtractor = new BitmapExtractionHelper(context.CacheEditor.CacheFile, context.Instance, definition);
+                PopulateBitmapList(definition);
+            }
+            else if (context.DefinitionData is BitmapGen2 definitionGen2) {
+                _bitmapExtractor = new BitmapExtractionHelper(context.CacheEditor.CacheFile, context.Instance, definitionGen2);
+                PopulateBitmapList(definitionGen2);
+            }
             LoadBitmapInBackground();
         }
 

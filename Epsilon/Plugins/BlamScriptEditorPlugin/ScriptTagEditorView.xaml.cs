@@ -30,10 +30,10 @@ namespace BlamScriptEditorPlugin
                 case Key.Tab:
                     InsertText("\t"); e.Handled = true;
                     break;
-                case Key.Z:
-                    if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
-                        ScriptSourceTextBox.Undo();
-                    break;
+                //case Key.Z:
+                //    if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                //        ScriptSourceTextBox.Undo();
+                //    break;
                 default:
                     break;
             }
@@ -46,21 +46,21 @@ namespace BlamScriptEditorPlugin
             ScriptSourceTextBox.SelectionStart = cursorPosition + insert.Length;
         }
 
-        private void ScriptSourceTextBox_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Command == ApplicationCommands.Paste)
-            {
-                var cursorPosition = ScriptSourceTextBox.SelectionStart;
-                string toPaste = Clipboard.GetText();
-                if (string.IsNullOrEmpty(toPaste)){
-                    e.Handled = true;
-                    return;
-                }
-				ScriptSourceTextBox.Text = ScriptSourceTextBox.Text.Insert(cursorPosition, (toPaste));
-                ScriptSourceTextBox.SelectionStart = cursorPosition + toPaste.Length;
+    //    private void ScriptSourceTextBox_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+    //    {
+    //        if (e.Command == ApplicationCommands.Paste)
+    //        {
+    //            var cursorPosition = ScriptSourceTextBox.SelectionStart;
+    //            string toPaste = Clipboard.GetText();
+    //            if (string.IsNullOrEmpty(toPaste)){
+    //                e.Handled = true;
+    //                return;
+    //            }
+				//ScriptSourceTextBox.Text = ScriptSourceTextBox.Text.Insert(cursorPosition, (toPaste));
+    //            ScriptSourceTextBox.SelectionStart = cursorPosition + toPaste.Length;
 
-                e.Handled = true;
-            }
-        }
+    //            e.Handled = true;
+    //        }
+    //    }
     }
 }

@@ -4,9 +4,13 @@ namespace CacheEditor.Components.TagTree
 {
     public static class Settings
     {
-        public static SettingDefinition TagTreeViewModeSetting =        new SettingDefinition("TagTreeViewMode",            ((int)TagTreeViewMode.Groups).ToString());
-        public static SettingDefinition TagTreeGroupDisplaySetting =    new SettingDefinition("TagTreeGroupDisplayMode",    ((int)TagTreeGroupDisplayMode.TagGroupName).ToString());
-        public static SettingDefinition ShowTagGroupAltNamesSetting =   new SettingDefinition("ShowTagGroupAltNames",       false.ToString());
-        public static SettingDefinition BaseCacheWarningsSetting =      new SettingDefinition("BaseCacheWarnings",          true.ToString());
+
+		public const string CollectionKey = "CacheEditor";
+
+		public static SettingDefinition TagTreeViewModeSetting =        new SettingDefinition(CollectionKey, "TagTreeViewMode",            ((int)TagTreeViewMode.Groups).ToString());
+        public static SettingDefinition TagTreeGroupDisplaySetting =    new SettingDefinition(CollectionKey, "TagTreeGroupDisplayMode",    ((int)TagTreeGroupDisplayMode.TagGroupName).ToString());
+        public static SettingDefinition ShowTagGroupAltNamesSetting =   new SettingDefinition(CollectionKey, "ShowTagGroupAltNames",       false.ToString());
+        public static SettingDefinition BaseCacheWarningsSetting =      new SettingDefinition(CollectionKey, "BaseCacheWarnings",          true.ToString());
+
     }
 }

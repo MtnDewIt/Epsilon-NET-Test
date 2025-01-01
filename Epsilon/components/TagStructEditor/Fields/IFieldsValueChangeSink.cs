@@ -1,7 +1,6 @@
 ﻿using System;
-using TagStructEditor.Fields;
 
-namespace DefinitionEditor
+namespace TagStructEditor.Fields
 {
     public interface IFieldsValueChangeSink
     {

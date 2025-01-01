@@ -14,7 +14,7 @@ using TagTool.Cache;
 namespace ModPackagePlugin
 {
     [Export(typeof(IEditorProvider))]
-    class ModPackageEditorProvider : IEditorProvider
+    public class ModPackageEditorProvider : IEditorProvider
     {
         private readonly ICacheEditingService _editingService;
 

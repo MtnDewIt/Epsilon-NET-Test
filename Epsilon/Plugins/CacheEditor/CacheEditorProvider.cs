@@ -3,6 +3,7 @@ using EpsilonLib.Editors;
 using Shared;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
@@ -12,21 +13,19 @@ using TagTool.Cache;
 namespace CacheEditor
 {
     [Export(typeof(IEditorProvider))]
-    class CacheEditorProvider : IEditorProvider
+    public class CacheEditorProvider : IEditorProvider
     {
-        private readonly ICacheEditingService _editingService;
 
-        public string DisplayName => "Cache File";
+        [Import]    // property injection instead of constructor injection
+        public ICacheEditingService EditingService { get; set; }
+
+		public string DisplayName => "Cache File";
 
         public Guid Id => new Guid("{444EDD8C-F984-40BF-9CC6-4FEF104609E1}");
 
         public IReadOnlyList<string> FileExtensions => new[] { ".dat", ".map" };
 
-        [ImportingConstructor]
-        public CacheEditorProvider(ICacheEditingService editingService)
-        {
-            _editingService = editingService;
-        }
+		public CacheEditorProvider() {}
 
         async Task IEditorProvider.OpenFileAsync(IShell shell, params string[] paths)
         {
@@ -51,7 +50,7 @@ namespace CacheEditor
             }
 
             var cache = await Task.Run(() => GameCache.Open(file));
-            shell.ActiveDocument = new CacheEditorViewModel(shell, _editingService, CreateCacheFileDocument(file, cache));
+            shell.ActiveDocument = new CacheEditorViewModel(shell, EditingService, CreateCacheFileDocument(file, cache));
         }
 
         ICacheFile CreateCacheFileDocument(FileInfo file, GameCache cache)

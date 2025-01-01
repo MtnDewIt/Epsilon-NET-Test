@@ -6,7 +6,7 @@ namespace CacheEditor
 {
     public interface ICacheEditor
     {
-        ICacheFile CacheFile { get; }
+		ICacheFile CacheFile { get; }
         ITagTree TagTree { get; }
         ICacheEditorTool GetTool(string name);
         IDictionary<string, object> PluginStorage { get; }

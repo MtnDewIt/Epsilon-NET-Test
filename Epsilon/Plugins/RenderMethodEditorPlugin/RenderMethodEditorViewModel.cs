@@ -1,22 +1,19 @@
-﻿using CacheEditor.TagEditing;
+﻿using CacheEditor;
 using CacheEditor.TagEditing.Messages;
-using HaloShaderGenerator.Generator;
 using RenderMethodEditorPlugin.ShaderMethods;
-using RenderMethodEditorPlugin.ShaderMethods.Particle;
-using RenderMethodEditorPlugin.ShaderMethods.Shader;
-using RenderMethodEditorPlugin.ShaderMethods.Halogram;
-using RenderMethodEditorPlugin.ShaderMethods.Decal;
-using RenderMethodEditorPlugin.ShaderMethods.Screen;
 using RenderMethodEditorPlugin.ShaderParameters;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
-using CacheEditor;
+using Shared;
+using System.Threading.Tasks;
+using System;
+using EpsilonLib.Dialogs;
 
 namespace RenderMethodEditorPlugin
 {
-    class RenderMethodEditorViewModel : TagEditorPluginBase
+	class RenderMethodEditorViewModel : TagEditorPlugin
     {
         private RenderMethod _renderMethod;
         private GameCache _cache;
@@ -26,33 +23,38 @@ namespace RenderMethodEditorPlugin
 
         public ObservableCollection<BooleanConstant> BooleanConstants { get; private set;  } = new ObservableCollection<BooleanConstant>();
         public ObservableCollection<Method> ShaderMethods { get; private set; } = new ObservableCollection<Method>();
-        public ObservableCollection<GenericShaderParameter> ShaderParameters { get; private set; } = new ObservableCollection<GenericShaderParameter>();
+		public ObservableCollection<GenericShaderParameter> ShaderParameters { get; private set; } = new ObservableCollection<GenericShaderParameter>();
 
-        public RenderMethodEditorViewModel(GameCache cache, RenderMethod renderMethod)
-        {
-            _cache = cache;
-            Load(cache, renderMethod);
+		public RenderMethodEditorViewModel(TagEditorContext context) : base(context) {
+            TagEditorContext = context;
+			_cache = TagEditorContext.CacheEditor.CacheFile.Cache;
+			RenderMethod rm = null;
+			if (context.Instance.IsInGroup("rm  ")) { rm = context.DefinitionData as RenderMethod; }
+			else if (context.Instance.IsInGroup("prt3")) { rm = ( context.DefinitionData as Particle).RenderMethod; }			
+            Load(_cache, rm);
         }
 
-        private void Load(GameCache cache, RenderMethod renderMethod)
+		private void Load(GameCache cache, RenderMethod renderMethod)
         {
             _renderMethod = renderMethod;
             _shaderProperty = _renderMethod.ShaderProperties[0];
-            var templateName = _shaderProperty.Template.Name;
+			string templateName = _shaderProperty.Template.Name;
 
-            if (templateName == null)
-                return;
+            if (templateName == null) {
+				return;
+			}
 
-            var templateTypeSplitIndex = 1;
-            if (templateName.Contains("ms30"))
-                templateTypeSplitIndex = 2;
+			int templateTypeSplitIndex = 1;
+            if (templateName.Contains("ms30")) {
+				templateTypeSplitIndex = 2;
+			}
 
-            string templateType = templateName.Split('\\')[templateTypeSplitIndex].Split('_')[0];
+			string templateType = templateName.Split('\\')[templateTypeSplitIndex].Split('_')[0];
 
-            var options = _renderMethod.Options.ConvertAll(x => (byte)x.OptionIndex);
+			List<byte> options = _renderMethod.Options.ConvertAll(x => (byte)x.OptionIndex);
 
-            System.Collections.Generic.List<RenderMethodOption.ParameterBlock> rmopParameters;
-            using (var stream = _cache.OpenCacheRead())
+            List<RenderMethodOption.ParameterBlock> rmopParameters;
+            using (System.IO.Stream stream = _cache.OpenCacheRead())
             {
                 _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
                 _renderMethodDefinition = cache.Deserialize<RenderMethodDefinition>(stream, renderMethod.BaseRenderMethod);
@@ -65,10 +67,11 @@ namespace RenderMethodEditorPlugin
             {
                 short optionIndex = 0; // assume an index of 0 for outdated tags
                 
-                if (i < _renderMethod.Options.Count)
-                    optionIndex = _renderMethod.Options[i].OptionIndex;
+                if (i < _renderMethod.Options.Count) {
+					optionIndex = _renderMethod.Options[i].OptionIndex;
+				}
 
-                if (optionIndex < _renderMethodDefinition.Categories[i].ShaderOptions.Count)
+				if (optionIndex < _renderMethodDefinition.Categories[i].ShaderOptions.Count)
                 {
                     string categoryName = cache.StringTable.GetString(_renderMethodDefinition.Categories[i].Name);
                     string optionName = cache.StringTable.GetString(_renderMethodDefinition.Categories[i].ShaderOptions[optionIndex].Name);
@@ -77,9 +80,9 @@ namespace RenderMethodEditorPlugin
                 }
             }
 
-            foreach (var parameter in rmopParameters)
+            foreach (RenderMethodOption.ParameterBlock parameter in rmopParameters)
             {
-                var name = cache.StringTable.GetString(parameter.Name);
+				string name = cache.StringTable.GetString(parameter.Name);
 
                 switch (parameter.Type)
                 {
@@ -195,18 +198,39 @@ namespace RenderMethodEditorPlugin
 
         private string FindDescriptionFromName(string shaderArgName)
         {
-            if(ShaderArgumentsDescription.ArgsDescription.ContainsKey(shaderArgName))
-                return ShaderArgumentsDescription.ArgsDescription[shaderArgName];
-            else
-                return "Missing description";
-        }
+            if(ShaderArgumentsDescription.ArgsDescription.ContainsKey(shaderArgName)) {
+				return ShaderArgumentsDescription.ArgsDescription[shaderArgName];
+			}
+			else {
+				return "Missing description";
+			}
+		}
 
-        public void Test()
+        public async void SaveChanges()
         {
-            PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
+			try {
+				using (IProgressReporter progress = Shell.CreateProgressScope()) {
+					progress.Report("Saving Render Method Tag Changes...");
+					PostMessage(
+				        this,
+				        new DefinitionDataChangedEvent(_renderMethod) {
+					        DefinitionEditorSaveRequested = true
+				    });
+					progress.Report("Render Method Tag Changes Saved", true, 1);
+					await Task.Delay(TimeSpan.FromSeconds(1));
+				}
+			}
+			catch (Exception ex) {
+				AlertDialogViewModel error = new AlertDialogViewModel
+				{
+					AlertType = Alert.Error,
+					Message = $"An exception occured while attempting to save Render Method Tag Changes\n{ex}"
+				};
+				Shell.ShowDialog(error);
+			}
         }
 
-        protected override void OnMessage(object sender, object message)
+        public override void OnMessage(object sender, object message)
         {
             if (message is DefinitionDataChangedEvent e)
             {
@@ -250,11 +274,13 @@ namespace RenderMethodEditorPlugin
             get => (((int)(Property.BooleanConstants) >> TemplateIndex) & 1) == 1;
             set
             {
-                if(value == true)
-                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants | (1 << TemplateIndex));
-                else
-                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants & ~(1 << TemplateIndex));
-            }
+                if(value == true) {
+					Property.BooleanConstants = (uint)((int)Property.BooleanConstants | (1 << TemplateIndex));
+				}
+				else {
+					Property.BooleanConstants = (uint)((int)Property.BooleanConstants & ~(1 << TemplateIndex));
+				}
+			}
         }
 
         public BooleanConstant(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)

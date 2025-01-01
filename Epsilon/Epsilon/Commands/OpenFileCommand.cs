@@ -17,7 +17,7 @@ namespace Epsilon.Commands
     class OpenFileCommandHandler : ICommandHandler<OpenFileCommand>
     {
         private IEditorService _editorService;
-        private IFileHistoryService _fileHistory;
+		private IFileHistoryService _fileHistory;
 
         [Import]
         public Lazy<IShell> Shell { get; set; }

@@ -25,10 +25,6 @@ namespace EpsilonLib.Settings
 		/// </summary>
 		private JToken _node;
 
-		/// <summary>
-		/// The <see cref="SettingsService"/> that this collection belongs to.
-		/// </summary>
-		private SettingsService _service;
 				
 		public event EventHandler<SettingChangedEventArgs> SettingChanged;
 
@@ -41,7 +37,7 @@ namespace EpsilonLib.Settings
 		/// </summary>
 		/// <param name="service">The <see cref="SettingsService"/> that this collection belongs to.</param>
 		/// <param name="node">The <see cref="JToken"/> that represents the settings collection.</param>
-		public SettingsCollection(SettingsService service, JToken node) { _service = service; _node = node; }
+		public SettingsCollection(JToken node) { _node = node; }
 
 		/// <summary>
 		/// Returns a <see cref="SettingsCollection"/> associated with the given <paramref name="key"/>.
@@ -53,7 +49,7 @@ namespace EpsilonLib.Settings
         {
 			if (string.IsNullOrEmpty(key)) { throw new ArgumentException("Key cannot be null or empty", nameof(key)); }
 			JToken node = _node[key] ?? (_node[key] = new JObject());
-            return new SettingsCollection(_service, node);
+            return new SettingsCollection(node);
         }
 
 		#endregion
@@ -77,7 +73,7 @@ namespace EpsilonLib.Settings
             if (string.IsNullOrEmpty(key)) { throw new ArgumentException("Key cannot be null or empty", nameof(key)); }
 			_node[key] = JToken.FromObject(value, SettingsService.Serializer);
             SettingChanged?.Invoke(this, new SettingChangedEventArgs(this, key));
-			_service.NotifySettingChanged(this, key);
+			SettingsService.NotifySettingChanged(this, key);
         }
 		
 		public string Get(string key, string defaultValue = null) { 

@@ -20,15 +20,13 @@ namespace ModPackagePlugin.Commands
         private readonly Lazy<IShell> _shell;
         private readonly ICacheEditingService _editingService;
         private readonly IFileHistoryService _fileHistory;
-        private readonly ISettingsService _settingsService;
 
         [ImportingConstructor]
-        public ReloadModPackageCommandHandler(Lazy<IShell> shell, ICacheEditingService editingService, IFileHistoryService fileHistory, ISettingsService settingsService)
+        public ReloadModPackageCommandHandler(Lazy<IShell> shell, ICacheEditingService editingService, IFileHistoryService fileHistory)
         {
             _shell = shell;
             _editingService = editingService;
             _fileHistory = fileHistory;
-            _settingsService = settingsService;
         }
 
         public async void ExecuteCommand(Command command)

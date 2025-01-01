@@ -21,7 +21,7 @@ namespace EpsilonLib.Shell.RecentFiles
         {
             _fileHistory = fileHistory;
             _editorService = editorService;
-        }
+		}
 
         public async void ExecuteCommand(Command command)
         {

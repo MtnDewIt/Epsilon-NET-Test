@@ -38,7 +38,8 @@
                 x:Name="ScriptSourceTextBox" Padding="0" BorderThickness="0" ShowLineNumbers="True" Background="#1e1e1e"
                 Foreground="#d4d4d4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                 FontFamily="Consolas" FontSize="10pt" KeyDown="ScriptKeyDownHandler"
-                CommandManager.PreviewExecuted="ScriptSourceTextBox_PreviewExecuted" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <!--CommandManager.PreviewExecuted="ScriptSourceTextBox_PreviewExecuted"--> 
             <AvalonEdit:TextEditor.ContextMenu>
                 <ContextMenu>
                     <MenuItem Command="Cut" />

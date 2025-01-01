@@ -10,14 +10,6 @@ namespace RenderMethodEditorPlugin
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class RenderMethodEditorView : UserControl
     {
-        public RenderMethodEditorView()
-        {
-            InitializeComponent();
-        }
-
-        private void ListBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
-
-        }
+        public RenderMethodEditorView() { InitializeComponent(); }
     }
 }
