@@ -207,15 +207,14 @@ namespace RenderMethodEditorPlugin
 		}
 
         public async void SaveChanges()
-        {
+        {			
 			try {
 				using (IProgressReporter progress = Shell.CreateProgressScope()) {
 					progress.Report("Saving Render Method Tag Changes...");
-					PostMessage(
-				        this,
-				        new DefinitionDataChangedEvent(_renderMethod) {
-					        DefinitionEditorSaveRequested = true
-				    });
+                    DefinitionDataChangedEvent changeEvent = TagEditorContext.Instance.IsInGroup("prt3")
+                        ? new DefinitionDataChangedEvent(TagEditorContext.DefinitionData as Particle) { DefinitionEditorSaveRequested = true }
+						: new DefinitionDataChangedEvent(_renderMethod) { DefinitionEditorSaveRequested = true };
+					PostMessage(this, changeEvent);
 					progress.Report("Render Method Tag Changes Saved", true, 1);
 					await Task.Delay(TimeSpan.FromSeconds(1));
 				}
@@ -234,11 +233,10 @@ namespace RenderMethodEditorPlugin
 			try {
 				using (IProgressReporter progress = Shell.CreateProgressScope()) {
 					progress.Report("Poking Render Method Tag Changes...");
-					PostMessage(
-						this,
-						new DefinitionDataChangedEvent(_renderMethod) {
-							DefinitionEditorPokeRequested = true
-						});
+					DefinitionDataChangedEvent changeEvent = TagEditorContext.Instance.IsInGroup("prt3")
+						? new DefinitionDataChangedEvent(TagEditorContext.DefinitionData as Particle) { DefinitionEditorPokeRequested = true }
+						: new DefinitionDataChangedEvent(_renderMethod) { DefinitionEditorPokeRequested = true };
+                    PostMessage(this, changeEvent);
 					progress.Report("Render Method Tag Changes Poked", true, 1);
 					await Task.Delay(TimeSpan.FromSeconds(1));
 				}
@@ -257,7 +255,18 @@ namespace RenderMethodEditorPlugin
         {
             if (message is DefinitionDataChangedEvent e)
             {
-               Load(_cache, (RenderMethod)e.NewData);
+                if (e.NewData is Particle) {
+					Load(_cache, ( e.NewData as Particle ).RenderMethod);
+				}
+				else if (e.NewData is RenderMethod) {
+					Load(_cache, (RenderMethod)e.NewData);
+				}
+                else {
+					AlertDialogViewModel error = new AlertDialogViewModel {
+						AlertType = Alert.Error, Message = $"An error occured while attempting to load updated Render Method data."
+					};
+					Shell.ShowDialog(error);
+				}
             }
         }
 
