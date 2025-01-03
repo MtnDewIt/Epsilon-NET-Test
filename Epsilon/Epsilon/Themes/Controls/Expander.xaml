@@ -57,7 +57,7 @@
                                 x:Name="arrow"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Data="M 1,1.5 L 4.5,5 L 8,1.5"
+                                Data="M 1,8.5 L 4.5,5 L 1,1.5"
                                 SnapsToDevicePixels="false"
                                 Stroke="{DynamicResource Foreground}"
                                 StrokeThickness="2" />
@@ -72,7 +72,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter TargetName="arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="arrow" Property="Data" Value="M 1,1.5 L 4.5,5 L 8,1.5" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="circle" Property="Stroke" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}" />
@@ -106,15 +106,6 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid>
-                                <Grid.LayoutTransform>
-                                    <TransformGroup>
-                                        <TransformGroup.Children>
-                                            <TransformCollection>
-                                                <RotateTransform Angle="180" />
-                                            </TransformCollection>
-                                        </TransformGroup.Children>
-                                    </TransformGroup>
-                                </Grid.LayoutTransform>
                                 <Ellipse
                                     x:Name="circle"
                                     Width="19"
@@ -127,7 +118,7 @@
                                     x:Name="arrow"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Data="M 1,1.5 L 4.5,5 L 8,1.5"
+                                    Data="M 1,8.5 L 4.5,5 L 1,1.5"
                                     SnapsToDevicePixels="false"
                                     Stroke="{DynamicResource Expander.Static.Arrow.Stroke}"
                                     StrokeThickness="2" />
@@ -143,7 +134,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter TargetName="arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="arrow" Property="Data" Value="M 1,1.5 L 4.5,5 L 8,1.5" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="circle" Property="Stroke" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}" />
@@ -177,15 +168,6 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Grid>
-                                <Grid.LayoutTransform>
-                                    <TransformGroup>
-                                        <TransformGroup.Children>
-                                            <TransformCollection>
-                                                <RotateTransform Angle="90" />
-                                            </TransformCollection>
-                                        </TransformGroup.Children>
-                                    </TransformGroup>
-                                </Grid.LayoutTransform>
                                 <Ellipse
                                     x:Name="circle"
                                     Width="19"
@@ -214,7 +196,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter TargetName="arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="arrow" Property="Data" Value="M 8,1.5 L 4.5,5 L 8,8.5" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="circle" Property="Stroke" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}" />
@@ -248,15 +230,6 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Grid>
-                                <Grid.LayoutTransform>
-                                    <TransformGroup>
-                                        <TransformGroup.Children>
-                                            <TransformCollection>
-                                                <RotateTransform Angle="-90" />
-                                            </TransformCollection>
-                                        </TransformGroup.Children>
-                                    </TransformGroup>
-                                </Grid.LayoutTransform>
                                 <Ellipse
                                     x:Name="circle"
                                     Width="19"
@@ -285,7 +258,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <Setter TargetName="arrow" Property="Data" Value="M 1,4.5  L 4.5,1  L 8,4.5" />
+                            <Setter TargetName="arrow" Property="Data" Value="M 1,8.5 L 4.5,5 L 1,1.5" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="circle" Property="Stroke" Value="{DynamicResource Expander.MouseOver.Circle.Stroke}" />
