@@ -44,3 +44,6 @@
 (with optional dependency on a specific cache or mod package)
 
 🔜 intuitive / standardized tab docking and navigation shortcuts
+
+🔜 Migrate Codebase to .NET Core 8.0 and C#12
+- This would include replacing the existing TagTool submodule with TagTool-NET-Test
