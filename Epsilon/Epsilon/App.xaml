@@ -2,9 +2,11 @@
     x:Class="WpfApp20.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:EpsilonBehaviors="clr-namespace:EpsilonLib.Behaviors;assembly=EpsilonLib"
-    xmlns:EpsilonControls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
-    xmlns:EpsilonConverters="clr-namespace:EpsilonLib.Converters;assembly=EpsilonLib"
+    xmlns:EpsilonBehaviors="clr-namespace:Epsilon.Behaviors"
+    xmlns:EpsilonControls="clr-namespace:Epsilon.Controls"
+    xmlns:EpsilonConverters="clr-namespace:Epsilon.Converters"
+    xmlns:AvalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+    xmlns:Epsilon="clr-namespace:Epsilon"
     xmlns:local="clr-namespace:WpfApp20"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:s="https://github.com/canton7/Stylet">
@@ -38,7 +40,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ColorPicker;component/Styles/DefaultColorPickerStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
-            <Style TargetType="{x:Type EpsilonControls:TabControlEx}">
+            <Style TargetType="{x:Type AvalonDock:TabControlEx}">
                 <Setter Property="ItemsSource" Value="{Binding Items}" />
                 <Setter Property="SelectedItem" Value="{s:RethrowingBinding ActiveItem}" />
                 <Setter Property="ItemTemplate">

@@ -1,6 +1,6 @@
 ﻿using Epsilon.Options;
-using EpsilonLib.Commands;
-using EpsilonLib.Options;
+using Epsilon.Commands;
+using Epsilon.Options;
 using Stylet;
 using System.ComponentModel.Composition;
 

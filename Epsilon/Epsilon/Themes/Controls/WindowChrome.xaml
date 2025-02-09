@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
+    xmlns:controls="clr-namespace:Epsilon.Controls"
     xmlns:local="clr-namespace:WpfApp20">
 
     <Geometry x:Key="ChromeRestore">F1M11.999,10.002L10.998,10.002 10.998,5.002 5.998,5.002 5.998,4.001 11.999,4.001z M10.002,11.999L4.001,11.999 4.001,5.998 10.002,5.998z M5.002,3L5.002,5.002 3,5.002 3,13 10.998,13 10.998,10.998 13,10.998 13,3z</Geometry>

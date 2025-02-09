@@ -1,5 +1,5 @@
-﻿using EpsilonLib.Controls;
-using EpsilonLib.Shell;
+﻿using Epsilon.Controls;
+using Epsilon.Shell;
 using System;
 using System.Media;
 using System.Windows;

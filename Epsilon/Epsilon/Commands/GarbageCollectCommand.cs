@@ -1,4 +1,4 @@
-﻿using EpsilonLib.Commands;
+﻿using Epsilon.Commands;
 using System;
 
 namespace Epsilon.Commands

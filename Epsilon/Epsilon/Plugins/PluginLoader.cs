@@ -1,5 +1,5 @@
-﻿using EpsilonLib.Core;
-using EpsilonLib.Logging;
+﻿using Epsilon.Core;
+using Epsilon.Logging;
 using Host;
 using System;
 using System.Collections.Generic;

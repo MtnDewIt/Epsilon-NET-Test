@@ -1,16 +1,18 @@
-﻿<controls:ChromeWindow 
+﻿<UserControl
     x:Class="Epsilon.Options.OptionsView"
-    xmlns:controls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
+    xmlns:controls="clr-namespace:Epsilon.Controls"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:s="https://github.com/canton7/Stylet"
+    xmlns:options="clr-namespace:Epsilon.Options"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     Width="640"
     Height="480"
-    ResizeMode="NoResize"
     Background="#2d2d30"
     TextElement.Foreground="{DynamicResource Foreground}">
+    <!--ResizeMode="NoResize"-->
 
-    <Window.Resources>
+    <UserControl.Resources>
         <Style TargetType="StackPanel">
             <Setter Property="Orientation" Value="Vertical"/>
             <Setter Property="Margin" Value="0" />
@@ -20,7 +22,7 @@
             <Setter Property="Margin" Value="0,0,0,8" />
             <Setter Property="Height" Value="26" />
         </Style>
-    </Window.Resources>
+    </UserControl.Resources>
 
     <Grid Margin="4">
         <Grid.ColumnDefinitions>
@@ -86,4 +88,4 @@
         </Border>
 
     </Grid>
-</controls:ChromeWindow>
+</UserControl>

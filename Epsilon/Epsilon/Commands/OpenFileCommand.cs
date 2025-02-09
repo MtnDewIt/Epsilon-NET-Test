@@ -1,7 +1,7 @@
-﻿using EpsilonLib.Commands;
-using EpsilonLib.Editors;
-using EpsilonLib.Logging;
-using EpsilonLib.Shell.Commands;
+﻿using Epsilon.Commands;
+using Epsilon.Editors;
+using Epsilon.Logging;
+using Epsilon.Shell.Commands;
 using Microsoft.Win32;
 using Shared;
 using System;

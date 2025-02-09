@@ -1,5 +1,5 @@
 ﻿using Epsilon.Pages;
-using EpsilonLib.Commands;
+using Epsilon.Commands;
 using Stylet;
 using System.ComponentModel.Composition;
 

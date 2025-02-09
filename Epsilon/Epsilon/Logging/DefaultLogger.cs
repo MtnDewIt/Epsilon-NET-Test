@@ -1,5 +1,4 @@
-﻿using EpsilonLib.Logging;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 
 namespace Epsilon.Logging

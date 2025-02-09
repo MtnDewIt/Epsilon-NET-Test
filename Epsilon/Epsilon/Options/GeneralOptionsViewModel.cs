@@ -1,15 +1,8 @@
-﻿using EpsilonLib.Options;
-using EpsilonLib.Settings;
-using System.IO;
+﻿using System.IO;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Media;
-using WpfApp20;
-using System.Windows.Controls;
 using System;
-using System.Linq;
-using Epsilon.Pages;
-using Epsilon.Properties;
 
 namespace Epsilon.Options
 {

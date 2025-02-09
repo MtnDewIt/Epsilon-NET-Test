@@ -1,5 +1,5 @@
-﻿using EpsilonLib.Commands;
-using EpsilonLib.Core;
+﻿using Epsilon.Commands;
+using Epsilon.Core;
 using Stylet;
 using System;
 using System.Linq;

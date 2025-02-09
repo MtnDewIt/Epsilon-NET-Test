@@ -1,9 +1,9 @@
 ﻿using Epsilon.Components;
-using EpsilonLib.Dialogs;
-using EpsilonLib.Editors;
-using EpsilonLib.Logging;
-using EpsilonLib.Menus;
-using EpsilonLib.Shell;
+using Epsilon.Dialogs;
+using Epsilon.Editors;
+using Epsilon.Logging;
+using Epsilon.Menus;
+using Epsilon.Shell;
 using Shared;
 using Stylet;
 using System;

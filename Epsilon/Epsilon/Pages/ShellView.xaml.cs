@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows;
-using EpsilonLib.Controls;
+using Epsilon.Controls;
 
 namespace Epsilon.Pages
 {

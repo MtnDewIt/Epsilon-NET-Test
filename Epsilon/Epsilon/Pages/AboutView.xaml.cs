@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows.Navigation;
-using EpsilonLib.Controls;
+using Epsilon.Controls;
 
 namespace Epsilon.Pages
 {

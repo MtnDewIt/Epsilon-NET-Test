@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
@@ -19,123 +16,60 @@ namespace Xceed.Wpf.AvalonDock.Controls
 	/// by implmenting an option to enable virtualization for tabbed document containers.
 	/// </summary>
 	[TemplatePart(Name = "PART_ItemsHolder", Type = typeof(Panel))]
+	[TemplatePart(Name = "PART_SelectedContentHost", Type = typeof(ContentPresenter))]
 	public class TabControlEx : TabControl
 	{
-		#region fields
 		private Panel ItemsHolderPanel = null;
+
+		/// <summary> Gets whether the control and its inheriting classes are virtualizing their items or not. </summary>
+		public bool IsVirtualiting => _IsVirtualizing;
 		private readonly bool _IsVirtualizing;
-		#endregion fields
 
-		#region constructors
-		/// <summary>
-		/// Class constructor from virtualization parameter.
-		/// </summary>
+		/// <summary> Class constructor from virtualization parameter. </summary>
 		/// <param name="isVirtualizing">Whether tabbed items are virtualized or not.</param>
-		public TabControlEx(bool isVirtualizing)
-			: this()
-		{
-			_IsVirtualizing = isVirtualizing;
-            this.DataContextChanged += TabControlEx_DataContextChanged;
-		}
+		public TabControlEx(bool isVirtualizing) : this() { _IsVirtualizing = isVirtualizing; }
 
-        private void TabControlEx_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        protected TabControlEx()
-			: base()
-		{
+		/// <summary> Class constructor </summary>
+		protected TabControlEx() : base() {
 			_IsVirtualizing = false;
-
 			// This is necessary so that we get the initial databound selected item
 			ItemContainerGenerator.StatusChanged += ItemContainerGenerator_StatusChanged;
 		}
-		#endregion constructors
 
-		#region properties
-		/// <summary>
-		/// Gets whether the control and its inheriting classes are virtualizing their items or not.
-		/// </summary>
-		public bool IsVirtualiting => _IsVirtualizing;
-		#endregion properties
-
-		#region methods
-		/// <summary>
-		/// Get the ItemsHolder and generate any children
-		/// </summary>
-		public override void OnApplyTemplate()
-		{
+		/// <summary> Get the ItemsHolder and generate any children </summary>
+		public override void OnApplyTemplate() {
 			base.OnApplyTemplate();
+			if (_IsVirtualizing) { return; } // required only if virtualization is turned ON
 
-			// Code below is required only if virtualization is turned ON
-			if (_IsVirtualizing)
-				return;
-
-			ItemsHolderPanel = CreateGrid();
+			ItemsHolderPanel = CreateItemsHolder();
 			// exchange ContentPresenter for Grid
-			var topGrid = (Grid)GetVisualChild(0);
-
-			if (topGrid != null)
-			{
-				if (topGrid.Children != null && topGrid.Children.Count > 2)
-				{
-					if (topGrid.Children[1] is Border)
-					{
-						var border = (Border)topGrid.Children[1];
-						border.Child = ItemsHolderPanel;
-					}
-					else if (topGrid.Children[2] is Border)
-					{
-						var border = (Border)topGrid.Children[2];
-						border.Child = ItemsHolderPanel;
-					}
-				}
-			}
-
+			var contentPresenter = GetTemplateChild("PART_SelectedContentHost");
+			if (contentPresenter == null) { throw new Exception($"{nameof(TabControlEx)}: PART_SelectedContentHost not found"); }
+			var border = VisualTreeHelper.GetParent(contentPresenter) as Border;
+			if (border == null) { throw new Exception($"{nameof(TabControlEx)}: PART_SelectedContentHost parent not found"); }
+			border.Child = ItemsHolderPanel;
 			UpdateSelectedItem();
 		}
 
-	
-        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
-        {
-            base.OnItemsSourceChanged(oldValue, newValue);
-        }
-
-
-        /// <summary>
-        /// When the items change we remove any generated panel children and add any new ones as necessary
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
-		{
+		/// <summary> When the items change we remove any generated panel children and add any new ones as necessary </summary>
+		protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e) {
 			base.OnItemsChanged(e);
-
-			// Code below is required only if virtualization is turned ON
-			if (_IsVirtualizing)
-				return;
+			if (_IsVirtualizing) { return; } // required only if virtualization is turned ON
 
 			if (ItemsHolderPanel == null)
 				return;
 
-			switch (e.Action)
-			{
+			switch (e.Action) {
 				case NotifyCollectionChangedAction.Reset:
 					ItemsHolderPanel.Children.Clear();
 					break;
 
 				case NotifyCollectionChangedAction.Add:
 				case NotifyCollectionChangedAction.Remove:
-					if (e.OldItems != null)
-					{
-						foreach (var item in e.OldItems)
-						{
+					if (e.OldItems != null) {
+						foreach (var item in e.OldItems) {
 							ContentPresenter cp = FindChildContentPresenter(item);
-							if (cp != null)
-								ItemsHolderPanel.Children.Remove(cp);
+							if (cp != null) { ItemsHolderPanel.Children.Remove(cp); }
 						}
 					}
 
@@ -150,59 +84,35 @@ namespace Xceed.Wpf.AvalonDock.Controls
 			}
 		}
 
-		/// <summary>
-		/// Raises the <see cref="System.Windows.Controls.Primitives.Selector.SelectionChanged"/> routed event.
-		/// </summary>
+		/// <summary> Raises the <see cref="System.Windows.Controls.Primitives.Selector.SelectionChanged"/> routed event. </summary>
 		/// <param name="e">Provides data for <see cref="SelectionChangedEventArgs"/>.</param>
-		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
-		{
+		protected override void OnSelectionChanged(SelectionChangedEventArgs e) {
 			base.OnSelectionChanged(e);
-
-			// Code below is required only if virtualization is turned ON
-			if (_IsVirtualizing)
-				return;
-
+			if (_IsVirtualizing) { return; } // required only if virtualization is turned ON
 			UpdateSelectedItem();
 		}
 
-		/// <summary>
-		/// Gets the currently selected item (including its generation if Virtualization is currently switched on).
-		/// </summary>
-		/// <returns></returns>
-		protected TabItem GetSelectedTabItem()
-		{
-			object selectedItem = base.SelectedItem;
+		/// <summary> Gets the currently selected item (including its generation if Virtualization is currently switched on). </summary>
+		protected TabItem GetSelectedTabItem() {
+			if (_IsVirtualizing) { return SelectedItem as TabItem; } // required only if virtualization is turned ON
+			if (SelectedItem == null) { return null; }
 
-			// Code below is required only if virtualization is turned ON
-			if (_IsVirtualizing)
-				return selectedItem as TabItem;
-
-			if (selectedItem == null)
-				return null;
-
-			TabItem item = selectedItem as TabItem;
-			if (item == null)
-				item = base.ItemContainerGenerator.ContainerFromIndex(base.SelectedIndex) as TabItem;
-
-			return item;
+			TabItem tabItem = SelectedItem as TabItem;
+			if (tabItem == null) {
+				tabItem = ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as TabItem;
+			}
+			return tabItem;
 		}
 
-		/// <summary>
-		/// If containers are done, generate the selected item
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
-		{
-			if (this.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-			{
+		/// <summary> If containers are done, generate the selected item </summary>
+		private void ItemContainerGenerator_StatusChanged(object sender, EventArgs e) {
+			if (this.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated) {
 				this.ItemContainerGenerator.StatusChanged -= ItemContainerGenerator_StatusChanged;
 				UpdateSelectedItem();
 			}
 		}
 
-		private Grid CreateGrid()
-		{
+		private Grid CreateItemsHolder() {
 			var grid = new Grid();
 			Binding binding = new Binding(PaddingProperty.Name);
 			binding.Source = this;  // view model?
@@ -215,8 +125,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
 			return grid;
 		}
 
-		private void UpdateSelectedItem()
-		{
+		private void UpdateSelectedItem() {
 			if (ItemsHolderPanel == null)
 				return;
 
@@ -227,11 +136,10 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
 			// show the right child
 			foreach (ContentPresenter child in ItemsHolderPanel.Children)
-				child.Visibility = ((child.Tag as TabItem).IsSelected) ? Visibility.Visible : Visibility.Collapsed;
+				child.Visibility = ( ( child.Tag as TabItem ).IsSelected ) ? Visibility.Visible : Visibility.Collapsed;
 		}
 
-		private ContentPresenter CreateChildContentPresenter(object item)
-		{
+		private ContentPresenter CreateChildContentPresenter(object item) {
 			if (item == null)
 				return null;
 
@@ -242,20 +150,18 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
 			// the actual child to be added.  cp.Tag is a reference to the TabItem
 			cp = new ContentPresenter();
-			cp.Content = (item is TabItem) ? (item as TabItem).Content : item;
+			cp.Content = ( item is TabItem ) ? ( item as TabItem ).Content : item;
 			cp.ContentTemplate = this.SelectedContentTemplate;
 			cp.ContentTemplateSelector = this.SelectedContentTemplateSelector;
 			cp.ContentStringFormat = this.SelectedContentStringFormat;
 			cp.Visibility = Visibility.Collapsed;
-			cp.Tag = (item is TabItem) ? item : (this.ItemContainerGenerator.ContainerFromItem(item));
+			cp.Tag = ( item is TabItem ) ? item : ( this.ItemContainerGenerator.ContainerFromItem(item) );
 			ItemsHolderPanel.Children.Add(cp);
 			return cp;
 		}
 
-		private ContentPresenter FindChildContentPresenter(object data)
-		{
-			if (data is TabItem)
-				data = (data as TabItem).Content;
+		private ContentPresenter FindChildContentPresenter(object data) {
+			if (data is TabItem tabItem) { data = tabItem.Content; }
 
 			if (data == null)
 				return null;
@@ -263,14 +169,12 @@ namespace Xceed.Wpf.AvalonDock.Controls
 			if (ItemsHolderPanel == null)
 				return null;
 
-			foreach (ContentPresenter cp in ItemsHolderPanel.Children)
-			{
+			foreach (ContentPresenter cp in ItemsHolderPanel.Children) {
 				if (cp.Content == data)
 					return cp;
 			}
 
 			return null;
 		}
-		#endregion methods
 	}
 }

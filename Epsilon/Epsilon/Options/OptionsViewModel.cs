@@ -1,16 +1,16 @@
-﻿using EpsilonLib.Options;
-using EpsilonLib.Shell.TreeModels;
+﻿using Epsilon.Options;
+using Epsilon.Shell.TreeModels;
 using Stylet;
 using System;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows;
 using Xceed.Wpf.AvalonDock.Themes;
-using EpsilonLib.Settings;
+using Epsilon;
 
 namespace Epsilon.Options
 {
-    class OptionsViewModel : Conductor<IOptionsPage>.Collection.OneActive
+    public class OptionsViewModel : Conductor<IOptionsPage>.Collection.OneActive
     {
         public OptionsPageTreeViewModel CategoryTree { get; }
 
@@ -23,13 +23,26 @@ namespace Epsilon.Options
             CategoryTree = new OptionsPageTreeViewModel(optionsService.OptionPages);
             CategoryTree.NodeSelected += CategoryTree_NodeSelected;
 
-            foreach (var node in CategoryTree.Nodes.Where(x => x.Children != null))
+            foreach (var node in CategoryTree.Nodes.Where(x => x.Children != null)) {
                 node.IsExpanded = true;
+            }
 
-            CategoryTree.SelectedNode = CategoryTree.Nodes.FirstOrDefault();
+            foreach (TreeNode n in CategoryTree.Nodes) {
+                SetOptionsViewModelRecursive(n);
+			}
+
         }
 
-        private void CategoryTree_NodeSelected(object sender, TreeNodeEventArgs e)
+        private void SetOptionsViewModelRecursive(TreeNode node) {
+			if (node is OptionsTreeNode n) {
+				n.OptionsViewModel = this;
+			}
+			foreach (TreeNode child in node.Children) {
+				SetOptionsViewModelRecursive(child);
+			}
+		}
+
+		public void CategoryTree_NodeSelected(object sender, TreeNodeEventArgs e)
         {
             if(e.Node is OptionsTreeNode node)
             {

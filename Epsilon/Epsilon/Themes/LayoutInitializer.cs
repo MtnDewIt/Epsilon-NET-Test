@@ -1,4 +1,4 @@
-﻿using EpsilonLib.Shell;
+﻿using Epsilon.Shell;
 using System;
 using System.Linq;
 using System.Windows;
