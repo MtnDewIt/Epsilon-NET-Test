@@ -1,13 +1,11 @@
-﻿using Epsilon;
-using Epsilon.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using TagTool.Cache;
 
 namespace Epsilon.Commands
 {
-    [ExportCommandHandler]
+	[ExportCommandHandler]
     class TagCacheCommandListHandler : 
         ICommandHandler<TagCacheCommandList>, 
         ICommandListPopulator<TagCacheCommandList>

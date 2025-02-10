@@ -1,11 +1,9 @@
-﻿using Epsilon;
-using Epsilon.RTE;
-using TagTool.Cache;
+﻿using TagTool.Cache;
 using TagTool.IO;
 
 namespace Epsilon.RTE
 {
-	
+
 	public interface IRteProvider : IRteTargetSource
 	{
 		bool ValidForCacheFile(ICacheFile cacheFile);

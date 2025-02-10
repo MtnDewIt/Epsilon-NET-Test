@@ -1,22 +1,17 @@
-﻿using Epsilon;
-using Epsilon.TagEditing;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TagTool.Bitmaps;
-using TagTool.Cache;
-using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using static Epsilon.BitmapExtractionHelper;
 using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
 
 namespace Epsilon
 {
-    public class BitmapViewerViewModel : TagEditorPlugin
+	public class BitmapViewerViewModel : TagEditorPlugin
 	{
         public enum LoadStates
         {
@@ -48,11 +43,11 @@ namespace Epsilon
 		public BitmapViewerViewModel(TagEditorContext context) : base(context) {
             TagEditorContext = context;
 			if (context.DefinitionData is Bitmap definition) {
-                _bitmapExtractor = new BitmapExtractionHelper(context.Epsilon.CacheFile, context.Instance, definition);
+                _bitmapExtractor = new BitmapExtractionHelper(context.CacheEditor.CacheFile, context.Instance, definition);
                 PopulateBitmapList(definition);
             }
             else if (context.DefinitionData is BitmapGen2 definitionGen2) {
-                _bitmapExtractor = new BitmapExtractionHelper(context.Epsilon.CacheFile, context.Instance, definitionGen2);
+                _bitmapExtractor = new BitmapExtractionHelper(context.CacheEditor.CacheFile, context.Instance, definitionGen2);
                 PopulateBitmapList(definitionGen2);
             }
             LoadBitmapInBackground();

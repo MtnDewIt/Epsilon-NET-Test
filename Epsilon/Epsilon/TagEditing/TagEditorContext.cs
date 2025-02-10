@@ -16,7 +16,7 @@ namespace Epsilon
 			if (cacheEditor == null) { throw new System.ArgumentNullException(nameof(cacheEditor)); }
 			if (shell == null) { throw new System.ArgumentNullException(nameof(shell)); }
 
-			Epsilon = cacheEditor;
+			CacheEditor = cacheEditor;
 			Shell = shell;
 			ViewModel = viewModel;
 			Instance = instance;
@@ -36,7 +36,7 @@ namespace Epsilon
 
 		public bool IsValid { get { return DefinitionData is TagStructure; } }
 
-		public ICacheEditor Epsilon { get; set; }
+		public ICacheEditor CacheEditor { get; set; }
         public IShell Shell { get; set; }
 		public CachedTag Instance { get; set; }
         public TagEditorViewModel ViewModel { get; set; }
@@ -74,7 +74,7 @@ namespace Epsilon
 		private Task<object> DefinitionTask { get; set; } = null;
 
 		public StructField CreateField(FieldFactory factory) {
-			GameCache cache = Epsilon.CacheFile.Cache;
+			GameCache cache = CacheEditor.CacheFile.Cache;
 			System.Type structType = cache.TagCache.TagDefinitions.GetTagDefinitionType(Instance.Group);
 
 			#if DEBUG
@@ -100,14 +100,14 @@ namespace Epsilon
 
 		public const string ContextKey = "TagEditorContext_ContextKey";
 
-		public Epsilon.PerCacheEpsilonContext GetEpsilonContext() {
-			GameCache cache = Epsilon.CacheFile.Cache;
-			if (!Epsilon.PluginStorage.TryGetValue(ContextKey, out object value) ||
-				!ReferenceEquals(cache, ( value as Epsilon.PerCacheEpsilonContext).Cache)) {
-				value = new Epsilon.PerCacheEpsilonContext(cache);
-				Epsilon.PluginStorage[ContextKey] = value;
+		public Epsilon.PerCacheDefinitionEditorContext GetCacheDefinitionEditorContext() {
+			GameCache cache = CacheEditor.CacheFile.Cache;
+			if (!CacheEditor.PluginStorage.TryGetValue(ContextKey, out object value) ||
+				!ReferenceEquals(cache, ( value as Epsilon.PerCacheDefinitionEditorContext).Cache)) {
+				value = new Epsilon.PerCacheDefinitionEditorContext(cache);
+				CacheEditor.PluginStorage[ContextKey] = value;
 			}
-			return value as Epsilon.PerCacheEpsilonContext;
+			return value as Epsilon.PerCacheDefinitionEditorContext;
 		}
 
 	}

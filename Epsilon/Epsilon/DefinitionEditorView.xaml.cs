@@ -96,7 +96,7 @@ namespace Epsilon
         //    if (e.Key == Key.Return)    // && e.OriginalSource is TextBox box
         //    {
         //        //box.IsSelectionActive = false;
-        //        var poker = ((EpsilonViewModel)DataContext).PokeCommand;
+        //        var poker = ((DefinitionEditorViewModel)DataContext).PokeCommand;
         //
         //        if (poker.CanExecute(null))
         //        {

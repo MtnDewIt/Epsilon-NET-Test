@@ -1,5 +1,4 @@
-﻿using Epsilon;
-using Epsilon.Commands;
+﻿using Epsilon.Commands;
 using Epsilon.Dialogs;
 using Shared;
 using Stylet;
@@ -20,7 +19,7 @@ using TagTool.Tags;
 
 namespace Epsilon
 {
-    public class MapVariantFixerViewModel : Screen
+	public class MapVariantFixerViewModel : Screen
     {
         private IShell _shell;
         private ICacheFile _cacheFile;

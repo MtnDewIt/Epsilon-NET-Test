@@ -1,10 +1,9 @@
 ﻿using Epsilon.Commands;
-using Epsilon.Commands;
 using System.ComponentModel.Composition;
 
 namespace Epsilon
 {
-    [ExportCommandHandler]
+	[ExportCommandHandler]
     class ShowTagExplorerCommandHandler : ShowToolWindowCommandHandlerBase<ShowTagExplorerCommand>
     {
         [ImportingConstructor]

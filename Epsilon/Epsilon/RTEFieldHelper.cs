@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Epsilon;
-using Epsilon.RTE;
 using Epsilon.Fields;
 using Epsilon.Helpers;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.Tags;
 
-namespace Epsilon.RTE{
+namespace Epsilon.RTE
+{
 
 	public class RTEFieldHelper
 	{

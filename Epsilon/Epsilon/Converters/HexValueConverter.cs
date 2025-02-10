@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
 namespace Epsilon.Converters
 {
-    public class HexValueConverter : IValueConverter
+	public class HexValueConverter : IValueConverter
     {
         public static HexValueConverter Instance = new HexValueConverter();
 

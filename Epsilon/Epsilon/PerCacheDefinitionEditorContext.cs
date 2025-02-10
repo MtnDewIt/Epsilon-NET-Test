@@ -3,12 +3,12 @@ using TagTool.Cache;
 
 namespace Epsilon
 {
-	public class PerCacheEpsilonContext
+	public class PerCacheDefinitionEditorContext
 	{
 		public GameCache Cache { get; }
 		public TagList TagList { get; }
 
-		public PerCacheEpsilonContext(GameCache cache) {
+		public PerCacheDefinitionEditorContext(GameCache cache) {
 			Cache = cache;
 			TagList = new TagList(cache);
 		}

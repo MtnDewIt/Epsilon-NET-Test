@@ -1,20 +1,15 @@
 ﻿using Epsilon.Shell.TreeModels;
-using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Epsilon;
-using System.ComponentModel;
-using Xceed.Wpf.AvalonDock.Controls;
 
 namespace Epsilon.Components.TagTree
 {
-    /// <summary>
-    /// Interaction logic for TagTreeView.xaml
-    /// </summary>
-    [Export]
+	/// <summary>
+	/// Interaction logic for TagTreeView.xaml
+	/// </summary>
+	[Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class TagTreeView : UserControl
     {

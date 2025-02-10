@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using Epsilon;
-using Epsilon.RTE;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Editing;

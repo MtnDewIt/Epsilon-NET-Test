@@ -1,11 +1,10 @@
-﻿using Epsilon.Options;
-using Epsilon.Shell.TreeModels;
+﻿using Epsilon.Shell.TreeModels;
 using Stylet;
 using System.Collections.Generic;
 
 namespace Epsilon.Options
 {
-    class OptionsTreeNode : TreeNode
+	class OptionsTreeNode : TreeNode
     {
 
         public IOptionsPage Page { get; set; }

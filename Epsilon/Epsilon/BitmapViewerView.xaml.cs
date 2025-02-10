@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,11 +8,11 @@ using System.Windows.Media.Imaging;
 
 namespace Epsilon
 {
-    /// <summary>
-    /// Interaction logic for BitmapViewerView.xaml
-    /// </summary>
-    /// [Export]
-    [Export]
+	/// <summary>
+	/// Interaction logic for BitmapViewerView.xaml
+	/// </summary>
+	/// [Export]
+	[Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class BitmapViewerView : UserControl
     {

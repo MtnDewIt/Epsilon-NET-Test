@@ -1,9 +1,8 @@
-﻿using Epsilon;
-using TagTool.Cache;
+﻿using TagTool.Cache;
 
 namespace Epsilon
 {
-    class MetadataEditorViewModel : CacheEditorTool
+	class MetadataEditorViewModel : CacheEditorTool
     {
         public const string ToolName = "ModPackage.MetadataEditorTool";
 

@@ -1,12 +1,9 @@
-﻿using Epsilon.TagEditing;
-using Stylet;
-using System;
+﻿using Stylet;
 using System.Threading.Tasks;
-using TagTool.Tags;
 
 namespace Epsilon
 {
-    public class TagEditorPluginTabViewModel : Screen {
+	public class TagEditorPluginTabViewModel : Screen {
 
         private ITagEditorPlugin _content;
         public ITagEditorPlugin Content { get { return _content; } set { SetAndNotify(ref _content, value); } }

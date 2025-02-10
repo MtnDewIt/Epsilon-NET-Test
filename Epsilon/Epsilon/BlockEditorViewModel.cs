@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Epsilon.Fields;
 
 namespace Epsilon
 {
-    class BlockEditorViewModel : IField
+	class BlockEditorViewModel : IField
     {
         public BlockField Field { get; set; }
 

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Windows;
+﻿using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 
 namespace Epsilon
 {
-    /// <summary>
-    /// Interaction logic for ScriptTagEditorView.xaml
-    /// </summary>
-    [Export]
+	/// <summary>
+	/// Interaction logic for ScriptTagEditorView.xaml
+	/// </summary>
+	[Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class ScriptTagEditorView : UserControl
     {

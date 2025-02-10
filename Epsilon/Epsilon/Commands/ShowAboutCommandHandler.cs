@@ -1,11 +1,10 @@
 ﻿using Epsilon.Pages;
-using Epsilon.Commands;
 using Stylet;
 using System.ComponentModel.Composition;
 
 namespace Epsilon.Commands
 {
-    [ExportCommandHandler]
+	[ExportCommandHandler]
     class ShowAboutCommandHandler : ICommandHandler<ShowAboutCommand>
     {
         private IWindowManager _windowManager;

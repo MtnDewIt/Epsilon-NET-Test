@@ -17,13 +17,10 @@
 
 using Xceed.Wpf.AvalonDock.Layout;
 using System.Windows;
-using Xceed.Wpf.AvalonDock.Commands;
-using System.Windows.Input;
-using System.Windows.Data;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
-  public class LayoutDocumentItem : LayoutItem
+	public class LayoutDocumentItem : LayoutItem
   {
     #region Members
 

@@ -1,14 +1,10 @@
-﻿using Epsilon;
-using Shared;
-using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Tags.Definitions;
 
 namespace Epsilon
 {
-    [Export(typeof(ITagEditorPluginProvider))]
+	[Export(typeof(ITagEditorPluginProvider))]
     public class ScriptTagEditorPluginProvider : ITagEditorPluginProvider
     {
 

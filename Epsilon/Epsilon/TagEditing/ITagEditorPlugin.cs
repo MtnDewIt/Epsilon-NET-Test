@@ -1,9 +1,9 @@
 ﻿using Shared;
 using Stylet;
-using System.Threading.Tasks;
 using TagTool.Tags;
 
-namespace Epsilon {
+namespace Epsilon
+{
 	/// <summary>
 	/// These are the views that are hosted by the <see cref="TagEditorViewModel"/>.<br/>
 	/// For example, the views for the tag's <code><b>Definition</b>, <b>Script</b>, and <b>Render Method Editor</b></code>

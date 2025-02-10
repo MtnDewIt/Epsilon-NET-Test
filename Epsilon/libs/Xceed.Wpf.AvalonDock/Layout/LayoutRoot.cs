@@ -18,19 +18,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Collections.ObjectModel;
 using System.Windows.Markup;
 using System.Xml.Serialization;
-using Standard;
 using System.Xml;
 using System.Xml.Schema;
 using System.Windows.Controls;
 
 namespace Xceed.Wpf.AvalonDock.Layout
 {
-  [ContentProperty( "RootPanel" )]
+	[ContentProperty( "RootPanel" )]
   [Serializable]
   public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSerializable
   {

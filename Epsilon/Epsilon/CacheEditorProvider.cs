@@ -3,16 +3,14 @@ using Epsilon.Editors;
 using Shared;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using TagTool.Cache;
 
 namespace Epsilon
 {
-    [Export(typeof(IEditorProvider))]
+	[Export(typeof(IEditorProvider))]
     public class CacheEditorProvider : IEditorProvider
     {
 

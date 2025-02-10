@@ -21,17 +21,13 @@ using System.Windows;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Windows.Input;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
 using Xceed.Wpf.AvalonDock.Layout;
-using System.Windows.Documents;
 using Xceed.Wpf.AvalonDock.Themes;
 using Standard;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
-  public abstract class LayoutFloatingWindowControl : Window, ILayoutControl
+	public abstract class LayoutFloatingWindowControl : Window, ILayoutControl
   {
     #region Members
 

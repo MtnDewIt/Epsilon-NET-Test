@@ -1,7 +1,6 @@
 ﻿using Epsilon.Commands;
 using Epsilon.Core;
 using Epsilon.Shell;
-using Epsilon.Shell.TreeModels;
 using Stylet;
 using System.IO;
 using System.Linq;
@@ -40,7 +39,7 @@ namespace Epsilon
         public TagEditorViewModel (TagEditorContext context, ICacheEditingService cacheEditingService)
         {
             _cacheEditingService = cacheEditingService;
-			_cacheEditor = context.Epsilon;
+			_cacheEditor = context.CacheEditor;
 			Tag = context.Instance;
             context.ViewModel = this;
 			DisplayName = $"{Path.GetFileName(Tag.Name)}.{Tag.Group.Tag}";
@@ -57,7 +56,7 @@ namespace Epsilon
         {
             foreach (ITagEditorPluginProvider provider in _cacheEditingService.TagEditorPlugins) {
                 
-                if (!provider.ValidForTag(context.Epsilon.CacheFile, context.Instance)) { continue; }
+                if (!provider.ValidForTag(context.CacheEditor.CacheFile, context.Instance)) { continue; }
 
                 if (provider is ITagEditorPluginProvider) {
                     Task<ITagEditorPlugin> futurePlugin = provider.CreateAsync(context);

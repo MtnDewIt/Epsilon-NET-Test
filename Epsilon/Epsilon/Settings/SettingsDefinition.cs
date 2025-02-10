@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace Epsilon
 {
-    public class SettingDefinition
+	public class SettingDefinition
     {
 
         public string CollectionKey { get; private set; }

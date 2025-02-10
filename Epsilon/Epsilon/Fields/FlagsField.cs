@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Epsilon.Common;
-using Epsilon.Helpers;
 using TagTool.Cache;
 using TagTool.Tags;
 
 namespace Epsilon.Fields
 {
-    public class FlagsField : ValueField
+	public class FlagsField : ValueField
     {
         public FlagsField(ValueFieldInfo info, CacheVersion version, CachePlatform platform) : base(info)
         {

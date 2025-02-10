@@ -1,19 +1,10 @@
 ﻿using Epsilon.Commands;
 using Epsilon.Logging;
-using Epsilon.Shell;
-using Epsilon.Shell.TreeModels;
-using Stylet;
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Input;
-using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
 
 namespace Epsilon.Components.CommandLog
 {
-    class CommandLogViewModel : CacheEditorTool
+	class CommandLogViewModel : CacheEditorTool
     {
         public const string ToolName = "Epsilon.CommandLog";
         private ICacheEditor _editor;

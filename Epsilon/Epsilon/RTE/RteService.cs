@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using Epsilon;
-using Epsilon.RTE;
 
 namespace Epsilon.RTE
 {

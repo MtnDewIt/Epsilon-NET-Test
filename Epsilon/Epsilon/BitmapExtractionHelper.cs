@@ -1,5 +1,4 @@
-﻿using Epsilon;
-using System;
+﻿using System;
 using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
@@ -9,7 +8,7 @@ using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
 
 namespace Epsilon
 {
-    public class BitmapExtractionHelper
+	public class BitmapExtractionHelper
     {
         private readonly ICacheFile _cacheFile;
         private readonly Bitmap _bitmapGroup;

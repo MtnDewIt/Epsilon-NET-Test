@@ -7,11 +7,10 @@ using TagTool.Common;
 using static Epsilon.Fields.EnumField;
 using System.Collections.ObjectModel;
 using TagTool.Cache;
-using Stylet;
 
 namespace Epsilon.Fields
 {
-    public class TagFunctionField : DataField, IExpandable
+	public class TagFunctionField : DataField, IExpandable
     {
         public bool IsUpdating { get; set; }
         public TagFunction TagFunction { get; set; }

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static TagTool.Tags.Definitions.RenderMethodTemplate;
-using TagTool.Common;
+﻿using TagTool.Common;
 
 namespace Epsilon.Fields
 {
-    public class TagBlockIndexField : ValueField
+	public class TagBlockIndexField : ValueField
     {
         public ushort Offset { get; set; }
         public ushort Count { get; set; }

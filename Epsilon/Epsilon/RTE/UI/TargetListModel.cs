@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using Epsilon.RTE;
-using Epsilon.RTE.UI;
 using Stylet;
 
 namespace Epsilon.RTE.UI

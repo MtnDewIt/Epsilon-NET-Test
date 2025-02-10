@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using Stylet;
+﻿using Stylet;
 using System.Runtime.CompilerServices;
 
 namespace Epsilon.Options
 {
-    public abstract class OptionPageBase : Screen, IOptionsPage
+	public abstract class OptionPageBase : Screen, IOptionsPage
     {
         private bool _isLoading;
 

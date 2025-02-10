@@ -1,17 +1,14 @@
-﻿using ColorPicker.Models;
-using System;
+﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
-using System.Windows.Media;
 using Epsilon.Fields;
 using TagTool.Common;
 
 namespace Epsilon.Converters
 {
-    public abstract class MultiBinderBase : MarkupExtension
+	public abstract class MultiBinderBase : MarkupExtension
     {
         public override object ProvideValue(IServiceProvider serviceProvider)
         {

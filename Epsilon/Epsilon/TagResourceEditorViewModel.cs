@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Epsilon.Fields;
-using TagTool.Cache;
-using TagTool.Common;
 using TagTool.Tags;
 
 namespace Epsilon
@@ -21,7 +19,7 @@ namespace Epsilon
 
 		public TagResourceEditorViewModel(TagEditorContext context) : base(context) {
             TagEditorContext = context;
-			_cacheFile = context.Epsilon.CacheFile;
+			_cacheFile = context.CacheEditor.CacheFile;
 		}
 
         public ICollection<TagResourceItem> Items { get; set; }

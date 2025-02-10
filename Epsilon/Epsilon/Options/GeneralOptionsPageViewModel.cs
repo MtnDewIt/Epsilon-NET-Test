@@ -1,11 +1,9 @@
 ﻿using Epsilon.Components.TagTree;
-using Epsilon.Options;
-using Epsilon;
 using System.ComponentModel.Composition;
 
 namespace Epsilon.Options
 {
-    [Export(typeof(IOptionsPage))]
+	[Export(typeof(IOptionsPage))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     class GeneralOptionsPageViewModel : OptionPageBase
     {

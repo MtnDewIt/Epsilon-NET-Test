@@ -1,99 +1,72 @@
-﻿using Epsilon.Core;
-using Epsilon.Logging;
-using Host;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-
-namespace Epsilon
+﻿namespace Epsilon
 {
-    public class PluginLoader
-    {
-        private List<PluginInfo> _plugins = new List<PluginInfo>();
-        private List<PluginInfo> _loadQueue = new List<PluginInfo>();
+	public class PluginLoader
+	{
+		//private List<PluginInfo> _plugins = new List<PluginInfo>();
+		//private List<PluginInfo> _loadQueue = new List<PluginInfo>();
 
-        public IEnumerable<PluginInfo> Plugins => _loadQueue;
+		//public IEnumerable<PluginInfo> Plugins => _loadQueue;
 
-        public void LoadPlugins()
-        {
-			DirectoryInfo pluginDir = new DirectoryInfo("plugins");
-            pluginDir.Create();
+		//public void LoadPlugins() {
+		//	Assembly currentAssembly = Assembly.GetExecutingAssembly();
+		//	foreach (Type type in currentAssembly.GetTypes()) {
+		//		if (type.GetCustomAttribute<PluginAttribute>() != null) {
+		//			PluginInfo pluginInfo = new PluginInfo()
+		//			{
+		//				Assembly = currentAssembly,
+		//				Type = type
+		//			};
 
-            foreach (DirectoryInfo pluginFolder in pluginDir.GetDirectories())
-            {
-				FileInfo pluginDll = new FileInfo(Path.Combine(pluginFolder.FullName, $"{pluginFolder.Name}.dll"));
-                if (!pluginDll.Exists)
-                {
-                    Logger.Warn($"Plugin folder encountered with no matching dll. expected: '{pluginDll}'");
-                    continue;
-                }
+		//			_plugins.Add(pluginInfo);
+		//		}
+		//	}
 
-                if (!TryLoadPluginAssembly(pluginDll, out Assembly pluginAssembly))
-                    continue;
+		//	ResolveDependencies();
+		//	BuildLoadQueue();
+		//}
 
-				PluginInfo pluginInfo = new PluginInfo()
-                {
-                    File = pluginDll,
-                    Assembly = pluginAssembly,
-                };
+		//private void ResolveDependencies() {
+		//	foreach (PluginInfo plugin in _plugins) {
+		//		foreach (Type dependencyType in plugin.Type.GetCustomAttributes<DependsOnAttribute>().Select(attr => attr.DependencyType)) {
+		//			PluginInfo referencedPlugin = _plugins.FirstOrDefault(p => p.Type == dependencyType);
+		//			if (referencedPlugin != null)
+		//				plugin.Dependencies.Add(referencedPlugin);
+		//		}
+		//	}
+		//}
 
-                _plugins.Add(pluginInfo);
-            }
+		//private void BuildLoadQueue() {
+		//	foreach (PluginInfo plugin in _plugins)
+		//		AddPluginToLoadQueue(plugin);
+		//}
 
-            ResolveDependencies();
-            BuildLoadQueue();
-        }
+		//private void AddPluginToLoadQueue(PluginInfo plugin) {
+		//	if (_loadQueue.Contains(plugin))
+		//		return;
 
-        private static bool TryLoadPluginAssembly(FileInfo pluginDll, out Assembly pluginAssembly)
-        {
-            pluginAssembly = null;
-            try
-            {
-                pluginAssembly = Assembly.LoadFrom(pluginDll.FullName);
-                if (pluginAssembly.GetCustomAttribute<DisabledPluginAttribute>() != null)
-                    return false;
+		//	foreach (PluginInfo dependency in plugin.Dependencies)
+		//		AddPluginToLoadQueue(dependency);
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"Failed to load plugin '{pluginDll}'.\nException:\n{ex}'");
-            }
+		//	_loadQueue.Add(plugin);
+		//}
+	}
 
-            return false;
-        }
+	public class PluginInfo //: IEquatable<PluginInfo>
+	{
+		//public Assembly Assembly { get; set; }
+		//public Type Type { get; set; }
+		//public HashSet<PluginInfo> Dependencies { get; set; } = new HashSet<PluginInfo>();
 
-        private void ResolveDependencies()
-        {
-            foreach (PluginInfo plugin in _plugins)
-            {
-				AssemblyName[] referencedAssemblies = plugin.Assembly.GetReferencedAssemblies();
-                foreach (AssemblyName refAssembly in referencedAssemblies)
-                {
-					PluginInfo referencedPlugin = _plugins.FirstOrDefault(p => p.Assembly.GetName().FullName == refAssembly.FullName);
-                    if (referencedPlugin != null)
-                        plugin.Dependencies.Add(referencedPlugin);
-                }
-            }
-        }
+		//public bool Equals(PluginInfo other) {
+		//	return other != null && Type == other.Type;
+		//}
 
-        private void BuildLoadQueue()
-        {
-            foreach (PluginInfo plugin in _plugins)
-                AddPluginToLoadQueue(plugin);
-        }
+		//public override bool Equals(object obj) {
+		//	return Equals(obj as PluginInfo);
+		//}
 
-        private void AddPluginToLoadQueue(PluginInfo plugin)
-        {
-            if (_loadQueue.Contains(plugin))
-                return;
-
-            foreach (PluginInfo dependency in plugin.Dependencies)
-                AddPluginToLoadQueue(dependency);
-
-            _loadQueue.Add(plugin);
-        }
-    }
+		//public override int GetHashCode() {
+		//	return Type.GetHashCode();
+		//}
+	}
 }

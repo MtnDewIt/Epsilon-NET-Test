@@ -5,7 +5,6 @@ using Epsilon.ViewModels;
 using Epsilon.Commands;
 using Epsilon.Dialogs;
 using Epsilon.Logging;
-using Epsilon;
 using Epsilon.Shell.TreeModels;
 using Microsoft.Win32;
 using Shared;
@@ -21,7 +20,7 @@ using TagTool.Cache;
 
 namespace Epsilon
 {
-    class CacheEditorViewModel
+	class CacheEditorViewModel
         : Conductor<IScreen>.Collection.OneActive, 
         ICacheEditor,
         ICommandHandler<OpenTagCommand>,

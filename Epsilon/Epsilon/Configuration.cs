@@ -1,11 +1,10 @@
-﻿using Epsilon;
-using System;
+﻿using System;
 using Epsilon.Fields;
 using TagTool.Cache;
 
 namespace Epsilon
 {
-    public class Configuration
+	public class Configuration
     {
         /// <summary>
         /// Callback function for whenever the value of a field changes

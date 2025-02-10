@@ -1,9 +1,8 @@
-﻿using Epsilon.Commands;
-using System;
+﻿using System;
 
 namespace Epsilon.Commands
 {
-    [ExportCommand]
+	[ExportCommand]
     public class GarbageCollectCommand : CommandDefinition
     {
         public override string Name => "Memory.GarbageCollect";

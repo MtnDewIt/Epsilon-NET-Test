@@ -1,11 +1,9 @@
 ﻿using Epsilon;
-using Epsilon.Options;
 using Epsilon.Pages;
 using Epsilon.Commands;
 using Epsilon.Editors;
 using Epsilon.Logging;
 using Epsilon.Menus;
-using Epsilon;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -106,33 +104,22 @@ namespace WpfApp20
 			batch.AddExportedValue<IFileHistoryService>(_fileHistory);
 		}
 
-		protected override IEnumerable<Assembly> GetAssemblies() {
-			//PluginLoader pluginManager = new PluginLoader();
-			//pluginManager.LoadPlugins();
-
-			yield return Assembly.GetExecutingAssembly();
-			yield return ( typeof(IShell).Assembly ); // Epsilon
-
-			//foreach (Host.PluginInfo file in pluginManager.Plugins) {
-			//	yield return file.Assembly;
-			//}
-		}
-
 		private void PrepareResources() {
+
 			foreach (ResourceDictionary dict in GetInstances<ResourceDictionary>()) {
 				App.Current.Resources.MergedDictionaries.Add(dict);
 			}
-			
-			_editorService = (IEditorService)GetInstance(typeof(EditorService));
-			_settings = ((ISettingsService)GetInstance(typeof(SettingsService))).GetCollection(Settings.CollectionKey);
+		
+			_editorService = GetInstance<IEditorService>();
+			_settings = GetInstance<ISettingsService>().GetCollection(Settings.CollectionKey);
 			DefaultCachePath = _settings.Get(Settings.DefaultTagCache);
 			DefaultPakPath = _settings.Get(Settings.DefaultPak);
 			DefaultPakCachePath = _settings.Get(Settings.DefaultPakCache);
 			AlwaysOnTop = _settings.GetBool(Settings.AlwaysOnTop);
 			AccentColor = _settings.Get(Settings.AccentColor);
 			
-			App.Current.Resources.Add(typeof(ICommandRegistry), (ICommandRegistry)GetInstance(typeof(CommandService)));
-			App.Current.Resources.Add(typeof(IMenuFactory), (IMenuFactory)GetInstance(typeof(MenuFactory)));
+			App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
+			App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
 			App.Current.Resources.Add(SystemParameters.MenuPopupAnimationKey, PopupAnimation.None);
 			App.Current.Resources[Settings.AlwaysOnTop.Key] = AlwaysOnTop;
 		}

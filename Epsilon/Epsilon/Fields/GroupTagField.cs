@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Epsilon.Common;
 using TagTool.Common;
 
 namespace Epsilon.Fields
 {
-    public class GroupTagField : ValueField
+	public class GroupTagField : ValueField
     {
         public Tag Value { get; set; }
         public IList<Tag> Tags { get; }

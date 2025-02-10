@@ -1,8 +1,6 @@
-﻿using Epsilon.Commands;
-
-namespace Epsilon.Commands
+﻿namespace Epsilon.Commands
 {
-    [ExportCommand]
+	[ExportCommand]
     class TagCacheCommandList : CommandListDefinition
     {
         public override string Name => "ModPackage.SelectTagCache";

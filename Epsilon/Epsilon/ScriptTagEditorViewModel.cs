@@ -1,24 +1,19 @@
-﻿using Epsilon;
-using Epsilon.TagEditing;
-using Epsilon.TagEditing.Messages;
+﻿using Epsilon.TagEditing.Messages;
 using Epsilon.Dialogs;
 using Shared;
 using System;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Threading;
 using TagTool.Cache;
 using TagTool.Scripting;
 using TagTool.Scripting.Compiler;
-using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
 namespace Epsilon
 {
 
-    class ScriptTagEditorViewModel : TagEditorPlugin
+	class ScriptTagEditorViewModel : TagEditorPlugin
     {
 
 		private string _scriptSourceCode;
@@ -48,10 +43,10 @@ namespace Epsilon
         {
             try
             {
-				if (TagEditorContext?.Epsilon?.CacheFile?.Cache == null) { 
+				if (TagEditorContext?.CacheEditor?.CacheFile?.Cache == null) { 
                     throw new InvalidOperationException("Tried to decompile scenario scripts using a null game cache."); 
                 }
-				ScriptDecompiler decompiler = new ScriptDecompiler(TagEditorContext.Epsilon.CacheFile.Cache as GameCache, Definition as Scenario);
+				ScriptDecompiler decompiler = new ScriptDecompiler(TagEditorContext.CacheEditor.CacheFile.Cache as GameCache, Definition as Scenario);
                 ScriptSourceCode = await Task.Run(() =>
                 {
                     using (StringWriter writer = new StringWriter())

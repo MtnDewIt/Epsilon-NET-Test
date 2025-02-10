@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Epsilon.Fields;
 using TagTool.Cache;
 using TagTool.Common;
@@ -10,7 +8,7 @@ using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.
 
 namespace Epsilon.Helpers
 {
-    public class FieldHelper
+	public class FieldHelper
     {
         public static string GetFieldPath(IField field)
         {

@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
 
 namespace Epsilon.Fields
 {
-    public class StructField : IField
+	public class StructField : IField
     {
         public ObservableCollection<IField> Fields { get; set; }
 

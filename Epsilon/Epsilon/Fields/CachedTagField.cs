@@ -4,16 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using Epsilon.Common;
 using TagTool.Cache;
-using TagTool.Tags.Definitions;
-using static TagTool.Tags.Definitions.Bitmap.Sequence;
 using Epsilon.Commands;
 
 namespace Epsilon.Fields
 {
-    public class CachedTagField : ValueField
+	public class CachedTagField : ValueField
     {
         private readonly Func<CachedTag> _browseTagCallback;
 

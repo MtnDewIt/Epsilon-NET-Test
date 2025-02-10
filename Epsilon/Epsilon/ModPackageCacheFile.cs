@@ -1,11 +1,10 @@
-﻿using Epsilon;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using TagTool.Cache;
 
 namespace Epsilon
 {
-    internal class ModPackageCacheFile : HaloOnlineCacheFile
+	internal class ModPackageCacheFile : HaloOnlineCacheFile
     {
         private new GameCacheModPackage Cache => (GameCacheModPackage)base.Cache;
 

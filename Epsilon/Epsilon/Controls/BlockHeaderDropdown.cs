@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Epsilon.Controls
 {
-    [TemplatePart(Name = ComboBoxPartName, Type = typeof(ComboBox))]
+	[TemplatePart(Name = ComboBoxPartName, Type = typeof(ComboBox))]
     public class BlockHeaderDropdown : Control
     {
         const string ComboBoxPartName = "PART_Combo";

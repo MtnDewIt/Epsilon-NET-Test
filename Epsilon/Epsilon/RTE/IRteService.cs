@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Epsilon;
-using Epsilon.RTE;
 
 namespace Epsilon.RTE
 {

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Epsilon.Helpers;
-using TagTool.Cache;
 using TagTool.Tags;
 
 namespace Epsilon.Fields
 {
-    public class EnumField : ValueField
+	public class EnumField : ValueField
     {
         public EnumMember Value { get; set; }
         public ObservableCollection<EnumMember> Values { get; }

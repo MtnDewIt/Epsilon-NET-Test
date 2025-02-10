@@ -369,7 +369,6 @@
     </Compile>
     <Compile Include="PerCacheDefinitionEditorContext.cs" />
     <Compile Include="Plugins\PluginLoader.cs" />
-    <Compile Include="Plugins\PluginInfo.cs" />
     <Compile Include="Plugins\PluginLoaderException.cs" />
     <Compile Include="RTEFieldHelper.cs" />
     <Compile Include="RTE\AggregateTargetSource.cs" />

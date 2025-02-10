@@ -10,11 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Reflection;
-using System.Windows;
 
 namespace Epsilon.Pages
 {
-    [Export]
+	[Export]
     [Export(typeof(IShell))]
     public class ShellViewModel : Conductor<IScreen>.Collection.OneActive, IShell
     {

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static TagTool.Tags.Definitions.Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData;
 using static TagTool.Tags.ParticlePropertyScalar;
 
 namespace Epsilon.Fields
 {
-    public class EmitterGpuInnardsZField : ValueField
+	public class EmitterGpuInnardsZField : ValueField
     {
         public OutputModifierValue ModifierIndex { get; set; }
         public ParticleStates InputIndexModifier { get; set; }

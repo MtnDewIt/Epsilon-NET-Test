@@ -1,12 +1,10 @@
 ﻿using Epsilon.Options;
-using Epsilon.Commands;
-using Epsilon.Options;
 using Stylet;
 using System.ComponentModel.Composition;
 
 namespace Epsilon.Commands
 {
-    [ExportCommand]
+	[ExportCommand]
     class ShowOptionsCommand : CommandDefinition
     {
         public override string Name => "Tools.Options";

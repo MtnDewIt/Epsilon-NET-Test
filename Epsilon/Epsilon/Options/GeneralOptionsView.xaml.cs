@@ -1,12 +1,10 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace Epsilon.Options
 {
-    [Export]
+	[Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class GeneralOptionsView : UserControl
     {

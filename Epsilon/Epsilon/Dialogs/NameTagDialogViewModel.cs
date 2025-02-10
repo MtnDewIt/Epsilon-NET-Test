@@ -1,9 +1,8 @@
 ﻿using Epsilon.Dialogs;
-using Stylet;
 
 namespace Epsilon.ViewModels
 {
-    public class NameTagDialogViewModel : InputDialogViewModel
+	public class NameTagDialogViewModel : InputDialogViewModel
     {
         //private string _inputText;
         //private string _message;

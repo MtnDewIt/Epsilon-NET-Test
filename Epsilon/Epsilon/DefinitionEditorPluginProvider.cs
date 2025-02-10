@@ -1,5 +1,4 @@
-﻿using Epsilon;
-using Epsilon.RTE;
+﻿using Epsilon.RTE;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using TagTool.Cache;
@@ -7,7 +6,7 @@ using TagTool.Cache;
 namespace Epsilon
 {
 	[Export(typeof(ITagEditorPluginProvider))]
-	public class EpsilonPluginProvider : ITagEditorPluginProvider
+	public class DefinitionEditorPluginProvider : ITagEditorPluginProvider
 	{
 
 		private readonly IRteService _rteService;
@@ -16,7 +15,7 @@ namespace Epsilon
 		public int SortOrder => -1;
 
 		[ImportingConstructor]
-		public EpsilonPluginProvider(IRteService rteService) {
+		public DefinitionEditorPluginProvider(IRteService rteService) {
 			_rteService = rteService;
 		}
 

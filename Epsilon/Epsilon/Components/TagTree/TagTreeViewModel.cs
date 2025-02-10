@@ -1,19 +1,13 @@
 ﻿using Epsilon.Components.TagTree.Commands;
-using Epsilon.TagEditing;
 using Epsilon.Commands;
 using Epsilon.Menus;
-using Epsilon;
 using Epsilon.Shell;
 using Epsilon.Shell.Commands;
 using Epsilon.Shell.TreeModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Windows;
 using System.Windows.Input;
 using TagTool.Cache;
 using TagTool.Tags;
@@ -22,7 +16,7 @@ using TagTool.Tags.Definitions;
 namespace Epsilon.Components.TagTree
 {
 
-    public enum TagTreeViewMode
+	public enum TagTreeViewMode
     {
         Folders,
         Groups

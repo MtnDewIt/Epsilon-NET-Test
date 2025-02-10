@@ -1,10 +1,8 @@
-﻿using Epsilon.Options;
-using Epsilon;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 
 namespace Epsilon.Options
 {
-    [Export(typeof(IOptionsPage))]
+	[Export(typeof(IOptionsPage))]
     class OptionsPageViewModel : OptionPageBase
     {
         private readonly ISettingsCollection _settings;

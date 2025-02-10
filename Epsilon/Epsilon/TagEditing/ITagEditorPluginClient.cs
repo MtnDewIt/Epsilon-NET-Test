@@ -1,6 +1,4 @@
-﻿using Stylet;
-
-namespace Epsilon
+﻿namespace Epsilon
 {
 	/// <summary>
 	/// This is typically the <see cref="TagEditorViewModel"/> that hosts the <see cref="ITagEditorPlugin"/>s.

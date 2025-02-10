@@ -1,6 +1,4 @@
-﻿using Epsilon.RTE;
-
-namespace Epsilon.RTE.UI
+﻿namespace Epsilon.RTE.UI
 {
 	public class TargetListItem
 	{

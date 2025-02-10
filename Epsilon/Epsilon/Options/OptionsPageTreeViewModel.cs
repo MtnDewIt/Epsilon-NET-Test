@@ -1,12 +1,11 @@
-﻿using Epsilon.Options;
-using Epsilon.Shell.TreeModels;
+﻿using Epsilon.Shell.TreeModels;
 using Stylet;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Epsilon.Options
 {
-    public class OptionsPageTreeViewModel : TreeModel
+	public class OptionsPageTreeViewModel : TreeModel
     {
 
         public override bool MultiSelectionEnabled { get; protected set; } = false;

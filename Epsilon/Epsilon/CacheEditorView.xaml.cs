@@ -13,9 +13,9 @@ namespace Epsilon
     /// </summary>
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class EpsilonView : UserControl
+    public partial class CacheEditorView : UserControl
     {
-        public EpsilonView()
+        public CacheEditorView()
         {
             InitializeComponent();
 

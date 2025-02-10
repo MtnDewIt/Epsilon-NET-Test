@@ -34,11 +34,10 @@ using Xceed.Wpf.AvalonDock.Themes;
 using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
-using System.Globalization;
 
 namespace Xceed.Wpf.AvalonDock
 {
-  [ContentProperty( "Layout" )]
+	[ContentProperty( "Layout" )]
   [TemplatePart( Name = "PART_AutoHideArea" )]
   public class DockingManager : Control, IOverlayWindowHost, IWeakEventListener//, ILogicalChildrenContainer
   {

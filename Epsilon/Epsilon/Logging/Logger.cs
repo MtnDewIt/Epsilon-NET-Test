@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using System.Windows.Navigation;
 using TagTool.Cache;
 
 namespace Epsilon.Logging
 {
-    public static class Logger
+	public static class Logger
     {
         private volatile static IList<ILogHandler> _loggers = new List<ILogHandler>();
 

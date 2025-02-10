@@ -2,19 +2,16 @@
 using Epsilon.Menus;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Media;
 using System.Windows;
-using System.Windows.Controls;
 using Epsilon.Common;
 using Epsilon.Helpers;
-using TagTool.Commands.Editing;
 using Epsilon.Commands;
 
 namespace Epsilon.Fields
 {
-    public class BlockField : ValueField, IExpandable
+	public class BlockField : ValueField, IExpandable
     {
         private bool _isExpanded = true;
         private static ObservableNonGenericCollection CopiedBlocks = new ObservableNonGenericCollection();

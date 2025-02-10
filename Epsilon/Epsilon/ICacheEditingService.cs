@@ -1,10 +1,9 @@
-﻿using Epsilon;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Epsilon
 {
-    public interface ICacheEditingService : IDisposable
+	public interface ICacheEditingService : IDisposable
 	{
         ICacheEditor ActiveEditor { get; set; }
         ISettingsCollection Settings { get; }

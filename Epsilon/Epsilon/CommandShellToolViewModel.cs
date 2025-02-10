@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.Composition;
-using TagTool.Commands.Common;
 
 namespace Epsilon
 {
-    [Export(typeof(ICacheEditorTool))]
+	[Export(typeof(ICacheEditorTool))]
     class CommandShellToolViewModel : CacheEditorTool, ICacheEditorTool
     {
         public static readonly string ToolName = "Epsilon.Tools.CommandShell";

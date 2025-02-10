@@ -1,9 +1,8 @@
-﻿using Epsilon.Commands;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 
 namespace Epsilon.Commands
 {
-    [ExportCommandHandler]
+	[ExportCommandHandler]
     class ShowCommandLogCommandHandler : ShowToolWindowCommandHandlerBase<ShowCommandLogCommand>
     {
         [ImportingConstructor]

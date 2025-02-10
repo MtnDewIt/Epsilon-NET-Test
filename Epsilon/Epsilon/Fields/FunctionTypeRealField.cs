@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TagTool.Tags;
 using static TagTool.Tags.Definitions.Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData;
 
 namespace Epsilon.Fields
 {
-    public class FunctionTypeRealField : ValueField
+	public class FunctionTypeRealField : ValueField
     {
         public TagFunction.TagFunctionType FunctionType { get; set; }
 

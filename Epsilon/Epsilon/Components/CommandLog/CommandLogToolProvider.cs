@@ -1,10 +1,9 @@
-﻿using Epsilon.Logging;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using TagTool.Cache;
 
 namespace Epsilon.Components.CommandLog
 {
-    [Export(typeof(ICacheEditorToolProvider))]
+	[Export(typeof(ICacheEditorToolProvider))]
     class CommandLogToolProvider : ICacheEditorToolProvider
     {
         public int SortOrder => 1;

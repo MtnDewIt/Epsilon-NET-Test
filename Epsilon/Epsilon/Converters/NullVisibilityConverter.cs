@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 using System.Windows.Markup;
 
 namespace Epsilon.Converters
 {
-    public class NullVisibilityConverter : MarkupExtension, IValueConverter
+	public class NullVisibilityConverter : MarkupExtension, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

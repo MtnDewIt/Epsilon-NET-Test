@@ -10,12 +10,11 @@ using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Shaders;
 using TagTool.Tags;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.TextureConstant;
-using static TagTool.Tags.Definitions.RenderMethodTemplate;
 using static TagTool.Tags.Definitions.Effect.Event.ParticleSystem.Emitter.RuntimeMGpuData;
 
 namespace Epsilon.Fields
 {
-    public class FieldFactory : IFieldFactory
+	public class FieldFactory : IFieldFactory
     {
         private readonly Configuration _config;
         private readonly GameCache _cache;

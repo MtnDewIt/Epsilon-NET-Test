@@ -1,6 +1,4 @@
-﻿using Epsilon;
-using Epsilon.Commands;
-using Shared;
+﻿using Shared;
 using Stylet;
 using System;
 using System.Collections.Generic;
@@ -8,14 +6,12 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Cache.Gen3;
 using TagTool.Cache.HaloOnline;
 using TagTool.IO;
-using static TagTool.IO.ConsoleHistory;
 
 namespace Epsilon.Commands
 {
-    [ExportCommandHandler]
+	[ExportCommandHandler]
     class NewModPackageCommandHandler : ICommandHandler<NewModPackageCommand>
     {
         private readonly Lazy<IShell> _shell;

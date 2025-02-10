@@ -1,10 +1,9 @@
 ﻿using Stylet;
-using System;
 using TagTool.Cache;
 
 namespace Epsilon
 {
-    class MetadataModel : PropertyChangedBase
+	class MetadataModel : PropertyChangedBase
     {
         private ModPackageMetadata _metadata;
         private ModPackageHeader _header;

@@ -1,8 +1,6 @@
-﻿using Epsilon.Commands;
-
-namespace Epsilon.Commands
+﻿namespace Epsilon.Commands
 {
-    [ExportCommand]
+	[ExportCommand]
     class ShowAboutCommand : CommandDefinition
     {
         public override string Name => "Help.About";

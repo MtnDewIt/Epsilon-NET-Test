@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using TagTool.Cache;
@@ -9,7 +8,7 @@ using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.
 
 namespace Epsilon.Fields
 {
-    public class PackedSamplerAddressModeField : ValueField
+	public class PackedSamplerAddressModeField : ValueField
     {
         public EnumMember ValueU { get; set; }
         public EnumMember ValueV { get; set; }

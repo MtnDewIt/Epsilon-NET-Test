@@ -1,5 +1,4 @@
-﻿using Epsilon;
-using Epsilon.Commands;
+﻿using Epsilon.Commands;
 using Epsilon.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,7 +17,7 @@ using System.Windows;
 
 namespace Epsilon
 {
-    class ServerJsonEditorViewModel : Screen, INotifyPropertyChanged
+	class ServerJsonEditorViewModel : Screen, INotifyPropertyChanged
     {
         private IShell _shell;
         private ICacheFile _cacheFile;

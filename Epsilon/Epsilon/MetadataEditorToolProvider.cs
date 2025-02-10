@@ -1,10 +1,9 @@
-﻿using Epsilon;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using TagTool.Cache;
 
 namespace Epsilon
 {
-    [Export(typeof(ICacheEditorToolProvider))]
+	[Export(typeof(ICacheEditorToolProvider))]
     class MetadataEditorToolProvider : ICacheEditorToolProvider
     {
         public int SortOrder => 2;

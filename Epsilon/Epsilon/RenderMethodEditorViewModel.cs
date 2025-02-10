@@ -1,5 +1,4 @@
-﻿using Epsilon;
-using Epsilon.TagEditing.Messages;
+﻿using Epsilon.TagEditing.Messages;
 using Epsilon.ShaderMethods;
 using Epsilon.ShaderParameters;
 using System.Collections.ObjectModel;
@@ -27,7 +26,7 @@ namespace Epsilon
 
 		public RenderMethodEditorViewModel(TagEditorContext context) : base(context) {
             TagEditorContext = context;
-			_cache = TagEditorContext.Epsilon.CacheFile.Cache;
+			_cache = TagEditorContext.CacheEditor.CacheFile.Cache;
 			RenderMethod rm = null;
 			if (context.Instance.IsInGroup("rm  ")) { rm = context.DefinitionData as RenderMethod; }
 			else if (context.Instance.IsInGroup("prt3")) { rm = ( context.DefinitionData as Particle).RenderMethod; }			

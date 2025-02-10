@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TagTool.Geometry.BspCollisionGeometry;
-using static TagTool.Tags.Definitions.RenderMethodTemplate;
+﻿using TagTool.Geometry.BspCollisionGeometry;
 
 namespace Epsilon.Fields
 {
-    public class PlaneReferenceField : ValueField
+	public class PlaneReferenceField : ValueField
     {
         public int TriangleIndex { get; set; }
         public int ClusterIndex{ get; set; }

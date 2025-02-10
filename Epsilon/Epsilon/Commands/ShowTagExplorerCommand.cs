@@ -1,8 +1,6 @@
-﻿using Epsilon.Commands;
-
-namespace Epsilon.Commands
+﻿namespace Epsilon.Commands
 {
-    [ExportCommand]
+	[ExportCommand]
     class ShowTagExplorerCommand : CommandDefinition
     {
         public override string Name => "Epsilon.ShowTagExplorer";

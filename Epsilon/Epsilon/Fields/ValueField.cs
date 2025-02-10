@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using System.Windows.Controls;
-using Epsilon.Common;
-using Epsilon.Helpers;
 using TagTool.Tags;
 
 namespace Epsilon.Fields
 {
-    /// <summary>
-    /// Base class for a Field that holds a value
-    /// </summary>
-    public abstract class ValueField : IField
+	/// <summary>
+	/// Base class for a Field that holds a value
+	/// </summary>
+	public abstract class ValueField : IField
     {
         public ValueField(ValueFieldInfo info)
         {

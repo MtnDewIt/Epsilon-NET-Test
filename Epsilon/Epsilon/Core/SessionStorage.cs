@@ -1,10 +1,9 @@
-﻿using Epsilon.Editors;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
 namespace Epsilon.Core
 {
-    public interface ISessionStore
+	public interface ISessionStore
     {
         bool TryGetItem<T>(object key, out T value, T defaultValue = default);
         void StoreItem<T>(object key, T value);
@@ -12,9 +11,12 @@ namespace Epsilon.Core
 
     [Export(typeof(ISessionStore))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    class SessionStorage : ISessionStore    
+    public class SessionStorage : ISessionStore    
     {
-        private readonly Dictionary<object, object> _store = new Dictionary<object, object>();
+
+        public SessionStorage() { }
+
+		private readonly Dictionary<object, object> _store = new Dictionary<object, object>();
 
         public bool TryGetItem<T>(object key, out T value, T defaultValue = default)
         {

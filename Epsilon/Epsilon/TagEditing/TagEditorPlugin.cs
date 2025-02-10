@@ -1,7 +1,5 @@
 ﻿using Shared;
 using Stylet;
-using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Tags;
 
@@ -25,7 +23,7 @@ namespace Epsilon
 		public TagEditorPlugin(TagEditorContext context, params object[] args) {
 			TagEditorContext = context;
 			if (context.IsValid) { _definition = TagEditorContext.DefinitionData as TagStructure; }
-			_cacheEditor = TagEditorContext.Epsilon;
+			_cacheEditor = TagEditorContext.CacheEditor;
 			_instance = TagEditorContext.Instance;
 			_client = TagEditorContext.ViewModel;
 			_shell = TagEditorContext.Shell;

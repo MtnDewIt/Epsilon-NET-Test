@@ -1,11 +1,9 @@
 ﻿using Epsilon.Themes;
 using Stylet;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Tags;
 
 namespace Epsilon.Shell.TreeModels
 {

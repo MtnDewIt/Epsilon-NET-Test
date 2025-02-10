@@ -1,17 +1,14 @@
 ﻿using Epsilon.Logging;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Xml.Linq;
 using static Epsilon.Components.CommandLog.CommandLogViewModel;
 
 namespace Epsilon.Components.CommandLog
 {
-    /// <summary>
-    /// Interaction logic for DependencyExplorerView.xaml
-    /// </summary>
-    [Export]
+	/// <summary>
+	/// Interaction logic for DependencyExplorerView.xaml
+	/// </summary>
+	[Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class CommandLogView : UserControl
     {

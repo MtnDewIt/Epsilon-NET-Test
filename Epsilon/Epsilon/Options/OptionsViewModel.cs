@@ -1,16 +1,10 @@
-﻿using Epsilon.Options;
-using Epsilon.Shell.TreeModels;
+﻿using Epsilon.Shell.TreeModels;
 using Stylet;
-using System;
 using System.Linq;
-using System.Windows.Media;
-using System.Windows;
-using Xceed.Wpf.AvalonDock.Themes;
-using Epsilon;
 
 namespace Epsilon.Options
 {
-    public class OptionsViewModel : Conductor<IOptionsPage>.Collection.OneActive
+	public class OptionsViewModel : Conductor<IOptionsPage>.Collection.OneActive
     {
         public OptionsPageTreeViewModel CategoryTree { get; }
 

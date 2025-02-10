@@ -24,11 +24,10 @@ using System.Windows;
 using System.Diagnostics;
 using Xceed.Wpf.AvalonDock.Layout;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
-  internal static class FocusElementManager
+	internal static class FocusElementManager
   {
     #region Member
 

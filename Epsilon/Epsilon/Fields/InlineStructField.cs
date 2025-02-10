@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Epsilon.Common;
 
 namespace Epsilon.Fields
 {
-    public class InlineStructField : ValueField, IExpandable
+	public class InlineStructField : ValueField, IExpandable
     {
         public ObservableCollection<IField> Fields { get; set; }
         public bool IsExpanded { get; set; }

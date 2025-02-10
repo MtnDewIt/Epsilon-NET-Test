@@ -1,8 +1,6 @@
-﻿using Epsilon.Commands;
-
-namespace Epsilon.Commands
+﻿namespace Epsilon.Commands
 {
-    public abstract class ShowToolWindowCommandHandlerBase<T> : ICommandHandler<T> where T : CommandDefinition
+	public abstract class ShowToolWindowCommandHandlerBase<T> : ICommandHandler<T> where T : CommandDefinition
     {
         private ICacheEditingService _cacheEditingService;
 

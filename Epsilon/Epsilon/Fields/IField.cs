@@ -1,8 +1,5 @@
 ﻿using Epsilon.Menus;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 using Epsilon.Common;
 
 namespace Epsilon.Fields

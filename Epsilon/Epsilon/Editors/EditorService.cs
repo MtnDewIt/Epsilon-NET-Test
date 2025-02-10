@@ -11,23 +11,21 @@ namespace Epsilon.Editors
     [Export(typeof(IEditorService))]
     public class EditorService : IEditorService
     {
-		[Import]
 		private readonly Lazy<IShell> _shell;
-		[Import]
 		private readonly IFileHistoryService _fileHistory;
-		[Import]
 		private readonly IEditorProvider[] _providers;
         public IEnumerable<IEditorProvider> EditorProviders => _providers;
 
-		//[ImportingConstructor]
-        public EditorService()
-            //[Import] Lazy<IShell> shell,
-            //[ImportMany]IEditorProvider[] providers,
-            //[Import] IFileHistoryService fileHistory)
+		[ImportingConstructor]
+        public EditorService(
+            [Import] Lazy<IShell> shell,
+            [ImportMany] IEditorProvider[] providers,
+            [Import] IFileHistoryService fileHistory
+        )
         {
-            //_shell = shell;
-            //_providers = providers;
-            //_fileHistory = fileHistory;
+            _shell = shell;
+            _providers = providers;
+            _fileHistory = fileHistory;
         }
 
         IEditorProvider GetProvider(Guid id)

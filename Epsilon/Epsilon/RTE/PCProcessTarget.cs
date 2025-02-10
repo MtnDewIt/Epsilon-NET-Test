@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Epsilon.RTE;
 using Epsilon.Logging;
 
 namespace Epsilon.RTE

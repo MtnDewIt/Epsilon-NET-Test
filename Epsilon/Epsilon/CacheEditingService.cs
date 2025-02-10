@@ -1,16 +1,13 @@
-﻿using Epsilon;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Shared;
+﻿using Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using TagTool.Tags;
 
 
 namespace Epsilon
 {
-    [Export(typeof(ICacheEditingService))]
+	[Export(typeof(ICacheEditingService))]
     class CacheEditingService : ICacheEditingService, IDisposable
 	{
         private ICacheEditor _activeEditor;

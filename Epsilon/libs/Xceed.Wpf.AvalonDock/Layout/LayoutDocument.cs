@@ -16,12 +16,11 @@
   ***********************************************************************************/
 
 using System;
-using System.Globalization;
 using System.Linq;
 
 namespace Xceed.Wpf.AvalonDock.Layout
 {
-  [Serializable]
+	[Serializable]
   public class LayoutDocument : LayoutContent
   {
     #region Properties

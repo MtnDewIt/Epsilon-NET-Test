@@ -1,5 +1,4 @@
-﻿using Epsilon.Commands;
-using Epsilon.Editors;
+﻿using Epsilon.Editors;
 using Epsilon.Logging;
 using Epsilon.Shell.Commands;
 using Microsoft.Win32;
@@ -13,7 +12,7 @@ using System.Windows;
 
 namespace Epsilon.Commands
 {
-    [ExportCommandHandler]
+	[ExportCommandHandler]
     class OpenFileCommandHandler : ICommandHandler<OpenFileCommand>
     {
         private IEditorService _editorService;

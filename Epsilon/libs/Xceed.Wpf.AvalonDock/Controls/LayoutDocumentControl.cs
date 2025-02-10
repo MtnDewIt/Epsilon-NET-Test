@@ -23,13 +23,10 @@ using Xceed.Wpf.AvalonDock.Layout;
 using System.Collections;
 using System;
 using System.Windows.Media;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Linq;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
-  public class LayoutDocumentControl : Control
+	public class LayoutDocumentControl : Control
   {
     #region Constructors
 

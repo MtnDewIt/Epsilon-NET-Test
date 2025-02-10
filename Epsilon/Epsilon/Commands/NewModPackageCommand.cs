@@ -1,9 +1,8 @@
-﻿using Epsilon.Commands;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace Epsilon.Commands
 {
-    [ExportCommand]
+	[ExportCommand]
     class NewModPackageCommand : CommandDefinition
     {
         public override string Name => "ModPackage.New";

@@ -1,14 +1,12 @@
 ﻿using Epsilon.Logging;
 using System;
-using Epsilon.Common;
-using Epsilon.Helpers;
 using TagTool.Cache;
 using TagTool.Common;
 using Epsilon.Commands;
 
 namespace Epsilon.Fields
 {
-    public class StringIdField : ValueField
+	public class StringIdField : ValueField
     {
         public StringTable _stringTable;
 

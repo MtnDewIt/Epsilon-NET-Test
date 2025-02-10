@@ -267,26 +267,26 @@ namespace Epsilon
 
 			// validate that we have args[0] and it's the correct type
 			if (args.Length < 1 || !( args[0] is IRteService )) {
-				throw new ArgumentException("Invalid arguments passed to EpsilonViewModel.");
+				throw new ArgumentException("Invalid arguments passed to DefinitionEditorViewModel.");
 			}
 
 			ValueChangedSink valueChangeSink = new ValueChangedSink();
 			Configuration config = new Epsilon.Configuration()
 			{
-				OpenTag = context.Epsilon.OpenTag,
-				BrowseTag = context.Epsilon.RunBrowseTagDialog,
+				OpenTag = context.CacheEditor.OpenTag,
+				BrowseTag = context.CacheEditor.RunBrowseTagDialog,
 				ValueChanged = valueChangeSink.Invoke
 			};
 			Settings.Load(config);
 
-			PerCacheEpsilonContext ctx = context.GetEpsilonContext();
+			PerCacheDefinitionEditorContext ctx = context.GetCacheDefinitionEditorContext();
 			FieldFactory factory = new FieldFactory(ctx.Cache, ctx.TagList, config);
 			StructField field = context.CreateField(factory);
 
 			_shell = context.Shell;
 			_definitionData = context.DefinitionData;
-			_cacheEditor = context.Epsilon;
-			_cacheFile = context.Epsilon.CacheFile;
+			_cacheEditor = context.CacheEditor;
+			_cacheFile = context.CacheEditor.CacheFile;
 			_changeSink = valueChangeSink;
 			_changeSink.ValueChanged += Field_ValueChanged;
 			RteService = args[0] as IRteService;
@@ -308,7 +308,7 @@ namespace Epsilon
 
 			SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
 
-			RteTargetList = new TargetListModel(RteService.GetTargetList(context.Epsilon.CacheFile));
+			RteTargetList = new TargetListModel(RteService.GetTargetList(context.CacheEditor.CacheFile));
 			RteHasTargets = RteTargetList.Any();
 
 			RuntimeTagData = new byte[0];

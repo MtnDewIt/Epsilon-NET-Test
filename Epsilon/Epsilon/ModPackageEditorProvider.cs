@@ -1,5 +1,4 @@
-﻿using Epsilon;
-using Epsilon.Dialogs;
+﻿using Epsilon.Dialogs;
 using Epsilon.Editors;
 using Shared;
 using Stylet;
@@ -8,12 +7,11 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using TagTool.Cache;
 
 namespace Epsilon
 {
-    [Export(typeof(IEditorProvider))]
+	[Export(typeof(IEditorProvider))]
     public class ModPackageEditorProvider : IEditorProvider
     {
         private readonly ICacheEditingService _editingService;
