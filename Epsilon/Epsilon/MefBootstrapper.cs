@@ -22,23 +22,23 @@ namespace WpfApp20
 		}
 
 		protected override void ConfigureBootstrapper() {
-			
-			//Logger.RegisterLogger(new DefaultLogger());
 
-			//_assemblies.Add(Assembly.GetExecutingAssembly());
+			Logger.RegisterLogger(new DefaultLogger());
 
-			//_container = new CompositionContainer(
-			//	new AssemblyCatalog(Assembly.GetExecutingAssembly())
-			//);
+			_assemblies.Add(Assembly.GetExecutingAssembly());
 
-			//GlobalServiceProvider.Initialize(_container);
+			_container = new CompositionContainer(
+				new AssemblyCatalog(Assembly.GetExecutingAssembly())
+			);
 
-			//CompositionBatch batch = new CompositionBatch();
+			GlobalServiceProvider.Initialize(_container);
 
-			//DefaultConfigureIoC(batch);
-			//ConfigureIoC(batch);
+			CompositionBatch batch = new CompositionBatch();
 
-			//_container.Compose(batch);
+			DefaultConfigureIoC(batch);
+			ConfigureIoC(batch);
+
+			_container.Compose(batch);
 
 		}
 
