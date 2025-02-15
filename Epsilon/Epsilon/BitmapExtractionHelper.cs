@@ -70,7 +70,7 @@ namespace Epsilon
             int mipmapSize, mipmapOffset;
             if (bitmap.Type == BitmapType.Texture2D)
             {
-                mipmapOffset = BitmapUtilsPC.GetMipmapOffset(tempImage, layerIndex, mipmapIndex);
+                mipmapOffset = BitmapUtilsPC.GetTextureOffset(tempImage, mipmapIndex);
                 mipmapSize = width * height * BitmapFormatUtils.GetBitsPerPixel(tempImage.Format) / 8;
             }
             else if (bitmap.Type == BitmapType.CubeMap)
