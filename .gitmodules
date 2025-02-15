@@ -1,4 +1,4 @@
-[submodule "TagTool"]
+[submodule "TagTool-Old"]
 	path = TagTool
 	url = https://github.com/MtnDewIt/TagTool.git
 	branch = dev
