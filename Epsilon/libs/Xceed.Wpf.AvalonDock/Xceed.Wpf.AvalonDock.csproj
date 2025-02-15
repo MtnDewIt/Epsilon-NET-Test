@@ -16,8 +16,6 @@
     <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <ItemGroup>
-    <Resource Include="Images\document.png" />
-    <Resource Include="Images\property-blue.png" />
     <Resource Include="Themes\Generic\Images\DockBottom.PNG" />
     <Resource Include="Themes\Generic\Images\DockLeft.PNG" />
     <Resource Include="Themes\Generic\Images\DockPane.PNG" />
@@ -47,112 +45,5 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Stylet" Version="1.3.7" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Controls3\AnchorablePaneControlOverlayArea.cs" />
-    <Compile Remove="Controls3\AnchorablePaneDropTarget.cs" />
-    <Compile Remove="Controls3\AnchorablePaneTabPanel.cs" />
-    <Compile Remove="Controls3\AnchorablePaneTitle.cs" />
-    <Compile Remove="Controls3\AutoHideWindowManager.cs" />
-    <Compile Remove="Controls3\BindingHelper.cs" />
-    <Compile Remove="Controls3\ContextMenuEx.cs" />
-    <Compile Remove="Controls3\DockingManagerDropTarget.cs" />
-    <Compile Remove="Controls3\DockingManagerOverlayArea.cs" />
-    <Compile Remove="Controls3\DocumentPaneControlOverlayArea.cs" />
-    <Compile Remove="Controls3\DocumentPaneDropAsAnchorableTarget.cs" />
-    <Compile Remove="Controls3\DocumentPaneDropTarget.cs" />
-    <Compile Remove="Controls3\DocumentPaneGroupDropTarget.cs" />
-    <Compile Remove="Controls3\DocumentPaneTabPanel.cs" />
-    <Compile Remove="Controls3\DragService.cs" />
-    <Compile Remove="Controls3\DropArea.cs" />
-    <Compile Remove="Controls3\DropDownButton.cs" />
-    <Compile Remove="Controls3\DropDownControlArea.cs" />
-    <Compile Remove="Controls3\DropTarget.cs" />
-    <Compile Remove="Controls3\DropTargetBase.cs" />
-    <Compile Remove="Controls3\DropTargetType.cs" />
-    <Compile Remove="Controls3\Extentions.cs" />
-    <Compile Remove="Controls3\FocusElementManager.cs" />
-    <Compile Remove="Controls3\FullWeakDictionary.cs" />
-    <Compile Remove="Controls3\IDropTarget.cs" />
-    <Compile Remove="Controls3\IOverlayWindow.cs" />
-    <Compile Remove="Controls3\IOverlayWindowArea.cs" />
-    <Compile Remove="Controls3\IOverlayWindowDropTarget.cs" />
-    <Compile Remove="Controls3\IOverlayWindowHost.cs" />
-    <Compile Remove="Controls3\LayoutAnchorableControl.cs" />
-    <Compile Remove="Controls3\LayoutAnchorableFloatingWindowControl.cs" />
-    <Compile Remove="Controls3\LayoutAnchorableItem.cs" />
-    <Compile Remove="Controls3\LayoutAnchorablePaneControl.cs" />
-    <Compile Remove="Controls3\LayoutAnchorablePaneGroupControl.cs" />
-    <Compile Remove="Controls3\LayoutAnchorableTabItem.cs" />
-    <Compile Remove="Controls3\LayoutAnchorControl.cs" />
-    <Compile Remove="Controls3\LayoutAnchorGroupControl.cs" />
-    <Compile Remove="Controls3\LayoutAnchorSideControl.cs" />
-    <Compile Remove="Controls3\LayoutAutoHideWindowControl.cs" />
-    <Compile Remove="Controls3\LayoutDocumentControl.cs" />
-    <Compile Remove="Controls3\LayoutDocumentFloatingWindowControl.cs" />
-    <Compile Remove="Controls3\LayoutDocumentItem.cs" />
-    <Compile Remove="Controls3\LayoutDocumentPaneControl.cs" />
-    <Compile Remove="Controls3\LayoutDocumentPaneGroupControl.cs" />
-    <Compile Remove="Controls3\LayoutDocumentTabItem.cs" />
-    <Compile Remove="Controls3\LayoutFloatingWindowControl.cs" />
-    <Compile Remove="Controls3\LayoutGridControl.cs" />
-    <Compile Remove="Controls3\LayoutGridResizerControl.cs" />
-    <Compile Remove="Controls3\LayoutItem.cs" />
-    <Compile Remove="Controls3\LayoutPanelControl.cs" />
-    <Compile Remove="Controls3\MenuItemEx.cs" />
-    <Compile Remove="Controls3\NavigatorWindow.cs" />
-    <Compile Remove="Controls3\OverlayArea.cs" />
-    <Compile Remove="Controls3\OverlayWindow.cs" />
-    <Compile Remove="Controls3\OverlayWindowDropTarget.cs" />
-    <Compile Remove="Controls3\OverlayWindowDropTargetType.cs" />
-    <Compile Remove="Controls3\ReentrantFlag.cs" />
-    <Compile Remove="Controls3\Shell\Standard\ComGuids.cs" />
-    <Compile Remove="Controls3\Shell\Standard\Debug.cs" />
-    <Compile Remove="Controls3\Shell\Standard\DoubleUtil.cs" />
-    <Compile Remove="Controls3\Shell\Standard\DpiHelper.cs" />
-    <Compile Remove="Controls3\Shell\Standard\ErrorCodes.cs" />
-    <Compile Remove="Controls3\Shell\Standard\MessageWindow.cs" />
-    <Compile Remove="Controls3\Shell\Standard\NativeMethods.cs" />
-    <Compile Remove="Controls3\Shell\Standard\ShellProvider.cs" />
-    <Compile Remove="Controls3\Shell\Standard\StreamHelper.cs" />
-    <Compile Remove="Controls3\Shell\Standard\Utilities.cs" />
-    <Compile Remove="Controls3\Shell\Standard\Verify.cs" />
-    <Compile Remove="Controls3\Shell\SystemCommands.cs" />
-    <Compile Remove="Controls3\Shell\SystemParameters2.cs" />
-    <Compile Remove="Controls3\Shell\WindowChrome.cs" />
-    <Compile Remove="Controls3\Shell\WindowChromeWorker.cs" />
-    <Compile Remove="Controls3\TransformExtentions.cs" />
-    <Compile Remove="Controls3\WeakDictionary.cs" />
-    <Compile Remove="Controls3\WindowActivateEventArgs.cs" />
-    <Compile Remove="Controls3\WindowHookHandler.cs" />
-    <Compile Remove="Controls\LayoutCachePaneControl.cs" />
-    <Compile Remove="Controls\LayoutGridControl2.cs" />
-    <Compile Remove="Properties\Resources.cs-CZ.Designer.cs" />
-    <Compile Remove="Properties\Resources.de.Designer.cs" />
-    <Compile Remove="Properties\Resources.es.Designer.cs" />
-    <Compile Remove="Properties\Resources.fr.Designer.cs" />
-    <Compile Remove="Properties\Resources.hu.Designer.cs" />
-    <Compile Remove="Properties\Resources.it.Designer.cs" />
-    <Compile Remove="Properties\Resources.pt-BR.Designer.cs" />
-    <Compile Remove="Properties\Resources.ro.Designer.cs" />
-    <Compile Remove="Properties\Resources.ru.Designer.cs" />
-    <Compile Remove="Properties\Resources.sv.Designer.cs" />
-    <Compile Remove="Properties\Resources.zh-Hans.Designer.cs" />
-   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Properties\Resources.cs-CZ.resx" />
-    <EmbeddedResource Remove="Properties\Resources.de.resx" />
-    <EmbeddedResource Remove="Properties\Resources.es.resx" />
-    <EmbeddedResource Remove="Properties\Resources.fr.resx" />
-    <EmbeddedResource Remove="Properties\Resources.hu.resx" />
-    <EmbeddedResource Remove="Properties\Resources.it.resx" />
-    <EmbeddedResource Remove="Properties\Resources.pt-BR.resx" />
-    <EmbeddedResource Remove="Properties\Resources.ro.resx" />
-    <EmbeddedResource Remove="Properties\Resources.ru.resx" />
-    <EmbeddedResource Remove="Properties\Resources.sv.resx" />
-    <EmbeddedResource Remove="Properties\Resources.zh-Hans.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Remove="Themes\generi2c.xaml" />
   </ItemGroup>
 </Project>
