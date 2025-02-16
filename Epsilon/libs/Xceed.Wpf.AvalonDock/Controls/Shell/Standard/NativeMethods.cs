@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -21,24 +21,23 @@
 
 namespace Standard
 {
-	using System;
-	using System.ComponentModel;
-	using System.Diagnostics.CodeAnalysis;
-	using System.IO;
-	using System.Runtime.ConstrainedExecution;
-	using System.Runtime.InteropServices;
-	using System.Runtime.InteropServices.ComTypes;
-	using System.Security.Permissions;
-	using System.Text;
-	using Microsoft.Win32.SafeHandles;
+  using Microsoft.Win32.SafeHandles;
+  using System;
+  using System.ComponentModel;
+  using System.Diagnostics.CodeAnalysis;
+  using System.IO;
+  using System.Runtime.ConstrainedExecution;
+  using System.Runtime.InteropServices;
+  using System.Runtime.InteropServices.ComTypes;
+  using System.Security.Permissions;
+  using System.Text;
+  // Some COM interfaces and Win32 structures are already declared in the framework.
+  // Interesting ones to remember in System.Runtime.InteropServices.ComTypes are:
+  using IStream = System.Runtime.InteropServices.ComTypes.IStream;
 
-	// Some COM interfaces and Win32 structures are already declared in the framework.
-	// Interesting ones to remember in System.Runtime.InteropServices.ComTypes are:
-	using IStream = System.Runtime.InteropServices.ComTypes.IStream;
+  #region Native Values
 
-	#region Native Values
-
-	internal static class Win32Value
+  internal static class Win32Value
   {
     public const uint MAX_PATH = 260;
     public const uint INFOTIPSIZE = 1024;
@@ -49,9 +48,6 @@ namespace Standard
     public const uint sizeof_BOOL = 4;
   }
 
-  /// <summary>
-  /// HIGHCONTRAST flags
-  /// </summary>
   [Flags]
   internal enum HCF
   {
@@ -64,38 +60,17 @@ namespace Standard
     HOTKEYAVAILABLE = 0x00000040,
   }
 
-  /// <summary>
-  /// BITMAPINFOHEADER Compression type.  BI_*.
-  /// </summary>
   internal enum BI
   {
     RGB = 0,
   }
 
-  /// <summary>
-  /// CombingRgn flags.  RGN_*
-  /// </summary>
   internal enum RGN
   {
-    /// <summary>
-    /// Creates the intersection of the two combined regions.
-    /// </summary>
     AND = 1,
-    /// <summary>
-    /// Creates the union of two combined regions.
-    /// </summary>
     OR = 2,
-    /// <summary>
-    /// Creates the union of two combined regions except for any overlapping areas.
-    /// </summary>
     XOR = 3,
-    /// <summary>
-    /// Combines the parts of hrgnSrc1 that are not part of hrgnSrc2.
-    /// </summary>
     DIFF = 4,
-    /// <summary>
-    /// Creates a copy of the region identified by hrgnSrc1.
-    /// </summary>
     COPY = 5,
   }
 
@@ -107,9 +82,6 @@ namespace Standard
     COMPLEXREGION = 3,
   }
 
-  /// <summary>
-  /// For IWebBrowser2.  OLECMDEXECOPT_*
-  /// </summary>
   internal enum OLECMDEXECOPT
   {
     DODEFAULT = 0,
@@ -118,9 +90,6 @@ namespace Standard
     SHOWHELP = 3
   }
 
-  /// <summary>
-  /// For IWebBrowser2.  OLECMDF_*
-  /// </summary>
   internal enum OLECMDF
   {
     SUPPORTED = 1,
@@ -131,9 +100,6 @@ namespace Standard
     DEFHIDEONCTXTMENU = 32
   }
 
-  /// <summary>
-  /// For IWebBrowser2.  OLECMDID_*
-  /// </summary>
   internal enum OLECMDID
   {
     OPEN = 1,
@@ -195,9 +161,6 @@ namespace Standard
     SHOWPAGEACTIONMENU = 59
   }
 
-  /// <summary>
-  /// For IWebBrowser2.  READYSTATE_*
-  /// </summary>
   enum READYSTATE
   {
     UNINITIALIZED = 0,
@@ -207,9 +170,6 @@ namespace Standard
     COMPLETE = 4
   }
 
-  /// <summary>
-  /// DATAOBJ_GET_ITEM_FLAGS.  DOGIF_*.
-  /// </summary>
   internal enum DOGIF
   {
     DEFAULT = 0x0000,
@@ -228,35 +188,13 @@ namespace Standard
   [Flags]
   internal enum ErrorModes
   {
-    /// <summary>Use the system default, which is to display all error dialog boxes.</summary>
     Default = 0x0,
-    /// <summary>
-    /// The system does not display the critical-error-handler message box. 
-    /// Instead, the system sends the error to the calling process.
-    /// </summary>
     FailCriticalErrors = 0x1,
-    /// <summary>
-    /// 64-bit Windows:  The system automatically fixes memory alignment faults and makes them 
-    /// invisible to the application. It does this for the calling process and any descendant processes.
-    /// After this value is set for a process, subsequent attempts to clear the value are ignored.
-    /// </summary>
     NoGpFaultErrorBox = 0x2,
-    /// <summary>
-    /// The system does not display the general-protection-fault message box. 
-    /// This flag should only be set by debugging applications that handle general 
-    /// protection (GP) faults themselves with an exception handler.
-    /// </summary>
     NoAlignmentFaultExcept = 0x4,
-    /// <summary>
-    /// The system does not display a message box when it fails to find a file. 
-    /// Instead, the error is returned to the calling process.
-    /// </summary>
     NoOpenFileErrorBox = 0x8000
   }
 
-  /// <summary>
-  /// Non-client hit test values, HT*
-  /// </summary>
   internal enum HT
   {
     ERROR = -2,
@@ -290,17 +228,11 @@ namespace Standard
     HELP = 21
   }
 
-  /// <summary>
-  /// GetClassLongPtr values, GCLP_*
-  /// </summary>
   internal enum GCLP
   {
     HBRBACKGROUND = -10,
   }
 
-  /// <summary>
-  /// GetWindowLongPtr values, GWL_*
-  /// </summary>
   internal enum GWL
   {
     WNDPROC = ( -4 ),
@@ -312,9 +244,6 @@ namespace Standard
     ID = ( -12 )
   }
 
-  /// <summary>
-  /// SystemMetrics.  SM_*
-  /// </summary>
   internal enum SM
   {
     CXSCREEN = 0,
@@ -403,9 +332,6 @@ namespace Standard
     REMOTECONTROL = 0x2001,
   }
 
-  /// <summary>
-  /// SystemParameterInfo values, SPI_*
-  /// </summary>
   internal enum SPI
   {
     GETBEEP = 0x0001,
@@ -642,9 +568,6 @@ namespace Standard
     SETMESSAGEDURATION = 0x2017,
   }
 
-  /// <summary>
-  /// SystemParameterInfo flag values, SPIF_*
-  /// </summary>
   [Flags]
   internal enum SPIF
   {
@@ -707,9 +630,6 @@ namespace Standard
     DEFAULT_PALETTE = 15,
   }
 
-  /// <summary>
-  /// CS_*
-  /// </summary>
   [Flags]
   internal enum CS : uint
   {
@@ -728,9 +648,6 @@ namespace Standard
     DROPSHADOW = 0x00020000
   }
 
-  /// <summary>
-  /// WindowStyle values, WS_*
-  /// </summary>
   [Flags]
   internal enum WS : uint
   {
@@ -766,9 +683,6 @@ namespace Standard
     CHILDWINDOW = CHILD,
   }
 
-  /// <summary>
-  /// Window message values, WM_*
-  /// </summary>
   internal enum WM
   {
     NULL = 0x0000,
@@ -924,9 +838,6 @@ namespace Standard
     APP = 0x8000,
   }
 
-  /// <summary>
-  /// Window style extended values, WS_EX_*
-  /// </summary>
   [Flags]
   internal enum WS_EX : uint
   {
@@ -959,25 +870,11 @@ namespace Standard
     PALETTEWINDOW = ( WINDOWEDGE | TOOLWINDOW | TOPMOST ),
   }
 
-  /// <summary>
-  /// GetDeviceCaps nIndex values.
-  /// </summary>
   internal enum DeviceCap
   {
-    /// <summary>Number of bits per pixel
-    /// </summary>
     BITSPIXEL = 12,
-    /// <summary>
-    /// Number of planes
-    /// </summary>
     PLANES = 14,
-    /// <summary>
-    /// Logical pixels inch in X
-    /// </summary>
     LOGPIXELSX = 88,
-    /// <summary>
-    /// Logical pixels inch in Y
-    /// </summary>
     LOGPIXELSY = 90,
   }
 
@@ -989,9 +886,6 @@ namespace Standard
     RENAME = 0x0004,
   }
 
-  /// <summary>
-  /// "FILEOP_FLAGS", FOF_*.
-  /// </summary>
   internal enum FOF : ushort
   {
     MULTIDESTFILES = 0x0001,
@@ -1012,15 +906,9 @@ namespace Standard
     NORECURSEREPARSE = 0x8000,
   }
 
-  /// <summary>
-  /// EnableMenuItem uEnable values, MF_*
-  /// </summary>
   [Flags]
   internal enum MF : uint
   {
-    /// <summary>
-    /// Possible return value for EnableMenuItem
-    /// </summary>
     DOES_NOT_EXIST = unchecked(( uint )-1),
     ENABLED = 0,
     BYCOMMAND = 0,
@@ -1028,16 +916,11 @@ namespace Standard
     DISABLED = 2,
   }
 
-  /// <summary>Specifies the type of visual style attribute to set on a window.</summary>
   internal enum WINDOWTHEMEATTRIBUTETYPE : uint
   {
-    /// <summary>Non-client area window attributes will be set.</summary>
     WTA_NONCLIENT = 1,
   }
 
-  /// <summary>
-  /// DWMFLIP3DWINDOWPOLICY.  DWMFLIP3D_*
-  /// </summary>
   internal enum DWMFLIP3D
   {
     DEFAULT,
@@ -1046,9 +929,6 @@ namespace Standard
     //LAST
   }
 
-  /// <summary>
-  /// DWMNCRENDERINGPOLICY. DWMNCRP_*
-  /// </summary>
   internal enum DWMNCRP
   {
     USEWINDOWSTYLE,
@@ -1057,9 +937,6 @@ namespace Standard
     //LAST
   }
 
-  /// <summary>
-  /// DWMWINDOWATTRIBUTE.  DWMWA_*
-  /// </summary>
   internal enum DWMWA
   {
     NCRENDERING_ENABLED = 1,
@@ -1081,27 +958,16 @@ namespace Standard
     // LAST
   }
 
-  /// <summary>
-  /// WindowThemeNonClientAttributes
-  /// </summary>
   [Flags]
   internal enum WTNCA : uint
   {
-    /// <summary>Prevents the window caption from being drawn.</summary>
     NODRAWCAPTION = 0x00000001,
-    /// <summary>Prevents the system icon from being drawn.</summary>
     NODRAWICON = 0x00000002,
-    /// <summary>Prevents the system icon menu from appearing.</summary>
     NOSYSMENU = 0x00000004,
-    /// <summary>Prevents mirroring of the question mark, even in right-to-left (RTL) layout.</summary>
     NOMIRRORHELP = 0x00000008,
-    /// <summary> A mask that contains all the valid bits.</summary>
     VALIDBITS = NODRAWCAPTION | NODRAWICON | NOMIRRORHELP | NOSYSMENU,
   }
 
-  /// <summary>
-  /// SetWindowPos options
-  /// </summary>
   [Flags]
   internal enum SWP
   {
@@ -1122,9 +988,6 @@ namespace Standard
     SHOWWINDOW = 0x0040,
   }
 
-  /// <summary>
-  /// ShowWindow options
-  /// </summary>
   internal enum SW
   {
     HIDE = 0,
@@ -1165,17 +1028,11 @@ namespace Standard
     MONITORPOWER = 0xF170,
     CONTEXTHELP = 0xF180,
     SEPARATOR = 0xF00F,
-    /// <summary>
-    /// SCF_ISSECURE
-    /// </summary>
     F_ISSECURE = 0x00000001,
     ICON = MINIMIZE,
     ZOOM = MAXIMIZE,
   }
 
-  /// <summary>
-  /// GDI+ Status codes
-  /// </summary>
   internal enum Status
   {
     Ok = 0,
@@ -1209,9 +1066,6 @@ namespace Standard
     LEFTUP = 4
   }
 
-  /// <summary>
-  /// MSGFLT_*.  New in Vista.  Realiased in Windows 7.
-  /// </summary>
   internal enum MSGFLT
   {
     // Win7 versions of this enum:
@@ -1237,9 +1091,6 @@ namespace Standard
     MOUSE = 0,
   }
 
-  /// <summary>
-  /// Shell_NotifyIcon messages.  NIM_*
-  /// </summary>
   internal enum NIM : uint
   {
     ADD = 0,
@@ -1249,9 +1100,6 @@ namespace Standard
     SETVERSION = 4,
   }
 
-  /// <summary>
-  /// SHAddToRecentDocuments flags.  SHARD_*
-  /// </summary>
   internal enum SHARD
   {
     PIDL = 0x00000001,
@@ -1271,9 +1119,6 @@ namespace Standard
     RAWPATH = 0x4
   }
 
-  /// <summary>
-  /// Shell_NotifyIcon flags.  NIF_*
-  /// </summary>
   [Flags]
   internal enum NIF : uint
   {
@@ -1284,43 +1129,26 @@ namespace Standard
     INFO = 0x0010,
     GUID = 0x0020,
 
-    /// <summary>
-    /// Vista only.
-    /// </summary>
     REALTIME = 0x0040,
-    /// <summary>
-    /// Vista only.
-    /// </summary>
     SHOWTIP = 0x0080,
 
     XP_MASK = MESSAGE | ICON | STATE | INFO | GUID,
     VISTA_MASK = XP_MASK | REALTIME | SHOWTIP,
   }
 
-  /// <summary>
-  /// Shell_NotifyIcon info flags.  NIIF_*
-  /// </summary>
   internal enum NIIF
   {
     NONE = 0x00000000,
     INFO = 0x00000001,
     WARNING = 0x00000002,
     ERROR = 0x00000003,
-    /// <summary>XP SP2 and later.</summary>
     USER = 0x00000004,
-    /// <summary>XP and later.</summary>
     NOSOUND = 0x00000010,
-    /// <summary>Vista and later.</summary>
     LARGE_ICON = 0x00000020,
-    /// <summary>Windows 7 and later</summary>
     NIIF_RESPECT_QUIET_TIME = 0x00000080,
-    /// <summary>XP and later.  Native version called NIIF_ICON_MASK.</summary>
     XP_ICON_MASK = 0x0000000F,
   }
 
-  /// <summary>
-  /// AC_*
-  /// </summary>
   internal enum AC : byte
   {
     SRC_OVER = 0,
@@ -1777,11 +1605,6 @@ namespace Standard
     public IntPtr hIcon;
     [MarshalAs( UnmanagedType.ByValArray, SizeConst = 128 )]
     public char[] szTip = new char[ 128 ];
-    /// <summary>
-    /// The state of the icon.  There are two flags that can be set independently.
-    /// NIS_HIDDEN = 1.  The icon is hidden.
-    /// NIS_SHAREDICON = 2.  The icon is shared.
-    /// </summary>
     public uint dwState;
     public uint dwStateMask;
     [MarshalAs( UnmanagedType.ByValArray, SizeConst = 256 )]
@@ -1901,9 +1724,7 @@ namespace Standard
   [StructLayout( LayoutKind.Sequential, Pack = 4 )]
   internal class SHARDAPPIDINFOIDLIST
   {
-    /// <summary>The idlist for the shell item that should be added to the recent docs folder.</summary>
     IntPtr pidl;
-    /// <summary>The id of the application that should be associated with this recent doc.</summary>
     [MarshalAs( UnmanagedType.LPWStr )]
     string pszAppID;
   }
@@ -1995,26 +1816,16 @@ namespace Standard
     }
   }
 
-  /// <summary>Defines options that are used to set window visual style attributes.</summary>
   [StructLayout( LayoutKind.Explicit )]
   internal struct WTA_OPTIONS
   {
     // public static readonly uint Size = (uint)Marshal.SizeOf(typeof(WTA_OPTIONS));
     public const uint Size = 8;
 
-    /// <summary>
-    /// A combination of flags that modify window visual style attributes.
-    /// Can be a combination of the WTNCA constants.
-    /// </summary>
     [SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used by native code." )]
     [FieldOffset( 0 )]
     public WTNCA dwFlags;
 
-    /// <summary>
-    /// A bitmask that describes how the values specified in dwFlags should be applied.
-    /// If the bit corresponding to a value in dwFlags is 0, that flag will be removed.
-    /// If the bit is 1, the flag will be added.
-    /// </summary>
     [SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Used by native code." )]
     [FieldOffset( 4 )]
     public WTNCA dwMask;
@@ -2023,13 +1834,9 @@ namespace Standard
   [StructLayout( LayoutKind.Sequential )]
   internal struct MARGINS
   {
-    /// <summary>Width of left border that retains its size.</summary>
     public int cxLeftWidth;
-    /// <summary>Width of right border that retains its size.</summary>
     public int cxRightWidth;
-    /// <summary>Height of top border that retains its size.</summary>
     public int cyTopHeight;
-    /// <summary>Height of bottom border that retains its size.</summary>
     public int cyBottomHeight;
   };
 
@@ -2449,13 +2256,10 @@ namespace Standard
 
   #endregion
 
-  /// <summary>Delegate declaration that matches native WndProc signatures.</summary>
   internal delegate IntPtr WndProc( IntPtr hwnd, WM uMsg, IntPtr wParam, IntPtr lParam );
 
-  /// <summary>Delegate declaration that matches native WndProc signatures.</summary>
   internal delegate IntPtr WndProcHook( IntPtr hwnd, WM uMsg, IntPtr wParam, IntPtr lParam, ref bool handled );
 
-  /// <summary>Delegate declaration that matches managed WndProc signatures.</summary>
   internal delegate IntPtr MessageHandler( WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled );
 
   // Some native methods are shimmed through public versions that handle converting failures into thrown exceptions.
@@ -2957,12 +2761,7 @@ namespace Standard
 
     public static IntPtr GetStockObject( StockObject fnObject )
     {
-      IntPtr retPtr = _GetStockObject( fnObject );
-      if( retPtr == IntPtr.Zero )
-      {
-        HRESULT.ThrowLastError();
-      }
-      return retPtr;
+      return _GetStockObject( fnObject );
     }
 
     [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
@@ -2993,25 +2792,6 @@ namespace Standard
       return ret;
     }
 
-    /// <summary>
-    /// Sets attributes to control how visual styles are applied to a specified window.
-    /// </summary>
-    /// <param name="hwnd">
-    /// Handle to a window to apply changes to.
-    /// </param>
-    /// <param name="eAttribute">
-    /// Value of type WINDOWTHEMEATTRIBUTETYPE that specifies the type of attribute to set.
-    /// The value of this parameter determines the type of data that should be passed in the pvAttribute parameter.
-    /// Can be the following value:
-    /// <list>WTA_NONCLIENT (Specifies non-client related attributes).</list>
-    /// pvAttribute must be a pointer of type WTA_OPTIONS.
-    /// </param>
-    /// <param name="pvAttribute">
-    /// A pointer that specifies attributes to set. Type is determined by the value of the eAttribute value.
-    /// </param>
-    /// <param name="cbAttribute">
-    /// Specifies the size, in bytes, of the data pointed to by pvAttribute.
-    /// </param>
     [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "uxtheme.dll", PreserveSig = false )]
     public static extern void SetWindowThemeAttribute( [In] IntPtr hwnd, [In] WINDOWTHEMEATTRIBUTETYPE eAttribute, [In] ref WTA_OPTIONS pvAttribute, [In] uint cbAttribute );
@@ -3267,13 +3047,11 @@ namespace Standard
     [return: MarshalAs( UnmanagedType.Bool )]
     private static extern bool _SystemParametersInfo_String( SPI uiAction, int uiParam, [MarshalAs( UnmanagedType.LPWStr )] string pvParam, SPIF fWinIni );
 
-    /// <summary>Overload of SystemParametersInfo for getting and setting NONCLIENTMETRICS.</summary>
     [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "user32.dll", EntryPoint = "SystemParametersInfoW", SetLastError = true, CharSet = CharSet.Unicode )]
     [return: MarshalAs( UnmanagedType.Bool )]
     private static extern bool _SystemParametersInfo_NONCLIENTMETRICS( SPI uiAction, int uiParam, [In, Out] ref NONCLIENTMETRICS pvParam, SPIF fWinIni );
 
-    /// <summary>Overload of SystemParametersInfo for getting and setting HIGHCONTRAST.</summary>
     [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "user32.dll", EntryPoint = "SystemParametersInfoW", SetLastError = true, CharSet = CharSet.Unicode )]
     [return: MarshalAs( UnmanagedType.Bool )]
@@ -3517,18 +3295,10 @@ namespace Standard
     [return: MarshalAs( UnmanagedType.Bool )]
     public static extern bool Shell_NotifyIcon( NIM dwMessage, [In] NOTIFYICONDATA lpdata );
 
-    /// <summary>
-    /// Sets the User Model AppID for the current process, enabling Windows to retrieve this ID
-    /// </summary>
-    /// <param name="AppID"></param>
     [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "shell32.dll", PreserveSig = false )]
     public static extern void SetCurrentProcessExplicitAppUserModelID( [MarshalAs( UnmanagedType.LPWStr )] string AppID );
 
-    /// <summary>
-    /// Retrieves the User Model AppID that has been explicitly set for the current process via SetCurrentProcessExplicitAppUserModelID
-    /// </summary>
-    /// <param name="AppID"></param>
     [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "shell32.dll" )]
     public static extern HRESULT GetCurrentProcessExplicitAppUserModelID( [Out, MarshalAs( UnmanagedType.LPWStr )] out string AppID );

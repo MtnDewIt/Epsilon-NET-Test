@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -16,12 +16,12 @@
   ***********************************************************************************/
 
 using System;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Xml.Serialization;
 using System.Windows.Controls;
-using System.Globalization;
-using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace Xceed.Wpf.AvalonDock.Layout
 {
@@ -205,9 +205,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     #region IsAutoHidden
 
-    /// <summary>
-    /// Get a value indicating if the anchorable is anchored to a border in an autohide status
-    /// </summary>
     public bool IsAutoHidden
     {
       get
@@ -280,37 +277,42 @@ namespace Xceed.Wpf.AvalonDock.Layout
     protected override void InternalDock()
     {
       var root = Root as LayoutRoot;
-      LayoutAnchorablePane anchorablePane = null;
+      ILayoutPane layoutPane = null;
 
       if( root.ActiveContent != null &&
           root.ActiveContent != this )
       {
         //look for active content parent pane
-        anchorablePane = root.ActiveContent.Parent as LayoutAnchorablePane;
+        layoutPane = root.ActiveContent.Parent as LayoutAnchorablePane;
       }
 
-      if( anchorablePane == null )
+      if( layoutPane == null )
       {
         //look for a pane on the right side
-        anchorablePane = root.Descendents().OfType<LayoutAnchorablePane>().Where( pane => !pane.IsHostedInFloatingWindow && pane.GetSide() == AnchorSide.Right ).FirstOrDefault();
+        layoutPane = root.Descendents().OfType<LayoutAnchorablePane>().Where( pane => !pane.IsHostedInFloatingWindow && pane.GetSide() == AnchorSide.Right ).FirstOrDefault();
       }
 
-      if( anchorablePane == null )
+      if( layoutPane == null )
       {
         //look for an available pane
-        anchorablePane = root.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault();
+        layoutPane = root.Descendents().OfType<LayoutAnchorablePane>().Where( pane => !pane.IsHostedInFloatingWindow ).FirstOrDefault();
       }
 
+      if( layoutPane == null )
+      {
+        //look for an available pane
+        layoutPane = root.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
+      }
 
       bool added = false;
       if( root.Manager.LayoutUpdateStrategy != null )
       {
-        added = root.Manager.LayoutUpdateStrategy.BeforeInsertAnchorable( root, this, anchorablePane );
+        added = root.Manager.LayoutUpdateStrategy.BeforeInsertAnchorable( root, this, layoutPane );
       }
 
       if( !added )
       {
-        if( anchorablePane == null )
+        if( layoutPane == null )
         {
           var mainLayoutPanel = new LayoutPanel() { Orientation = Orientation.Horizontal };
           if( root.RootPanel != null )
@@ -319,11 +321,19 @@ namespace Xceed.Wpf.AvalonDock.Layout
           }
 
           root.RootPanel = mainLayoutPanel;
-          anchorablePane = new LayoutAnchorablePane() { DockWidth = new GridLength( 200.0, GridUnitType.Pixel ) };
-          mainLayoutPanel.Children.Add( anchorablePane );
+          layoutPane = new LayoutAnchorablePane() { DockWidth = new GridLength( 200.0, GridUnitType.Pixel ) };
+          mainLayoutPanel.Children.Add( ( ILayoutPanelElement )layoutPane );
         }
 
-        anchorablePane.Children.Add( this );
+        if( layoutPane is LayoutAnchorablePane )
+        {
+          ( layoutPane as LayoutAnchorablePane ).Children.Add( this );
+        }
+        else
+        {
+          ( layoutPane as LayoutDocumentPane ).Children.Add( this );
+        }
+
         added = true;
       }
 
@@ -392,10 +402,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     #region Public Methods
 
-    /// <summary>
-    /// Hide this contents
-    /// </summary>
-    /// <remarks>Add this content to <see cref="ILayoutRoot.Hidden"/> collection of parent root.</remarks>
     public void Hide( bool cancelable = true )
     {
       if( !IsVisible )
@@ -415,14 +421,16 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
       RaisePropertyChanging( "IsHidden" );
       RaisePropertyChanging( "IsVisible" );
-      //if (Parent is ILayoutPane)
+
+      this.InitialContainer = this.PreviousContainer as ILayoutPane;
+      this.InitialContainerIndex = this.PreviousContainerIndex;
+      this.InitialContainerId = this.PreviousContainerId;
+
+      var parentAsGroup = this.Parent as ILayoutGroup;
+      this.PreviousContainer = parentAsGroup;
+      if( parentAsGroup != null )
       {
-        var parentAsGroup = Parent as ILayoutGroup;
-        PreviousContainer = parentAsGroup;
-        if( parentAsGroup != null )
-        {
-          PreviousContainerIndex = parentAsGroup.IndexOfChild( this );
-        }
+        this.PreviousContainerIndex = parentAsGroup.IndexOfChild( this );
       }
       if( this.Root != null )
       {
@@ -436,10 +444,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
     }
 
 
-    /// <summary>
-    /// Show the content
-    /// </summary>
-    /// <remarks>Try to show the content where it was previously hidden.</remarks>
     public void Show()
     {
       if( IsVisible )
@@ -478,8 +482,13 @@ namespace Xceed.Wpf.AvalonDock.Layout
         }
       }
 
-      PreviousContainer = null;
-      PreviousContainerIndex = -1;
+      // When InitialContainer exists, set it to PreviousContainer in order to dock in expected position.
+      this.PreviousContainer = ( this.InitialContainer != null ) ? this.InitialContainer : null;
+      this.PreviousContainerIndex = ( this.InitialContainerIndex != -1 ) ? this.InitialContainerIndex : -1;
+
+      this.InitialContainer = null;
+      this.InitialContainerIndex = -1;
+      this.InitialContainerId = null;
 
       RaisePropertyChanged( "IsVisible" );
       RaisePropertyChanged( "IsHidden" );
@@ -487,11 +496,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
     }
 
 
-    /// <summary>
-    /// Add the anchorable to a DockingManager layout
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="strategy"></param>
     public void AddToLayout( DockingManager manager, AnchorableShowStrategy strategy )
     {
       if( IsVisible ||
@@ -657,10 +661,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
           cnt.PreviousContainer = previousContainer;
         }
 
-        foreach( var anchorableToToggle in parentGroup.Children.ToArray() )
-        {
-          previousContainer.Children.Add( anchorableToToggle );
-        }
+        previousContainer.Children.Add( this );
 
         if( previousContainer.Children.Count > 0 )
         {
@@ -668,7 +669,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
           previousContainer.SelectedContentIndex = previousContainer.Children.IndexOf( this );
         }
 
-        parentSide.Children.Remove( parentGroup );
+        if( parentGroup.Children.Count == 0 )
+        {
+          parentSide.Children.Remove( parentGroup );
+        }
 
         var parent = previousContainer.Parent as LayoutGroupBase;
         while( ( parent != null ) )
@@ -692,8 +696,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         ( ( ILayoutPreviousContainer )newAnchorGroup ).PreviousContainer = parentPane;
 
-        foreach( var anchorableToImport in parentPane.Children.ToArray() )
-          newAnchorGroup.Children.Add( anchorableToImport );
+        newAnchorGroup.Children.Add( this );
 
         //detect anchor side for the pane
         var anchorSide = parentPane.GetSide();
@@ -745,15 +748,18 @@ namespace Xceed.Wpf.AvalonDock.Layout
         Hidden( this, EventArgs.Empty );
     }
 
-    internal void CloseAnchorable()
+    internal bool CloseAnchorable()
     {
-      if( this.TestCanClose() )
+      var canClose = this.TestCanClose();
+      if( canClose )
       {
         if( this.IsAutoHidden )
           this.ToggleAutoHide();
 
         this.CloseInternal();
       }
+
+      return canClose;
     }
 
     internal void SetCanCloseInternal( bool canClose )

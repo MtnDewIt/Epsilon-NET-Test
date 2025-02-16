@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -112,6 +112,15 @@ namespace Xceed.Wpf.AvalonDock.Controls
       }
       while( target != null && !( target is T ) );
       return target as T;
+    }
+
+    public static IEnumerable<DependencyObject> FindLogicalAncestorsAndSelf( this DependencyObject self )
+    {
+      while( self != null )
+      {
+        yield return self;
+        self = LogicalTreeHelper.GetParent( self ) ?? VisualTreeHelper.GetParent( self );
+      }
     }
   }
 }

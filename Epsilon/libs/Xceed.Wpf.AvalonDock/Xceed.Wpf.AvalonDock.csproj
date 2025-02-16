@@ -16,6 +16,7 @@
     <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <ItemGroup>
+    <Resource Include="Themes\Generic\Images\PinAutoHide_White.png" />
     <Resource Include="Themes\Generic\Images\DockBottom.PNG" />
     <Resource Include="Themes\Generic\Images\DockLeft.PNG" />
     <Resource Include="Themes\Generic\Images\DockPane.PNG" />
@@ -35,10 +36,15 @@
     <Resource Include="Themes\Generic\Images\Locked.png" />
     <Resource Include="Themes\Generic\Images\PinAutoHide.png" />
     <Resource Include="Themes\Generic\Images\PinClose.png" />
+    <Resource Include="Themes\Generic\Images\PinClose_White.png" />
     <Resource Include="Themes\Generic\Images\PinDocMenu.png" />
+    <Resource Include="Themes\Generic\Images\PinDocMenu_White.png" />
     <Resource Include="Themes\Generic\Images\PinMaximize.png" />
+    <Resource Include="Themes\Generic\Images\PinMaximize_White.png" />
     <Resource Include="Themes\Generic\Images\PinMenu.png" />
+    <Resource Include="Themes\Generic\Images\PinMenu_White.png" />
     <Resource Include="Themes\Generic\Images\PinRestore.png" />
+    <Resource Include="Themes\Generic\Images\PinRestore_White.png" />
     <Resource Include="Themes\Generic\Images\VTabGroup.png" />
   </ItemGroup>
   <ItemGroup>

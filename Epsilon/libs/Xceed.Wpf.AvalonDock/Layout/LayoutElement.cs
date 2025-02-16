@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -16,8 +16,8 @@
   ***********************************************************************************/
 
 using System;
-using System.Windows;
 using System.ComponentModel;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace Xceed.Wpf.AvalonDock.Layout
@@ -114,16 +114,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     #region Internal Methods
 
-    /// <summary>
-    /// Provides derived classes an opportunity to handle execute code before to the Parent property changes.
-    /// </summary>
     protected virtual void OnParentChanging( ILayoutContainer oldValue, ILayoutContainer newValue )
     {
     }
 
-    /// <summary>
-    /// Provides derived classes an opportunity to handle changes to the Parent property.
-    /// </summary>
     protected virtual void OnParentChanged( ILayoutContainer oldValue, ILayoutContainer newValue )
     {
     }

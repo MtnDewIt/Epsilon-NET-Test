@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -97,7 +97,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
           layoutPanel = parentContainer.FindParent<LayoutPanel>();
         }
 
-        if( (layoutPanel != null) && ( layoutPanel.Children.Count > 0 ) )
+        if( ( layoutPanel != null ) && ( layoutPanel.Children.Count > 0 ) )
         {
           var childrenCount = layoutPanel.Children.Count;
           var currentChildID = -1;
@@ -110,12 +110,34 @@ namespace Xceed.Wpf.AvalonDock.Layout
             }
           }
 
-            if ((layoutPanel != null) && (layoutPanel.Children.Count > 0))
+          if( layoutPanel.Orientation == System.Windows.Controls.Orientation.Horizontal )
+          {
+            if( currentChildID < 0 )
             {
-                if (layoutPanel.Orientation == System.Windows.Controls.Orientation.Horizontal)
-                    return (layoutPanel.Children[0].Equals(element) || layoutPanel.Children[0].Descendents().Contains(element)) ? AnchorSide.Left : AnchorSide.Right;
-                return (layoutPanel.Children[0].Equals(element) || layoutPanel.Children[0].Descendents().Contains(element)) ? AnchorSide.Top : AnchorSide.Bottom;
+              return AnchorSide.Right;
             }
+            else
+            {
+              if( childrenCount == 1 )
+                return AnchorSide.Left;
+
+              return ( currentChildID < ( childrenCount / 2d ) ) ? AnchorSide.Left : AnchorSide.Right;
+            }
+          }
+          else
+          {
+            if( currentChildID < 0 )
+            {
+              return AnchorSide.Bottom;
+            }
+            else
+            {
+              if( childrenCount == 1 )
+                return AnchorSide.Top;
+
+              return ( currentChildID < ( childrenCount / 2d ) ) ? AnchorSide.Top : AnchorSide.Bottom;
+            }
+          }
         }
       }
 

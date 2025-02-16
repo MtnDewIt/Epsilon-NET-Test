@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -17,17 +17,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows;
-using System.Diagnostics;
-using Xceed.Wpf.AvalonDock.Layout;
 using System.Windows.Media;
+using System.Windows.Threading;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
-	internal static class FocusElementManager
+  internal static class FocusElementManager
   {
     #region Member
 
@@ -36,7 +38,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
     private static WeakDictionary<ILayoutElement, IntPtr> _modelFocusedWindowHandle = new WeakDictionary<ILayoutElement, IntPtr>();
     private static WeakReference _lastFocusedElement;
     private static WindowHookHandler _windowHandler = null;
-    //private static DispatcherOperation _setFocusAsyncOperation;
+    private static DispatcherOperation _setFocusAsyncOperation;
     private static WeakReference _lastFocusedElementBeforeEnterMenuMode = null;
 
     #endregion
@@ -55,7 +57,40 @@ namespace Xceed.Wpf.AvalonDock.Controls
         _windowHandler.Attach();
 
         if( Application.Current != null )
-          Application.Current.Exit += new ExitEventHandler( Current_Exit );
+        {
+          var currentDispatcher = Application.Current.Dispatcher;
+          if( currentDispatcher != null )
+          {
+            if( currentDispatcher.CheckAccess() )
+            {
+              Application.Current.Exit += new ExitEventHandler( Current_Exit );
+            }
+            else
+            {
+              var disableProcessingCountFieldInfo = typeof( Dispatcher ).GetField( "_disableProcessingCount", BindingFlags.Instance | BindingFlags.NonPublic );
+              if( disableProcessingCountFieldInfo != null )
+              {
+                var disableProcessingCountFieldInfoValue = disableProcessingCountFieldInfo.GetValue( currentDispatcher );
+                if( ( disableProcessingCountFieldInfoValue != null ) && ( disableProcessingCountFieldInfoValue is int ) )
+                {
+                  var action = new Action( () => Application.Current.Exit += new ExitEventHandler( Current_Exit ) );
+
+                  if( ( int )disableProcessingCountFieldInfoValue == 0 )
+                  {
+                    // in sync
+                    currentDispatcher.Invoke( DispatcherPriority.Normal, action );
+                  }
+                  else
+                  {
+                    // in async.
+                    currentDispatcher.BeginInvoke( DispatcherPriority.Normal, action );
+                  }
+                }
+              }
+            }
+          }
+
+        }
       }
 
       manager.PreviewGotKeyboardFocus += new KeyboardFocusChangedEventHandler( manager_PreviewGotKeyboardFocus );
@@ -82,11 +117,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     }
 
-    /// <summary>
-    /// Get the input element that was focused before user left the layout element
-    /// </summary>
-    /// <param name="model">Element to look for</param>
-    /// <returns>Input element </returns>
     internal static IInputElement GetLastFocusedElement( ILayoutElement model )
     {
       IInputElement objectWithFocus;
@@ -97,11 +127,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
     }
 
 
-    /// <summary>
-    /// Get the last window handle focused before user left the element passed as argument
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
     internal static IntPtr GetLastWindowHandle( ILayoutElement model )
     {
       IntPtr handleWithFocus;
@@ -111,10 +136,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
       return IntPtr.Zero;
     }
 
-    /// <summary>
-    /// Given a layout element tries to set the focus of the keyword where it was before user moved to another element
-    /// </summary>
-    /// <param name="model"></param>
     internal static void SetFocusOnLastElement( ILayoutElement model )
     {
       bool focused = false;
@@ -152,21 +173,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
       }
     }
 
-    public static T FindRootVisualAncestor<T>(DependencyObject dependencyObject) where T : class
-    {
-        T found = null;
-        DependencyObject target = dependencyObject;
-        do
-        {
-            target = VisualTreeHelper.GetParent(target);
-                if (target is T f)
-                    found = f;
-        }
-        while (target != null);
-
-        return found;
-    }
-
     private static void manager_PreviewGotKeyboardFocus( object sender, KeyboardFocusChangedEventArgs e )
     {
       var focusedElement = e.NewFocus as Visual;
@@ -174,18 +180,18 @@ namespace Xceed.Wpf.AvalonDock.Controls
           !( focusedElement is LayoutAnchorableTabItem || focusedElement is LayoutDocumentTabItem ) )
       //Avoid tracking focus for elements like this
       {
-        var parentAnchorable = FindRootVisualAncestor<LayoutAnchorableControl>(focusedElement);
-        if ( parentAnchorable != null )
+        var parentAnchorable = focusedElement.FindVisualAncestor<LayoutAnchorableControl>();
+        if( parentAnchorable != null )
         {
-            _modelFocusedElement[ parentAnchorable.Model ] = e.NewFocus;
-            parentAnchorable.Model.Root.ActiveContent = parentAnchorable.Model;
-         }
-      
-          var parentDocument = FindRootVisualAncestor<LayoutDocumentControl>(focusedElement);
+          _modelFocusedElement[ parentAnchorable.Model ] = e.NewFocus;
+        }
+        else
+        {
+          var parentDocument = focusedElement.FindVisualAncestor<LayoutDocumentControl>();
           if( parentDocument != null )
           {
             _modelFocusedElement[ parentDocument.Model ] = e.NewFocus;
-            parentDocument.Model.Root.ActiveContent = parentDocument.Model;
+          }
         }
       }
     }
@@ -239,17 +245,17 @@ namespace Xceed.Wpf.AvalonDock.Controls
           if( e.HwndActivating != parentHwnd )
             return;
 
-          //_setFocusAsyncOperation = Dispatcher.CurrentDispatcher.BeginInvoke( new Action( () =>
-          //{
-          //  try
-          //  {
-          //    SetFocusOnLastElement( elementToSetFocus );
-          //  }
-          //  finally
-          //  {
-          //    _setFocusAsyncOperation = null;
-          //  }
-          //} ), DispatcherPriority.Input );
+          _setFocusAsyncOperation = Dispatcher.CurrentDispatcher.BeginInvoke( new Action( () =>
+          {
+            try
+            {
+              SetFocusOnLastElement( elementToSetFocus );
+            }
+            finally
+            {
+              _setFocusAsyncOperation = null;
+            }
+          } ), DispatcherPriority.Input );
         }
       }
     }

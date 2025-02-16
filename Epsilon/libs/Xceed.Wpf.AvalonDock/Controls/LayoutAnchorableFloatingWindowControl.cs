@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -15,17 +15,17 @@
 
   ***********************************************************************************/
 
+using Microsoft.Windows.Shell;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Converters;
-using System.Windows.Controls.Primitives;
 using Xceed.Wpf.AvalonDock.Commands;
-using Microsoft.Windows.Shell;
+using Xceed.Wpf.AvalonDock.Converters;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
@@ -66,16 +66,9 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     #region SingleContentLayoutItem
 
-    /// <summary>
-    /// SingleContentLayoutItem Dependency Property
-    /// </summary>
     public static readonly DependencyProperty SingleContentLayoutItemProperty = DependencyProperty.Register( "SingleContentLayoutItem", typeof( LayoutItem ), typeof( LayoutAnchorableFloatingWindowControl ),
             new FrameworkPropertyMetadata( ( LayoutItem )null, new PropertyChangedCallback( OnSingleContentLayoutItemChanged ) ) );
 
-    /// <summary>
-    /// Gets or sets the SingleContentLayoutItem property.  This dependency property 
-    /// indicates the layout item of the selected content when is shown a single anchorable pane.
-    /// </summary>
     public LayoutItem SingleContentLayoutItem
     {
       get
@@ -88,17 +81,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
       }
     }
 
-    /// <summary>
-    /// Handles changes to the SingleContentLayoutItem property.
-    /// </summary>
     private static void OnSingleContentLayoutItemChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
       ( ( LayoutAnchorableFloatingWindowControl )d ).OnSingleContentLayoutItemChanged( e );
     }
 
-    /// <summary>
-    /// Provides derived classes an opportunity to handle changes to the SingleContentLayoutItem property.
-    /// </summary>
     protected virtual void OnSingleContentLayoutItemChanged( DependencyPropertyChangedEventArgs e )
     {
     }
@@ -143,9 +130,9 @@ namespace Xceed.Wpf.AvalonDock.Controls
         _overlayWindow = null;
       }
 
-      base.OnClosed( e );      
+      base.OnClosed( e );
 
-      _model.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler( _model_PropertyChanged );      
+      _model.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler( _model_PropertyChanged );
       IsVisibleChanged -= this.LayoutAnchorableFloatingWindowControl_IsVisibleChanged;
       BindingOperations.ClearBinding( this, VisibilityProperty );
       BindingOperations.ClearBinding( this, SingleContentLayoutItemProperty );
@@ -336,7 +323,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     private bool CanExecuteHideWindowCommand( object parameter )
     {
-      return this.CanHide( parameter );     
+      return this.CanHide( parameter );
     }
 
     private void OnExecuteHideWindowCommand( object parameter )
@@ -347,6 +334,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
         var anchorableLayoutItem = manager.GetLayoutItemFromModel( anchorable ) as LayoutAnchorableItem;
         anchorableLayoutItem.HideCommand.Execute( parameter );
       }
+
+      this.BringFocusOnDockingManager();
     }
     #endregion
 

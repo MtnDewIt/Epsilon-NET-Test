@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -16,9 +16,9 @@
   ***********************************************************************************/
 
 using System;
-using System.Windows.Media;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace Xceed.Wpf.AvalonDock
 {
@@ -31,14 +31,17 @@ namespace Xceed.Wpf.AvalonDock
 
     public static void SetParentToMainWindowOf( this Window window, Visual element )
     {
-      var wndParent = Window.GetWindow( element );
-      if( wndParent != null )
-        window.Owner = wndParent;
-      else
+
       {
-        IntPtr parentHwnd;
-        if( GetParentWindowHandle( element, out parentHwnd ) )
-          Win32Helper.SetOwner( new WindowInteropHelper( window ).Handle, parentHwnd );
+        var wndParent = Window.GetWindow( element );
+        if( wndParent != null )
+          window.Owner = wndParent;
+        else
+        {
+          IntPtr parentHwnd;
+          if( GetParentWindowHandle( element, out parentHwnd ) )
+            Win32Helper.SetOwner( new WindowInteropHelper( window ).Handle, parentHwnd );
+        }
       }
     }
 

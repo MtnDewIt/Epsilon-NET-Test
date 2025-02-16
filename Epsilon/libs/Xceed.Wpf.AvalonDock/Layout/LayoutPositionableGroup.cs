@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -16,8 +16,8 @@
   ***********************************************************************************/
 
 using System;
-using System.Windows;
 using System.Globalization;
+using System.Windows;
 
 namespace Xceed.Wpf.AvalonDock.Layout
 {
@@ -91,12 +91,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
     #region AllowDuplicateContent
 
     private bool _allowDuplicateContent = true;
-    /// <summary>
-    /// Gets or sets the AllowDuplicateContent property.
-    /// When this property is true, then the LayoutDocumentPane or LayoutAnchorablePane allows dropping
-    /// duplicate content (according to its Title and ContentId). When this dependency property is false,
-    /// then the LayoutDocumentPane or LayoutAnchorablePane hides the OverlayWindow.DropInto button to prevent dropping of duplicate content.
-    /// </summary>
     public bool AllowDuplicateContent
     {
       get

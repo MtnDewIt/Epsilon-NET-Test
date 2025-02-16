@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -18,11 +18,11 @@
 
 namespace Microsoft.Windows.Shell
 {
+  using Standard;
   using System;
   using System.Windows;
   using System.Windows.Input;
   using System.Windows.Interop;
-  using Standard;
 
   public static class SystemCommands
   {
@@ -91,8 +91,6 @@ namespace Microsoft.Windows.Shell
       _PostSystemCommand( window, SC.RESTORE );
     }
 
-    /// <summary>Display the system menu at a specified location.</summary>
-    /// <param name="screenLocation">The location to display the system menu, in logical screen coordinates.</param>
     public static void ShowSystemMenu( Window window, Point screenLocation )
     {
       Verify.IsNotNull( window, "window" );

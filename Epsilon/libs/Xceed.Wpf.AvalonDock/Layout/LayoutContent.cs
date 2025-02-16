@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -16,20 +16,20 @@
   ***********************************************************************************/
 
 using System;
-using System.Linq;
-using System.Windows.Markup;
-using System.Xml.Serialization;
-using System.Windows;
-using System.Globalization;
-using System.Windows.Media;
 using System.ComponentModel;
-using Xceed.Wpf.AvalonDock.Controls;
+using System.Globalization;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace Xceed.Wpf.AvalonDock.Layout
 {
   [ContentProperty( "Content" )]
   [Serializable]
-  public abstract class LayoutContent : LayoutElement, IXmlSerializable, ILayoutElementForFloatingWindow, IComparable<LayoutContent>, ILayoutPreviousContainer
+  public abstract class LayoutContent : LayoutElement, IXmlSerializable, ILayoutElementForFloatingWindow, IComparable<LayoutContent>, ILayoutPreviousContainer, ILayoutInitialContainer
   {
     #region Constructors
 
@@ -43,7 +43,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     #region Title
 
-    public static readonly DependencyProperty TitleProperty =  DependencyProperty.Register( "Title", typeof( string ), typeof( LayoutContent ), new UIPropertyMetadata( null, OnTitlePropertyChanged, CoerceTitleValue ) );
+    public static readonly DependencyProperty TitleProperty = DependencyProperty.Register( "Title", typeof( string ), typeof( LayoutContent ), new UIPropertyMetadata( null, OnTitlePropertyChanged, CoerceTitleValue ) );
 
     public string Title
     {
@@ -114,7 +114,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
     {
       get
       {
-        return (string)GetValue( ContentIdProperty );
+        return ( string )GetValue( ContentIdProperty );
       }
       set
       {
@@ -127,7 +127,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
       var layoutContent = obj as LayoutContent;
       if( layoutContent != null )
       {
-        layoutContent.OnContentIdPropertyChanged( (string)args.OldValue, (string)args.NewValue );
+        layoutContent.OnContentIdPropertyChanged( ( string )args.OldValue, ( string )args.NewValue );
       }
     }
 
@@ -162,16 +162,14 @@ namespace Xceed.Wpf.AvalonDock.Layout
             parentSelector.SelectedContentIndex = _isSelected ? parentSelector.IndexOf( this ) : -1;
           OnIsSelectedChanged( oldValue, value );
           RaisePropertyChanged( "IsSelected" );
-          LayoutAnchorableTabItem.CancelMouseLeave();
         }
       }
     }
 
-    /// <summary>
-    /// Provides derived classes an opportunity to handle changes to the IsSelected property.
-    /// </summary>
     protected virtual void OnIsSelectedChanged( bool oldValue, bool newValue )
     {
+      this.UpdateContainedFloatingWindowTaskbarTitle( newValue );
+
       if( IsSelectedChanged != null )
         IsSelectedChanged( this, EventArgs.Empty );
     }
@@ -213,9 +211,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
       }
     }
 
-    /// <summary>
-    /// Provides derived classes an opportunity to handle changes to the IsActive property.
-    /// </summary>
     protected virtual void OnIsActiveChanged( bool oldValue, bool newValue )
     {
       if( newValue )
@@ -311,6 +306,66 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     #endregion
 
+    #region InitialContainer
+
+    [field: NonSerialized]
+    private ILayoutContainer _initialContainer = null;
+
+    [XmlIgnore]
+    ILayoutContainer ILayoutInitialContainer.InitialContainer
+    {
+      get
+      {
+        return _initialContainer;
+      }
+      set
+      {
+        if( _initialContainer != value )
+        {
+          _initialContainer = value;
+          RaisePropertyChanged( "InitialContainer" );
+
+          var paneSerializable = _initialContainer as ILayoutPaneSerializable;
+          if( paneSerializable != null &&
+              paneSerializable.Id == null )
+            paneSerializable.Id = Guid.NewGuid().ToString();
+        }
+      }
+    }
+
+    internal ILayoutContainer InitialContainer
+    {
+      get
+      {
+        return ( ( ILayoutInitialContainer )this ).InitialContainer;
+      }
+      set
+      {
+        ( ( ILayoutInitialContainer )this ).InitialContainer = value;
+      }
+    }
+
+    [XmlIgnore]
+    string ILayoutInitialContainer.InitialContainerId
+    {
+      get;
+      set;
+    }
+
+    internal string InitialContainerId
+    {
+      get
+      {
+        return ( ( ILayoutInitialContainer )this ).InitialContainerId;
+      }
+      set
+      {
+        ( ( ILayoutInitialContainer )this ).InitialContainerId = value;
+      }
+    }
+
+    #endregion
+
     #region PreviousContainerIndex
     [field: NonSerialized]
     private int _previousContainerIndex = -1;
@@ -327,6 +382,28 @@ namespace Xceed.Wpf.AvalonDock.Layout
         {
           _previousContainerIndex = value;
           RaisePropertyChanged( "PreviousContainerIndex" );
+        }
+      }
+    }
+
+    #endregion
+
+    #region InitialContainerIndex
+    [field: NonSerialized]
+    private int _initialContainerIndex = -1;
+    [XmlIgnore]
+    internal int InitialContainerIndex
+    {
+      get
+      {
+        return _initialContainerIndex;
+      }
+      set
+      {
+        if( _initialContainerIndex != value )
+        {
+          _initialContainerIndex = value;
+          RaisePropertyChanged( "InitialContainerIndex" );
         }
       }
     }
@@ -486,11 +563,22 @@ namespace Xceed.Wpf.AvalonDock.Layout
     #endregion
 
     #region IsFloating
+
+    private bool _isFloating = false;
+
     public bool IsFloating
     {
       get
       {
-        return this.FindParent<LayoutFloatingWindow>() != null;
+        return _isFloating;
+      }
+      internal set
+      {
+        if( _isFloating != value )
+        {
+          _isFloating = value;
+          RaisePropertyChanged( "IsFloating" );
+        }
       }
     }
 
@@ -627,10 +715,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     #region Public Methods
 
-    /// <summary>
-    /// Close the content
-    /// </summary>
-    /// <remarks>Please note that usually the anchorable is only hidden (not closed). By default when user click the X button it only hides the content.</remarks>
     public abstract void Close();
 
     public System.Xml.Schema.XmlSchema GetSchema()
@@ -655,6 +739,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         PreviousContainerId = reader.Value;
       if( reader.MoveToAttribute( "PreviousContainerIndex" ) )
         PreviousContainerIndex = int.Parse( reader.Value );
+      if( reader.MoveToAttribute( "InitialContainerId" ) )
+        InitialContainerId = reader.Value;
+      if( reader.MoveToAttribute( "InitialContainerIndex" ) )
+        InitialContainerIndex = int.Parse( reader.Value );
 
       if( reader.MoveToAttribute( "FloatingLeft" ) )
         FloatingLeft = double.Parse( reader.Value, CultureInfo.InvariantCulture );
@@ -664,6 +752,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
         FloatingWidth = double.Parse( reader.Value, CultureInfo.InvariantCulture );
       if( reader.MoveToAttribute( "FloatingHeight" ) )
         FloatingHeight = double.Parse( reader.Value, CultureInfo.InvariantCulture );
+      if( reader.MoveToAttribute( "IsFloating" ) )
+        IsFloating = bool.Parse( reader.Value );
       if( reader.MoveToAttribute( "IsMaximized" ) )
         IsMaximized = bool.Parse( reader.Value );
       if( reader.MoveToAttribute( "CanClose" ) )
@@ -706,6 +796,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
         writer.WriteAttributeString( "FloatingWidth", FloatingWidth.ToString( CultureInfo.InvariantCulture ) );
       if( FloatingHeight != 0.0 )
         writer.WriteAttributeString( "FloatingHeight", FloatingHeight.ToString( CultureInfo.InvariantCulture ) );
+      if( IsFloating )
+        writer.WriteAttributeString( "IsFloating", IsFloating.ToString() );
       if( IsMaximized )
         writer.WriteAttributeString( "IsMaximized", IsMaximized.ToString() );
       // Always serialize CanClose because the default value is different for LayoutAnchorable vs LayoutDocument.
@@ -726,6 +818,15 @@ namespace Xceed.Wpf.AvalonDock.Layout
           writer.WriteAttributeString( "PreviousContainerIndex", _previousContainerIndex.ToString() );
         }
       }
+      if( _initialContainer != null )
+      {
+        var paneSerializable = _initialContainer as ILayoutPaneSerializable;
+        if( paneSerializable != null )
+        {
+          writer.WriteAttributeString( "InitialContainerId", paneSerializable.Id );
+          writer.WriteAttributeString( "InitialContainerIndex", _initialContainerIndex.ToString() );
+        }
+      }
 
     }
 
@@ -740,9 +841,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
       return string.Compare( Title, other.Title );
     }
 
-    /// <summary>
-    /// Float the content in a popup window
-    /// </summary>
     public void Float()
     {
       if( PreviousContainer != null &&
@@ -763,8 +861,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         IsSelected = true;
         IsActive = true;
-
-        Root.CollectGarbage();
       }
       else
       {
@@ -774,11 +870,9 @@ namespace Xceed.Wpf.AvalonDock.Layout
         IsActive = true;
       }
 
+      Root.CollectGarbage();
     }
 
-    /// <summary>
-    /// Dock the content as document
-    /// </summary>
     public void DockAsDocument()
     {
       var root = Root as LayoutRoot;
@@ -789,9 +883,9 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
       if( this is LayoutAnchorable )
       {
-        if( ( (LayoutAnchorable)this ).CanClose )
+        if( ( ( LayoutAnchorable )this ).CanClose )
         {
-          ( (LayoutAnchorable)this ).SetCanCloseInternal( true );
+          ( ( LayoutAnchorable )this ).SetCanCloseInternal( true );
         }
       }
 
@@ -813,19 +907,38 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
       if( newParentPane != null )
       {
+        Root.Manager.RaisePreviewDockEvent( this );
         newParentPane.Children.Add( this );
-        root.CollectGarbage();
+        Root.Manager.RaiseDockedEvent( this );
+      }
+      else
+      {
+        Root.Manager.RaisePreviewDockEvent( this );
+        var mainLayoutPanel = new LayoutPanel() { Orientation = Orientation.Horizontal };
+        if( root.RootPanel != null )
+        {
+          mainLayoutPanel.Children.Add( root.RootPanel );
+        }
+
+        root.RootPanel = mainLayoutPanel;
+        newParentPane = new LayoutDocumentPane() { };
+        mainLayoutPanel.Children.Add( ( ILayoutPanelElement )newParentPane );
+
+        newParentPane.Children.Add( this );
+        Root.Manager.RaiseDockedEvent( this );
       }
 
+      root.CollectGarbage();
+
+      IsFloating = false;
       IsSelected = true;
       IsActive = true;
     }
 
-    /// <summary>
-    /// Re-dock the content to its previous container
-    /// </summary>
     public void Dock()
     {
+      Root.Manager.RaisePreviewDockEvent( this );
+
       if( PreviousContainer != null )
       {
         var currentContainer = Parent as ILayoutContainer;
@@ -856,10 +969,15 @@ namespace Xceed.Wpf.AvalonDock.Layout
         InternalDock();
       }
 
+      Root.Manager.RaiseDockedEvent( this );
+      IsFloating = false;
 
-      Root.CollectGarbage();
-
+      if( this.Root != null )
+      {
+        Root.CollectGarbage();
+      }
     }
+
 
 
 
@@ -869,10 +987,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
     #region Internal Methods
 
-    /// <summary>
-    /// Test if the content can be closed
-    /// </summary>
-    /// <returns></returns>
     internal bool TestCanClose()
     {
       CancelEventArgs args = new CancelEventArgs();
@@ -908,27 +1022,52 @@ namespace Xceed.Wpf.AvalonDock.Layout
         Closing( this, args );
     }
 
+
     protected virtual void InternalDock()
     {
     }
 
     #endregion
 
+    #region Private Methods
+
+    private void UpdateContainedFloatingWindowTaskbarTitle( bool newValue )
+    {
+      if( !newValue ) // LayoutContent is being deselected
+      {
+        // Check if LayoutContent is inside a FloatingWindowControl
+        // And set the correct title for Taskbar Title
+        var root = this.Root;
+
+        if( (root != null) && (root.Manager != null) )
+        {
+          var lfwc = root.Manager.FloatingWindows;
+          var containedFloatingWindowControl = lfwc.FirstOrDefault( f => (f.Model != null) && f.Model.Descendents().OfType<LayoutContent>().Where( l => l.ContentId == this.ContentId ).FirstOrDefault() != null );
+
+          if( containedFloatingWindowControl != null )
+          {
+            var selectedLayoutContent = containedFloatingWindowControl.Model.Descendents().OfType<LayoutContent>().Where( l => l.IsSelected ).FirstOrDefault();
+
+            if( selectedLayoutContent != null )
+            {
+              if( containedFloatingWindowControl.Title != selectedLayoutContent.Title )
+              {
+                containedFloatingWindowControl.Title = selectedLayoutContent.Title;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #endregion // Private Methods
+
     #region Events
 
-    /// <summary>
-    /// Event fired when the content is closed (i.e. removed definitely from the layout)
-    /// </summary>
     public event EventHandler Closed;
 
-    /// <summary>
-    /// Event fired when the content is about to be closed (i.e. removed definitely from the layout)
-    /// </summary>
-    /// <remarks>Please note that LayoutAnchorable also can be hidden. Usually user hide anchorables when click the 'X' button. To completely close 
-    /// an anchorable the user should click the 'Close' menu item from the context menu. When an LayoutAnchorable is hidden its visibility changes to false and
-    /// IsHidden property is set to true.
-    /// Hanlde the Hiding event for the LayoutAnchorable to cancel the hide operation.</remarks>
     public event EventHandler<CancelEventArgs> Closing;
+
 
     #endregion
   }

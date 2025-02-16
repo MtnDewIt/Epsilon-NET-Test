@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -55,12 +55,31 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       ILayoutDocumentPane targetModel = _targetPane.Model as ILayoutDocumentPane;
 
+      if( ( targetModel.FindParent<LayoutFloatingWindow>() == null )
+       && ( floatingWindow != null )
+       && ( floatingWindow.Root != null )
+       && ( floatingWindow.Root.ActiveContent != null ) )
+      {
+        var currentActiveContent = floatingWindow.Root.ActiveContent;
+        currentActiveContent.IsFloating = false;
+      }
+
       switch( Type )
       {
         case DropTargetType.DocumentPaneDockBottom:
           #region DropTargetType.DocumentPaneDockBottom
           {
             var newLayoutDocumentPane = new LayoutDocumentPane( floatingWindow.RootDocument );
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockHeight.IsStar )
+              {
+                targetPane.DockHeight = new GridLength( targetPane.DockHeight.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockHeight = targetPane.DockHeight;
+              }
+            }
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
 
             if( parentModel == null )
@@ -97,6 +116,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
           #region DropTargetType.DocumentPaneDockTop
           {
             var newLayoutDocumentPane = new LayoutDocumentPane( floatingWindow.RootDocument );
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockHeight.IsStar )
+              {
+                targetPane.DockHeight = new GridLength( targetPane.DockHeight.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockHeight = targetPane.DockHeight;
+              }
+            }
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
 
             if( parentModel == null )
@@ -133,6 +162,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
           #region DropTargetType.DocumentPaneDockLeft
           {
             var newLayoutDocumentPane = new LayoutDocumentPane( floatingWindow.RootDocument );
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockWidth.IsStar )
+              {
+                targetPane.DockWidth = new GridLength( targetPane.DockWidth.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockWidth = targetPane.DockWidth;
+              }
+            }
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
 
             if( parentModel == null )
@@ -168,6 +207,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
           #region DropTargetType.DocumentPaneDockRight
           {
             var newLayoutDocumentPane = new LayoutDocumentPane( floatingWindow.RootDocument );
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockWidth.IsStar )
+              {
+                targetPane.DockWidth = new GridLength( targetPane.DockWidth.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockWidth = targetPane.DockWidth;
+              }
+            }
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
 
             if( parentModel == null )
@@ -200,7 +249,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
           }
           break;
         #endregion
-
         case DropTargetType.DocumentPaneDockInside:
           #region DropTargetType.DocumentPaneDockInside
           {
@@ -229,8 +277,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
           }
           break;
           #endregion
-
-
       }
 
       base.Drop( floatingWindow );
@@ -240,6 +286,15 @@ namespace Xceed.Wpf.AvalonDock.Controls
     {
       ILayoutDocumentPane targetModel = _targetPane.Model as ILayoutDocumentPane;
 
+      if( ( targetModel.FindParent<LayoutFloatingWindow>() == null )
+       && ( floatingWindow != null )
+       && ( floatingWindow.Root != null )
+       && ( floatingWindow.Root.ActiveContent != null ) )
+      {
+        var currentActiveContent = floatingWindow.Root.ActiveContent;
+        currentActiveContent.IsFloating = false;
+      }
+
       switch( Type )
       {
         case DropTargetType.DocumentPaneDockBottom:
@@ -247,6 +302,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
           {
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
             var newLayoutDocumentPane = new LayoutDocumentPane();
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockHeight.IsStar )
+              {
+                targetPane.DockHeight = new GridLength( targetPane.DockHeight.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockHeight = targetPane.DockHeight;
+              }
+            }
 
             if( parentModel == null )
             {
@@ -286,6 +351,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
           {
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
             var newLayoutDocumentPane = new LayoutDocumentPane();
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockHeight.IsStar )
+              {
+                targetPane.DockHeight = new GridLength( targetPane.DockHeight.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockHeight = targetPane.DockHeight;
+              }
+            }
 
             if( parentModel == null )
             {
@@ -325,6 +400,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
           {
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
             var newLayoutDocumentPane = new LayoutDocumentPane();
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockWidth.IsStar )
+              {
+                targetPane.DockWidth = new GridLength( targetPane.DockWidth.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockWidth = targetPane.DockWidth;
+              }
+            }
 
             if( parentModel == null )
             {
@@ -365,6 +450,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
           {
             var parentModel = targetModel.Parent as LayoutDocumentPaneGroup;
             var newLayoutDocumentPane = new LayoutDocumentPane();
+            var targetPane = targetModel as ILayoutPositionableElement;
+            if( targetPane != null )
+            {
+              // Set the DockWidth of the targetPane and the newLayoutDocumentPane so they both use the same size.
+              if( targetPane.DockWidth.IsStar )
+              {
+                targetPane.DockWidth = new GridLength( targetPane.DockWidth.Value / 2d, GridUnitType.Star );
+                newLayoutDocumentPane.DockWidth = targetPane.DockWidth;
+              }
+            }
 
             if( parentModel == null )
             {

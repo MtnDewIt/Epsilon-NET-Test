@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -17,17 +17,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Markup;
-using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
-using System.Windows.Controls;
+using System.Xml.Serialization;
 
 namespace Xceed.Wpf.AvalonDock.Layout
 {
-	[ContentProperty( "RootPanel" )]
+  [ContentProperty( "RootPanel" )]
   [Serializable]
   public class LayoutRoot : LayoutElement, ILayoutContainer, ILayoutRoot, IXmlSerializable
   {
@@ -419,9 +419,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
         LeftSide = ( LayoutAnchorSide )newElement;
     }
 
-    /// <summary>
-    /// Removes any empty container not directly referenced by other layout items
-    /// </summary>
     public void CollectGarbage()
     {
       bool exitFlag = true;
@@ -437,10 +434,18 @@ namespace Xceed.Wpf.AvalonDock.Layout
         {
           content.PreviousContainer = null;
         }
+        foreach( var content in this.Descendents().OfType<ILayoutInitialContainer>().Where( c => c.InitialContainer != null &&
+             ( c.InitialContainer.Parent == null || c.InitialContainer.Parent.Root != this ) ) )
+        {
+          content.InitialContainer = null;
+        }
 
         //for each pane that is empty
-        foreach( var emptyPane in this.Descendents().OfType<ILayoutPane>().Where( p => p.ChildrenCount == 0 ) )
+        var layoutPanes = this.Descendents().OfType<ILayoutPane>().Where( p => p.ChildrenCount == 0 ).ToArray();
+        for( int i = 0; i < layoutPanes.Count(); ++i )
         {
+          var emptyPane = layoutPanes[ i ];
+
           //...set null any reference coming from contents not yet hosted in a floating window
           foreach( var contentReferencingEmptyPane in this.Descendents().OfType<LayoutContent>()
               .Where( c => ( ( ILayoutPreviousContainer )c ).PreviousContainer == emptyPane && !c.IsFloating ) )
@@ -456,10 +461,14 @@ namespace Xceed.Wpf.AvalonDock.Layout
           //...if this pane is the only documentpane present in the layout than skip it
           if( emptyPane is LayoutDocumentPane &&
               this.Descendents().OfType<LayoutDocumentPane>().Count( c => c != emptyPane ) == 0 )
+          {
+            emptyPane = null;
             continue;
+          }
 
           //...if this empty panes is not referenced by anyone, than removes it from its parent container
-          if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPane ) )
+          if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPane )
+            && !this.Descendents().OfType<ILayoutInitialContainer>().Any( c => c.InitialContainer == emptyPane ) )
           {
             var parentGroup = emptyPane.Parent as ILayoutContainer;
             parentGroup.RemoveChild( emptyPane );
@@ -490,7 +499,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
           foreach( var emptyPaneGroup in this.Descendents().OfType<LayoutPanel>().Where( p => p.ChildrenCount == 0 ) )
           {
             //...if this empty layout panel is not referenced by anyone, than removes it from its parent container
-            if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPaneGroup ) )
+            if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPaneGroup )
+              && !this.Descendents().OfType<ILayoutInitialContainer>().Any( c => c.InitialContainer == emptyPaneGroup ) )
             {
               var parentGroup = emptyPaneGroup.Parent as ILayoutContainer;
               parentGroup.RemoveChild( emptyPaneGroup );
@@ -506,7 +516,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
           foreach( var emptyPaneGroup in this.Descendents().OfType<LayoutFloatingWindow>().Where( p => p.ChildrenCount == 0 ) )
           {
             //...if this empty floating window is not referenced by anyone, than removes it from its parent container
-            if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPaneGroup ) )
+            if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPaneGroup )
+              && !this.Descendents().OfType<ILayoutInitialContainer>().Any( c => c.InitialContainer == emptyPaneGroup ) )
             {
               var parentGroup = emptyPaneGroup.Parent as ILayoutContainer;
               parentGroup.RemoveChild( emptyPaneGroup );
@@ -522,7 +533,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
           foreach( var emptyPaneGroup in this.Descendents().OfType<LayoutAnchorGroup>().Where( p => p.ChildrenCount == 0 ) )
           {
             //...if this empty Pane Group is not referenced by anyone, than removes it from its parent container
-            if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPaneGroup ) )
+            if( !this.Descendents().OfType<ILayoutPreviousContainer>().Any( c => c.PreviousContainer == emptyPaneGroup )
+              && !this.Descendents().OfType<ILayoutInitialContainer>().Any( c => c.InitialContainer == emptyPaneGroup ) )
             {
               var parentGroup = emptyPaneGroup.Parent as ILayoutContainer;
               parentGroup.RemoveChild( emptyPaneGroup );
@@ -836,16 +848,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
             if( element.Parent != this )
             {
               if( element.Parent != null )
-                {
-                    // Fix issue where anchor groups are left in the parent side after being hidden
-                    var parentGroup = element.Parent as LayoutAnchorGroup;
-                    var parentSide = parentGroup?.Parent as LayoutAnchorSide;
-                    if (parentSide != null)
-                        parentSide.RemoveChild(parentGroup);
-
-                    element.Parent.RemoveChild(element);
-                }
-                
+                element.Parent.RemoveChild( element );
               element.Parent = this;
             }
 
@@ -931,7 +934,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
       if( reader.LocalName.Equals( "RootPanel" ) )
       {
-        orientation = (reader.GetAttribute( "Orientation" ) == "Vertical") ? Orientation.Vertical : Orientation.Horizontal;
+        orientation = ( reader.GetAttribute( "Orientation" ) == "Vertical" ) ? Orientation.Vertical : Orientation.Horizontal;
         reader.Read();
 
         while( true )

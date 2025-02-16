@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -24,10 +24,11 @@ using System.Windows.Input;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.AvalonDock.Themes;
 using Standard;
+using System.Windows.Threading;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
-	public abstract class LayoutFloatingWindowControl : Window, ILayoutControl
+  public abstract class LayoutFloatingWindowControl : Window, ILayoutControl
   {
     #region Members
 
@@ -81,16 +82,9 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     #region IsContentImmutable
 
-    /// <summary>
-    /// IsContentImmutable Dependency Property
-    /// </summary>
     public static readonly DependencyProperty IsContentImmutableProperty = DependencyProperty.Register( "IsContentImmutable", typeof( bool ), typeof( LayoutFloatingWindowControl ),
               new FrameworkPropertyMetadata( ( bool )false ) );
 
-    /// <summary>
-    /// Gets/sets the IsContentImmutable property.  This dependency property 
-    /// indicates if the content can be modified.
-    /// </summary>
     public bool IsContentImmutable
     {
       get
@@ -107,18 +101,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     #region IsDragging
 
-    /// <summary>
-    /// IsDragging Read-Only Dependency Property
-    /// </summary>
     private static readonly DependencyPropertyKey IsDraggingPropertyKey = DependencyProperty.RegisterReadOnly( "IsDragging", typeof( bool ), typeof( LayoutFloatingWindowControl ),
             new FrameworkPropertyMetadata( ( bool )false, new PropertyChangedCallback( OnIsDraggingChanged ) ) );
 
     public static readonly DependencyProperty IsDraggingProperty = IsDraggingPropertyKey.DependencyProperty;
 
-    /// <summary>
-    /// Gets the IsDragging property.  This dependency property 
-    /// indicates that this floating window is being dragged.
-    /// </summary>
     public bool IsDragging
     {
       get
@@ -127,27 +114,16 @@ namespace Xceed.Wpf.AvalonDock.Controls
       }
     }
 
-    /// <summary>
-    /// Provides a secure method for setting the IsDragging property.  
-    /// This dependency property indicates that this floating window is being dragged.
-    /// </summary>
-    /// <param name="value">The new value for the property.</param>
     protected void SetIsDragging( bool value )
     {
       SetValue( IsDraggingPropertyKey, value );
     }
 
-    /// <summary>
-    /// Handles changes to the IsDragging property.
-    /// </summary>
     private static void OnIsDraggingChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
       ( ( LayoutFloatingWindowControl )d ).OnIsDraggingChanged( e );
     }
 
-    /// <summary>
-    /// Provides derived classes an opportunity to handle changes to the IsDragging property.
-    /// </summary>
     protected virtual void OnIsDraggingChanged( DependencyPropertyChangedEventArgs e )
     {
       if( ( bool )e.NewValue )
@@ -186,16 +162,9 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     #region IsMaximized
 
-    /// <summary>
-    /// IsMaximized Dependency Property
-    /// </summary>
     public static readonly DependencyProperty IsMaximizedProperty = DependencyProperty.Register( "IsMaximized", typeof( bool ), typeof( LayoutFloatingWindowControl ),
               new FrameworkPropertyMetadata( ( bool )false ) );
 
-    /// <summary>
-    /// Gets/sets the IsMaximized property.  This dependency property 
-    /// indicates if the window is maximized.
-    /// </summary>
     public bool IsMaximized
     {
       get
@@ -209,11 +178,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
       }
     }
 
-    /// <summary>
-    /// Provides a secure method for setting the IsMaximized property.  
-    /// This dependency property indicates if the window is maximized.
-    /// </summary>
-    /// <param name="value">The new value for the property.</param>
 
     protected override void OnStateChanged( EventArgs e )
     {
@@ -232,7 +196,34 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
       }
 
+      if( this.WindowState == WindowState.Normal )
+      {
+        this.UpdatePositionAndSizeOfPanes();
+      }
+
       base.OnStateChanged( e );
+    }
+
+    #endregion
+
+    #region ResizeBorderThickness
+
+    public static readonly DependencyProperty ResizeBorderThicknessProperty = DependencyProperty.Register(
+        "ResizeBorderThickness",
+        typeof( Thickness ),
+        typeof( LayoutFloatingWindowControl ),
+        new FrameworkPropertyMetadata( new Thickness( 10 ) ) );
+
+    public Thickness ResizeBorderThickness
+    {
+      get
+      {
+        return ( Thickness )GetValue( ResizeBorderThicknessProperty );
+      }
+      set
+      {
+        SetValue( ResizeBorderThicknessProperty, value );
+      }
     }
 
     #endregion
@@ -263,10 +254,13 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     protected override void OnClosed( EventArgs e )
     {
-      var root = this.Model.Root;
+      var root = ( this.Model != null ) ? this.Model.Root : null;
       if( root != null )
       {
-        root.Manager.RemoveFloatingWindow( this );
+        if( root.Manager != null )
+        {
+          root.Manager.RemoveFloatingWindow( this );
+        }
         root.CollectGarbage();
       }
 
@@ -286,6 +280,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
       {
         root.FloatingWindows.Remove( this.Model as LayoutFloatingWindow );
       }
+
+      this.BringFocusOnDockingManager();
     }
 
     protected override void OnInitialized( EventArgs e )
@@ -300,6 +296,34 @@ namespace Xceed.Wpf.AvalonDock.Controls
           new ExecutedRoutedEventHandler( ( s, args ) => Microsoft.Windows.Shell.SystemCommands.RestoreWindow( ( Window )args.Parameter ) ) ) );
       //Debug.Assert(this.Owner != null);
       base.OnInitialized( e );
+    }
+
+    protected override void OnKeyDown( KeyEventArgs e )
+    {
+      var root = this.Model.Root;
+      if( root != null )
+      {
+        if( root.Manager.AllowMovingFloatingWindowWithKeyboard )
+        {
+          switch( e.Key )
+          {
+            case Key.Left:
+              this.Left -= 25;
+              break;
+            case Key.Right:
+              this.Left += 25;
+              break;
+            case Key.Up:
+              this.Top -= 25;
+              break;
+            case Key.Down:
+              this.Top += 25;
+              break;
+          }
+        }
+      }
+
+      base.OnKeyDown( e );
     }
 
     protected override void OnPreviewKeyDown( KeyEventArgs e )
@@ -407,7 +431,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
           if( wParam != IntPtr.Zero )
           {
             handled = true;
-            var client = (RECT)Marshal.PtrToStructure( lParam, typeof( RECT ) );
+            var client = ( RECT )Marshal.PtrToStructure( lParam, typeof( RECT ) );
             client.Bottom -= 1;
             Marshal.StructureToPtr( client, lParam, false );
           }
@@ -432,7 +456,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         //  break;
 
         case Win32Helper.WM_ACTIVATE:
-          if( ( (int)wParam & 0xFFFF ) == Win32Helper.WA_INACTIVE )
+          if( ( ( int )wParam & 0xFFFF ) == Win32Helper.WA_INACTIVE )
           {
             if( lParam == this.GetParentWindowHandle() )
             {
@@ -475,7 +499,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
           }
           break;
         case Win32Helper.WM_SYSCOMMAND:
-          int command = (int)wParam & 0xFFF0;
+          int command = ( int )wParam & 0xFFF0;
           if( command == Win32Helper.SC_MAXIMIZE || command == Win32Helper.SC_RESTORE )
           {
             UpdateMaximizedState( command == Win32Helper.SC_MAXIMIZE );
@@ -494,8 +518,39 @@ namespace Xceed.Wpf.AvalonDock.Controls
       if( !_isClosing )
       {
         _isClosing = true;
-        this.Close();
+
+        // Added Dispatcher to prevent InvalidOperationException issue in reference to bug case 
+        // Azure case #2106
+        Dispatcher.BeginInvoke( new Action( () =>
+        {
+          this.Close();
+        } ), DispatcherPriority.Send );
       }
+    }
+
+    internal void BringFocusOnDockingManager()
+    {
+      // Prevent focus lost on MainWindow when closing floatingWindows.
+      if( this.Owner != null )
+      {
+        this.Owner.Focus();
+      }
+      else
+      {
+        if( ( this.Model != null ) && ( this.Model.Root != null ) && ( this.Model.Root.Manager != null ) )
+        {
+          var firstUIElement = this.Model.Root.Manager.FindVisualChildren<UIElement>().Where( control => control.Focusable ).FirstOrDefault();
+          if( firstUIElement != null )
+          {
+            firstUIElement.Focus();
+          }
+        }
+      }
+    }
+
+    internal bool IsClosing()
+    {
+      return _isClosing;
     }
 
     #endregion
@@ -516,7 +571,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     private void LayoutFloatingWindowControl_IsVisibleChanged( object sender, DependencyPropertyChangedEventArgs e )
     {
-      if( (bool)e.NewValue )
+      if( ( bool )e.NewValue )
       {
       }
     }

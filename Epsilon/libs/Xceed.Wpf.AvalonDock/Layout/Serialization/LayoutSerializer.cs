@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -74,6 +74,15 @@ namespace Xceed.Wpf.AvalonDock.Layout.Serialization
           throw new ArgumentException( string.Format( "Unable to find a pane with id ='{0}'", lcToAttach.PreviousContainerId ) );
 
         lcToAttach.PreviousContainer = paneContainerToAttach as ILayoutContainer;
+      }
+
+      foreach( var lcToAttach in layout.Descendents().OfType<ILayoutInitialContainer>().Where( lc => lc.InitialContainerId != null ) )
+      {
+        var paneContainerToAttach = layout.Descendents().OfType<ILayoutPaneSerializable>().FirstOrDefault( lps => lps.Id == lcToAttach.InitialContainerId );
+        if( paneContainerToAttach == null )
+          throw new ArgumentException( string.Format( "Unable to find a pane with id ='{0}'", lcToAttach.InitialContainerId ) );
+
+        lcToAttach.InitialContainer = paneContainerToAttach as ILayoutContainer;
       }
 
 

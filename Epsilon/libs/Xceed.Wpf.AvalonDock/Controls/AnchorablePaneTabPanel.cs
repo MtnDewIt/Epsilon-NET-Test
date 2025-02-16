@@ -2,7 +2,7 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2020 Xceed Software Inc.
+   Copyright (C) 2007-2024 Xceed Software Inc.
 
    This program is provided to you under the terms of the XCEED SOFTWARE, INC.
    COMMUNITY LICENSE AGREEMENT (for non-commercial use) as published at 
@@ -17,9 +17,8 @@
 
 using System;
 using System.Linq;
-using System.Windows.Controls;
 using System.Windows;
-using Xceed.Wpf.AvalonDock.Layout;
+using System.Windows.Controls;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
@@ -91,21 +90,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
       }
 
       return finalSize;
-    }
-
-    protected override void OnMouseLeave( System.Windows.Input.MouseEventArgs e )
-    {
-      if( e.LeftButton == System.Windows.Input.MouseButtonState.Pressed &&
-          LayoutAnchorableTabItem.IsDraggingItem() )
-      {
-        var contentModel = LayoutAnchorableTabItem.GetDraggingItem().Model as LayoutAnchorable;
-        var manager = contentModel.Root.Manager;
-        LayoutAnchorableTabItem.ResetDraggingItem();
-
-        manager.StartDraggingFloatingWindowForContent( contentModel );
-      }
-
-      base.OnMouseLeave( e );
     }
 
     #endregion
