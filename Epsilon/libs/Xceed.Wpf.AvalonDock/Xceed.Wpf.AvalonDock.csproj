@@ -16,7 +16,6 @@
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <DelaySign>false</DelaySign>
-    <!--<OutputPath></OutputPath>-->
     <Deterministic>true</Deterministic>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <Platforms>x64</Platforms>
