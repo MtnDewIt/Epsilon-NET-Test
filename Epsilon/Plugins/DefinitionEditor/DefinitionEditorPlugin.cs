@@ -104,12 +104,12 @@ namespace DefinitionEditor
         class PerCacheDefinitionEditorContext
         {
             public GameCache Cache { get; }
-            public TagList TagList { get; }
+            public TagStructEditor.Common.TagList TagList { get; }
 
             public PerCacheDefinitionEditorContext(GameCache cache)
             {
                 Cache = cache;
-                TagList = new TagList(cache);
+                TagList = new TagStructEditor.Common.TagList(cache);
             }
         }
 

@@ -10,9 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -37,6 +40,49 @@ namespace WpfApp20
 
         protected async override void Launch()
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
+
+            //allow managed dll resolution from Tools directory
+            AssemblyLoadContext.Default.Resolving += static (AssemblyLoadContext ctx, AssemblyName name) =>
+            {
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools"), "*.dll"))
+                {
+                    AssemblyName an;
+                    try
+                    {
+                        Assembly assembly = Assembly.LoadFile(file);
+
+                        an = new AssemblyName(assembly.GetName().Name);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                    if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(file);
+                }
+                return null;
+            };
+
+            //allow unmanaged dll resolution from Tools directory
+            AssemblyLoadContext.Default.ResolvingUnmanagedDll += (Assembly assembly, string dllName) =>
+            {
+                foreach (var file in Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "Tools"), "*.dll"))
+                {
+                    IntPtr handle;
+                    try
+                    {
+                        handle = NativeLibrary.Load(file);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+
+                    if (Path.GetFileName(file) == dllName) return handle;
+                }
+                return IntPtr.Zero;
+            };
+
             RegisterAdditionalLoggers();
 
             var startupTasks = new List<Task>();
