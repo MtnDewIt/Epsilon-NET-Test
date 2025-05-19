@@ -24,37 +24,23 @@
     <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <ItemGroup>
-    <Reference Update="System">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition">
-      <Private>False</Private>
-    </Reference>
-    <Reference Update="System.Data">
-      <Private>False</Private>
-    </Reference>
-    <Reference Update="System.Xml">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Update="System.Core">
-      <Private>False</Private>
-    </Reference>
-    <Reference Update="System.Xml.Linq">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" PrivateAssets="all" Private="false" />
+    <Reference Include="System.ComponentModel.Composition" PrivateAssets="all" Private="false" />
+    <Reference Include="System.Data.DataSetExtensions" PrivateAssets="all" Private="false" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" />
-    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" />
-    <ProjectReference Include="..\..\libs\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj" />
+    <Reference Update="System" PrivateAssets="all" Private="false" />
+    <Reference Update="System.Data" PrivateAssets="all" Private="false" />
+    <Reference Update="System.Xml" PrivateAssets="all" Private="false" />
+    <Reference Update="System.Core" PrivateAssets="all" Private="false" />
+    <Reference Update="System.Xml.Linq" PrivateAssets="all" Private="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Stylet" Version="1.3.3" />
+    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\..\libs\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj" PrivateAssets="all" Private="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" Private="false" />
   </ItemGroup>
 </Project>
