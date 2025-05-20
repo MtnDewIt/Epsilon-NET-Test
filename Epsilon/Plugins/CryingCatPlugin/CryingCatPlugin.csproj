@@ -25,10 +25,6 @@
     <Resource Include="1580844577878.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" PrivateAssets="all" />
-    <Reference Include="System.Data.DataSetExtensions" PrivateAssets="all" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" Private="false" />
     <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" PrivateAssets="all" Private="false" />
     <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" PrivateAssets="all" Private="false" />
