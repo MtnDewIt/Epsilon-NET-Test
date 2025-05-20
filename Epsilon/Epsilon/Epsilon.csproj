@@ -25,11 +25,6 @@
     <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework.Aero" PrivateAssets="all" />
-    <Reference Include="Microsoft.CSharp" PrivateAssets="all" />
-    <Reference Include="System.Data.DataSetExtensions" PrivateAssets="all" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="MainIcon.ico" />
     <Resource Include="Themes\Controls\AvalonDock\Images\DockAnchorableBottom.png" />
     <Resource Include="Themes\Controls\AvalonDock\Images\DockAnchorableLeft.png" />

@@ -24,23 +24,12 @@
     <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" PrivateAssets="all" Private="false" />
-    <Reference Include="System.Data.DataSetExtensions" PrivateAssets="all" Private="false" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System" PrivateAssets="all" Private="false" />
-    <Reference Update="System.Data" PrivateAssets="all" Private="false" />
-    <Reference Update="System.Xml" PrivateAssets="all" Private="false" />
-    <Reference Update="System.Core" PrivateAssets="all" Private="false" />
-    <Reference Update="System.Xml.Linq" PrivateAssets="all" Private="false" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" Private="false" />
     <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" PrivateAssets="all" Private="false" />
     <ProjectReference Include="..\..\Libs\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj" PrivateAssets="all" Private="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" Private="false" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.5" PrivateAssets="all" Private="false" />
+    <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.5" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
 </Project>

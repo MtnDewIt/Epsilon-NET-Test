@@ -34,7 +34,7 @@
     <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" PrivateAssets="all" Private="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" Private="false" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.5" PrivateAssets="all" Private="false" />
+    <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.5" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
 </Project>
