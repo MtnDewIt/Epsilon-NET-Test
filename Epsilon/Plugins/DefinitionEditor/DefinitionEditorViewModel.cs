@@ -29,6 +29,10 @@ using TagTool.Cache.HaloOnline;
 using EpsilonLib.Logging;
 using EpsilonLib.Dialogs;
 using System.Windows.Data;
+using CacheEditor.RTE;
+using CacheEditor.RTE.UI;
+using System.Windows.Threading;
+using System.Windows.Input;
 
 namespace DefinitionEditor
 {
@@ -39,10 +43,12 @@ namespace DefinitionEditor
         private ICacheFile _cacheFile;
         private CachedTag _instance;
         private object _definitionData;
+        private IDisposable _rteRefreshTimer;
         private IFieldsValueChangeSink _changeSink;
 
         public DefinitionEditorViewModel(      
             IShell shell,
+            IRteService rteService,
             ICacheEditor cacheEditor,
             ICacheFile cacheFile,
             CachedTag instance,
@@ -57,7 +63,7 @@ namespace DefinitionEditor
             _cacheFile = cacheFile;
             _changeSink = changeSink;
             _changeSink.ValueChanged += Field_ValueChanged;
-            
+            RteService = rteService;
 
             _instance = instance;
             StructField = structField;
@@ -68,10 +74,14 @@ namespace DefinitionEditor
 
             ExpandAllCommand = new DelegateCommand(ExpandAll);
             CollapseAllCommand = new DelegateCommand(CollapseAll);
+            PokeCommand = new DelegateCommand(new Action(PokeChanges), () => RteTargetList.Any());
             SaveCommand = new DelegateCommand(SaveChanges, () => _cacheFile.CanSerializeTags);
             ReloadCommand = new DelegateCommand(() => _cacheEditor.ReloadCurrentTag());
 
             SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
+
+            RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
+            RteHasTargets = RteTargetList.Any();
 
             RuntimeTagData = new byte[0];
         }
@@ -91,6 +101,8 @@ namespace DefinitionEditor
             if (field is ValueField vf)
             {
                 bool blockOrStruct = (field is InlineStructField) || (field is BlockField);
+                bool blockOrStructOrData = (field is BlockField) || (field is InlineStructField) || (field is DataField);
+
                 if (!blockOrStruct)
                 {
                     menu.Submenu("Field").Group("Copy")
@@ -134,6 +146,20 @@ namespace DefinitionEditor
                             break;
                         }
                 }
+
+                if (!blockOrStructOrData) 
+                {
+                    menu.Submenu("Field")
+                        .Add(text: "Poke Field",
+                                tooltip: "Pokes the current field to game memory",
+                                command: new DelegateCommand(() => PokeField(vf)));
+                }
+
+                menu.Submenu("Field")
+                    .Group("Copy")
+                        .Add(text: "Copy Memory Address", 
+                                tooltip: "Copies the memory address of this field",
+                                command: new DelegateCommand(() => CopyFieldMemoryAddress(vf), () => RteHasTargets && SelectedRteTargetItem != null));
             }
             
 
@@ -174,6 +200,88 @@ namespace DefinitionEditor
             ClipboardEx.SetTextSafe($"setfield {FieldHelper.GetFieldPath(field)} {value}\n");
         }
 
+        private void CopyFieldMemoryAddress(IField field)
+        {
+            uint fieldMemoryAddress = new RTEFieldHelper(SelectedRteTargetItem.Target, _cacheFile, _definitionData.GetType(), _instance).GetFieldMemoryAddress(field);
+
+            if (fieldMemoryAddress == 0x0)
+            {
+                AlertDialogViewModel alertDialogViewModel = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "Failed to Copy Address",
+                    Message = "Tag not loaded."
+                };
+                _shell.ShowDialog(alertDialogViewModel);
+            }
+            else
+                ClipboardEx.SetTextSafe(string.Format("{0:X8}", fieldMemoryAddress, 10));
+        }
+
+        private void PokeField(ValueField field)
+        {
+            if (SelectedRteTargetItem == null)
+            {
+                AlertDialogViewModel alertDialogViewModel = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    DisplayName = "Failed to Poke",
+                    Message = "Not attached to game instance!"
+                };
+                _shell.ShowDialog(alertDialogViewModel);
+            }
+            else
+            {
+                uint fieldMemoryAddress = new RTEFieldHelper(SelectedRteTargetItem.Target, _cacheFile, _definitionData.GetType(), _instance).GetFieldMemoryAddress(field);
+
+                if (fieldMemoryAddress == 0x0)
+                {
+                    AlertDialogViewModel alertDialogViewModel = new AlertDialogViewModel
+                    {
+                        AlertType = Alert.Error,
+                        DisplayName = "Failed to Poke",
+                        Message = "Tag not loaded!"
+                    };
+                    _shell.ShowDialog(alertDialogViewModel);
+                }
+                else
+                {
+                    GameCache cache = _cacheEditor.CacheFile.Cache;
+
+                    Type fieldType = field.FieldType;
+
+                    object fieldValue = field.FieldInfo.ValueGetter.Invoke(field.Owner);
+
+                    if (fieldType == typeof(CachedTag) && cache is GameCacheModPackage)
+                    {
+                        CachedTag tagRef = (CachedTag)fieldValue;
+
+                        if (cache.TagCache.TryGetCachedTag(tagRef.Index, out var cachedTag) && !((CachedTagHaloOnline)cachedTag).IsEmpty())
+                        {
+                            int index = cache.TagCache.NonNull().ToList().Count(x => x.Index < tagRef.Index);
+                            tagRef.Index = 0xFFFE - index;
+                            fieldValue = tagRef;
+                        }
+                    }
+
+                    MemoryStream memoryStream = new MemoryStream();
+                    DataSerializationContext serializationContext = new DataSerializationContext(new EndianWriter(memoryStream, cache.Endianness));
+                    IDataBlock block = serializationContext.CreateBlock();
+
+                    _cacheEditor.CacheFile.Cache.Serializer.SerializeValue(serializationContext, memoryStream, block, fieldValue, new TagFieldAttribute(), field.FieldInfo.FieldType);
+
+                    byte[] array = block.Stream.ToArray();
+
+                    using (ProcessMemoryStream stream = SelectedRteTargetItem.Target.Provider.CreateStream(SelectedRteTargetItem.Target))
+                    {
+                        stream.Seek(fieldMemoryAddress, SeekOrigin.Begin);
+                        stream.Write(array, 0, array.Length);
+                        stream.Flush();
+                    }
+                }
+            }
+        }
+
         public StructField StructField { get; set; }
         public IField DisplayField { get; set; }
         
@@ -190,6 +298,12 @@ namespace DefinitionEditor
         public bool FieldTypesVisible { get; set; }
 
         public NavigableSearchResults SearchResults { get; } = new NavigableSearchResults();
+
+        public IRteService RteService { get; }
+
+        public TargetListModel RteTargetList { get; }
+
+        public TargetListItem SelectedRteTargetItem { get; set; }
 
         public bool RteHasTargets { get; set; }
         public byte[] RuntimeTagData;
@@ -312,6 +426,15 @@ namespace DefinitionEditor
             }
         }
 
+        private void RefreshRteTargets()
+        {
+            RteTargetList.Refresh();
+            RteHasTargets = RteTargetList.Any();
+            if (SelectedRteTargetItem == null || !(RteTargetList).Contains(SelectedRteTargetItem))
+                SelectedRteTargetItem = RteTargetList.FirstOrDefault();
+            PokeCommand.RaiseCanExecuteChanged();
+        }
+
         private async void SaveChanges()
         {
             if (!_cacheFile.CanSerializeTags)
@@ -342,9 +465,36 @@ namespace DefinitionEditor
             }
         }
 
+        private void PokeChanges()
+        {
+            if (SelectedRteTargetItem == null)
+                return;
+
+            try
+            {
+                IRteTarget target = SelectedRteTargetItem.Target;
+                target.Provider.PokeTag(target, _cacheFile.Cache, _instance, _definitionData, ref RuntimeTagData);
+                _shell.StatusBar.ShowStatusText("Poked Changes");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+
+                _shell.ShowDialog(new AlertDialogViewModel()
+                {
+                    AlertType = Alert.Error,
+                    Message = "An exception was thrown while attempting to poke tag changes.",
+                    SubMessage = ex.Message
+                });
+            }
+        }
+
         protected override void OnViewLoaded()
         {
             base.OnViewLoaded();
+            if (_rteRefreshTimer == null)
+                _rteRefreshTimer = DispatcherEx.CreateTimer(TimeSpan.FromSeconds(5.0), new Action(RefreshRteTargets));
+            RefreshRteTargets();
         }
 
         protected override void OnClose()
@@ -358,10 +508,13 @@ namespace DefinitionEditor
             _cacheFile = null;
             _cacheEditor = null;
             _instance = null;
-            _blockOutline = null;
-            RuntimeTagData = null;
+            _changeSink.ValueChanged -= Field_ValueChanged;
 
-            _changeSink.ValueChanged -= Field_ValueChanged;       
+            if (_rteRefreshTimer == null)
+                return;
+
+            _rteRefreshTimer.Dispose();
+            _rteRefreshTimer = null;
         }
 
         protected override void OnMessage(object sender, object message)

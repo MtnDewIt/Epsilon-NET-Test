@@ -1,4 +1,5 @@
 ﻿using CacheEditor;
+using CacheEditor.RTE;
 using EpsilonLib.Settings;
 using Shared;
 using System;
@@ -16,13 +17,15 @@ namespace DefinitionEditor
     {
         const string ContextKey = "DefinitionEditor.Context";
 
+        private readonly IRteService _rteService;
         private readonly ISettingsCollection _settings;
         private readonly Lazy<IShell> _shell;
        
         [ImportingConstructor]
-        public DefinitionEditorPluginProvider(Lazy<IShell> shell, ISettingsService settingsService)
+        public DefinitionEditorPluginProvider(Lazy<IShell> shell, IRteService rteService, ISettingsService settingsService)
         {
             _shell = shell;
+            _rteService = rteService;
             _settings = settingsService.GetCollection(Settings.CollectionKey);
         }
 
@@ -52,6 +55,7 @@ namespace DefinitionEditor
 
             return new DefinitionEditorViewModel(
                 _shell.Value,
+                _rteService,
                 context.CacheEditor,
                 context.CacheEditor.CacheFile,
                 context.Instance,
