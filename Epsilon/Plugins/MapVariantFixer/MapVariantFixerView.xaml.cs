@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using Microsoft.Win32;
+using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -44,6 +45,38 @@ namespace MapVariantFixer
             }
 
             e.Handled = true;
+        }
+
+        private void OutputPathButtonClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            TextBlock textBlock = new TextBlock();
+
+            if (((Button)sender).Name == "OutputPathButton")
+            {
+                textBlock = OutputPathTextBlock;
+            }
+
+            var dialog = new OpenFolderDialog();
+
+            if (!string.IsNullOrEmpty((string)textBlock.ToolTip))
+                dialog.InitialDirectory = new System.IO.DirectoryInfo((string)textBlock.ToolTip).ToString();
+
+            if (dialog.ShowDialog() == false)
+                return;
+
+            textBlock.ToolTip = dialog.FolderName;
+        }
+
+        private void OutputPathClearClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            TextBlock textBlock = new TextBlock();
+
+            if (((Button)sender).Name == "OutputPathClear")
+            {
+                textBlock = OutputPathTextBlock;
+            }
+
+            textBlock.ToolTip = "";
         }
     }
 }

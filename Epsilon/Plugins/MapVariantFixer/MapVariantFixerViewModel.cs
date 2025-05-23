@@ -1,14 +1,16 @@
 ﻿using CacheEditor;
 using EpsilonLib.Commands;
 using EpsilonLib.Dialogs;
+using Newtonsoft.Json;
 using Shared;
 using Stylet;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using TagTool.BlamFile;
@@ -27,11 +29,23 @@ namespace MapVariantFixer
         private string _output;
         private bool _inProgress;
         private Dictionary<int, string> _061_TagRemapping;
-        private readonly Dictionary<string, string> ObjeRenames = new Dictionary<string, string>()
+        private string _outputPath;
+        private Stopwatch _stopWatch = new Stopwatch();
+        private List<ulong> _uniqueIdTable = new List<ulong>();
+        private int _errorCount;
+
+        private static readonly string[] ValidExtensions =
         {
-            { "objects\\equipment\\instantcover_equipment\\instantcover_equipment.eqip", "objects\\equipment\\instantcover_equipment\\instantcover_equipment_mp.eqip" },
-            { "objects\\levels\\multi\\cyberdyne\\cyber_monitor_med\\cyber_monitor.scen", "objects\\levels\\solo\\020_base\\monitor_med\\monitor_med.scen" },
-            { "objects\\levels\\multi\\s3d_turf\\s3d_turf_turf_crate_large\\s3d_turf_turf_crate_large.bloc", "objects\\levels\\multi\\s3d_turf\\turf_crate_large\\turf_crate_large.bloc" }
+            ".assault",
+            ".ctf",
+            ".jugg",
+            ".koth",
+            ".oddball",
+            ".slayer",
+            ".terries",
+            ".vip",
+            ".zombiez",
+            ".map"
         };
 
         public MapVariantFixerViewModel(IShell shell, ICacheFile cacheFile)
@@ -39,19 +53,21 @@ namespace MapVariantFixer
             _shell = shell;
             _cacheFile = cacheFile;
 
-            DisplayName = "Map Variant Fixer";
+            _outputPath = "";
+
+            DisplayName = "0.6 Variant Converter";
             StartCommand = new DelegateCommand(Start, () => Files.Count > 0 && !_inProgress);
             ClearCommand = new DelegateCommand(ClearFiles, () => Files.Count > 0 && !_inProgress);
 
             Files.CollectionChanged += Files_CollectionChanged;
 
-            var sandboxMapsDir = new DirectoryInfo(Path.Combine(_cacheFile.File.Directory.FullName, "..\\data\\map_variants"));
-            if (sandboxMapsDir.Exists)
-                AddFilesRecursive(sandboxMapsDir);
+            var baseVariantsDir = new DirectoryInfo(Path.Combine(_cacheFile.File.Directory.FullName, "..\\data"));
+
+            if (baseVariantsDir.Exists)
+                AddFilesRecursive(baseVariantsDir);
         }
 
         public ObservableCollection<string> Files { get; } = new ObservableCollection<string>();
-        public string CacheFilePath => _cacheFile.File.FullName;
         public DelegateCommand StartCommand { get; }
         public DelegateCommand ClearCommand { get; }
 
@@ -77,184 +93,177 @@ namespace MapVariantFixer
             }
         }
 
+        public string OutputPath 
+        {
+            get => _outputPath;
+            set 
+            {
+                SetAndNotify(ref _outputPath, value);
+            }
+        }
+
         internal async void Start()
         {
             InProgress = true;
             Output = string.Empty;
 
+            _stopWatch.Reset();
+            _errorCount = 0;
+            _uniqueIdTable.Clear();
+
             using (var progress = _shell.CreateProgressScope())
             {
-                try
+                _stopWatch.Start();
+
+                for (int i = 0; i < Files.Count; i++)
                 {
-                    var backupFilePath = Path.Combine(Directory.GetCurrentDirectory(), GetBackupFileName());
-
-                    WriteLog($"creating backup '{backupFilePath}'...");
-                    await CreateBackupAsync(backupFilePath);
-
-                    var baseCache = _cacheFile.Cache;
-
-                    for(int i = 0; i < Files.Count; i++)
-                    {
-                        var filePath = Path.GetFullPath(Files[i]);
-                        progress.Report($"Fixing map variant '{filePath}'...", false, (i+1) / (float)Files.Count);
-                        await Task.Run(() => FixMapVariantBlocking(baseCache, filePath));
-                    }
-
-                    WriteLog("done.");
+                    var filePath = Path.GetFullPath(Files[i]);
+                    progress.Report($"Converting Map Variant '{filePath}'...", false, (i + 1) / (float)Files.Count);
+                    await Task.Run(() => ConvertFileAsync(filePath));
                 }
-                catch (Exception ex)
+
+                _stopWatch.Stop();
+
+                var alertType = Alert.Standard;
+
+                if (_errorCount == 0)
                 {
-                    var alert = new AlertDialogViewModel
-                    {
-                        AlertType = Alert.Error,
-                        Message = "One or more map variants failed. Check the output for details."
-                    };
-                    _shell.ShowDialog(alert);
-
-                    WriteLog(ex.ToString());
+                    alertType = Alert.Success;
                 }
-                finally
+                else if (_errorCount == Files.Count) 
                 {
-                    InProgress = false;
+                    alertType = Alert.Error;
                 }
+                else if (_errorCount > 0)
+                {
+                    alertType = Alert.Warning;
+                }
+
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = alertType,
+                    Message = $"{Files.Count - _errorCount}/{Files.Count} Variants Converted Successfully in {_stopWatch.ElapsedMilliseconds.FormatMilliseconds()}{(_errorCount == 0 ? "." : $" with {_errorCount} {(_errorCount == 1 ? "error" : "errors")}. Check the output for details.")}"
+                };
+                _shell.ShowDialog(alert);
+
+                InProgress = false;
             }
         }
 
-        void FixMapVariantBlocking(GameCache baseCache, string filePath)
+        private void ConvertFileAsync(string filePath)
         {
-            WriteLog($"fixing '{filePath}'...");
-            var sandboxMapFile = new FileInfo(filePath);
-            using (var stream = sandboxMapFile.Open(FileMode.Open, FileAccess.ReadWrite))
+            var input = new FileInfo(filePath);
+            var blf = new Blf(_cacheFile.Cache.Version, _cacheFile.Cache.Platform);
+
+            var variantName = "";
+
+            try
             {
-                var reader = new EndianReader(stream);
-                var writer = new EndianWriter(stream);
-
-                Fix061Endianess(stream);
-
-                var blf = new Blf(baseCache.Version, baseCache.Platform);
-                blf.Read(reader);
-
-                if (blf.MapVariant == null)
-                    return;
-
-                if (blf.MapVariantTagNames == null)
+                using (var stream = input.Open(FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    WriteLog("converting from 0.6.1 format...");
-                    Convert061MapVariant(blf);
-                }
-
-                var palette = blf.MapVariant.MapVariant.Quotas;
-                for (int i = 0; i < palette.Length; i++)
-                {
-                    if (palette[i].ObjectDefinitionIndex == -1)
-                        continue;
-
-                    var name = blf.MapVariantTagNames.Names[i].Name;
-                    CachedTag tag;
-
-                    if (baseCache.TagCache.TryGetTag(name, out tag))
+                    FixBlfEndianness(stream, blf);
+                    
+                    if (blf.MapVariantTagNames == null && blf.MapVariant != null)
                     {
-                        continue;
+                        Convert06Blf(blf);
                     }
-                    else
-                    {
-                        string newName = "";
 
-                        if (name.StartsWith("ms30"))
-                            newName = name.Substring(5);
-                        else
-                            newName = $"ms30\\{name}";
-                        
-                        if (baseCache.TagCache.TryGetTag(newName, out tag))
+                    if (blf.EndOfFile == null)
+                    {
+                        blf.EndOfFile = new BlfChunkEndOfFile()
                         {
-                            blf.MapVariantTagNames.Names[i].Name = newName;
-                            WriteLog($"Fixed name '{newName}'");
-                        }
-                        else if (ObjeRenames.TryGetValue(name, out var reName))
-                        {
-                            blf.MapVariantTagNames.Names[i].Name = reName;
-                            WriteLog($"Fixed name '{reName}'");
-                        }
-                        else
-                        {
-                            throw new Exception($"Missing tag {name} in the base cache. Reach out to a dev for help.");
-                        }
+                            Signature = new Tag("_eof"),
+                            Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, _cacheFile.Cache.Platform),
+                            MajorVersion = 1,
+                            MinorVersion = 1,
+                        };
+                        blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
                     }
+
+                    variantName = blf.ContentHeader?.Metadata?.Name ?? "";
                 }
 
-                if(blf.EndOfFile == null)
+                var output = GetOutputPath(input, variantName, blf.ContentHeader.Metadata.UniqueId);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(output));
+
+                using (var stream = new FileInfo(output).Create())
                 {
-                    WriteLog("fixing EOF chunk...");
-                    blf.EndOfFile = new BlfChunkEndOfFile()
-                    {
-                        Signature = new Tag("_eof"),
-                        Length = (int)TagStructure.GetStructureSize(typeof(BlfChunkEndOfFile), blf.Version, baseCache.Platform),
-                        MajorVersion = 1,
-                        MinorVersion = 1,
-                    };
-                    blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
+                    var writer = new EndianWriter(stream);
+                    blf.Write(writer);
                 }
 
-                WriteLog("saving file...");
-                stream.Position = 0;
-                if (!blf.Write(writer))
-                    throw new Exception("failed to write blf");
+                _uniqueIdTable.Add(blf.ContentHeader.Metadata.UniqueId);
+            }
+            catch (Exception e)
+            {
+                WriteLog($"Error converting \"{filePath}\" : {e.Message}");
+                _errorCount++;
             }
         }
 
-        private void Fix061Endianess(Stream stream)
+        private void FixBlfEndianness(FileStream stream, Blf blf)
         {
-            var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
-            var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+            var buffer = new byte[stream.Length];
+            stream.Read(buffer, 0, buffer.Length);
 
-            var reader = new EndianReader(stream, EndianFormat.BigEndian);
-            var writer = new EndianWriter(stream, EndianFormat.LittleEndian);
-            var readerContext = new DataSerializationContext(reader);
-            var writerContext = new DataSerializationContext(writer);
-
-            // check this is actually a big endian chunk header (this could also be true for h3 files, but that's their fault)
-            if(reader.ReadTag() != "_blf")
+            using (var memoryStream = new MemoryStream(buffer))
             {
-                stream.Position = 0;
-                return;
+                var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+                var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+
+                var reader = new EndianReader(memoryStream, EndianFormat.BigEndian);
+                var writer = new EndianWriter(memoryStream, EndianFormat.LittleEndian);
+                var readerContext = new DataSerializationContext(reader);
+                var writerContext = new DataSerializationContext(writer);
+
+                if (reader.ReadTag() != "_blf")
+                {
+                    memoryStream.Position = 0;
+
+                    ReadBlf(memoryStream, blf);
+                }
+
+                reader.BaseStream.Position = 0;
+
+                while (true)
+                {
+                    var pos = reader.BaseStream.Position;
+                    var header = (BlfChunkHeader)deserializer.Deserialize(readerContext, typeof(BlfChunkHeader));
+
+                    writer.BaseStream.Position = pos;
+                    serializer.Serialize(writerContext, header);
+                    if (header.Signature == "_eof")
+                        break;
+
+                    reader.BaseStream.Position += header.Length - (int)TagStructure.GetStructureSize(typeof(BlfChunkHeader), _cacheFile.Cache.Version, _cacheFile.Cache.Platform);
+                }
+
+                memoryStream.Position = 0xC;
+                writer.Format = EndianFormat.LittleEndian;
+                writer.Write((short)-2);
+                memoryStream.Position = 0;
+
+                ReadBlf(memoryStream, blf);
             }
-
-            WriteLog("Fixing chunk endianess...");
-
-            reader.BaseStream.Position = 0;
-            // fix the chunk headers
-            while (true)
-            {
-                var pos = reader.BaseStream.Position;
-                var header = (BlfChunkHeader)deserializer.Deserialize(readerContext, typeof(BlfChunkHeader));
-               
-                writer.BaseStream.Position = pos;
-                serializer.Serialize(writerContext, header);
-                if (header.Signature == "_eof")
-                    break;
-
-                reader.BaseStream.Position += header.Length - typeof(BlfChunkHeader).GetSize();
-            }
-
-            // fix the BOM
-            stream.Position = 0xC;
-            writer.Format = EndianFormat.LittleEndian;
-            writer.Write((short)-2);
-            stream.Position = 0;
         }
 
-        private void Convert061MapVariant(Blf blf)
+        private void ReadBlf(Stream stream, Blf blf)
         {
-            if(_061_TagRemapping == null)
+            var memoryReader = new EndianReader(stream);
+
+            if (!blf.Read(memoryReader))
+                throw new Exception("Unable to parse BLF data");
+        }
+
+        private void Convert06Blf(Blf blf)
+        {
+            if (_061_TagRemapping == null)
             {
-                _061_TagRemapping = Properties.Resources._061_mapping
-                                .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(line => line.Split(','))
-                                .Where(delim => delim.Length > 1)
-                                .Select(delim => new { TagIndex = System.Convert.ToInt32(delim[0].Trim(), 16), Name = delim[1].Trim() })
-                                .ToDictionary(x => x.TagIndex, y => y.Name);
+                var jsonData = File.ReadAllText($@"{AppContext.BaseDirectory}\Tools\mappings\061_mapping.json");
+                _061_TagRemapping = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
             }
-            
+
             blf.MapVariantTagNames = new BlfMapVariantTagNames()
             {
                 Signature = new Tag("tagn"),
@@ -265,51 +274,38 @@ namespace MapVariantFixer
             };
             blf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
 
-            var mapVariant = blf.MapVariant.MapVariant;
-            for(int i = 0; i < mapVariant.Quotas.Length; i++)
+            for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++)
             {
-                var tagIndex = mapVariant.Quotas[i].ObjectDefinitionIndex;
-                if (tagIndex == -1)
-                    continue;
-                if(_061_TagRemapping.TryGetValue(tagIndex, out string name))
+                var objectIndex = blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex;
+
+                if (objectIndex != -1 && _061_TagRemapping.TryGetValue(objectIndex, out string name))
                 {
                     blf.MapVariantTagNames.Names[i] = new TagName() { Name = name };
-                    WriteLog($"added tag name entry 0x{tagIndex:X04} -> {name}");
                 }
             }
         }
 
-        private async Task CreateBackupAsync(string outputPath)
+        private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
         {
-            var zipArchive = new ZipArchive(File.Create(outputPath), ZipArchiveMode.Create);
-            var zipEntries = new HashSet<string>();
+            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), $@"variant{input.Extension}");
 
-            foreach (var filePath in Files)
+            if (Path.Exists(outputPath) && _uniqueIdTable.Contains(uniqueId))
             {
-                var sandboxMapFile = new FileInfo(filePath);
-                var relativePath = sandboxMapFile.FullName.Replace(sandboxMapFile.Directory.FullName.Replace(sandboxMapFile.Directory.Name, ""), "");
-                if (!zipEntries.Add(relativePath))
-                    throw new InvalidOperationException($"Could not create backup, conflicting folder names '${relativePath}'");
-
-                var entry = zipArchive.CreateEntry(relativePath);
-                using (var entryStream = entry.Open())
-                {
-                    using (var inputStream = sandboxMapFile.Open(FileMode.Open, FileAccess.Read))
-                        await inputStream.CopyToAsync(entryStream);
-                }
+                throw new Exception("Duplicate Variant");
             }
-            zipArchive.Dispose();
-        }
-
-        private string GetBackupFileName()
-        {
-            return $"map_variant_backup_{DateTime.Now.ToFileTime()}.zip";
+            else
+            {
+                return outputPath;
+            }
         }
 
         internal void ClearFiles()
         {
             Files.Clear();
             Output = string.Empty;
+            _stopWatch.Reset();
+            _errorCount = 0;
+            _uniqueIdTable.Clear();
         }
 
         internal void AddFiles(string[] files)
@@ -330,7 +326,9 @@ namespace MapVariantFixer
 
         private void AddFilesRecursive(DirectoryInfo directory)
         {
-            foreach (var file in directory.GetFiles("sandbox.map", SearchOption.AllDirectories))
+            var files = directory.EnumerateFiles("*.*", SearchOption.AllDirectories).Where(file => ValidExtensions.Contains(Path.GetExtension(file.FullName).ToLower())).ToList();
+
+            foreach (var file in files)
                 AddFile(file);
         }
 
