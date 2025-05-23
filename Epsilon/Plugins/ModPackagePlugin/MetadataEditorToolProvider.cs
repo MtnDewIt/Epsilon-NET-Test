@@ -7,7 +7,7 @@ namespace ModPackagePlugin
     [Export(typeof(ICacheEditorToolProvider))]
     class MetadataEditorToolProvider : ICacheEditorToolProvider
     {
-        public int SortOrder => 2;
+        public int SortOrder => 5;
 
         public ICacheEditorTool CreateTool(ICacheEditor editor)
         {

@@ -52,7 +52,7 @@ namespace TagToolShellPlugin
     [Export(typeof(ICacheEditorToolProvider))]
     class CommandShellToolProvider : ICacheEditorToolProvider
     {
-        public int SortOrder => -1;
+        public int SortOrder => 6;
 
         public ICacheEditorTool CreateTool(ICacheEditor editor)
         {
