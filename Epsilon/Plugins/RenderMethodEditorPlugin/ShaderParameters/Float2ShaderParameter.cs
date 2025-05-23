@@ -12,8 +12,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             {
                 Property.RealConstants[TemplateIndex].Arg0 = value;
                 Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
-                    Logger.CommandEvent.CommandType.setfield,
-                    $"setargument {Name} {value} {Property.RealConstants[TemplateIndex].Arg1}");
+                    Logger.CommandEvent.CommandType.SetField,
+                    $"SetArgument {Name} {value} {Property.RealConstants[TemplateIndex].Arg1}");
             }
         }
 
@@ -24,8 +24,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             {
                 Property.RealConstants[TemplateIndex].Arg1 = value;
                 Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
-                    Logger.CommandEvent.CommandType.setfield,
-                    $"setargument {Name} {Property.RealConstants[TemplateIndex].Arg0} {value}");
+                    Logger.CommandEvent.CommandType.SetField,
+                    $"SetArgument {Name} {Property.RealConstants[TemplateIndex].Arg0} {value}");
             }
         }
 

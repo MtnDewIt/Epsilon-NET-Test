@@ -28,8 +28,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
 
                 string argstring = setStrings.Count == 0 ? "none" : string.Join(",", setStrings);
 
-                Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", "booleans",
-                    Logger.CommandEvent.CommandType.setfield, $"setargument booleans {argstring}");
+                Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", "Booleans",
+                    Logger.CommandEvent.CommandType.SetField, $"SetArgument Booleans {argstring}");
             }
         }
 
