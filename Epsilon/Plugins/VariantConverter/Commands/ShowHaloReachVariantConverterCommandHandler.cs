@@ -4,17 +4,18 @@ using Shared;
 using System;
 using System.ComponentModel.Composition;
 using TagTool.Cache;
+using VariantConverter.Components.HaloReachVariantConverter;
 
-namespace MapVariantFixer
+namespace VariantConverter
 {
     [ExportCommandHandler]
-    class ShowMapVariantFixerCommandHandler : ICommandHandler<ShowMapVariantFixerCommand>
+    class ShowHaloReachVariantConverterCommandHandler : ICommandHandler<ShowHaloReachVariantConverterCommand>
     {
         private readonly Lazy<IShell> _shell;
         private readonly ICacheEditingService _cacheEditingService;
 
         [ImportingConstructor]
-        public ShowMapVariantFixerCommandHandler(Lazy<IShell> shell, ICacheEditingService cacheEditingService)
+        public ShowHaloReachVariantConverterCommandHandler(Lazy<IShell> shell, ICacheEditingService cacheEditingService)
         {
             _shell = shell;
             _cacheEditingService = cacheEditingService;
@@ -26,12 +27,12 @@ namespace MapVariantFixer
             if (editor == null)
                 return;
 
-            _shell.Value.ActiveDocument = new MapVariantFixerViewModel(_shell.Value, editor.CacheFile);
+            _shell.Value.ActiveDocument = new HaloReachVariantConverterViewModel(_shell.Value, editor.CacheFile);
         }
 
         public void UpdateCommand(Command command)
         {
-            command.IsVisible = _cacheEditingService.ActiveCacheEditor != null && 
+            command.IsVisible = _cacheEditingService.ActiveCacheEditor != null &&
                 _cacheEditingService.ActiveCacheEditor.CacheFile.Cache.Version == TagTool.Cache.CacheVersion.HaloOnlineED
                 && !(_cacheEditingService.ActiveCacheEditor.CacheFile.Cache is GameCacheModPackage);
         }

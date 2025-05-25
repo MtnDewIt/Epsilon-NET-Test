@@ -20,9 +20,9 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 
-namespace MapVariantFixer
+namespace VariantConverter.Components.VariantConverter
 {
-    class MapVariantFixerViewModel : Screen
+    class VariantConverterViewModel : Screen
     {
         private IShell _shell;
         private ICacheFile _cacheFile;
@@ -44,11 +44,27 @@ namespace MapVariantFixer
             ".slayer",
             ".terries",
             ".vip",
+            ".sandbox",
             ".zombiez",
             ".map"
         };
 
-        public MapVariantFixerViewModel(IShell shell, ICacheFile cacheFile)
+        private static readonly Dictionary<ContentItemType, string> ContentTypeToFileExtension = new Dictionary<ContentItemType, string>()
+        {
+            [ContentItemType.None] = ".bin",
+            [ContentItemType.CtfVariant] = ".ctf",
+            [ContentItemType.SlayerVariant] = ".slayer",
+            [ContentItemType.OddballVariant] = ".oddball",
+            [ContentItemType.KingOfTheHillVariant] = ".koth",
+            [ContentItemType.JuggernautVariant] = ".jugg",
+            [ContentItemType.TerritoriesVariant] = ".terries",
+            [ContentItemType.AssaultVariant] = ".assault",
+            [ContentItemType.InfectionVariant] = ".zombiez",
+            [ContentItemType.VipVariant] = ".vip",
+            [ContentItemType.SandboxMap] = ".map",
+        };
+
+        public VariantConverterViewModel(IShell shell, ICacheFile cacheFile)
         {
             _shell = shell;
             _cacheFile = cacheFile;
@@ -60,11 +76,6 @@ namespace MapVariantFixer
             ClearCommand = new DelegateCommand(ClearFiles, () => Files.Count > 0 && !_inProgress);
 
             Files.CollectionChanged += Files_CollectionChanged;
-
-            var baseVariantsDir = new DirectoryInfo(Path.Combine(_cacheFile.File.Directory.FullName, "..\\data"));
-
-            if (baseVariantsDir.Exists)
-                AddFilesRecursive(baseVariantsDir);
         }
 
         public ObservableCollection<string> Files { get; } = new ObservableCollection<string>();
@@ -118,7 +129,7 @@ namespace MapVariantFixer
                 for (int i = 0; i < Files.Count; i++)
                 {
                     var filePath = Path.GetFullPath(Files[i]);
-                    progress.Report($"Converting Map Variant '{filePath}'...", false, (i + 1) / (float)Files.Count);
+                    progress.Report($"Converting Variant '{filePath}'...", false, (i + 1) / (float)Files.Count);
                     await Task.Run(() => ConvertFileAsync(filePath));
                 }
 
@@ -155,7 +166,9 @@ namespace MapVariantFixer
             var input = new FileInfo(filePath);
             var blf = new Blf(_cacheFile.Cache.Version, _cacheFile.Cache.Platform);
 
-            var variantName = "";
+            string variantName = "";
+            ulong uniqueId = 0;
+            ContentItemType contentType = ContentItemType.None;
 
             try
             {
@@ -180,10 +193,12 @@ namespace MapVariantFixer
                         blf.ContentFlags |= BlfFileContentFlags.EndOfFile;
                     }
 
+                    uniqueId = blf.ContentHeader?.Metadata?.UniqueId ?? 0;
                     variantName = blf.ContentHeader?.Metadata?.Name ?? "";
+                    contentType = blf.ContentHeader?.Metadata?.ContentType ?? ContentItemType.None;
                 }
 
-                var output = GetOutputPath(input, variantName, blf.ContentHeader.Metadata.UniqueId);
+                var output = GetOutputPath(variantName, contentType, uniqueId);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(output));
 
@@ -193,7 +208,10 @@ namespace MapVariantFixer
                     blf.Write(writer);
                 }
 
-                _uniqueIdTable.Add(blf.ContentHeader.Metadata.UniqueId);
+                if (uniqueId != 0)
+                {
+                    _uniqueIdTable.Add(uniqueId);
+                }
             }
             catch (Exception e)
             {
@@ -285,9 +303,11 @@ namespace MapVariantFixer
             }
         }
 
-        private string GetOutputPath(FileInfo input, string variantName, ulong uniqueId)
+        private string GetOutputPath(string variantName, ContentItemType contentType, ulong uniqueId)
         {
-            string outputPath = input.Name.EndsWith(".map") ? Path.Combine(OutputPath, $@"map_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), "sandbox.map") : Path.Combine(OutputPath, $@"game_variants", Regex.Replace($"{variantName.TrimStart().TrimEnd()}", @"[*\\ /:""]", "_"), $@"variant{input.Extension}");
+            var filteredName = Regex.Replace($"{variantName.TrimStart().TrimEnd().TrimEnd('.')}", @"[<>:""/\|?*]", "_");
+
+            string outputPath = contentType == ContentItemType.SandboxMap ? Path.Combine(OutputPath, $@"map_variants", filteredName, $@"sandbox{ContentTypeToFileExtension[contentType]}") : Path.Combine(OutputPath, $@"game_variants", filteredName, $@"variant{ContentTypeToFileExtension[contentType]}");
 
             if (Path.Exists(outputPath) && _uniqueIdTable.Contains(uniqueId))
             {
@@ -295,7 +315,7 @@ namespace MapVariantFixer
             }
             else
             {
-                return outputPath;
+                return outputPath.TrimEnd('.');
             }
         }
 

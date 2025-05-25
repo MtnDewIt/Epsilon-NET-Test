@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlamScriptEditorPlugin", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagResourceEditorPlugin", "Plugins\TagResourceEditorPlugin\TagResourceEditorPlugin.csproj", "{CF72CF01-995B-47EE-8F81-13E5EBEDFF4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapVariantFixer", "Plugins\MapVariantFixer\MapVariantFixer.csproj", "{48C9C8EF-CD83-4ABD-AE7B-BA3056A03A6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VariantConverter", "Plugins\VariantConverter\VariantConverter.csproj", "{48C9C8EF-CD83-4ABD-AE7B-BA3056A03A6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerJsonEditor", "Plugins\ServerJsonEditor\ServerJsonEditor.csproj", "{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}"
 EndProject

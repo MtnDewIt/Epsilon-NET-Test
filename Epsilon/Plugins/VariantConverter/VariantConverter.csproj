@@ -3,8 +3,8 @@
     <ProjectGuid>{48C9C8EF-CD83-4ABD-AE7B-BA3056A03A6D}</ProjectGuid>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>MapVariantFixer</RootNamespace>
-    <AssemblyName>MapVariantFixer</AssemblyName>
+    <RootNamespace>VariantConverter</RootNamespace>
+    <AssemblyName>VariantConverter</AssemblyName>
     <TargetFramework>net8.0-windows</TargetFramework>
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -14,7 +14,7 @@
     <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <OutputPath>..\..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\Plugins\MapVariantFixer\</OutputPath>
+    <OutputPath>..\..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\Plugins\VariantConverter\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Deterministic>true</Deterministic>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
