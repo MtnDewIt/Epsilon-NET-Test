@@ -315,7 +315,7 @@ namespace VariantConverter.Components.VariantConverter
             }
             else
             {
-                return outputPath.TrimEnd('.');
+                return outputPath;
             }
         }
 
