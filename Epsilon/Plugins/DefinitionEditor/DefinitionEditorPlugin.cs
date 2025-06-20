@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TagStructEditor.Common;
 using TagStructEditor.Fields;
 using TagTool.Cache;
+using TagList = TagStructEditor.Common.TagList;
 
 namespace DefinitionEditor
 {
