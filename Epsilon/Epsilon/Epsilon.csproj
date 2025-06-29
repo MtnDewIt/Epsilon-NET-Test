@@ -69,7 +69,11 @@
     <Page Remove="Themes\Controls\AvalonDock\AvalonDock.Generic.xaml" />
     <Page Remove="Themes\Controls\AvalonDock\Dictionary1.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="TagTool.ico" />
+  </ItemGroup>
   <PropertyGroup>
+    <ApplicationIcon>TagTool.ico</ApplicationIcon>
   </PropertyGroup>
   <Target Name="RemoveSatelliteAssemblies" AfterTargets="ResolveAssemblyReferences">
     <ItemGroup>
@@ -79,7 +83,7 @@
 	
   <Target Name="CopyFiles" AfterTargets="Build">
 	<ItemGroup>
-		<Tools Include="..\..\TagTool\TagTool\bin\$(Platform)\$(Configuration)\Tools\**\*"/>
+		<Tools Include="..\..\TagTool\TagTool\bin\$(Platform)\$(Configuration)\Tools\**\*" />
 	</ItemGroup>
 	<Copy SourceFiles="@(Tools)" DestinationFolder="$(OutputPath)\Tools\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
