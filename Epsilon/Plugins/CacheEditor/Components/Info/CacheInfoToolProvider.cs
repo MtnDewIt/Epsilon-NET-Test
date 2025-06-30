@@ -5,7 +5,7 @@ namespace CacheEditor.Components.Info
     [Export(typeof(ICacheEditorToolProvider))]
     class CacheInfoToolProvider : ICacheEditorToolProvider
     {
-        public int SortOrder => -1;
+        public int SortOrder => 2;
 
         public ICacheEditorTool CreateTool(ICacheEditor editor)
         {

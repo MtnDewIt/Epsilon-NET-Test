@@ -88,7 +88,7 @@ namespace ModPackagePlugin.Commands
             foreach (var tag in baseCache.TagCache.NonNull())
                 tagNames[tag.Index] = tag.Name;
 
-            modCache.BaseModPackage.TagCachesStreams.Add(new ExtantStream(referenceStream));
+            modCache.BaseModPackage.TagCachesStreams.Add(new UnmanagedExtantStream(IntPtr.Zero, new ExtantStream(referenceStream)));
             modCache.BaseModPackage.CacheNames.Add("default");
             modCache.BaseModPackage.TagCacheNames.Add(tagNames);
 

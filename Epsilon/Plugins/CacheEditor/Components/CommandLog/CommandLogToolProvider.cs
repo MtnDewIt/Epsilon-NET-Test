@@ -7,7 +7,7 @@ namespace CacheEditor.Components.CommandLog
     [Export(typeof(ICacheEditorToolProvider))]
     class CommandLogToolProvider : ICacheEditorToolProvider
     {
-        public int SortOrder => 1;
+        public int SortOrder => 4;
         public ICacheEditorTool CreateTool(ICacheEditor editor)
         {          
             return new CommandLogViewModel(editor);

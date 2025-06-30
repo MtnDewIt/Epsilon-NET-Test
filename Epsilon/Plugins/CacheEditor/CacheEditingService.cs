@@ -34,7 +34,7 @@ namespace CacheEditor
             _shell = shell;
             Settings = settingsService.GetCollection("CacheEditor");
             TagEditorPlugins = tagEditorPlugins.OrderBy(x => x.SortOrder).ToList();
-            Tools = tools;
+            Tools = tools.OrderBy(x => x.SortOrder);
         }
 
         public ICacheEditor CreateEditor(ICacheFile cacheFile)

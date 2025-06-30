@@ -194,7 +194,7 @@ namespace DefinitionEditor
         private void CopySetFieldCommand(ValueField field)
         {
             var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
-            ClipboardEx.SetTextSafe($"setfield {FieldHelper.GetFieldPath(field)} {value}\n");
+            ClipboardEx.SetTextSafe($"SetField {FieldHelper.GetFieldPath(field)} {value}\n");
         }
 
         private void CopyFieldMemoryAddress(IField field)
@@ -387,8 +387,8 @@ namespace DefinitionEditor
             if (e.Field is ValueField field && !(field is BlockField))
             {
                 var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
-                Logger.LogCommand($"{_instance.Name}.{_instance.Group}", FieldHelper.GetFieldPath(field), Logger.CommandEvent.CommandType.setfield,
-                    $"setfield {FieldHelper.GetFieldPath(field)} {value}");
+                Logger.LogCommand($"{_instance.Name}.{_instance.Group}", FieldHelper.GetFieldPath(field), Logger.CommandEvent.CommandType.SetField,
+                    $"SetField {FieldHelper.GetFieldPath(field)} {value}");
             }
         }
 
@@ -433,10 +433,8 @@ namespace DefinitionEditor
         {
             RteTargetList.Refresh();
             RteHasTargets = RteTargetList.Any();
-
-            if (SelectedRteTargetItem == null || !RteTargetList.Contains(SelectedRteTargetItem))
+            if (SelectedRteTargetItem == null || !(RteTargetList).Contains(SelectedRteTargetItem))
                 SelectedRteTargetItem = RteTargetList.FirstOrDefault();
-
             PokeCommand.RaiseCanExecuteChanged();
         }
 
@@ -453,7 +451,7 @@ namespace DefinitionEditor
                     await _cacheFile.SerializeTagAsync(_instance, _definitionData);
                 }
                 _shell.StatusBar.ShowStatusText("Saved Changes");
-                Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.none, "savetagchanges");
+                Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.None, "SaveTagChanges");
             }
             catch (Exception ex)
             {
@@ -508,7 +506,7 @@ namespace DefinitionEditor
 
         protected override void OnClose()
         {
-            Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.none, "exit");
+            Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.None, "Exit");
             base.OnClose();
             DisplayField?.Dispose();
             DisplayField = null;

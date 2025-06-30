@@ -1,27 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <ProjectGuid>{CDCE8946-359A-488F-802E-CB664B6F97DF}</ProjectGuid>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-	<Platforms>x64</Platforms>
+    <RootNamespace>DefinitionEditor</RootNamespace>
+    <AssemblyName>DefinitionEditor</AssemblyName>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>12</LangVersion>
+    <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-	<OutputPath>..\..\bin\$(Platform)\$(Configuration)\Plugins\$(AssemblyName)\</OutputPath>
-	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputPath>..\..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\Plugins\DefinitionEditor\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <Platforms>x64</Platforms>
+    <Configuration>Release</Configuration> <!--Default value-->
+    <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" Private="false" ExcludeAssets="all" />
-    <ProjectReference Include="..\..\components\TagStructEditor\TagStructEditor.csproj" Private="false" ExcludeAssets="all" />
-    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" Private="false" ExcludeAssets="all" />
-    <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" Private="false" ExcludeAssets="all" />
+    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\..\Components\TagStructEditor\TagStructEditor.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" PrivateAssets="all" Private="false" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fody" Version="6.1.1" PrivateAssets="all" />
-	<PackageReference Include="PropertyChanged.Fody" Version="3.2.8" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" PrivateAssets="all" ExcludeAssets="runtime" />
-    <PackageReference Include="PixiEditor.ColorPicker" Version="3.3.1" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" PrivateAssets="all" />
+    <PackageReference Include="PixiEditor.ColorPicker" Version="3.3.1" PrivateAssets="all" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" PrivateAssets="all" />
     <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" ExcludeAssets="runtime" />
     <PackageReference Include="System.ComponentModel.Composition" Version="9.0.6" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>

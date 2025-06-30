@@ -1,24 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <ProjectGuid>{654D2D1C-68F0-4634-9D42-A359E4282BF7}</ProjectGuid>
     <OutputType>Library</OutputType>
-	<Platforms>x64</Platforms>
+    <RootNamespace>BitmapViewerPlugin</RootNamespace>
+    <AssemblyName>BitmapViewerPlugin</AssemblyName>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>12</LangVersion>
+    <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-	<OutputPath>..\..\bin\$(Platform)\$(Configuration)\Plugins\$(AssemblyName)\</OutputPath>
-	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputPath>..\..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\Plugins\BitmapViewerPlugin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Deterministic>true</Deterministic>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <Platforms>x64</Platforms>
+    <Configuration>Release</Configuration> <!--Default value-->
+    <Platform>x64</Platform> <!--Default value-->
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" Private="false" ExcludeAssets="all" />
-    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" Private="false" ExcludeAssets="all" />
-    <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" Private="false" ExcludeAssets="all" />
+    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" PrivateAssets="all" Private="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all"  ExcludeAssets="runtime" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.6" PrivateAssets="all"  ExcludeAssets="runtime" />
+    <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.6" PrivateAssets="all" ExcludeAssets="runtime" />
   </ItemGroup>
 </Project>

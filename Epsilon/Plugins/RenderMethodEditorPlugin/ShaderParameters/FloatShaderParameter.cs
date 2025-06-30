@@ -12,7 +12,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             {
                 Property.RealConstants[TemplateIndex].Arg0 = value;
                 Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
-                    Logger.CommandEvent.CommandType.setfield, $"setargument {Name} {value}");
+                    Logger.CommandEvent.CommandType.SetField, $"SetArgument {Name} {value}");
             }               
         }
 

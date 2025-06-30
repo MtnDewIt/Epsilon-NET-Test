@@ -73,7 +73,7 @@ namespace TagStructEditor.Fields
             Value = "default";  // resets failed validation appearance
             Value = stringid;   // set back to added stringid
 
-            Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"stringid add {Value}");
+            Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.None, $"StringId Add {Value}");
         }
 
         public override void Dispose()

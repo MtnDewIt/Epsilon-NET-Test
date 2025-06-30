@@ -6,7 +6,7 @@ namespace CacheEditor.Components.DependencyExplorer
     [Export(typeof(ICacheEditorToolProvider))]
     class DependencyExplorerToolProvider : ICacheEditorToolProvider
     {
-        public int SortOrder => 1;
+        public int SortOrder => 3;
 
         public ICacheEditorTool CreateTool(ICacheEditor editor)
         {

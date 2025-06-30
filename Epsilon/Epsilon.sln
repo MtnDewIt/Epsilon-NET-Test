@@ -24,37 +24,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpsilonLib", "EpsilonLib\Ep
 		{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC} = {42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheEditor", "plugins\CacheEditor\CacheEditor.csproj", "{9DE40A24-8308-4C7D-B77E-71E9D389BBFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheEditor", "Plugins\CacheEditor\CacheEditor.csproj", "{9DE40A24-8308-4C7D-B77E-71E9D389BBFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xceed.Wpf.AvalonDock", "libs\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj", "{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xceed.Wpf.AvalonDock", "Libs\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj", "{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefinitionEditor", "plugins\DefinitionEditor\DefinitionEditor.csproj", "{CDCE8946-359A-488F-802E-CB664B6F97DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefinitionEditor", "Plugins\DefinitionEditor\DefinitionEditor.csproj", "{CDCE8946-359A-488F-802E-CB664B6F97DF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{5920225C-27D8-4B85-A2F7-54F3DF5B61F2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{5920225C-27D8-4B85-A2F7-54F3DF5B61F2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{BBF76049-21E6-4ADB-B3AC-CA25D7C31E10}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{BBF76049-21E6-4ADB-B3AC-CA25D7C31E10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagStructEditor", "components\TagStructEditor\TagStructEditor.csproj", "{613AA9F0-1DC4-451A-A0C1-D9D1D4499D0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagStructEditor", "Components\TagStructEditor\TagStructEditor.csproj", "{613AA9F0-1DC4-451A-A0C1-D9D1D4499D0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryingCatPlugin", "plugins\CryingCatPlugin\CryingCatPlugin.csproj", "{6AC3CCFA-49F5-4368-860F-77A26E15F9DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryingCatPlugin", "Plugins\CryingCatPlugin\CryingCatPlugin.csproj", "{6AC3CCFA-49F5-4368-860F-77A26E15F9DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagToolShellPlugin", "plugins\TagToolShellPlugin\TagToolShellPlugin.csproj", "{03C3C798-8DCF-423B-B846-526932A7B4F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagToolShellPlugin", "Plugins\TagToolShellPlugin\TagToolShellPlugin.csproj", "{03C3C798-8DCF-423B-B846-526932A7B4F0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{2AC8CCC1-63C3-4B11-B507-E8ED99330EBC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{2AC8CCC1-63C3-4B11-B507-E8ED99330EBC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagTool", "..\TagTool\TagTool\TagTool.csproj", "{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaloShaderGenerator", "..\TagTool\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj", "{17BFEFFB-1619-4647-BA40-3CD1D87FD774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderMethodEditorPlugin", "plugins\RenderMethodEditorPlugin\RenderMethodEditorPlugin.csproj", "{17522F38-5E76-4AEA-99FD-263A2E981DCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderMethodEditorPlugin", "Plugins\RenderMethodEditorPlugin\RenderMethodEditorPlugin.csproj", "{17522F38-5E76-4AEA-99FD-263A2E981DCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModPackagePlugin", "Plugins\ModPackagePlugin\ModPackagePlugin.csproj", "{426B372C-3C85-44F1-AA81-B99927781030}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlamScriptEditorPlugin", "Plugins\BlamScriptEditorPlugin\BlamScriptEditorPlugin.csproj", "{CDF2FE6B-E5B9-4833-B5F8-1D0A5C4547B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagResourceEditorPlugin", "plugins\TagResourceEditorPlugin\TagResourceEditorPlugin.csproj", "{CF72CF01-995B-47EE-8F81-13E5EBEDFF4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TagResourceEditorPlugin", "Plugins\TagResourceEditorPlugin\TagResourceEditorPlugin.csproj", "{CF72CF01-995B-47EE-8F81-13E5EBEDFF4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapVariantFixer", "Plugins\MapVariantFixer\MapVariantFixer.csproj", "{48C9C8EF-CD83-4ABD-AE7B-BA3056A03A6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VariantConverter", "Plugins\VariantConverter\VariantConverter.csproj", "{48C9C8EF-CD83-4ABD-AE7B-BA3056A03A6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerJsonEditor", "Plugins\ServerJsonEditor\ServerJsonEditor.csproj", "{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}"
 EndProject
@@ -96,8 +96,8 @@ Global
 		{6AC3CCFA-49F5-4368-860F-77A26E15F9DD}.Release|x64.Build.0 = Release|x64
 		{03C3C798-8DCF-423B-B846-526932A7B4F0}.Debug|x64.ActiveCfg = Debug|x64
 		{03C3C798-8DCF-423B-B846-526932A7B4F0}.Debug|x64.Build.0 = Debug|x64
-		{03C3C798-8DCF-423B-B846-526932A7B4F0}.Release|x64.ActiveCfg = Release
-		{03C3C798-8DCF-423B-B846-526932A7B4F0}.Release|x64.Build.0 = Release
+		{03C3C798-8DCF-423B-B846-526932A7B4F0}.Release|x64.ActiveCfg = Release|x64
+		{03C3C798-8DCF-423B-B846-526932A7B4F0}.Release|x64.Build.0 = Release|x64
 		{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}.Debug|x64.ActiveCfg = Debug|x64
 		{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}.Debug|x64.Build.0 = Debug|x64
 		{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}.Release|x64.ActiveCfg = Release|x64
@@ -108,8 +108,8 @@ Global
 		{17BFEFFB-1619-4647-BA40-3CD1D87FD774}.Release|x64.Build.0 = Release|x64
 		{17522F38-5E76-4AEA-99FD-263A2E981DCB}.Debug|x64.ActiveCfg = Debug|x64
 		{17522F38-5E76-4AEA-99FD-263A2E981DCB}.Debug|x64.Build.0 = Debug|x64
-		{17522F38-5E76-4AEA-99FD-263A2E981DCB}.Release|x64.ActiveCfg = Release
-		{17522F38-5E76-4AEA-99FD-263A2E981DCB}.Release|x64.Build.0 = Releas
+		{17522F38-5E76-4AEA-99FD-263A2E981DCB}.Release|x64.ActiveCfg = Release|x64
+		{17522F38-5E76-4AEA-99FD-263A2E981DCB}.Release|x64.Build.0 = Release|x64
 		{426B372C-3C85-44F1-AA81-B99927781030}.Debug|x64.ActiveCfg = Debug|x64
 		{426B372C-3C85-44F1-AA81-B99927781030}.Debug|x64.Build.0 = Debug|x64
 		{426B372C-3C85-44F1-AA81-B99927781030}.Release|x64.ActiveCfg = Release|x64
@@ -128,8 +128,8 @@ Global
 		{48C9C8EF-CD83-4ABD-AE7B-BA3056A03A6D}.Release|x64.Build.0 = Release|x64
 		{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}.Debug|x64.ActiveCfg = Debug|x64
 		{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}.Debug|x64.Build.0 = Debug|x64
-		{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}.Release|x64.ActiveCfg = Release
-		{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}.Release|x64.Build.0 = Release
+		{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}.Release|x64.ActiveCfg = Release|x64
+		{7A35C8C6-98CE-4104-9A28-ADE81C8C6C42}.Release|x64.Build.0 = Release|x64
 		{654D2D1C-68F0-4634-9D42-A359E4282BF7}.Debug|x64.ActiveCfg = Debug|x64
 		{654D2D1C-68F0-4634-9D42-A359E4282BF7}.Debug|x64.Build.0 = Debug|x64
 		{654D2D1C-68F0-4634-9D42-A359E4282BF7}.Release|x64.ActiveCfg = Release|x64

@@ -127,7 +127,7 @@ namespace CacheEditor
 
                 ActiveItem = new TagEditorViewModel(_cacheEditingService, context);
             }
-            Logger.LogCommand($"{instance.Name}.{instance.Group}", null, Logger.CommandEvent.CommandType.none, $"edittag {instance.Name}.{instance.Group}");
+            Logger.LogCommand($"{instance.Name}.{instance.Group}", null, Logger.CommandEvent.CommandType.None, $"EditTag {instance.Name}.{instance.Group}");
         }
 
         public List<string> GetOpenTagNames()
@@ -285,7 +285,7 @@ namespace CacheEditor
                     if (!BaseCacheModifyCheck(_cacheFile.Cache))
                         return;
 
-                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"nametag {tag.Name}.{tag.Group} {vm.InputText}");
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.None, $"NameTag {tag.Name}.{tag.Group} {vm.InputText}");
                     _cacheFile.RenameTag(tag, vm.InputText);
                     TagTree.Refresh(true);
                 }
@@ -313,7 +313,7 @@ namespace CacheEditor
                         Message = "Tag extracted successfully."
                     };
                     _shell.ShowDialog(success);
-                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"extracttag {tag.Name}.{tag.Group} {ofd.FileName}");
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.None, $"ExtractTag {tag.Name}.{tag.Group} {ofd.FileName}");
                 }
             }
         }
@@ -339,7 +339,7 @@ namespace CacheEditor
                         Message = "Tag imported successfully."
                     };
                     _shell.ShowDialog(success);
-                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"importtag {tag.Name}.{tag.Group} {ofd.FileName}");
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.None, $"ImportTag {tag.Name}.{tag.Group} {ofd.FileName}");
                 }
             }
         }
@@ -365,7 +365,7 @@ namespace CacheEditor
 
                     _cacheFile.DuplicateTag(tag, vm.InputText);
                     TagTree.Refresh(true);
-                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"duplicatetag {tag.Name}.{tag.Group} {vm.InputText}");
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.None, $"DuplicateTag {tag.Name}.{tag.Group} {vm.InputText}");
                 }
             }
         }
@@ -390,7 +390,7 @@ namespace CacheEditor
 
                 if (_shell.ShowDialog(warning) == true)
                 {
-                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"deletetag {tag.Name}.{tag.Group}");
+                    Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.None, $"DeleteTag {tag.Name}.{tag.Group}");
                     _cacheFile.DeleteTag(tag);
                     TagTree.Refresh(true);
                 }         

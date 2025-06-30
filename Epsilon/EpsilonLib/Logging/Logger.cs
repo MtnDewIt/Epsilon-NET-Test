@@ -29,7 +29,7 @@ namespace EpsilonLib.Logging
             };
 
             //see if a setfield exists for the current field in the current tag already
-            int match = CommandLog.FindIndex(l => l.Type == CommandEvent.CommandType.setfield &&
+            int match = CommandLog.FindIndex(l => l.Type == CommandEvent.CommandType.SetField &&
             l.Tag == tag && l.Field == field);
 
             if(match != -1)
@@ -79,8 +79,8 @@ namespace EpsilonLib.Logging
 
             public enum CommandType
             {
-                none,
-                setfield
+                None,
+                SetField
             }
         }
     }
