@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Cache.Gen3;
 using TagTool.Cache.HaloOnline;
+using TagTool.Cache.ModPackages;
 using TagTool.IO;
 using static TagTool.IO.ConsoleHistory;
 
@@ -76,25 +77,11 @@ namespace ModPackagePlugin.Commands
 
         private static GameCacheModPackage CreateAndInitializePackage(GameCacheHaloOnline baseCache, IProgressReporter progress)
         {
-            var modCache = new GameCacheModPackage(baseCache);
-
-            var referenceStream = new MemoryStream(); // will be reused by all base caches
-            TagTool.Commands.Modding.CreateModPackageCommand.BuildInitialTagCache(baseCache, modCache, referenceStream);
-
-            referenceStream.Position = 0;
-
-            Dictionary<int, string> tagNames = new Dictionary<int, string>();
-
-            foreach (var tag in baseCache.TagCache.NonNull())
-                tagNames[tag.Index] = tag.Name;
-
-            modCache.BaseModPackage.TagCachesStreams.Add(new ExtantStream(referenceStream));
-            modCache.BaseModPackage.CacheNames.Add("default");
-            modCache.BaseModPackage.TagCacheNames.Add(tagNames);
-
-            modCache.SetActiveTagCache(0);
-
-            return modCache;
+            var builder = new ModPackageBuilder(baseCache);
+            builder.SetMetadata(new ModPackageMetadata());
+            builder.AddTagCache("default");
+            builder.Build();
+            return new GameCacheModPackage(baseCache, builder.Build());
         }
 
         public void UpdateCommand(Command command)
