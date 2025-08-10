@@ -49,7 +49,6 @@ namespace TagToolShellPlugin
 
         public void Dispose()
         {
-            _commandRunner.ContextStack = null;
             _commandRunner = null;
         }
 
