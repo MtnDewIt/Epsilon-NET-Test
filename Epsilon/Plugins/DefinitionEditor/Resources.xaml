@@ -909,7 +909,7 @@
     </DataTemplate>
 
     <!--  Point2d  -->
-    <DataTemplate DataType="{x:Type fields:Point2dField}">
+    <DataTemplate DataType="{x:Type fields:Int16Point2dField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource OffsetLabelStyle}"/>

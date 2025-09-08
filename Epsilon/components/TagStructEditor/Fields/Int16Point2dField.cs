@@ -2,12 +2,12 @@
 
 namespace TagStructEditor.Fields
 {
-    public class Point2dField : ValueField
+    public class Int16Point2dField : ValueField
     {
         public short X { get; set; }
         public short Y { get; set; }
 
-        public Point2dField(ValueFieldInfo info) : base(info)
+        public Int16Point2dField(ValueFieldInfo info) : base(info)
         {
         }
 
@@ -18,14 +18,14 @@ namespace TagStructEditor.Fields
 
         protected override void OnPopulate(object value)
         {
-            var point = (Point2d)value;
+            var point = (Int16Point2d)value;
             X = point.X;
             Y = point.Y;
         }
 
         private void UpdateValue()
         {
-            SetActualValue(new Point2d(X, Y));
+            SetActualValue(new Int16Point2d(X, Y));
         }
 
         public void OnXChanged() => UpdateValue();

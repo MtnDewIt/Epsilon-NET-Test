@@ -209,8 +209,8 @@ namespace TagStructEditor.Fields
                 return new RealRgbColorField(info);
             else if (info.FieldType == typeof(DatumHandle))
                 return new DatumHandleField(info);
-            else if (info.FieldType == typeof(Point2d))
-                return new Point2dField(info);
+            else if (info.FieldType == typeof(Int16Point2d))
+                return new Int16Point2dField(info);
             else if (info.FieldType == typeof(ArgbColor))
                 return new ArgbColorField(info);
             else if (info.FieldType == typeof(CacheAddress))

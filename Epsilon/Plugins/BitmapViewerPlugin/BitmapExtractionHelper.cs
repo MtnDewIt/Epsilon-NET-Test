@@ -71,7 +71,7 @@ namespace BitmapViewerPlugin
             int mipmapSize, mipmapOffset;
             if (bitmap.Type == BitmapType.Texture2D)
             {
-                mipmapOffset = BitmapUtilsPC.GetTextureOffset(tempImage, mipmapIndex);
+                mipmapOffset = BitmapUtilsPC.GetTexture2DOffset(tempImage, 0, 0, mipmapIndex);
                 mipmapSize = width * height * BitmapFormatUtils.GetBitsPerPixel(tempImage.Format) / 8;
             }
             else if (bitmap.Type == BitmapType.CubeMap)

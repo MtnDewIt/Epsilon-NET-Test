@@ -7,7 +7,7 @@
         void Visit(InlineStructField field);
         void Visit(BlockField field);
         void Visit(CachedTagField field);
-        void Visit(Point2dField field);
+        void Visit(Int16Point2dField field);
         void Visit(DatumHandleField field);
         void Visit(StringField field);
         void Visit(Rectangle2dField field);
@@ -48,7 +48,7 @@
     {
         public virtual void Visit(RealVector3dField field) { }
         public virtual void Visit(CachedTagField field) { }
-        public virtual void Visit(Point2dField field) { }
+        public virtual void Visit(Int16Point2dField field) { }
         public virtual void Visit(DatumHandleField field) { }
         public virtual void Visit(StringField field) { }
         public virtual void Visit(Rectangle2dField field) { }

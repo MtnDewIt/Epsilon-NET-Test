@@ -213,7 +213,7 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Shader
                             return "Two pass shader, use albedo pass to obtain albedo values.";
                         case Misc.First_Person_Never:
                             return "Single pass shader, compute albedo pass inside lighting pass.";
-                        case Misc.First_Person_Never_With_rotating_Bitmaps:
+                        case Misc.First_Person_Never_With_Rotating_Bitmaps:
                             return "Single pass shader, compute albedo pass inside lighting pass. Texture map transforms are (angle, scale, offset x, offset y)";
                     }
                     break;
@@ -251,7 +251,7 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Shader
             if (shaderOptions.Count >= 12)
                 soft_fade = (HaloShaderGenerator.Shared.Soft_Fade)shaderOptions[11].OptionIndex;
 
-            return new ShaderGenerator(albedo, bump_mapping, alpha_test, specular_mask, material_model, environment_mapping, self_illumination, blend_mode, parallax, misc, distortion, soft_fade);
+            return new ShaderGenerator();
         }
     }
 }

@@ -195,7 +195,7 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Particle
             var self_illumination = (Self_Illumination)shaderOptions[9].OptionIndex;
            
              
-            return new ParticleGenerator(albedo, blend_mode, specialized_rendering, lighting, render_target, depth_fade, black_point, fog, frame_blend, self_illumination);
+            return new ParticleGenerator();
         }
     }
 }

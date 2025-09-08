@@ -9,7 +9,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
 {
     static class ShaderParameterFactory
     {
-        public static ObservableCollection<GenericShaderParameter> BuildShaderParameters(GameCache cache, List<ShaderParameter> parameters, RenderMethod.RenderMethodPostprocessBlock property, RenderMethodTemplate template, bool useRotation=false)
+        public static ObservableCollection<GenericShaderParameter> BuildShaderParameters(GameCache cache, List<ShaderOptionParameter> parameters, RenderMethod.RenderMethodPostprocessBlock property, RenderMethodTemplate template, bool useRotation=false)
         {
             var result = new ObservableCollection<GenericShaderParameter>();
             foreach(var parameter in parameters)
@@ -47,14 +47,14 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                                 result.Add(new Float2ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 break;
                             case HLSLType.Float3:
-                                if (parameter.Flags.HasFlag(ShaderParameterFlags.IsColor))
+                                if (parameter.Flags.HasFlag(ShaderOptionParameter.ShaderParameterFlags.IsColor))
                                     result.Add(new Color3ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 else
                                     result.Add(new Float3ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 break;
 
                             case HLSLType.Float4:
-                                if (parameter.Flags.HasFlag(ShaderParameterFlags.IsColor))
+                                if (parameter.Flags.HasFlag(ShaderOptionParameter.ShaderParameterFlags.IsColor))
                                     result.Add(new Color4ShaderParameter(property, paramName, desc, realArgumentIndex));
                                 else if (isCategory)
                                     result.Add(new CategoryShaderParameter(property, paramName, desc, realArgumentIndex));

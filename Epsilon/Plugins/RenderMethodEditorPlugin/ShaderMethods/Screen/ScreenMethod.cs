@@ -108,7 +108,7 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Screen
             var overlay_b = (Overlay_B)shaderOptions[3].OptionIndex;
             var blend_mode = (Blend_Mode)shaderOptions[4].OptionIndex;
 
-            return new ScreenGenerator(warp, _base, overlay_a, overlay_b, blend_mode);
+            return new ScreenGenerator();
         }
     }
 }

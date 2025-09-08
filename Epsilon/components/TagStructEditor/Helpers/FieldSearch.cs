@@ -71,7 +71,7 @@ namespace TagStructEditor.Helpers
                 }
             }
 
-            public override void Visit(Point2dField field)
+            public override void Visit(Int16Point2dField field)
             {
                 ProcessValueField(field);
             }

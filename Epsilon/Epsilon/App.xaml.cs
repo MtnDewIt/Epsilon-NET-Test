@@ -1,10 +1,10 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
+﻿using System.Reflection;
 using System.Runtime.Loader;
+using System;
 using System.Windows;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
 namespace WpfApp20
 {
@@ -21,27 +21,20 @@ namespace WpfApp20
                 Path.Combine(AppContext.BaseDirectory, "Tools")
             ];
 
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
-
             AssemblyLoadContext.Default.Resolving += (AssemblyLoadContext ctx, AssemblyName name) =>
             {
                 foreach (string path in searchPaths)
                 {
-                    string assemblyPath = Path.Combine(path, $"{name.Name}.dll");
-
-                    AssemblyName an;
-
                     try
                     {
-                        Assembly assembly = Assembly.LoadFile(assemblyPath);
-
-                        an = new AssemblyName(assembly.GetName().Name);
+                        string assemblyPath = Path.Combine(path, $"{name.Name}.dll");
+                        if(File.Exists(assemblyPath))
+                            return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
                     }
                     catch (Exception)
                     {
-                        continue;
+                        // swallow
                     }
-                    if (AssemblyName.ReferenceMatchesDefinition(name, an)) return ctx.LoadFromAssemblyPath(assemblyPath);
                 }
 
                 return null;
@@ -51,19 +44,16 @@ namespace WpfApp20
             {
                 foreach (string path in searchPaths)
                 {
-                    string dllPath = Path.Combine(path, dllName);
-
-                    IntPtr handle;
-
                     try
                     {
-                        handle = NativeLibrary.Load(dllPath);
+                        string dllPath = Path.Combine(path, dllName);
+                        if(File.Exists(dllPath))
+                            return NativeLibrary.Load(dllPath);
                     }
                     catch (Exception)
                     {
-                        continue;
+                        // swallow
                     }
-                    if (Path.GetFileName(dllPath) == dllName) return handle;
                 }
 
                 return IntPtr.Zero;

@@ -144,7 +144,7 @@ namespace RenderMethodEditorPlugin.ShaderMethods.Decal
             var bump_mapping = (Bump_Mapping)shaderOptions[4].OptionIndex;
             var tinting = (Tinting)shaderOptions[5].OptionIndex;
 
-            return new DecalGenerator(albedo, blend_mode, render_pass, specular, bump_mapping, tinting);
+            return new DecalGenerator();
         }
     }
 }
