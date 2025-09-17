@@ -9,6 +9,8 @@
 	<OutputPath>..\bin\$(Platform)\$(Configuration)\</OutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+	<!-- disabled for now as it does not respect DestinationSubDirectory -->
+	<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TagTool\TagTool\TagTool.csproj" />

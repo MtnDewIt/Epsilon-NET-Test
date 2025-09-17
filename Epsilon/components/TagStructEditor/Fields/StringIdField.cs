@@ -11,7 +11,7 @@ namespace TagStructEditor.Fields
     {
         public StringTable _stringTable;
 
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
         public string UnicText { get; set; }
 
         public bool AddButtonEnabled { get; set; }
@@ -31,13 +31,8 @@ namespace TagStructEditor.Fields
         protected override void OnPopulate(object value)
         {
             var stringId = (StringId)value;
-            if (stringId == StringId.Invalid)
-                Value = "";
-            else
-            {
-                Value = _stringTable.GetString(stringId);
-                UnicText = null;
-            }
+            Value = _stringTable.GetString(stringId) ?? "";
+            UnicText = null;
         }
 
         public void OnValueChanged()
@@ -45,21 +40,17 @@ namespace TagStructEditor.Fields
             if (IsPopulating)
                 return;
 
-            StringId stringId = StringId.Invalid;
-            if (!string.IsNullOrEmpty(Value))
+            StringId stringId = _stringTable.GetStringId(Value);
+            if (stringId == StringId.Invalid)
             {
-                stringId = _stringTable.GetStringId(Value);
-                if (string.IsNullOrWhiteSpace(Value) || stringId == StringId.Invalid)
-                {
-                    AddButtonEnabled = true;
-                    AddStringIDCommand.RaiseCanExecuteChanged();
-                    throw new ArgumentException(nameof(Value));
-                }
-                else
-                {
-                    AddButtonEnabled = false;
-                    AddStringIDCommand.RaiseCanExecuteChanged();
-                }
+                AddButtonEnabled = true;
+                AddStringIDCommand.RaiseCanExecuteChanged();
+                throw new ArgumentException(nameof(Value));
+            }
+            else
+            {
+                AddButtonEnabled = false;
+                AddStringIDCommand.RaiseCanExecuteChanged();
             }
 
             SetActualValue(stringId);
@@ -67,11 +58,9 @@ namespace TagStructEditor.Fields
 
         private void AddNew()
         {
-            _stringTable.AddString(Value);
-
-            string stringid = Value;
-            Value = "default";  // resets failed validation appearance
-            Value = stringid;   // set back to added stringid
+            _stringTable.GetOrAddString(Value);
+            OnValueChanged();
+            RaisePropertyChanged(nameof(Value));
 
             Logger.LogCommand(null, null, Logger.CommandEvent.CommandType.none, $"stringid add {Value}");
         }
