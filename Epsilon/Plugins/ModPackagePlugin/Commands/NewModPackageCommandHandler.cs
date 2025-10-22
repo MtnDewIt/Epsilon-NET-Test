@@ -77,26 +77,11 @@ namespace ModPackagePlugin.Commands
 
         private static GameCacheModPackage CreateAndInitializePackage(GameCacheHaloOnline baseCache, FileInfo file, IProgressReporter progress)
         {
-            var modCache = new GameCacheModPackage(baseCache, file);
-
-            ModPackageCacheUtils.BuildInitialTagCache(baseCache,
-                        out Dictionary<int, string> referenceTagNames,
-                        out Stream referenceStream);
-
-            referenceStream.Position = 0;
-
-            Dictionary<int, string> tagNames = new Dictionary<int, string>();
-
-            foreach (var tag in baseCache.TagCache.NonNull())
-                tagNames[tag.Index] = tag.Name;
-
-            modCache.BaseModPackage.TagCachesStreams.Add(new UnmanagedExtantStream(IntPtr.Zero, new ExtantStream(referenceStream)));
-            modCache.BaseModPackage.CacheNames.Add("default");
-            modCache.BaseModPackage.TagCacheNames.Add(tagNames);
-
-            modCache.SetActiveTagCache(0);
-
-            return modCache;
+            var builder = new ModPackageBuilder(baseCache);
+            builder.SetMetadata(new ModPackageMetadata());
+            builder.AddTagCache("default");
+            builder.Build();
+            return new GameCacheModPackage(baseCache, builder.Build());
         }
 
         public void UpdateCommand(Command command)
