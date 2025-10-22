@@ -39,12 +39,12 @@ namespace TagResourceEditorPlugin
                 var typeName = cache.StringTable.GetString(typeDef.Name);
                 return GetTagResourceDefinitionTypeGen4(typeName);
             }
-            else if(cache is GameCacheHaloOnlineBase)
+            else if(cache is GameCacheEldoradoBase)
             {
-                if (resourceReference.HaloOnlinePageableResource == null)
+                if (resourceReference.EldoradoPageableResource == null)
                     return null;
 
-                return resourceReference.HaloOnlinePageableResource.GetDefinitionType();
+                return resourceReference.EldoradoPageableResource.GetDefinitionType();
             }
 
             return null;

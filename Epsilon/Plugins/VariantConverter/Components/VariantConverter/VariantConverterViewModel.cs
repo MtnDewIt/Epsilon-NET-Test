@@ -229,8 +229,8 @@ namespace VariantConverter.Components.VariantConverter
 
             using (var memoryStream = new MemoryStream(buffer))
             {
-                var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
-                var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+                var deserializer = new TagDeserializer(CacheVersion.EldoradoED, CachePlatform.Original);
+                var serializer = new TagSerializer(CacheVersion.EldoradoED, CachePlatform.Original);
 
                 var reader = new EndianReader(memoryStream, EndianFormat.BigEndian);
                 var writer = new EndianWriter(memoryStream, EndianFormat.LittleEndian);

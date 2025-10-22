@@ -15,7 +15,7 @@ namespace CacheEditor.Components.DependencyExplorer
 
         public bool ValidForEditor(ICacheEditor editor)
         {
-            return editor.CacheFile.Cache is GameCacheHaloOnlineBase;
+            return editor.CacheFile.Cache is GameCacheEldoradoBase;
         }
     }
 }

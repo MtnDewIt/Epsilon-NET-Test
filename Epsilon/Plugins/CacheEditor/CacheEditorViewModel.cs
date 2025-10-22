@@ -416,7 +416,7 @@ namespace CacheEditor
             if (!warningsEnabled)
                 return true;
 
-            if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
+            if (cache is GameCacheEldoradoBase && !(_cacheFile.Cache is GameCacheModPackage))
             {
                 var alert = new AlertDialogViewModel
                 {

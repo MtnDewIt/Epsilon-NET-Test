@@ -5,7 +5,7 @@ using Stylet;
 using System.Linq;
 using System.Windows.Input;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 
 namespace CacheEditor.Components.DependencyExplorer
 {
@@ -39,23 +39,23 @@ namespace CacheEditor.Components.DependencyExplorer
 
         private void TagTree_NodeSelected(object sender, TreeNodeEventArgs e)
         {
-            if (e.Node.Tag is CachedTagHaloOnline instance)
+            if (e.Node.Tag is CachedTagEldorado instance)
                 Populate(instance);
         }
 
         internal void OnItemDoubleClicked(DependencyItem item)
         {
             _editor.OpenTag(item.Tag);
-            if (item.Tag is CachedTagHaloOnline instance)
+            if (item.Tag is CachedTagEldorado instance)
                 Populate(instance);
         }
 
         private void _editor_CurrentTagChanged(object sender, System.EventArgs e)
         {
-            Populate((CachedTagHaloOnline)_editor.CurrentTag);
+            Populate((CachedTagEldorado)_editor.CurrentTag);
         }
 
-        private void Populate(CachedTagHaloOnline instance)
+        private void Populate(CachedTagEldorado instance)
         {
             var cache = _editor.CacheFile.Cache;
 
@@ -70,7 +70,7 @@ namespace CacheEditor.Components.DependencyExplorer
                 .Select(CreateItem);
 
             var dependents = cache.TagCache.NonNull()
-                .Cast<CachedTagHaloOnline>()
+                .Cast<CachedTagEldorado>()
                 .Where(tag => tag.Dependencies.Contains(instance.Index))
                 .Select(CreateItem);
       

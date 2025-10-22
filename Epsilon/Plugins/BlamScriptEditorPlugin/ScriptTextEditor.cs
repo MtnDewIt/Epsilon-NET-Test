@@ -42,7 +42,7 @@ namespace BlamScriptEditorPlugin
                         //rules.Add(new HighlightingRule() { Regex = new Regex("\\b\\(sleep\\s+"), Color = SyntaxHighlightingDefinition.GetNamedColor("Declaration") });
 
                         //var regexItem = new Regex("^[a-z_0-9]+");
-                        //var scripts = ScriptInfo.Scripts[(CacheVersion.HaloOnlineED, CachePlatform.Original)];
+                        //var scripts = ScriptInfo.Scripts[(CacheVersion.EldoradoED, CachePlatform.Original)];
                         //var keywords = string.Join("|", scripts.Values.Select(x => x.Name).Where(x => regexItem.IsMatch(x)).ToArray());
 
                         //var span = new HighlightingSpan()

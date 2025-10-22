@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Editing;
 using TagTool.IO;
 using TagTool.Serialization;
@@ -26,15 +26,15 @@ namespace CacheEditor.RTE.Providers
 
         public bool ValidForCacheFile(ICacheFile cacheFile)
         {
-            return cacheFile.Cache is GameCacheHaloOnlineBase;
+            return cacheFile.Cache is GameCacheEldoradoBase;
         }
 
         void IRteProvider.PokeTag(IRteTarget target, GameCache cache, CachedTag instance, object definition, ref byte[] RuntimeTagData)
         {
-            PokeTag(target, cache, definition, instance as CachedTagHaloOnline, ref RuntimeTagData);
+            PokeTag(target, cache, definition, instance as CachedTagEldorado, ref RuntimeTagData);
         }
 
-        private void PokeTag(IRteTarget target, GameCache cache, object definition, CachedTagHaloOnline hoInstance, ref byte[] RuntimeTagDataMap)
+        private void PokeTag(IRteTarget target, GameCache cache, object definition, CachedTagEldorado hoInstance, ref byte[] RuntimeTagDataMap)
         {
             var process = Process.GetProcessById((int)target.Id);
             if (process == null)
@@ -104,7 +104,7 @@ namespace CacheEditor.RTE.Providers
                 List<uint> TagReferenceFixups = new List<uint>();
                 using (EndianReader reader = new EndianReader(processStream))
                 {
-                    CachedTagHaloOnline runtimetag = new CachedTagHaloOnline();
+                    CachedTagEldorado runtimetag = new CachedTagEldorado();
                     processStream.Seek(address + 4, SeekOrigin.Begin);
                     ReadHeaderValues(reader, ref currenttotalsize, ref headersize, ref TagReferenceFixups);
                 }
@@ -156,7 +156,7 @@ namespace CacheEditor.RTE.Providers
                     //a list of all modpak tags in the modpak that are not basecache tags
                     List<int> modpaktagindices = new List<int>();
                     for (var i = 0; i < modpak.TagCache.Count; i++)
-                        if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
+                        if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagEldorado)taginstance).IsEmpty())
                             modpaktagindices.Add(i);
 
                     foreach (uint tagreffixup in TagReferenceFixups)
@@ -194,7 +194,7 @@ namespace CacheEditor.RTE.Providers
             {
                 int paktagcount = 0;
                 for (var i = 0; i < tagindex; i++)
-                    if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagHaloOnline)taginstance).IsEmpty())
+                    if (modpak.TagCache.TryGetCachedTag(i, out var taginstance) && !((CachedTagEldorado)taginstance).IsEmpty())
                         paktagcount++;
                 tagindex = 0xFFFE - paktagcount;
                 //isModPackageTag = true;

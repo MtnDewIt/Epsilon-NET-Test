@@ -115,9 +115,9 @@ namespace TagResourceEditorPlugin
 
         int GetDisplayableResourceId(TagResourceReference resourceReference)
         {
-            if (resourceReference.HaloOnlinePageableResource != null)
+            if (resourceReference.EldoradoPageableResource != null)
             {
-                return resourceReference.HaloOnlinePageableResource.Page.Index;
+                return resourceReference.EldoradoPageableResource.Page.Index;
             }
             else
             {

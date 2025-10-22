@@ -27,7 +27,7 @@ using System.IO;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using EpsilonLib.Logging;
 using EpsilonLib.Dialogs;
 using System.Windows.Data;
@@ -258,7 +258,7 @@ namespace DefinitionEditor
                 CachedTag tagRef = (CachedTag)fieldValue;
                 //check if tagref references a modpak tag
                 if(editorCache.TagCache.TryGetCachedTag(tagRef.Index, out var taginstance) && 
-                    !((CachedTagHaloOnline)taginstance).IsEmpty())
+                    !((CachedTagEldorado)taginstance).IsEmpty())
                 {
                     var modpaktagindices = editorCache.TagCache.NonNull().ToList();
                     //find the index of our desired tag in relation to all modpak tags in the modpak that are not basecache tags
@@ -562,7 +562,7 @@ namespace DefinitionEditor
 
         public bool BaseCacheModifyCheck(GameCache cache)
         {
-            if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
+            if (cache is GameCacheEldoradoBase && !(_cacheFile.Cache is GameCacheModPackage))
             {
                 var alert = new AlertDialogViewModel
                 {
