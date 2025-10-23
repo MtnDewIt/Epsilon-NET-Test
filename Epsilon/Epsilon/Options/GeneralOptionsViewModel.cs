@@ -1,17 +1,27 @@
 ﻿using EpsilonLib.Options;
 using EpsilonLib.Settings;
-using System.IO;
+using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
-using WpfApp20;
-using System.Windows.Controls;
-using System;
-using System.Linq;
-using Epsilon.Pages;
 
 namespace Epsilon.Options
 {
+    enum Theme
+    {
+        Default,
+        Solid,
+        Frosted,
+        Transparent,
+        Steam,
+        HotWheels,
+        ClownWorld,
+        Dark1,
+        Dark2,
+        Dark3
+    }
+
     [Export(typeof(IOptionsPage))]
     class GeneralOptionsViewModel : OptionPageBase
     {
@@ -30,7 +40,7 @@ namespace Epsilon.Options
         private string _defaultPakShort;
 
         private string _accentColorHex;
-        private string _theme;
+        private Theme _theme;
 
         [ImportingConstructor]
         public GeneralOptionsViewModel(ISettingsService settingsService) : base("General", "General")
@@ -44,19 +54,35 @@ namespace Epsilon.Options
             set
             {
                 SetOptionAndNotify(ref _accentColorHex, value);
-                UpdateAppearance(AccentColorHex, Theme);
+                UpdateAccentColor(AccentColorHex);
             }
         }
 
-        public string Theme = "Default";
+        public Theme Theme 
+        {
+            get => _theme;
+            set
+            {
+                SetOptionAndNotify(ref _theme, value, nameof(Theme));
+                UpdateTheme(Theme);
+            }
+        }
 
-        private void UpdateAppearance(string accentColorHex, string theme)
+        private void UpdateAccentColor(string accentColorHex)
         {
             Application.Current.Resources["AccentColor"] = (Color)ColorConverter.ConvertFromString(accentColorHex);
 
             var mergedDictionary = Application.Current.Resources.MergedDictionaries;
             mergedDictionary.RemoveAt(mergedDictionary.Count - 1);
 
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("/Epsilon;component/Themes/" + Theme + ".xaml", UriKind.Relative)
+            });
+        }
+
+        private void UpdateTheme(Theme theme)
+        {
             Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
             {
                 Source = new Uri("/Epsilon;component/Themes/" + theme + ".xaml", UriKind.Relative)
@@ -66,8 +92,9 @@ namespace Epsilon.Options
         public void RevertAppearance()
         {
             string og_accent = _settings.Get(GeneralSettings.AccentColorSetting.Key, "#007ACC");
-            string og_theme = "Default";
-            UpdateAppearance(og_accent, og_theme);
+            Theme og_theme = _settings.Get(GeneralSettings.ThemeSetting.Key, Theme.Default);
+            UpdateAccentColor(og_accent);
+            UpdateTheme(og_theme);
         }
 
 
@@ -168,6 +195,7 @@ namespace Epsilon.Options
 
             _settings.Set(GeneralSettings.AlwaysOnTopSetting.Key, AlwaysOnTop);
             _settings.Set(GeneralSettings.AccentColorSetting.Key, AccentColorHex);
+            _settings.Set(GeneralSettings.ThemeSetting.Key, Theme);
 
             Application.Current.Resources["AlwaysOnTop"] = AlwaysOnTop;
         }
@@ -182,6 +210,7 @@ namespace Epsilon.Options
             StartupHeight = _settings.Get(GeneralSettings.StartupHeightSetting.Key, "");
             AlwaysOnTop = _settings.Get(GeneralSettings.AlwaysOnTopSetting.Key, false);
             AccentColorHex = _settings.Get(GeneralSettings.AccentColorSetting.Key, "#007ACC");
+            Theme = _settings.Get(GeneralSettings.ThemeSetting.Key, Theme.Default);
         }
     }
 }

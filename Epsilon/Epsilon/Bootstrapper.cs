@@ -1,4 +1,5 @@
 ﻿using Epsilon;
+using Epsilon.Options;
 using Epsilon.Pages;
 using EpsilonLib.Commands;
 using EpsilonLib.Editors;
@@ -34,6 +35,7 @@ namespace WpfApp20
         private double StartupHeight;
         private bool AlwaysOnTop;
         private string AccentColor;
+        private Theme Theme;
 
         protected async override void Launch()
         {
@@ -104,6 +106,7 @@ namespace WpfApp20
             DefaultPakPath = _settings.Get("DefaultModPackage", "");
             AlwaysOnTop = _settings.Get("AlwaysOnTop", false);
             AccentColor = _settings.Get("AccentColor", "#007ACC");
+            Theme = _settings.Get("Theme", Theme.Default);
 
             App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
             App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
@@ -155,10 +158,9 @@ namespace WpfApp20
         {
             App.Current.Resources["AccentColor"] = (Color)ColorConverter.ConvertFromString(AccentColor);
 
-            var epsilonTheme = "Default";
             Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
             {
-                Source = new Uri("/Epsilon;component/Themes/" + epsilonTheme.ToString() + ".xaml", UriKind.Relative)
+                Source = new Uri("/Epsilon;component/Themes/" + Theme + ".xaml", UriKind.Relative)
             });
         }
     }

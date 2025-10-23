@@ -4,10 +4,18 @@
     xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
     xmlns:colorconverters="clr-namespace:DefinitionEditor;assembly=DefinitionEditor"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:general="clr-namespace:Epsilon.Options">
 
     <UserControl.Resources>
-        
+
+        <ObjectDataProvider x:Key="enumTheme" ObjectType="{x:Type sys:Enum}" MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="general:Theme"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
         <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
@@ -245,6 +253,21 @@
                 Margin="0,0,4,0"
                 Opacity="0.6"
                 Text="{Binding AccentColorHex}" />
+        </DockPanel>
+
+        <!-- Theme -->
+        <DockPanel LastChildFill="False">
+            <TextBlock
+                Width="200"
+                VerticalAlignment="Center"
+                Text="Theme: "
+                ToolTip="Choose your general color scheme and appearance." />
+            <ComboBox x:Name="ThemeComboBox"
+                Width="140" 
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                ItemsSource="{Binding Source={StaticResource enumTheme}}" 
+                SelectedItem="{Binding Path=Theme, Mode=TwoWay}"/>
         </DockPanel>
 
     </StackPanel>
