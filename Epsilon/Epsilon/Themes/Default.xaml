@@ -15,9 +15,7 @@
     <Color x:Key="ForegroundColor" A="255" R="241" G="241" B="241"/>
     <SolidColorBrush x:Key="Foreground" Color="{DynamicResource ForegroundColor}" />
     <SolidColorBrush x:Key="Title" Color="#FFFFFF"/>
-    
-    <!--<SolidColorBrush x:Key="Foreground" Color="#F1F1F1" />-->
-    
+
     <!-- ToolTip -->
     <SolidColorBrush x:Key="ToolTipForeground" Color="#E1E1E1" />
     <SolidColorBrush x:Key="ToolTipBackground" Color="#1B1B1C" />
@@ -32,7 +30,6 @@
     <SolidColorBrush x:Key="MenuForeground" Color="{DynamicResource ForegroundColor}" />
     
     <!-- Button -->
-
     <SolidColorBrush x:Key="Button.Static.Background" Color="#3f3f46" />
     <SolidColorBrush x:Key="Button.Static.Border" Color="#555555" />
     <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#3F3F46" />
@@ -45,7 +42,6 @@
     <SolidColorBrush x:Key="Button.Defaulted.Border" Color="{DynamicResource AccentColor}" />
 
     <!-- Checkbox -->
-
     <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#2D2D30" />
     <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070" />
     <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="{DynamicResource ForegroundColor}"/>
@@ -60,7 +56,6 @@
     <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#656565" />
 
     <!--    Combobox    -->
-
     <SolidColorBrush x:Key="ComboBox.Static.Background" Color="#333337" />
     <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#434346" />
     <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="#999999" />
@@ -99,8 +94,8 @@
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Background" Color="Transparent" />
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Border" Color="Transparent" />
     
-    <!--<SolidColorBrush x:Key="ComboBoxBackground" Color="#333337"/>
-    <SolidColorBrush x:Key="ComboBoxBorder" Color="#434346"/>-->
+    <SolidColorBrush x:Key="ComboBoxBackground" Color="#333337"/>
+    <SolidColorBrush x:Key="ComboBoxBorder" Color="#434346"/>
 
     <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Background" Color="#333337" />
     <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHover.Border" Color="#333337" />
@@ -115,7 +110,6 @@
     <SolidColorBrush x:Key="ComboBoxItem.ItemsviewHoverFocus.Border" Color="#333337" />
     
     <!-- Expander -->
-
     <SolidColorBrush x:Key="Expander.Static.Circle.Stroke" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.Static.Circle.Fill" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="#f1f1f1" />
@@ -131,7 +125,6 @@
     <SolidColorBrush x:Key="Expander.Disabled.Text" Color="#656565" />
 
      <!-- ListBox -->
-
     <SolidColorBrush x:Key="ListBox.Static.Background" Color="#252526" />
     <SolidColorBrush x:Key="ListBox.Static.Border" Color="#FF3F3F46" />
     <SolidColorBrush x:Key="ListBox.MouseOver.Background" Color="#252526" />
@@ -149,13 +142,11 @@
     <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="{DynamicResource AccentColor}" />
 
     <!-- Progress Bar -->
-
     <SolidColorBrush x:Key="ProgressBar.Progress" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="ProgressBar.Background" Color="#252526" />
     <SolidColorBrush x:Key="ProgressBar.Border" Color="{DynamicResource DarkBorderColor}" />
 
     <!-- Scrollbar -->
-
     <SolidColorBrush x:Key="ScrollBar.Static.Background" Color="#FF3E3E42" />
     <SolidColorBrush x:Key="ScrollBar.Static.Border" Color="#FF3E3E42" />
     <SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="#FF999999" />
@@ -174,7 +165,6 @@
     <SolidColorBrush x:Key="ScrollBar.Disabled.Thumb" Color="Transparent" />
 
     <!-- Upper Tabs -->
-
     <SolidColorBrush x:Key="TabItem.Static.Background" Color="#FF252526" />
     <SolidColorBrush x:Key="TabItem.Static.Border" Color="#FF252526" />
     <SolidColorBrush x:Key="TabItem.MouseOver.Background" Color="{DynamicResource MouseOverColor}"/>
@@ -186,7 +176,6 @@
     <SolidColorBrush x:Key="TabItem.Disabled.Border" Color="#2d2d2d" />
 
     <!-- Lower Tabs -->
-
     <SolidColorBrush x:Key="TabItem2.Static.Background" Color="#2d2d30" />
     <SolidColorBrush x:Key="TabItem2.Static.Border" Color="#2d2d30" />
     <SolidColorBrush x:Key="TabItem2.MouseOver.Background" Color="{DynamicResource MouseOverColor}"/>
@@ -197,7 +186,6 @@
     <SolidColorBrush x:Key="TabItem2.Disabled.Border" Color="#D9D9D9" />
 
     <!-- Textbox -->
-
     <SolidColorBrush x:Key="TextBox.Static.Background" Color="#FF333337" />
     <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FF434346" />
     <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF434346" />
@@ -222,92 +210,5 @@
     <SolidColorBrush x:Key="TreeViewItem.TreeArrow.Static.Checked.Fill" Color="#FFF5F5F5" />
     <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Stroke" Color="{DynamicResource AccentColor}" />
     <SolidColorBrush x:Key="TreeViewItem.TreeArrow.MouseOver.Checked.Fill" Color="{DynamicResource AccentColor}" />
-    
-    
-    
-    <!-- BEGIN OLD -->
-    <!-- BEGIN OLD -->
-    <!-- BEGIN OLD -->
-    <!-- BEGIN OLD -->
-    
-    <!--   Window    -->
-
-    <CornerRadius x:Key="WindowCornerRadius" TopLeft="0" TopRight="0" BottomRight="0" BottomLeft="0" />
-    <Thickness x:Key="WindowBorderThickness" Left="1" Top="1" Right="1" Bottom="1"/>
-    <SolidColorBrush x:Key="WindowBorderColor" Color="{DynamicResource AccentColor}"/>
-    <SolidColorBrush x:Key="Background" Color="#2D2D30"/>
-    <SolidColorBrush x:Key="StatusBarBackground" Color="{DynamicResource AccentColor}" />
-    
-    <!--    General    -->
-    
-    <SolidColorBrush x:Key="Border" Color="#656570"/>
-    <SolidColorBrush x:Key="BorderDark" Color="#E4E4FF" Opacity="0.27"/>
-    <SolidColorBrush x:Key="BorderDarker" Color="#3F3F46"/>
-    <SolidColorBrush x:Key="BackgroundLight" Color="#29292F"/>
-    <SolidColorBrush x:Key="BackgroundDark" Color="#252526"/>
-    <!--<SolidColorBrush x:Key="Foreground" Color="#F1F1F3"/>-->
-    <SolidColorBrush x:Key="ForegroundMedium" Color="#D1D1D6"/>
-    <SolidColorBrush x:Key="ForegroundDark" Color="#A0A0A3"/>
-    <SolidColorBrush x:Key="InnerBorderColor" Color="#000000"/>
-    <SolidColorBrush x:Key="Scrollbar" Color="#686868" />
-    <SolidColorBrush x:Key="SearchBoxBackground" Color="#333337" Opacity="1"/>
-    <SolidColorBrush x:Key="SubMenu" Color="#000000" Opacity="0.88"/>
-    <!--<SolidColorBrush x:Key="TreeViewBackground" Color="#252526"/>-->
-
-    <!--    Expander    -->
-    
-    <SolidColorBrush x:Key="ExpanderClosedBackground" Color="#2D2D30" Opacity="0.7"/>
-    <SolidColorBrush x:Key="ExpanderClosedBorder" Color="#3F3F46" Opacity="0.82"/>
-    <SolidColorBrush x:Key="ExpanderOpenBackground" Color="#2D2D30"/>
-    <SolidColorBrush x:Key="ExpanderOpenBorder" Color="#3F3F46"/>
-
-
-    <!--    CachedTag    -->
-    
-    <System:Double x:Key="CachedTagButtonSpacing">4</System:Double>
-    <SolidColorBrush x:Key="CachedTagBackground" Color="#333337" />
-    <SolidColorBrush x:Key="CachedTagButtonBackground" Color="#333337"/>
-    <SolidColorBrush x:Key="CachedTagButtonBorder" Color="#434346"/>
-    
-    <CornerRadius x:Key="CachedTagLeftCornerRadius" TopLeft="0" TopRight="0" BottomRight="0" BottomLeft="0" />
-    <Thickness x:Key="CachedTagLeftBorderThickness" Left="1" Right="1" Top="1" Bottom="1" />
-
-    <CornerRadius x:Key="CachedTagMiddleCornerRadius" TopLeft="0" TopRight="0" BottomRight="0" BottomLeft="0" />
-    <Thickness x:Key="CachedTagMiddleBorderThickness" Left="1" Right="1" Top="1" Bottom="1" />
-    
-    <CornerRadius x:Key="CachedTagRightCornerRadius" TopLeft="0" TopRight="0" BottomRight="0" BottomLeft="0" />
-    <Thickness x:Key="CachedTagRightBorderThickness" Left="1" Right="1" Top="1" Bottom="1" />
-
-    <!--    Fields      -->
-
-    <SolidColorBrush x:Key="Struct" Color="#252526" Opacity="0.97"/>
-
-    <SolidColorBrush x:Key="StringBackground" Color="#333337" Opacity="1"/>
-    <SolidColorBrush x:Key="StringBorder" Color="#434346" Opacity="1"/>
-    
-    <SolidColorBrush x:Key="TextBoxBackground" Color="#333337"/>
-    <SolidColorBrush x:Key="TextBoxBorder" Color="#434346"/>
-
-    <SolidColorBrush x:Key="FlagsBackground" Color="Transparent"/>
-    <SolidColorBrush x:Key="FlagsBorder" Color="#434346"/>
-    
-    <SolidColorBrush x:Key="Disabled" Color="#434346"/>
-    <SolidColorBrush x:Key="ForegroundDisabled" Color="#434346"/>
-    
-    <Color x:Key="StatusUpdate" A="255" R="100" G="255" B="135" />
-
-    <Color x:Key="Shadow" A="#71" R="#00" G="#00" B="#00" />
-    <SolidColorBrush x:Key="ShadowBrush" Color="#000000" Opacity="0.27"/>
-
-    <LinearGradientBrush x:Key="Relief" Opacity="1" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#3F3F46" Offset="0"/>
-        <GradientStop Color="#3F3F46" Offset="1"/>
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="InsetGradient" Opacity="0.18" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#B0B0D0" Offset="0"/>
-        <GradientStop Color="#CCCCF0" Offset="1"/>
-    </LinearGradientBrush>
-
 
 </ResourceDictionary>
