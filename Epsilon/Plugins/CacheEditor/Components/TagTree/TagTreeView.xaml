@@ -70,6 +70,7 @@
             BorderThickness="1"
             BorderBrush="Black"
             PreviewMouseRightButtonDown="TreeView_PreviewMouseRightButtonDown"
+            PreviewKeyDown="TreeView_PreviewKeyDown"
             VirtualizingPanel.IsVirtualizing="True"
             VirtualizingPanel.VirtualizationMode="Recycling">
 

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CacheEditor;
+using TagTool.Cache;
 
 namespace CacheEditor.Components.TagTree
 {
@@ -73,6 +74,50 @@ namespace CacheEditor.Components.TagTree
                     SearchBox.Select(0, SearchBox.Text.Length);
                     e.Handled = true;
                 }
+            }
+        }
+
+        private void TreeView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            // If focus is in search box, ignore
+            if (SearchBox.IsFocused)
+                return;
+
+            var vm = DataContext as TagTreeViewModel;
+            if (vm == null)
+                return;
+
+            ITreeNode node = null;
+
+            // Prefer the element that currently has keyboard focus
+            var focused = Keyboard.FocusedElement as DependencyObject;
+            if (focused != null)
+            {
+                // If the focused element itself has a DataContext that is the node
+                if (focused is FrameworkElement fe && fe.DataContext is ITreeNode feNode)
+                    node = feNode;
+
+                // Otherwise walk up to find the enclosing TreeViewItem and use its DataContext
+                if (node == null)
+                {
+                    var tvi = focused.FindAncestors<TreeViewItem>().FirstOrDefault();
+                    if (tvi != null)
+                        node = tvi.DataContext as ITreeNode;
+                }
+            }
+
+            // Fallback to the view model's SelectedNode
+            if (node == null)
+                node = vm.SelectedNode;
+
+            if (node?.Tag is CachedTag cached)
+            {
+                var args = new TreeNodeEventArgs(node);
+                vm.SimulateDoubleClick(args);
+                e.Handled = true;
             }
         }
     }
