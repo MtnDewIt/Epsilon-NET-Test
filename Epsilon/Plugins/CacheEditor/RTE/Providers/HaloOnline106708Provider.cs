@@ -29,7 +29,7 @@ namespace CacheEditor.RTE.Providers
             return cacheFile.Cache is GameCacheEldoradoBase;
         }
 
-        private static int ResolveTagIndex(CachedTagHaloOnline instance, GameCacheHaloOnlineBase cache)
+        private static int ResolveTagIndex(CachedTagEldorado instance, GameCacheEldoradoBase cache)
         {
             if(cache is GameCacheModPackage modPak)
             {
@@ -42,7 +42,7 @@ namespace CacheEditor.RTE.Providers
                     int paktagcount = 0;
                     for (var i = 0; i < instance.Index; i++)
                     {
-                        if (!cache.TagCacheGenHO.Tags[i].IsEmpty())
+                        if (!cache.TagCacheEldorado.Tags[i].IsEmpty())
                             paktagcount++;
                     }
                     return 0xFFFE - paktagcount;
@@ -91,7 +91,7 @@ namespace CacheEditor.RTE.Providers
 
         public long GetTagMemoryAddress(ProcessMemoryStream stream, GameCache cache, CachedTag instance)
         {
-            return GetTagAddress(stream, ResolveTagIndex((CachedTagHaloOnline)instance, (GameCacheHaloOnlineBase)cache));
+            return GetTagAddress(stream, ResolveTagIndex((CachedTagEldorado)instance, (GameCacheEldoradoBase)cache));
         }
     }
 }

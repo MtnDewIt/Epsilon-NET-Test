@@ -57,7 +57,7 @@ namespace RenderMethodEditorPlugin
                 _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
                 _renderMethodDefinition = cache.Deserialize<RenderMethodDefinition>(stream, renderMethod.BaseRenderMethod);
                 // get parameters, auto macro and global parameters are ignored for now
-                rmopParameters = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GatherParameters(cache, stream, _renderMethodDefinition, options.ToArray(), false);
+                rmopParameters = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GatherParameters(cache, stream, _renderMethodDefinition, options, false);
             }
 
             ShaderMethods = new ObservableCollection<Method>();
