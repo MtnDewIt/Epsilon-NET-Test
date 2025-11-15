@@ -1,14 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-	<Platforms>x64</Platforms>
     <AssemblyName>AvalonDock</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>

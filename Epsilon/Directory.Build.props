@@ -1,0 +1,8 @@
+<Project>
+   <PropertyGroup>
+       <Platforms>x64</Platforms>
+       <TargetFramework>net8.0-windows</TargetFramework>
+       <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+       <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+   </PropertyGroup>
+</Project>

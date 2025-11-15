@@ -1,12 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-	<Platforms>x64</Platforms>
     <UseWPF>true</UseWPF>
 	<OutputPath>..\..\bin\$(Platform)\$(Configuration)\Plugins\$(AssemblyName)\</OutputPath>
-	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
