@@ -69,6 +69,7 @@
             EpsilonTreeModels:TreeViewBehavior.Model="{Binding}"
             BorderThickness="1"
             BorderBrush="Black"
+            PreviewKeyDown="TreeView_PreviewKeyDown"
             PreviewMouseRightButtonDown="TreeView_PreviewMouseRightButtonDown"
             VirtualizingPanel.IsVirtualizing="True"
             VirtualizingPanel.VirtualizationMode="Recycling">

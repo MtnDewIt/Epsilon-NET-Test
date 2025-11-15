@@ -30,6 +30,27 @@ namespace CacheEditor.Components.TagTree
             Keyboard.Focus(SearchBox);
         }
 
+        private void TreeView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var treeView = sender as TreeView;
+                var viewModel = DataContext as TagTreeViewModel;
+
+                if (viewModel != null && treeView?.SelectedItem is TagTreeTagNode tagNode)
+                {
+                    var args = new TreeNodeEventArgs(tagNode);
+                    viewModel.SimulateDoubleClick(args);
+                    e.Handled = true;
+                }
+                else if (treeView?.SelectedItem is TagTreeNode node)
+                {
+                    node.IsExpanded = !node.IsExpanded;
+                    e.Handled = true;
+                }
+            }
+        }
+
         private void TreeView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var item = (e.OriginalSource as DependencyObject).FindAncestors<TreeViewItem>().FirstOrDefault();
