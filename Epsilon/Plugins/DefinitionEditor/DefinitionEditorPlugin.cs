@@ -41,7 +41,7 @@ namespace DefinitionEditor
             var config = new TagStructEditor.Configuration()
             {
                 OpenTag = context.CacheEditor.OpenTag,
-                BrowseTag = context.CacheEditor.RunBrowseTagDialog,
+                BrowseTag = metadata => context.CacheEditor.RunBrowseTagDialog(new BrowseTagOptions(metadata.ValidGroups)),
                 ValueChanged = valueChangeSink.Invoke,
                 DisplayFieldTypes = _settings.Get<bool>(Settings.DisplayFieldTypesSetting),
                 DisplayFieldOffsets = _settings.Get<bool>(Settings.DisplayFieldOffsetsSetting),

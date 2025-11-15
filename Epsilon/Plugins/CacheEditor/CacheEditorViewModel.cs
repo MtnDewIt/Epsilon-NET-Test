@@ -225,9 +225,9 @@ namespace CacheEditor
 
         ITagTree ICacheEditor.TagTree => TagTree;
 
-        CachedTag ICacheEditor.RunBrowseTagDialog()
+        CachedTag ICacheEditor.RunBrowseTagDialog(BrowseTagOptions options)
         {
-            var vm = new BrowseTagDialogViewModel(_cacheEditingService, _cacheFile);
+            var vm = new BrowseTagDialogViewModel(_cacheEditingService, _cacheFile, options);
             if (_shell.ShowDialog(vm) == true)
             {
                 return vm.TagTree.SelectedNode.Tag as CachedTag;

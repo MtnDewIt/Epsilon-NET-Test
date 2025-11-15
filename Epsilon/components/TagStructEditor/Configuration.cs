@@ -1,9 +1,12 @@
 ﻿using System;
 using TagStructEditor.Fields;
 using TagTool.Cache;
+using TagTool.Common;
 
 namespace TagStructEditor
 {
+    public record BrowseTagMetadata(Tag[] ValidGroups);
+
     public class Configuration
     {
         /// <summary>
@@ -14,7 +17,7 @@ namespace TagStructEditor
         /// <summary>
         ///  Callback function to run a tag selection dialog
         /// </summary>
-        public Func<CachedTag> BrowseTag;
+        public Func<BrowseTagMetadata, CachedTag> BrowseTag;
 
         /// <summary>
         /// Callback function to open a tag
