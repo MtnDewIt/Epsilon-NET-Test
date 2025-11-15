@@ -2,9 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 	<Platforms>x64</Platforms>
 	<OutputPath>..\bin\$(Platform)\$(Configuration)\</OutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -60,10 +58,8 @@
     <Resource Include="MainIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" PrivateAssets="all" />
-    <PackageReference Include="PixiEditor.ColorPicker" Version="3.3.1" PrivateAssets="all" />
+    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2" PrivateAssets="all" />
     <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" />
-    <PackageReference Include="Stylet.Start" Version="1.3.3" PrivateAssets="all" />
     <PackageReference Include="System.ComponentModel.Composition" Version="9.0.6" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>

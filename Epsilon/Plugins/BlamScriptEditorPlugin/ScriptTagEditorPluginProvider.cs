@@ -27,7 +27,7 @@ namespace BlamScriptEditorPlugin
         {
             var definition = await context.DefinitionData as Scenario;
             var vm = new ScriptTagEditorViewModel(_shell.Value, context.CacheEditor.CacheFile, definition);
-            Task.Run(async () => await vm.LoadAsync());
+            var _ = Task.Run(async () => await vm.LoadAsync());
             return vm;
         }
 

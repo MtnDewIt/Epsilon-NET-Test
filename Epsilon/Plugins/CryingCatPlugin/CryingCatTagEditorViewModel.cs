@@ -1,9 +1,12 @@
 ﻿using CacheEditor;
 using CacheEditor.TagEditing;
+using EpsilonLib.Core;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows;
 using TagTool.Cache;
+
+[assembly: DisabledPlugin()]
 
 namespace CryingCatPlugin
 {

@@ -3,9 +3,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
 	<Platforms>x64</Platforms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 	<OutputPath>..\..\bin\$(Platform)\$(Configuration)\Plugins\$(AssemblyName)\</OutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	<SatelliteResourceLanguages>none</SatelliteResourceLanguages>

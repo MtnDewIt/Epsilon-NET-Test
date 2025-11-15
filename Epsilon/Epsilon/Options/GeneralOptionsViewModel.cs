@@ -30,7 +30,6 @@ namespace Epsilon.Options
         private string _defaultPakShort;
 
         private string _accentColorHex;
-        private string _theme;
 
         [ImportingConstructor]
         public GeneralOptionsViewModel(ISettingsService settingsService) : base("General", "General")

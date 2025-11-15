@@ -24,10 +24,6 @@ namespace CacheEditor.RTE
         {
             Provider = provider;
         }
-
-        protected RteProviderException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context) { }
     }
 
     [Serializable]
@@ -51,9 +47,5 @@ namespace CacheEditor.RTE
         {
             
         }
-
-        protected RteTargetNotAvailableException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context) { }
     }
 }

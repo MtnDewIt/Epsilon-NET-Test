@@ -31,7 +31,7 @@ namespace ServerJsonEditor
                 {
                     // if no cache open, enter "open file" dialog
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // "cache file invalid"
                 }

@@ -123,7 +123,7 @@ namespace CacheEditor.Components.TagTree
             }
         }
 
-        public new void Refresh(bool retainState = false)
+        public void Refresh(bool retainState = false)
         {
             var expandedNodes = new List<string>();
             if (retainState)
