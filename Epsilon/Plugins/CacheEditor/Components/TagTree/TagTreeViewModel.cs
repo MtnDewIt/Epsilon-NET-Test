@@ -47,6 +47,7 @@ namespace CacheEditor.Components.TagTree
     {
         private ICacheFile _cacheFile;
         private string _filterText;
+        private Func<CachedTag, bool> _filter;
         private TagTreeViewMode _viewMode = TagTreeViewMode.Groups;
         private TagTreeGroupDisplayMode _groupDisplayMode = TagTreeGroupDisplayMode.TagGroupName;
         private TagExtract _extraction;
@@ -54,7 +55,7 @@ namespace CacheEditor.Components.TagTree
 
         public MenuItemDefinition ContextMenu { get; set; } = MenuDefinitions.ContextMenu;
 
-        public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile, TagExtract extraction = null)
+        public TagTreeViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile, TagExtract extraction = null, Func<CachedTag, bool> filter = null)
         {
             _viewMode = cacheEditingService.Settings.Get(
                 Settings.TagTreeViewModeSetting.Key, 
@@ -68,6 +69,7 @@ namespace CacheEditor.Components.TagTree
             _cacheFile = cacheFile;
             _extraction = extraction;
             _cacheFile.TagSerialized += _cacheFile_TagSaved;
+            _filter = filter;
             Refresh();
         }
 
@@ -111,6 +113,16 @@ namespace CacheEditor.Components.TagTree
             }
         }
 
+        public Func<CachedTag, bool> Filter
+        {
+            get => _filter;
+            set
+            {
+                if (SetAndNotify(ref _filter, value))
+                    Refresh();
+            }
+        }
+
         public new void Refresh(bool retainState = false)
         {
             var expandedNodes = new List<string>();
@@ -136,6 +148,9 @@ namespace CacheEditor.Components.TagTree
 
         private bool FilterTag(CachedTag tag)
         {
+            if (Filter is not null && !Filter(tag))
+                return false;
+
             if (string.IsNullOrEmpty(FilterText))
                 return true;
 

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using TagTool.Cache;
+using TagTool.Common;
 
 namespace CacheEditor
 {
+    public record BrowseTagOptions(Tag[] ValidGroups);
+
     public interface ICacheEditor
     {
         ICacheFile CacheFile { get; }
@@ -11,7 +14,7 @@ namespace CacheEditor
         ICacheEditorTool GetTool(string name);
         IDictionary<string, object> PluginStorage { get; }
         void OpenTag(CachedTag tag);
-        CachedTag RunBrowseTagDialog();
+        CachedTag RunBrowseTagDialog(BrowseTagOptions options);
         void Reload();
 
         CachedTag CurrentTag { get; }

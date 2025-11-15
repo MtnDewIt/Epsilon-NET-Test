@@ -14,13 +14,13 @@ namespace TagStructEditor.Fields
 {
     public class CachedTagField : ValueField
     {
-        private readonly Func<CachedTag> _browseTagCallback;
+        private readonly Func<BrowseTagMetadata, CachedTag> _browseTagCallback;
 
         public CachedTagField(
             ValueFieldInfo info, 
             TagList tagList, 
             Action<CachedTag> openTagCallback, 
-            Func<CachedTag> browseTagCallback) : base(info)
+            Func<BrowseTagMetadata, CachedTag> browseTagCallback) : base(info)
         {
             _browseTagCallback = browseTagCallback;
 
@@ -140,7 +140,7 @@ namespace TagStructEditor.Fields
 
         private void BrowseTag()
         {
-            var instance = _browseTagCallback();
+            var instance = _browseTagCallback(new BrowseTagMetadata(ValidGroups: [.. FieldInfo.Attribute.ValidTags]));
             if (instance == null)
                 return;
 
