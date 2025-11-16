@@ -2823,28 +2823,23 @@ namespace Standard
       }
     }
 
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "kernel32.dll" )]
     [return: MarshalAs( UnmanagedType.Bool )]
     public static extern bool FindClose( IntPtr handle );
 
     // Not shimming this SetLastError=true function because callers want to evaluate the reason for failure.
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true )]
     public static extern SafeFindHandle FindFirstFileW( string lpFileName, [In, Out, MarshalAs( UnmanagedType.LPStruct )] WIN32_FIND_DATAW lpFindFileData );
 
     // Not shimming this SetLastError=true function because callers want to evaluate the reason for failure.
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "kernel32.dll", SetLastError = true )]
     [return: MarshalAs( UnmanagedType.Bool )]
     public static extern bool FindNextFileW( SafeFindHandle hndFindFile, [In, Out, MarshalAs( UnmanagedType.LPStruct )] WIN32_FIND_DATAW lpFindFileData );
 
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "user32.dll", EntryPoint = "GetClientRect", SetLastError = true )]
     [return: MarshalAs( UnmanagedType.Bool )]
     private static extern bool _GetClientRect( IntPtr hwnd, [Out] out RECT lpRect );
 
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     public static RECT GetClientRect( IntPtr hwnd )
     {
       RECT rc;
@@ -2886,21 +2881,17 @@ namespace Standard
     [return: MarshalAs( UnmanagedType.Bool )]
     public static extern bool IsThemeActive();
 
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [Obsolete( "Use SafeDC.GetDC instead.", true )]
     public static void GetDC()
     {
     }
 
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "gdi32.dll" )]
     public static extern int GetDeviceCaps( SafeDC hdc, DeviceCap nIndex );
 
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     [DllImport( "kernel32.dll", EntryPoint = "GetModuleFileName", CharSet = CharSet.Unicode, SetLastError = true )]
     private static extern int _GetModuleFileName( IntPtr hModule, StringBuilder lpFilename, int nSize );
 
-    [SuppressMessage( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
     public static string GetModuleFileName( IntPtr hModule )
     {
       var buffer = new StringBuilder( ( int )Win32Value.MAX_PATH );

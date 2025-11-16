@@ -42,7 +42,6 @@ namespace BitmapViewerPlugin
         private bool _channelR = true;
         private bool _channelG = true;
         private bool _channelB = true;
-        private bool _linkColorChannels;
 
         public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, Bitmap definition)
         {

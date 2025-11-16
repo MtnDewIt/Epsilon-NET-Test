@@ -61,10 +61,16 @@ namespace BitmapViewerPlugin
             return new RawBitmapSource(_buffer, _pixelWidth);
         }
 
+#pragma warning disable IDE0051 // Remove unused private members (ReSharper / Roslyn)
+#pragma warning disable CS0067  // The event is never used (C# compiler)
+
         public override event EventHandler<DownloadProgressEventArgs> DownloadProgress;
         public override event EventHandler DownloadCompleted;
         public override event EventHandler<ExceptionEventArgs> DownloadFailed;
         public override event EventHandler<ExceptionEventArgs> DecodeFailed;
+
+#pragma warning restore CS0067
+#pragma warning restore IDE0051
 
         public override double DpiX
         {

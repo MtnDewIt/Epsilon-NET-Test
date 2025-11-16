@@ -26,16 +26,15 @@ namespace Xceed.Wpf.AvalonDock
 #pragma warning disable 618
     [DllImport( "user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Unicode )]
     internal static extern IntPtr CreateWindowEx( int dwExStyle,
-                                                  string lpszClassName,
-                                                  string lpszWindowName,
-                                                  int style,
-                                                  int x, int y,
-                                                  int width, int height,
-                                                  IntPtr hwndParent,
-                                                  IntPtr hMenu,
-                                                  IntPtr hInst,
-                                                  [MarshalAs( UnmanagedType.AsAny )] object pvParam );
-#pragma warning restore 618
+                                              string lpszClassName,
+                                              string lpszWindowName,
+                                              int style,
+                                              int x, int y,
+                                              int width, int height,
+                                              IntPtr hwndParent,
+                                              IntPtr hMenu,
+                                              IntPtr hInst,
+                                              IntPtr pvParam );
     internal const int
           WS_CHILD = 0x40000000,
           WS_VISIBLE = 0x10000000,

@@ -433,9 +433,6 @@ namespace CacheEditor
                 return true;
         }
 
-
-        public MessageBox asdfj;
-
         #endregion
     }
 }
