@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Editing;
 using TagTool.IO;
 using TagTool.Serialization;
@@ -26,10 +26,10 @@ namespace CacheEditor.RTE.Providers
 
         public bool ValidForCacheFile(ICacheFile cacheFile)
         {
-            return cacheFile.Cache is GameCacheEldoradoBase;
+            return cacheFile.Cache is GameCacheHaloOnlineBase;
         }
 
-        private static int ResolveTagIndex(CachedTagEldorado instance, GameCacheEldoradoBase cache)
+        private static int ResolveTagIndex(CachedTagHaloOnline instance, GameCacheHaloOnlineBase cache)
         {
             if(cache is GameCacheModPackage modPak)
             {
@@ -42,7 +42,7 @@ namespace CacheEditor.RTE.Providers
                     int paktagcount = 0;
                     for (var i = 0; i < instance.Index; i++)
                     {
-                        if (!cache.TagCacheEldorado.Tags[i].IsEmpty())
+                        if (!cache.TagCacheGenHO.Tags[i].IsEmpty())
                             paktagcount++;
                     }
                     return 0xFFFE - paktagcount;
@@ -91,7 +91,7 @@ namespace CacheEditor.RTE.Providers
 
         public long GetTagMemoryAddress(ProcessMemoryStream stream, GameCache cache, CachedTag instance)
         {
-            return GetTagAddress(stream, ResolveTagIndex((CachedTagEldorado)instance, (GameCacheEldoradoBase)cache));
+            return GetTagAddress(stream, ResolveTagIndex((CachedTagHaloOnline)instance, (GameCacheHaloOnlineBase)cache));
         }
     }
 }

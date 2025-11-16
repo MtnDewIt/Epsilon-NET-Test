@@ -52,7 +52,7 @@ namespace CacheEditor
 
         ICacheFile CreateCacheFileDocument(FileInfo file, GameCache cache)
         {
-            if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, cache.Version))
+            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, cache.Version))
                 return new HaloOnlineCacheFile(file, cache);
             else
                 return new GenericCacheFile(file, cache);

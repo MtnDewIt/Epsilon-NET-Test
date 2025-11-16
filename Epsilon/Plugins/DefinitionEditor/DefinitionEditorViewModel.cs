@@ -27,7 +27,7 @@ using System.IO;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using EpsilonLib.Logging;
 using EpsilonLib.Dialogs;
 using System.Windows.Data;
@@ -585,7 +585,7 @@ namespace DefinitionEditor
 
         public bool BaseCacheModifyCheck(GameCache cache)
         {
-            if (cache is GameCacheEldoradoBase && !(_cacheFile.Cache is GameCacheModPackage))
+            if (cache is GameCacheHaloOnlineBase && !(_cacheFile.Cache is GameCacheModPackage))
             {
                 var alert = new AlertDialogViewModel
                 {

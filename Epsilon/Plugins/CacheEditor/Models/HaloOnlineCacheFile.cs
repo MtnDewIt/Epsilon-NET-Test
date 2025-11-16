@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace CacheEditor
 {
     public class HaloOnlineCacheFile : CacheFileBase
     {
-        private new GameCacheEldoradoBase Cache => (GameCacheEldoradoBase) base.Cache;
+        private new GameCacheHaloOnlineBase Cache => (GameCacheHaloOnlineBase) base.Cache;
  
         public HaloOnlineCacheFile(FileInfo file, GameCache cache) : base(file, cache)
         {
@@ -24,8 +24,8 @@ namespace CacheEditor
         {
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                Cache.TagCacheEldorado.Tags[tag.Index] = null;
-                Cache.TagCacheEldorado.SetTagDataRaw(stream, (CachedTagEldorado)tag, new byte[] { });
+                Cache.TagCacheGenHO.Tags[tag.Index] = null;
+                Cache.TagCacheGenHO.SetTagDataRaw(stream, (CachedTagHaloOnline)tag, new byte[] { });
                 Cache.SaveTagNames();
             }
         }
@@ -34,7 +34,7 @@ namespace CacheEditor
         {
             using (var stream = Cache.OpenCacheRead())
             {
-                var data = Cache.TagCacheEldorado.ExtractTagRaw(stream, tag as CachedTagEldorado);
+                var data = Cache.TagCacheGenHO.ExtractTagRaw(stream, tag as CachedTagHaloOnline);
                 using (var outStream = System.IO.File.Create(filePath))
                     outStream.Write(data, 0, data.Length);
             }
@@ -45,7 +45,7 @@ namespace CacheEditor
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 var data = System.IO.File.ReadAllBytes(filePath);
-                Cache.TagCacheEldorado.SetTagDataRaw(stream, tag as CachedTagEldorado, data);
+                Cache.TagCacheGenHO.SetTagDataRaw(stream, tag as CachedTagHaloOnline, data);
             }
         }
 

@@ -58,7 +58,7 @@ namespace ModPackagePlugin
 
             try
             {
-                var cache = await Task.Run(() => new GameCacheModPackage((GameCacheEldoradoBase)GameCache.Open(baseCacheFile), file));
+                var cache = await Task.Run(() => new GameCacheModPackage((GameCacheHaloOnlineBase)GameCache.Open(baseCacheFile), file));
                 shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new ModPackageCacheFile(file, cache));
             }
             catch

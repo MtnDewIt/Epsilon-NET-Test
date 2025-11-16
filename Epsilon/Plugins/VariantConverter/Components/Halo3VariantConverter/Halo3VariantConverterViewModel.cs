@@ -272,7 +272,7 @@ namespace VariantConverter.Components.Halo3VariantConverter
                         blf.MapVariant.MapVariant.ObjectTypeStartIndex = newObjectIndexes;
                     }
 
-                    blf.Version = CacheVersion.EldoradoED;
+                    blf.Version = CacheVersion.HaloOnlineED;
                     blf.CachePlatform = CachePlatform.Original;
                     blf.Format = EndianFormat.LittleEndian;
 

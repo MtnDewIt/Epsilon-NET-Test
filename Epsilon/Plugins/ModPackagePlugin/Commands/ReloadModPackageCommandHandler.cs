@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace ModPackagePlugin.Commands
 {
@@ -37,7 +37,7 @@ namespace ModPackagePlugin.Commands
             if (_editingService.ActiveCacheEditor?.CacheFile is ModPackageCacheFile)
             {
                 baseCachePath = ((_editingService.ActiveCacheEditor.CacheFile.Cache as GameCacheModPackage)
-                .BaseCacheReference as GameCacheEldorado).TagsFile.ToString();
+                .BaseCacheReference as GameCacheHaloOnline).TagsFile.ToString();
             }
             else
                 return;
@@ -56,7 +56,7 @@ namespace ModPackagePlugin.Commands
                 progress.Report($"Reloading \"{modInfo.Name}\"...");
                 shell.ActiveDocument.RequestClose();
                 
-                var modCache = await Task.Run(() => new GameCacheModPackage((GameCacheEldoradoBase)GameCache.Open(baseInfo), modInfo));
+                var modCache = await Task.Run(() => new GameCacheModPackage((GameCacheHaloOnlineBase)GameCache.Open(baseInfo), modInfo));
                 shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new ModPackageCacheFile(modInfo, modCache));
 
                 ReopenTags(openTagsList, currentTagName);

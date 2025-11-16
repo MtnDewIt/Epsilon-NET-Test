@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows.Documents;
 using System.Windows.Input;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace CacheEditor.Components.CommandLog
 {

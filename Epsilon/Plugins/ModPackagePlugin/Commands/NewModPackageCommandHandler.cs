@@ -10,7 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Cache.Gen3;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Cache.ModPackages;
 using TagTool.IO;
 using static TagTool.IO.ConsoleHistory;
@@ -53,14 +53,14 @@ namespace ModPackagePlugin.Commands
             {
                 progress.Report("Loading base cache file...");
 
-                var baseCache = (GameCacheEldorado)GameCache.Open(baseCacheFile);
+                var baseCache = (GameCacheHaloOnline)GameCache.Open(baseCacheFile);
                 var cache = await CreateModPackageCacheAsync(baseCache, modpackageFile, progress);
 
                 shell.ActiveDocument = (IScreen)_editingService.CreateEditor(new ModPackageCacheFile(modpackageFile, cache));
             }
         }
 
-        private async Task<GameCacheModPackage> CreateModPackageCacheAsync(GameCacheEldorado baseCache, FileInfo file, IProgressReporter progress)
+        private async Task<GameCacheModPackage> CreateModPackageCacheAsync(GameCacheHaloOnline baseCache, FileInfo file, IProgressReporter progress)
         {
             GameCacheModPackage modCache = await Task.Run(() => CreateAndInitializePackage(baseCache, file, progress));
             
@@ -75,7 +75,7 @@ namespace ModPackagePlugin.Commands
             return modCache;
         }
 
-        private static GameCacheModPackage CreateAndInitializePackage(GameCacheEldorado baseCache, FileInfo file, IProgressReporter progress)
+        private static GameCacheModPackage CreateAndInitializePackage(GameCacheHaloOnline baseCache, FileInfo file, IProgressReporter progress)
         {
             var builder = new ModPackageBuilder(baseCache);
             builder.SetMetadata(new ModPackageMetadata());

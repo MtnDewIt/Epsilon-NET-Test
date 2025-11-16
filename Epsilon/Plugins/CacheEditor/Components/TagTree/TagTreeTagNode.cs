@@ -1,7 +1,7 @@
 ﻿using EpsilonLib.Themes;
 using System;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace CacheEditor.Components.TagTree
 {
@@ -30,7 +30,7 @@ namespace CacheEditor.Components.TagTree
 
         private ColorHint DetermineTextColor()
         {
-            if (Tag is CachedTagEldorado hoTag)
+            if (Tag is CachedTagHaloOnline hoTag)
                 if (hoTag.IsEmpty())
                     return ColorHint.Muted;
             return ColorHint.Default;
