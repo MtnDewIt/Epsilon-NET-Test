@@ -1,30 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{8C37025E-EBC4-4FD7-AA20-AFD378F3B368}</ProjectGuid>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids> 
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Epsilon</RootNamespace>
-    <AssemblyName>Epsilon</AssemblyName>
     <ApplicationIcon>MainIcon.ico</ApplicationIcon>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>12</LangVersion>
-    <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <UseWPF>true</UseWPF>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <OutputPath>..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Deterministic>true</Deterministic>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-    <Platforms>x64</Platforms>
-    <Configuration>Release</Configuration> <!--Default value-->
-    <Platform>x64</Platform> <!--Default value-->
     <!-- disabled for now as it does not respect DestinationSubDirectory -->
-	  <AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
+	<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <ItemGroup>
     <Resource Include="MainIcon.ico" />
@@ -72,15 +53,9 @@
     <ProjectReference Include="..\Plugins\DefinitionEditor\DefinitionEditor.csproj" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" PrivateAssets="all" />
-    <PackageReference Include="PixiEditor.ColorPicker" Version="3.3.1" PrivateAssets="all" />
+    <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.2" PrivateAssets="all" />
     <PackageReference Include="Stylet" Version="1.3.3" PrivateAssets="all" />
-    <PackageReference Include="Stylet.Start" Version="1.3.3" PrivateAssets="all" />
-    <PackageReference Include="System.Buffers" Version="4.6.1" PrivateAssets="all" />
     <PackageReference Include="System.ComponentModel.Composition" Version="9.0.6" PrivateAssets="all" />
-    <PackageReference Include="System.Memory" Version="4.6.3" PrivateAssets="all" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" PrivateAssets="all" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <Page Remove="Themes\Controls\AvalonDock\AvalonDock.Generic.xaml" />

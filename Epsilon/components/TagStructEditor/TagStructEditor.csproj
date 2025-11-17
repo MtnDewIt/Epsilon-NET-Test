@@ -1,30 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{613AA9F0-1DC4-451A-A0C1-D9D1D4499D0C}</ProjectGuid>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>TagStructEditor</RootNamespace>
-    <AssemblyName>TagStructEditor</AssemblyName>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>12</LangVersion>
-    <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <OutputPath>..\..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Deterministic>true</Deterministic>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-    <Platforms>x64</Platforms>
-    <Configuration>Release</Configuration> <!--Default value-->
-    <Platform>x64</Platform> <!--Default value-->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" Private="false" />
-    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" Private="false" PrivateAssets="all" />
+    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" Private="false" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fody" Version="6.1.1" PrivateAssets="all" />

@@ -1,27 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{CDF2FE6B-E5B9-4833-B5F8-1D0A5C4547B7}</ProjectGuid>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>BlamScriptEditorPlugin</RootNamespace>
-    <AssemblyName>BlamScriptEditorPlugin</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>12</LangVersion>
-    <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <OutputPath>..\..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\Plugins\BlamScriptEditorPlugin\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Deterministic>true</Deterministic>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-    <Platforms>x64</Platforms>
-    <Configuration>Release</Configuration> <!--Default value-->
-    <Platform>x64</Platform> <!--Default value-->
+    <OutputPath>..\..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\Plugins\$(AssemblyName)\</OutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Resources\HaloScript.xshd">
@@ -29,9 +12,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" Private="false" />
-    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" PrivateAssets="all" Private="false" />
-    <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" PrivateAssets="all" Private="false" />
+    <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" Private="false" PrivateAssets="all" />
+    <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" Private="false" PrivateAssets="all" />
+    <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" Private="false" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.2.0.78" PrivateAssets="all" />
