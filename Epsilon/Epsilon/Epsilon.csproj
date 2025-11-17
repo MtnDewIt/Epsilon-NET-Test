@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <OutputPath>..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\</OutputPath>
     <!-- disabled for now as it does not respect DestinationSubDirectory -->
-	<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
+    <AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <ItemGroup>
     <Resource Include="MainIcon.ico" />
@@ -61,9 +61,4 @@
     <Page Remove="Themes\Controls\AvalonDock\AvalonDock.Generic.xaml" />
     <Page Remove="Themes\Controls\AvalonDock\Dictionary1.xaml" />
   </ItemGroup>
-  <Target Name="RemoveSatelliteAssemblies" AfterTargets="ResolveAssemblyReferences">
-    <ItemGroup>
-      <ReferenceCopyLocalPaths Remove="@(ReferenceSatellitePaths)" />
-    </ItemGroup>
-  </Target>
 </Project>
