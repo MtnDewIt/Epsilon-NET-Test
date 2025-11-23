@@ -91,7 +91,7 @@ namespace TagStructEditor.Fields
         {
             CurrentIndex = -1;
             // reset the current index so that the change handler gets invoked even if the value has not changed
-            Block.BaseCollection = (IList)value;
+            Block.BaseCollection = value != null ? (IList)value : (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(ElementType));
         }
 
         private void Block_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
