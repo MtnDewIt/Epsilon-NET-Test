@@ -3,6 +3,7 @@
     <OutputType>Library</OutputType>
     <UseWPF>true</UseWPF>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputPath>..\bin\$(Platform)\$(Configuration)\$(TargetFramework)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TagTool\TagTool\TagTool.csproj" PrivateAssets="all" />
