@@ -8,6 +8,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\TagTool\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" Private="false" PrivateAssets="all" />
     <ProjectReference Include="..\..\..\TagTool\TagTool\TagTool.csproj" Private="false" PrivateAssets="all" />
+    <ProjectReference Include="..\..\Components\TagStructEditor\TagStructEditor.csproj" Private="false" PrivateAssets="all" />
+    <ProjectReference Include="..\..\Plugins\DefinitionEditor\DefinitionEditor.csproj" Private="false" PrivateAssets="all" />
     <ProjectReference Include="..\..\EpsilonLib\EpsilonLib.csproj" Private="false" PrivateAssets="all" />
     <ProjectReference Include="..\CacheEditor\CacheEditor.csproj" Private="false" PrivateAssets="all" />
   </ItemGroup>

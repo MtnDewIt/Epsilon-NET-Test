@@ -145,7 +145,51 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Shader Options" Grid.Row="0" FontWeight="Bold" Padding="3,10,0,0"/>
-        <ListView Margin="10" Name="shaderMethods" ItemsSource="{Binding ShaderMethods}" Grid.Row="1" Background="#FF2D2D30" Foreground="#f1f1f1">
+        <Border
+            Padding="5,4,4,0"
+            Margin="0"
+            Background="Transparent"
+            BorderBrush="Black"
+            BorderThickness="0"
+            DockPanel.Dock="Top"
+            Style="{StaticResource ToolBarStyle}">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+
+                    <ComboBox
+                        MinWidth="50"
+                        Margin="3,2"
+                        VerticalAlignment="Center"
+                        DisplayMemberPath="DisplayName"
+                        IsEnabled="{Binding RteHasTargets, FallbackValue=False}"
+                        ItemsSource="{Binding RteTargetList}"
+                        SelectedItem="{Binding SelectedRteTargetItem, Mode=TwoWay}" />
+
+                    <Button
+                        Margin="4,2"
+                        VerticalAlignment="Center"
+                        Command="{Binding PokeCommand}"
+                        Content="Poke"
+                        ToolTip="Poke the current changes" />
+                    <Separator Margin="4,0" />
+                    <Button
+                        Margin="4,2"
+                        VerticalAlignment="Center"
+                        Command="{Binding SaveCommand}"
+                        Content="Save"
+                        ToolTip="Save the current changes" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <ListView Margin="5" Name="shaderMethods" ItemsSource="{Binding ShaderMethods}" Grid.Row="1" Background="#FF2D2D30" Foreground="#f1f1f1">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Focusable" Value="false"/>

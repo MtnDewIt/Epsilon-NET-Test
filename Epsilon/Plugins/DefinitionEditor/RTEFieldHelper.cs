@@ -12,7 +12,7 @@ using TagStructEditor.Helpers;
 
 namespace DefinitionEditor
 {
-    internal class RTEFieldHelper
+    public class RTEFieldHelper
     {
         private IRteTarget _target;
         private ICacheFile _cache;
