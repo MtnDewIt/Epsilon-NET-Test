@@ -29,8 +29,16 @@ namespace TagStructEditor.Helpers
                 f = f.Parent;
             }
 
-            if (field is TagFunctionField)
-                parts.Insert(0, "Data");
+            switch (field) 
+            {
+                case TagFunctionField:
+                    parts.Insert(0, "Data");
+                    break;
+                case TagBlockIndexField:
+                case TagBlockIndexGen2Field:
+                    parts.Insert(0, "Integer");
+                    break;
+            }
 
             return string.Join(".", parts.AsEnumerable().Reverse().Where(x => !string.IsNullOrEmpty(x)));
         }
@@ -92,6 +100,10 @@ namespace TagStructEditor.Helpers
                         return $"{string.Join("", value.ToString().Split(' '))}";
                     case PackedSamplerAddressMode packedAddressMode:
                         return $"{packedAddressMode.AddressU} {packedAddressMode.AddressV}";
+                    case TagBlockIndex tagBlockIndex:
+                        return $"{tagBlockIndex.Integer}";
+                    case TagBlockIndexGen2 tagBlockIndexGen2:
+                        return $"{tagBlockIndexGen2.Integer}";
                     default:
                         return $"{value}";
                 }
