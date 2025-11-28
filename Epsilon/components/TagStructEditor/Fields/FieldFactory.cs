@@ -231,8 +231,8 @@ namespace TagStructEditor.Fields
                 return new IndexBufferIndexField(info);
             else if (info.FieldType == typeof(StructureSurfaceToTriangleMapping))
                 return new PlaneReferenceField(info);
-            else if (typeof(IFlagBits).IsAssignableFrom(info.FieldType))
-                return new FlagBitsField(info, _cache.Version, _cache.Platform);
+            else if (typeof(IBitFlags).IsAssignableFrom(info.FieldType))
+                return new BitFlagsField(info, _cache.Version, _cache.Platform);
            
 
             switch (Type.GetTypeCode(info.FieldType))

@@ -140,7 +140,7 @@ namespace TagStructEditor.Fields
 
         private void BrowseTag()
         {
-            var instance = _browseTagCallback(new BrowseTagMetadata(ValidGroups: [.. FieldInfo.Attribute.ValidTags]));
+            var instance = _browseTagCallback(new BrowseTagMetadata(ValidGroups: FieldInfo.Attribute.ValidTags == null ? [] : [.. FieldInfo.Attribute.ValidTags]));
             if (instance == null)
                 return;
 

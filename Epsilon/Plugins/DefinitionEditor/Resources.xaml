@@ -1102,7 +1102,7 @@
     </DataTemplate>
 
     <!--  FlagBits  -->
-    <DataTemplate DataType="{x:Type fields:FlagBitsField}">
+    <DataTemplate DataType="{x:Type fields:BitFlagsField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
                 Style="{StaticResource OffsetLabelStyle}"/>

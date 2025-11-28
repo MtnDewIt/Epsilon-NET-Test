@@ -9,9 +9,9 @@ using TagTool.Tags;
 
 namespace TagStructEditor.Fields
 {
-    public class FlagBitsField : ValueField
+    public class BitFlagsField : ValueField
     {
-        public FlagBitsField(ValueFieldInfo info, CacheVersion version, CachePlatform platform) : base(info)
+        public BitFlagsField(ValueFieldInfo info, CacheVersion version, CachePlatform platform) : base(info)
         {
             var enumType = info.FieldType.GenericTypeArguments[0];
             var enumInfo = TagEnum.GetInfo(enumType, version, platform);
@@ -28,10 +28,6 @@ namespace TagStructEditor.Fields
             for (int i = 0; i < members.Count; i++)
             {
                 var value = (Enum)members[i].Value;
-                dynamic flagValue = value;
-                if (flagValue == 0)
-                    continue;
-
                 var name = Utils.DemangleName(members[i].Name);
                 yield return new Flag(name, value, OnFlagToggled);
             }
@@ -44,7 +40,7 @@ namespace TagStructEditor.Fields
 
         protected override void OnPopulate(object value)
         {
-            var valueEnum = (IFlagBits)value;
+            var valueEnum = (IBitFlags)value;
 
             foreach (var member in Flags)
                 member.IsChecked = valueEnum.TestBit((Enum)member.Value);
@@ -58,7 +54,7 @@ namespace TagStructEditor.Fields
 
         private object ComputeValue()
         {
-            var flagBits = (IFlagBits)Activator.CreateInstance(FieldInfo.FieldType.GetGenericTypeDefinition().MakeGenericType(EnumType));
+            var flagBits = (IBitFlags)Activator.CreateInstance(FieldInfo.FieldType.GetGenericTypeDefinition().MakeGenericType(EnumType));
             foreach (var flag in Flags)
             {
                 if (flag.IsChecked)
