@@ -136,7 +136,7 @@
         <Setter Property="MinWidth" Value="100" />
         <Setter Property="Width" Value="auto" />
     </Style>
-    
+
     <Style
         x:Key="StructListBoxStyle"
         BasedOn="{StaticResource {x:Type ListBox}}"
@@ -206,7 +206,40 @@
         <Setter Property="Height" Value="25" />
         <Setter Property="Padding" Value="4" />
     </Style>
-    
+
+    <Style x:Key="FlagListBoxItemStyle" BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <TextBlock>
+                    <Run Text="bit " />
+                    <Run Text="{Binding BitIndex, Mode=OneTime}" />
+                </TextBlock>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FlagListBoxStyle" BasedOn="{StaticResource {x:Type ListBox}}" TargetType="{x:Type ListBox}">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource FlagListBoxItemStyle}" />
+        <Setter Property="Width" Value="300" />
+        <Setter Property="MaxHeight" Value="150" />
+        <Setter Property="ItemsSource" Value="{Binding Flags, Mode=OneTime}"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <CheckBox
+                        HorizontalAlignment="Stretch"
+                        Content="{Binding Name, Mode=OneTime}"
+                        IsChecked="{Binding IsChecked}">
+                    </CheckBox>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  Control Templates  -->
     <ControlTemplate
         x:Key="NoScrollListBoxTemplate"
@@ -1073,35 +1106,11 @@
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
-            <ListBox
-                Width="300"
-                MaxHeight="150"
-                Background="Transparent"
-                ItemsSource="{Binding Flags, Mode=OneTime}"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SnapsToDevicePixels="True">
-                <ListBox.ItemContainerStyle>
-                    <Style
-                        BasedOn="{StaticResource {x:Type ListBoxItem}}"
-                        TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Focusable" Value="False" />
-                        <Setter Property="Padding" Value="0" />
-
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox
-                            HorizontalAlignment="Stretch"
-                            Content="{Binding Name, Mode=OneTime}"
-                            IsChecked="{Binding IsChecked}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListBox Style="{StaticResource FlagListBoxStyle}"/>
         </StackPanel>
     </DataTemplate>
 
-    <!--  FlagBits  -->
+    <!--  BitFlags  -->
     <DataTemplate DataType="{x:Type fields:BitFlagsField}">
         <StackPanel Orientation="Horizontal">
             <TextBlock
@@ -1111,30 +1120,7 @@
                 Style="{StaticResource FieldLabelStyle}"
                 ToolTip="{Binding Name, Mode=OneTime}"
                 Text="{Binding Name, Mode=OneTime}" />
-            <ListBox
-                Width="300"
-                MaxHeight="150"
-                ItemsSource="{Binding Flags, Mode=OneTime}"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SnapsToDevicePixels="True">
-                <ListBox.ItemContainerStyle>
-                    <Style
-                        BasedOn="{StaticResource {x:Type ListBoxItem}}"
-                        TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Focusable" Value="False" />
-                        <Setter Property="Padding" Value="0" />
-
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox
-                            HorizontalAlignment="Stretch"
-                            Content="{Binding Name, Mode=OneTime}"
-                            IsChecked="{Binding IsChecked}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListBox Style="{StaticResource FlagListBoxStyle}" />
         </StackPanel>
     </DataTemplate>
 

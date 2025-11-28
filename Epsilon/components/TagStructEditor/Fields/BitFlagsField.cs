@@ -24,12 +24,12 @@ namespace TagStructEditor.Fields
 
         private IEnumerable<Flag> GenerateFlagList(TagEnumInfo enumInfo)
         {
-            var members = TagEnum.GetMemberEnumerable(enumInfo).Members;
+            var members = TagEnum.GetMemberEnumerable(enumInfo).VersionedMembers;
             for (int i = 0; i < members.Count; i++)
             {
                 var value = (Enum)members[i].Value;
                 var name = Utils.DemangleName(members[i].Name);
-                yield return new Flag(name, value, OnFlagToggled);
+                yield return new Flag(name, value, i, OnFlagToggled);
             }
         }
 
@@ -65,10 +65,11 @@ namespace TagStructEditor.Fields
 
         public class Flag : PropertyChangedNotifier
         {
-            public Flag(string name, Enum value, Action checkedCallback)
+            public Flag(string name, Enum value, int bitIndex, Action checkedCallback)
             {
                 Name = name;
                 Value = value;
+                BitIndex = bitIndex;
                 CheckedCallback = checkedCallback;
             }
 
@@ -76,6 +77,7 @@ namespace TagStructEditor.Fields
             public Enum Value { get; }
             public bool IsChecked { get; set; }
             public Action CheckedCallback { get; set; }
+            public int BitIndex { get; }
 
             public void OnIsCheckedChanged() => CheckedCallback.Invoke();
         }

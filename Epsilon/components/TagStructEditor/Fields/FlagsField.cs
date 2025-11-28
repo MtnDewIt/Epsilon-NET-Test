@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Numerics;
 using TagStructEditor.Common;
 using TagStructEditor.Helpers;
 using TagTool.Cache;
@@ -24,16 +25,19 @@ namespace TagStructEditor.Fields
 
         private IEnumerable<Flag> GenerateFlagList(TagEnumInfo enumInfo)
         {
-            var members = TagEnum.GetMemberEnumerable(enumInfo).Members;
+            var members = enumInfo.Members.Members;
             for (int i = 0; i < members.Count; i++)
             {
-                var value = (Enum)members[i].Value;
-                dynamic flagValue = value;
-                if (flagValue == 0)
+                var value = members[i].Value;
+
+                ulong valueRaw = Convert.ToUInt64(value);
+                if (valueRaw == 0)
                     continue;
 
+                int bitIndex = BitOperations.TrailingZeroCount(valueRaw);
+
                 var name = Utils.DemangleName(members[i].Name);
-                yield return new Flag(name, value, OnFlagToggled);
+                yield return new Flag(name, (Enum)value, bitIndex, OnFlagToggled);
             }
         }
 
@@ -99,10 +103,11 @@ namespace TagStructEditor.Fields
 
         public class Flag : PropertyChangedNotifier
         { 
-            public Flag(string name, Enum value, Action checkedCallback)
+            public Flag(string name, Enum value, int bitIndex, Action checkedCallback)
             {
                 Name = name;
                 Value = value;
+                BitIndex = bitIndex;
                 CheckedCallback = checkedCallback;
             }
 
@@ -110,6 +115,7 @@ namespace TagStructEditor.Fields
             public Enum Value { get; }
             public bool IsChecked { get; set; }
             public Action CheckedCallback { get; set; }
+            public int BitIndex { get; }
 
             public void OnIsCheckedChanged() => CheckedCallback.Invoke();
         }
