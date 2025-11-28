@@ -30,11 +30,21 @@ namespace TagStructEditor.Fields
             {
                 var value = members[i].Value;
 
-                ulong valueRaw = Convert.ToUInt64(value);
+                ulong valueRaw = 0;
+                if (enumInfo.UnderlyingType == typeof(byte)) valueRaw = (byte)value;
+                else if (enumInfo.UnderlyingType == typeof(sbyte)) valueRaw = (byte)(sbyte)value;
+                else if (enumInfo.UnderlyingType == typeof(ushort)) valueRaw = (ushort)value;
+                else if (enumInfo.UnderlyingType == typeof(short)) valueRaw = (ushort)(short)value;
+                else if (enumInfo.UnderlyingType == typeof(uint)) valueRaw = (uint)value;
+                else if (enumInfo.UnderlyingType == typeof(int)) valueRaw = (uint)(int)value;
+                else if (enumInfo.UnderlyingType == typeof(ulong)) valueRaw = (ulong)value;
+                else if (enumInfo.UnderlyingType == typeof(long)) valueRaw = (ulong)(long)value;
+                else throw new NotSupportedException($"Unsupported enum underlying type: {enumInfo.UnderlyingType}");
+
                 if (valueRaw == 0)
                     continue;
 
-                int bitIndex = BitOperations.TrailingZeroCount(valueRaw);
+                int bitIndex = BitOperations.Log2(valueRaw);
 
                 var name = Utils.DemangleName(members[i].Name);
                 yield return new Flag(name, (Enum)value, bitIndex, OnFlagToggled);
