@@ -9,9 +9,9 @@ using TagTool.Tags;
 
 namespace TagStructEditor.Fields
 {
-    public class FlagBitsField : ValueField
+    public class BitFlagsField : ValueField
     {
-        public FlagBitsField(ValueFieldInfo info, CacheVersion version, CachePlatform platform) : base(info)
+        public BitFlagsField(ValueFieldInfo info, CacheVersion version, CachePlatform platform) : base(info)
         {
             var enumType = info.FieldType.GenericTypeArguments[0];
             var enumInfo = TagEnum.GetInfo(enumType, version, platform);
@@ -24,16 +24,12 @@ namespace TagStructEditor.Fields
 
         private IEnumerable<Flag> GenerateFlagList(TagEnumInfo enumInfo)
         {
-            var members = TagEnum.GetMemberEnumerable(enumInfo).Members;
+            var members = TagEnum.GetMemberEnumerable(enumInfo).VersionedMembers;
             for (int i = 0; i < members.Count; i++)
             {
                 var value = (Enum)members[i].Value;
-                dynamic flagValue = value;
-                if (flagValue == 0)
-                    continue;
-
                 var name = Utils.DemangleName(members[i].Name);
-                yield return new Flag(name, value, OnFlagToggled);
+                yield return new Flag(name, value, i, OnFlagToggled);
             }
         }
 
@@ -44,7 +40,7 @@ namespace TagStructEditor.Fields
 
         protected override void OnPopulate(object value)
         {
-            var valueEnum = (IFlagBits)value;
+            var valueEnum = (IBitFlags)value;
 
             foreach (var member in Flags)
                 member.IsChecked = valueEnum.TestBit((Enum)member.Value);
@@ -58,7 +54,7 @@ namespace TagStructEditor.Fields
 
         private object ComputeValue()
         {
-            var flagBits = (IFlagBits)Activator.CreateInstance(FieldInfo.FieldType.GetGenericTypeDefinition().MakeGenericType(EnumType));
+            var flagBits = (IBitFlags)Activator.CreateInstance(FieldInfo.FieldType.GetGenericTypeDefinition().MakeGenericType(EnumType));
             foreach (var flag in Flags)
             {
                 if (flag.IsChecked)
@@ -69,10 +65,11 @@ namespace TagStructEditor.Fields
 
         public class Flag : PropertyChangedNotifier
         {
-            public Flag(string name, Enum value, Action checkedCallback)
+            public Flag(string name, Enum value, int bitIndex, Action checkedCallback)
             {
                 Name = name;
                 Value = value;
+                BitIndex = bitIndex;
                 CheckedCallback = checkedCallback;
             }
 
@@ -80,6 +77,7 @@ namespace TagStructEditor.Fields
             public Enum Value { get; }
             public bool IsChecked { get; set; }
             public Action CheckedCallback { get; set; }
+            public int BitIndex { get; }
 
             public void OnIsCheckedChanged() => CheckedCallback.Invoke();
         }

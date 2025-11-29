@@ -12,7 +12,10 @@ namespace CacheEditor
 
         public BrowseTagDialogViewModel(ICacheEditingService cacheEditingService, ICacheFile cacheFile, BrowseTagOptions options)
         {
-            Func<CachedTag, bool> filter = options.ValidGroups.Length == 0 ? null : (tag => tag.IsInGroup(options.ValidGroups));
+            Func<CachedTag, bool> filter = null;
+            if (options.ValidGroups != null && options.ValidGroups.Length > 0)
+                filter = tag => tag.IsInGroup(options.ValidGroups);
+
             TagTree = new TagTreeViewModel(cacheEditingService, cacheFile, filter: filter);
 
             TagTree.NodeDoubleClicked += TagTree_NodeDoubleClicked;
