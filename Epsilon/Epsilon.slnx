@@ -1,0 +1,75 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Components/">
+    <Project Path="Components/TagStructEditor/TagStructEditor.csproj">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+  <Folder Name="/Libs/">
+    <Project Path="Libs/Xceed.Wpf.AvalonDock/Xceed.Wpf.AvalonDock.csproj">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+  <Folder Name="/Plugins/">
+    <Project Path="Plugins/BitmapViewerPlugin/BitmapViewerPlugin.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/BlamScriptEditorPlugin/BlamScriptEditorPlugin.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/CacheEditor/CacheEditor.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/CryingCatPlugin/CryingCatPlugin.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/DefinitionEditor/DefinitionEditor.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/ModPackagePlugin/ModPackagePlugin.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/RenderMethodEditorPlugin/RenderMethodEditorPlugin.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/ServerJsonEditor/ServerJsonEditor.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/TagResourceEditorPlugin/TagResourceEditorPlugin.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/TagToolShellPlugin/TagToolShellPlugin.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="Plugins/VariantConverter/VariantConverter.csproj">
+      <Platform Project="x64" />
+    </Project>
+  </Folder>
+  <Project Path="../TagTool/ShaderGenerator/HaloShaderGenerator/HaloShaderGenerator.csproj">
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="../TagTool/TagTool/TagTool.csproj">
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="Epsilon/Epsilon.csproj">
+    <BuildDependency Project="Components/TagStructEditor/TagStructEditor.csproj" />
+    <BuildDependency Project="Plugins/BitmapViewerPlugin/BitmapViewerPlugin.csproj" />
+    <BuildDependency Project="Plugins/BlamScriptEditorPlugin/BlamScriptEditorPlugin.csproj" />
+    <BuildDependency Project="Plugins/CacheEditor/CacheEditor.csproj" />
+    <BuildDependency Project="Plugins/CryingCatPlugin/CryingCatPlugin.csproj" />
+    <BuildDependency Project="Plugins/DefinitionEditor/DefinitionEditor.csproj" />
+    <BuildDependency Project="Plugins/ModPackagePlugin/ModPackagePlugin.csproj" />
+    <BuildDependency Project="Plugins/RenderMethodEditorPlugin/RenderMethodEditorPlugin.csproj" />
+    <BuildDependency Project="Plugins/ServerJsonEditor/ServerJsonEditor.csproj" />
+    <BuildDependency Project="Plugins/TagResourceEditorPlugin/TagResourceEditorPlugin.csproj" />
+    <BuildDependency Project="Plugins/TagToolShellPlugin/TagToolShellPlugin.csproj" />
+    <BuildDependency Project="Plugins/VariantConverter/VariantConverter.csproj" />
+    <Platform Project="x64" />
+  </Project>
+  <Project Path="EpsilonLib/EpsilonLib.csproj">
+    <BuildDependency Project="../TagTool/TagTool/TagTool.csproj" />
+    <Platform Project="x64" />
+  </Project>
+</Solution>
