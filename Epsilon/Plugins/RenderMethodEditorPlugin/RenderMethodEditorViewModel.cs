@@ -3,7 +3,6 @@ using CacheEditor.RTE;
 using CacheEditor.RTE.UI;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
-using DefinitionEditor;
 using EpsilonLib.Commands;
 using EpsilonLib.Dialogs;
 using EpsilonLib.Logging;
@@ -15,13 +14,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using TagStructEditor.Fields;
 using TagTool.Cache;
-using TagTool.IO;
-using TagTool.Serialization;
-using TagTool.Tags;
+using TagTool.Cache.HaloOnline;
 using TagTool.Tags.Definitions;
 
 namespace RenderMethodEditorPlugin
@@ -34,12 +29,6 @@ namespace RenderMethodEditorPlugin
         private CachedTag _instance;
         private RenderMethod _definitionData;
         private IDisposable _rteRefreshTimer;
-        private IFieldsValueChangeSink _changeSink;
-
-        // Fields that have changed since the last poke
-        private HashSet<ValueField> _changedFields = [];
-        // Fields that have been poked this session
-        private HashSet<ValueField> _pokedFields = [];
 
         private RenderMethodTemplate _renderMethodTemplate;
         private RenderMethodDefinition _renderMethodDefinition;
@@ -49,11 +38,11 @@ namespace RenderMethodEditorPlugin
         public ObservableCollection<Method> ShaderMethods { get; private set; } = new ObservableCollection<Method>();
         public ObservableCollection<GenericShaderParameter> ShaderParameters { get; private set; } = new ObservableCollection<GenericShaderParameter>();
 
-        public StructField StructField { get; set; }
         public IRteService RteService { get; }
         public TargetListModel RteTargetList { get; }
         public TargetListItem SelectedRteTargetItem { get; set; }
         public bool RteHasTargets { get; set; }
+        public byte[] RuntimeTagData;
 
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand PokeCommand { get; }
@@ -64,9 +53,7 @@ namespace RenderMethodEditorPlugin
             ICacheEditor cacheEditor,
             ICacheFile cacheFile,
             CachedTag instance,
-            RenderMethod definitionData,
-            StructField structField,
-            IFieldsValueChangeSink changeSink)
+            RenderMethod definitionData)
         {
             Load(cacheFile.Cache, definitionData);
 
@@ -74,18 +61,16 @@ namespace RenderMethodEditorPlugin
             _definitionData = definitionData;
             _cacheEditor = cacheEditor;
             _cacheFile = cacheFile;
-            _changeSink = changeSink;
-            _changeSink.ValueChanged += Field_ValueChanged;
             _instance = instance;
 
             RteService = rteService;
-            StructField = structField;
 
             PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
             SaveCommand = new DelegateCommand(SaveChanges, () => _cacheFile.CanSerializeTags);
 
             RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
             RteHasTargets = RteTargetList.Any();
+            RuntimeTagData = [];
         }
 
         private void Load(GameCache cache, RenderMethod renderMethod)
@@ -255,89 +240,6 @@ namespace RenderMethodEditorPlugin
                 return "Missing description";
         }
 
-        private void Field_ValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            if (e.Field is ValueField valueField)
-                _changedFields.Add(valueField);
-        }
-
-        private void PokeField(ValueField field)
-        {
-            if (SelectedRteTargetItem == null)
-            {
-                var alert = new AlertDialogViewModel
-                {
-                    AlertType = Alert.Error,
-                    DisplayName = "Failed to Poke",
-                    Message = $"Not attached to game instance!",
-                };
-
-                _shell.ShowDialog(alert);
-                return;
-            }
-            var helper = new RTEFieldHelper(SelectedRteTargetItem.Target, _cacheFile, _definitionData.GetType(), _instance);
-            uint address = helper.GetFieldMemoryAddress(field);
-            if (address == 0)
-            {
-                var alert = new AlertDialogViewModel
-                {
-                    AlertType = Alert.Error,
-                    DisplayName = "Failed to Poke",
-                    Message = $"Tag not loaded!",
-                };
-
-                _shell.ShowDialog(alert);
-                return;
-            }
-
-            if (field is CachedTagField tagRefField)
-            {
-                // Ensure the tag being poked is loaded to avoid crashing.
-
-                CachedTag instance = tagRefField.SelectedInstance.Instance;
-
-                if (instance != null && !helper.IsTagLoaded(instance))
-                {
-                    var alert = new AlertDialogViewModel
-                    {
-                        AlertType = Alert.Error,
-                        DisplayName = "Failed to Poke tag reference",
-                        Message = $"Tag '{instance}' is not loaded!",
-                    };
-
-                    _shell.ShowDialog(alert);
-                    return;
-                }
-            }
-
-            GameCache editorCache = _cacheEditor.CacheFile.Cache;
-
-            //handle field types that will break things
-            var valueType = field.FieldType;
-            var fieldValue = field.FieldInfo.ValueGetter(field.Owner);
-
-            var stream = new MemoryStream();
-            var writer = new EndianWriter(stream, editorCache.Endianness);
-            var dataContext = new DataSerializationContext(writer, CacheAddressType.Memory, false);
-
-            var block = dataContext.CreateBlock();
-
-            _cacheEditor.CacheFile.Cache.Serializer.SerializeValue(dataContext, stream,
-                block, fieldValue, new TagFieldAttribute(),
-            field.FieldInfo.FieldType);
-            byte[] outData = block.Stream.ToArray();
-
-            using (var processStream = SelectedRteTargetItem.Target.Provider.CreateStream(SelectedRteTargetItem.Target))
-            {
-                processStream.Seek(address, SeekOrigin.Begin);
-                processStream.Write(outData, 0, outData.Length);
-                processStream.Flush();
-            }
-
-            _changedFields.Remove(field);
-            _pokedFields.Add(field);
-        }
-
         private void RefreshRteTargets()
         {
             RteTargetList.Refresh();
@@ -385,12 +287,9 @@ namespace RenderMethodEditorPlugin
             try
             {
                 IRteTarget target = SelectedRteTargetItem.Target;
-                int changedFieldCount = _changedFields.Count;
+                target.Provider.PokeDefinition(target, _cacheFile.Cache, _instance as CachedTagHaloOnline, _definitionData, ref RuntimeTagData);
 
-                foreach (ValueField field in _changedFields)
-                    PokeField(field);
-
-                _shell.StatusBar.ShowStatusText($"Poked {changedFieldCount} fields");
+                _shell.StatusBar.ShowStatusText($"Poked Render Method Definition");
             }
             catch (Exception ex)
             {
@@ -411,10 +310,6 @@ namespace RenderMethodEditorPlugin
         {
             if (message is DefinitionDataChangedEvent e)
             {
-                // Restore potentially changed fields on the next poke
-                _changedFields = _pokedFields;
-                _pokedFields = [];
-
                 Load(_cacheFile.Cache, (RenderMethod)e.NewData);
             }
         }
@@ -442,10 +337,7 @@ namespace RenderMethodEditorPlugin
             BooleanConstants.Clear();
             ShaderMethods.Clear();
             ShaderParameters.Clear();
-            StructField?.Dispose();
-            StructField = null;
-
-            _changeSink.ValueChanged -= Field_ValueChanged;
+            RuntimeTagData = null;
 
             if (_rteRefreshTimer != null)
             {
