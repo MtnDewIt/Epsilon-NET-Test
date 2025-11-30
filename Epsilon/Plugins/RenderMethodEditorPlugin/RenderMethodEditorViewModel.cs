@@ -46,6 +46,7 @@ namespace RenderMethodEditorPlugin
 
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand PokeCommand { get; }
+        public DelegateCommand ReloadCommand { get; }
 
         public RenderMethodEditorViewModel(
             IShell shell,
@@ -67,6 +68,7 @@ namespace RenderMethodEditorPlugin
 
             PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
             SaveCommand = new DelegateCommand(SaveChanges, () => _cacheFile.CanSerializeTags);
+            ReloadCommand = new DelegateCommand(() => _cacheEditor.ReloadCurrentTag());
 
             RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
             RteHasTargets = RteTargetList.Any();
@@ -310,7 +312,11 @@ namespace RenderMethodEditorPlugin
         {
             if (message is DefinitionDataChangedEvent e)
             {
-                Load(_cacheFile.Cache, (RenderMethod)e.NewData);
+                _definitionData = e.NewData as RenderMethod;
+                Load(_cacheFile.Cache, e.NewData as RenderMethod);
+
+                if (PokeCommand.CanExecute(null))
+                    PokeCommand.Execute(null);
             }
         }
 
