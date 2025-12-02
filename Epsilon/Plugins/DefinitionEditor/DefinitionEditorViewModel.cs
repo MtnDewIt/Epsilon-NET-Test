@@ -44,11 +44,6 @@ namespace DefinitionEditor
         private IDisposable _rteRefreshTimer;
         private IFieldsValueChangeSink _changeSink;
 
-        // Fields that have changed since the last poke
-        private HashSet<ValueField> _changedFields = [];
-        // Fields that have been poked this session
-        private HashSet<ValueField> _pokedFields = [];
-
         public DefinitionEditorViewModel(      
             IShell shell,
             IRteService rteService,
@@ -86,6 +81,7 @@ namespace DefinitionEditor
 
             RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
             RteHasTargets = RteTargetList.Any();
+            RuntimeTagData = new byte[0];
         }
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
@@ -247,27 +243,7 @@ namespace DefinitionEditor
 
                 _shell.ShowDialog(alert);
                 return;
-            }
-
-            if(field is CachedTagField tagRefField)
-            {
-                // Ensure the tag being poked is loaded to avoid crashing.
-
-                CachedTag instance = tagRefField.SelectedInstance.Instance;
-
-                if (instance != null && !helper.IsTagLoaded(instance))
-                {
-                    var alert = new AlertDialogViewModel
-                    {
-                        AlertType = Alert.Error,
-                        DisplayName = "Failed to Poke tag reference",
-                        Message = $"Tag '{instance}' is not loaded!",
-                    };
-
-                    _shell.ShowDialog(alert);
-                    return;
-                }
-            }
+            }              
 
             GameCache editorCache = _cacheEditor.CacheFile.Cache;
 
@@ -275,6 +251,24 @@ namespace DefinitionEditor
             var valueType = field.FieldType;
             var fieldValue = field.FieldInfo.ValueGetter(field.Owner);
             
+            //fixup modpak tagrefs
+            #if DEBUG
+            if(valueType == typeof(CachedTag) && editorCache is GameCacheModPackage)
+            {
+                CachedTag tagRef = (CachedTag)fieldValue;
+                //check if tagref references a modpak tag
+                if(editorCache.TagCache.TryGetCachedTag(tagRef.Index, out var taginstance) && 
+                    !((CachedTagHaloOnline)taginstance).IsEmpty())
+                {
+                    var modpaktagindices = editorCache.TagCache.NonNull().ToList();
+                    //find the index of our desired tag in relation to all modpak tags in the modpak that are not basecache tags
+                    int paktagcount = modpaktagindices.Count(x => x.Index < tagRef.Index);
+                    tagRef.Index = 0xFFFE - paktagcount;
+                    fieldValue = tagRef;
+                }
+            }
+            #endif
+
             var stream = new MemoryStream();
             var writer = new EndianWriter(stream, editorCache.Endianness);
             var dataContext = new DataSerializationContext(writer, CacheAddressType.Memory, false);
@@ -292,9 +286,6 @@ namespace DefinitionEditor
                 processStream.Write(outData, 0, outData.Length);
                 processStream.Flush();
             }
-
-            _changedFields.Remove(field);
-            _pokedFields.Add(field);
         }
 
         public StructField StructField { get; set; }
@@ -391,12 +382,8 @@ namespace DefinitionEditor
 
         private void Field_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-            if (e.Field is ValueField valueField)
-                _changedFields.Add(valueField);
-
             if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
                 PokeCommand.Execute(null);
-
             if (e.Field is ValueField field && !(field is BlockField))
             {
                 var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
@@ -490,13 +477,9 @@ namespace DefinitionEditor
 
             try
             {
-                IRteTarget target = SelectedRteTargetItem.Target;
-                int changedFieldCount = _changedFields.Count;
-
-                foreach (ValueField field in _changedFields)
-                    PokeField(field);
-
-                _shell.StatusBar.ShowStatusText($"Poked {changedFieldCount} fields");
+                var target = SelectedRteTargetItem.Target;
+                target.Provider.PokeTag(target, _cacheFile.Cache, _instance, _definitionData, ref RuntimeTagData);
+                _shell.StatusBar.ShowStatusText("Poked Changes");
             }
             catch (Exception ex)
             {
@@ -535,6 +518,7 @@ namespace DefinitionEditor
             _cacheEditor = null;
             _instance = null;
             _blockOutline = null;
+            RuntimeTagData = null;
 
             _changeSink.ValueChanged -= Field_ValueChanged;
 
@@ -549,15 +533,8 @@ namespace DefinitionEditor
         {
             if (message is DefinitionDataChangedEvent e)
             {
-                // Restore potentially changed fields on the next poke
-                _changedFields = _pokedFields;
-                _pokedFields = [];
-
                 _definitionData = e.NewData;
                 StructField.Populate(null, e.NewData);
-
-                if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
-                    PokeCommand.Execute(null);
             }
         }
 
