@@ -23,7 +23,7 @@ namespace RenderMethodEditorPlugin
                 rm = ((Particle)(await context.DefinitionData)).RenderMethod;
 
             var cache = context.CacheEditor.CacheFile.Cache;
-            return new RenderMethodEditorViewModel(cache, rm);
+            return new RenderMethodEditorViewModel(context, cache, rm);
         }
 
         public bool ValidForTag(ICacheFile cache, CachedTag tag)

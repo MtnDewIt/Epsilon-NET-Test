@@ -30,6 +30,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
 
                 Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", "booleans",
                     Logger.CommandEvent.CommandType.setfield, $"setargument booleans {argstring}");
+
+                NotifyValueChanged();
             }
         }
 
@@ -40,5 +42,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                 booleanArgStrings.Add(cache.StringTable.GetString(arg.Name));
             }
         }
+
+        public override void Refresh() => NotifyOfPropertyChange(nameof(Value));
     }
 }

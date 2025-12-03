@@ -13,11 +13,18 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                 Property.RealConstants[TemplateIndex].Arg0 = value;
                 Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
                     Logger.CommandEvent.CommandType.setfield, $"setargument {Name} {value}");
+
+                NotifyValueChanged();
             }               
         }
 
         public FloatShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
         {
+        }
+
+        public override void Refresh()
+        {
+            NotifyOfPropertyChange(nameof(Value));
         }
     }
 }

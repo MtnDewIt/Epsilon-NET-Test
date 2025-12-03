@@ -14,6 +14,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                 Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
                     Logger.CommandEvent.CommandType.setfield,
                     $"setargument {Name} {value} {Property.RealConstants[TemplateIndex].Arg1}");
+
+                NotifyValueChanged();
             }
         }
 
@@ -26,11 +28,19 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                 Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
                     Logger.CommandEvent.CommandType.setfield,
                     $"setargument {Name} {Property.RealConstants[TemplateIndex].Arg0} {value}");
+
+                NotifyValueChanged();
             }
         }
 
         public Float2ShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
         {
+        }
+
+        public override void Refresh()
+        {
+            NotifyOfPropertyChange(nameof(Value1));
+            NotifyOfPropertyChange(nameof(Value2));
         }
     }
 }

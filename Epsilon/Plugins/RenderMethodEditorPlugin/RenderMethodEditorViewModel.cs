@@ -1,37 +1,59 @@
-﻿using CacheEditor.TagEditing;
+﻿using CacheEditor;
+using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
-using HaloShaderGenerator.Generator;
 using RenderMethodEditorPlugin.ShaderMethods;
-using RenderMethodEditorPlugin.ShaderMethods.Particle;
-using RenderMethodEditorPlugin.ShaderMethods.Shader;
-using RenderMethodEditorPlugin.ShaderMethods.Halogram;
-using RenderMethodEditorPlugin.ShaderMethods.Decal;
-using RenderMethodEditorPlugin.ShaderMethods.Screen;
 using RenderMethodEditorPlugin.ShaderParameters;
-using System.Linq;
 using System.Collections.ObjectModel;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
-using CacheEditor;
 
 namespace RenderMethodEditorPlugin
 {
     class RenderMethodEditorViewModel : TagEditorPluginBase
     {
+        private TagEditorContext _tagEditor;
         private RenderMethod _renderMethod;
         private GameCache _cache;
         private RenderMethodTemplate _renderMethodTemplate;
         private RenderMethodDefinition _renderMethodDefinition;
         private RenderMethod.RenderMethodPostprocessBlock _shaderProperty;
+        private bool _isDataDirty = false;
 
-        public ObservableCollection<BooleanConstant> BooleanConstants { get; private set;  } = new ObservableCollection<BooleanConstant>();
-        public ObservableCollection<Method> ShaderMethods { get; private set; } = new ObservableCollection<Method>();
-        public ObservableCollection<GenericShaderParameter> ShaderParameters { get; private set; } = new ObservableCollection<GenericShaderParameter>();
+        private ObservableCollection<GenericShaderParameter> _shaderParameters;
+        private ObservableCollection<Method> _shaderMethods;
 
-        public RenderMethodEditorViewModel(GameCache cache, RenderMethod renderMethod)
+        public RenderMethodEditorViewModel(TagEditorContext tagEditor, GameCache cache, RenderMethod renderMethod)
         {
             _cache = cache;
+            _tagEditor = tagEditor;
             Load(cache, renderMethod);
+        }
+
+        public TagEditorContext TagEditor => _tagEditor;
+
+        public GameCache Cache => _cache;
+
+        public ObservableCollection<Method> ShaderMethods
+        {
+            get => _shaderMethods;
+            set => SetAndNotify(ref _shaderMethods, value);
+        }
+
+        public ObservableCollection<GenericShaderParameter> ShaderParameters
+        {
+            get => _shaderParameters;
+            set
+            {
+                if (_shaderParameters != null)
+                    UnregisterParameters();
+
+                _shaderParameters = value;
+
+                if (value != null)
+                    RegisterParameters();
+
+                NotifyOfPropertyChange();
+            }
         }
 
         private void Load(GameCache cache, RenderMethod renderMethod)
@@ -60,7 +82,7 @@ namespace RenderMethodEditorPlugin
                 rmopParameters = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GatherParameters(cache, stream, _renderMethodDefinition, options.ToArray(), false);
             }
 
-            ShaderMethods = new ObservableCollection<Method>();
+            var newMethods = new ObservableCollection<Method>();
             for (int i = 0; i < _renderMethodDefinition.Categories.Count; i++)
             {
                 short optionIndex = 0; // assume an index of 0 for outdated tags
@@ -73,9 +95,12 @@ namespace RenderMethodEditorPlugin
                     string categoryName = cache.StringTable.GetString(_renderMethodDefinition.Categories[i].Name);
                     string optionName = cache.StringTable.GetString(_renderMethodDefinition.Categories[i].ShaderOptions[optionIndex].Name);
 
-                    ShaderMethods.Add(new Method(categoryName, optionName, "Description N/A", i, optionIndex));
+                    newMethods.Add(new Method(categoryName, optionName, "Description N/A", i, optionIndex));
                 }
             }
+            ShaderMethods = newMethods;
+
+            var newParameters = new ObservableCollection<GenericShaderParameter>();
 
             foreach (var parameter in rmopParameters)
             {
@@ -89,7 +114,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                             {
                                 string description = $"1D vector for parameter \"{name}\"";
-                                ShaderParameters.Add(new FloatShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                                newParameters.Add(new FloatShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }
@@ -101,7 +126,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                             {
                                 string description = $"4D vector for parameter \"{name}\"";
-                                ShaderParameters.Add(new Float4ShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                                newParameters.Add(new Float4ShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }
@@ -112,7 +137,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.TextureParameterNames[i].Name) == name)
                             {
                                 string description = $"Bitmap tag for texture \"{name}\"";
-                                ShaderParameters.Add(new SamplerShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                                newParameters.Add(new SamplerShaderParameter(this, _renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }
@@ -134,7 +159,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.BooleanParameterNames[i].Name) == name)
                             {
                                 string description = $"Checkbox for on/off parameter \"{name}\"";
-                                ShaderParameters.Add(new BooleanShaderParameter(_renderMethod.ShaderProperties[0], name, description, i, cache, _renderMethodTemplate.BooleanParameterNames));
+                                newParameters.Add(new BooleanShaderParameter(_renderMethod.ShaderProperties[0], name, description, i, cache, _renderMethodTemplate.BooleanParameterNames));
                                 break;
                             }
                         }
@@ -149,7 +174,7 @@ namespace RenderMethodEditorPlugin
                         if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                         {
                             string description = $"Transform vector for texture \"{name}\"";
-                            ShaderParameters.Add(new TransformShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                            newParameters.Add(new TransformShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                             break;
                         }
                     }
@@ -170,48 +195,19 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[j].Name) == name)
                             {
                                 string description = $"This value should match the option index for category \"{name}\"";
-                                ShaderParameters.Add(new CategoryShaderParameter(_renderMethod.ShaderProperties[0], "category_" + name, description, j));
+                                newParameters.Add(new CategoryShaderParameter(_renderMethod.ShaderProperties[0], "category_" + name, description, j));
                                 break;
                             }
                         }
                     }
                 }
             }
-
-            this.NotifyOfPropertyChange(nameof(ShaderMethods));
-            this.NotifyOfPropertyChange(nameof(ShaderParameters));
-        }
-
-        // get boolean values from existing tag data
-
-        private void ParseBooleanArguments()
-        {
-            for(int i = 0; i < _renderMethodTemplate.BooleanParameterNames.Count; i++)
-            {
-                string name = _cache.StringTable.GetString(_renderMethodTemplate.BooleanParameterNames[i].Name);
-                BooleanConstants.Add(new BooleanConstant(_shaderProperty, name, FindDescriptionFromName(name), i));
-            }
-        }
-
-        private string FindDescriptionFromName(string shaderArgName)
-        {
-            if(ShaderArgumentsDescription.ArgsDescription.ContainsKey(shaderArgName))
-                return ShaderArgumentsDescription.ArgsDescription[shaderArgName];
-            else
-                return "Missing description";
+            ShaderParameters = newParameters;
         }
 
         public void Test()
         {
             PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
-        }
-
-        protected override void OnMessage(object sender, object message)
-        {
-            if (message is DefinitionDataChangedEvent e)
-            {
-               Load(_cache, (RenderMethod)e.NewData);
-            }
         }
 
         protected override void OnClose()
@@ -222,43 +218,58 @@ namespace RenderMethodEditorPlugin
             _renderMethodTemplate = null;
             _renderMethodDefinition = null;
             _shaderProperty = null;
-            BooleanConstants.Clear();
-            ShaderMethods.Clear();
-            ShaderParameters.Clear();
+            ShaderMethods = null;
+            ShaderParameters = null;
         }
-    }
 
-    class ShaderConstant
-    {
-        public RenderMethod.RenderMethodPostprocessBlock Property;
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int TemplateIndex;
-        public ShaderConstant(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex)
+        private void RefreshParameters()
         {
-            Name = ShaderStringConverter.ToPrettyFormat(name);
-            TemplateIndex = templateIndex;
-            Property = property;
-            Description = desc;
+            foreach (var parameter in _shaderParameters)
+                parameter.Refresh();
         }
-    }
 
-    class BooleanConstant : ShaderConstant
-    {
-        public bool Value
+        private void RegisterParameters()
         {
-            get => (((int)(Property.BooleanConstants) >> TemplateIndex) & 1) == 1;
-            set
+            foreach (var parameter in _shaderParameters)
+                parameter.ValueChanged += Parameter_ValueChanged;
+        }
+
+        private void UnregisterParameters()
+        {
+            foreach (var parameter in _shaderParameters)
+                parameter.ValueChanged -= Parameter_ValueChanged;
+        }
+
+        private void Parameter_ValueChanged(object sender, System.EventArgs e)
+        {
+            PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
+        }
+
+        protected override void OnMessage(object sender, object message)
+        {
+            if (message is DefinitionDataChangedEvent dataChangedEvent)
             {
-                if(value == true)
-                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants | (1 << TemplateIndex));
+                if (dataChangedEvent.WasReloaded)
+                {
+                    Load(_cache, (RenderMethod)dataChangedEvent.NewData);
+                }
                 else
-                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants & ~(1 << TemplateIndex));
+                {
+                    if (IsActive)
+                        RefreshParameters();
+                    else
+                        _isDataDirty = true;
+                }
             }
         }
 
-        public BooleanConstant(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
+        protected override void OnActivate()
         {
+            if (_isDataDirty)
+            {
+                _isDataDirty = false;
+                RefreshParameters();
+            }
         }
     }
 }

@@ -15,6 +15,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                     Logger.CommandEvent.CommandType.setfield,
                     $"setargument {Name} {value} {Property.RealConstants[TemplateIndex].Arg1} " +
                     $"{Property.RealConstants[TemplateIndex].Arg2} {Property.RealConstants[TemplateIndex].Arg3}");
+
+                NotifyValueChanged();
             }
         }
 
@@ -28,6 +30,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                     Logger.CommandEvent.CommandType.setfield,
                     $"setargument {Name} {Property.RealConstants[TemplateIndex].Arg0} {value} " +
                     $"{Property.RealConstants[TemplateIndex].Arg2} {Property.RealConstants[TemplateIndex].Arg3}");
+
+                NotifyValueChanged();
             }
         }
 
@@ -41,6 +45,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                     Logger.CommandEvent.CommandType.setfield,
                     $"setargument {Name} {Property.RealConstants[TemplateIndex].Arg0} {Property.RealConstants[TemplateIndex].Arg1} " +
                     $"{value} {Property.RealConstants[TemplateIndex].Arg3}");
+
+                NotifyValueChanged();
             }
         }
 
@@ -54,11 +60,21 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                     Logger.CommandEvent.CommandType.setfield,
                     $"setargument {Name} {Property.RealConstants[TemplateIndex].Arg0} {Property.RealConstants[TemplateIndex].Arg1} " +
                     $"{Property.RealConstants[TemplateIndex].Arg2} {value}");
+
+                NotifyValueChanged();
             }
         }
 
         public TransformShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name + " transform", desc, templateIndex)
         {
+        }
+
+        public override void Refresh()
+        {
+            NotifyOfPropertyChange(nameof(Value1));
+            NotifyOfPropertyChange(nameof(Value2));
+            NotifyOfPropertyChange(nameof(Value3));
+            NotifyOfPropertyChange(nameof(Value4));
         }
     }
 }

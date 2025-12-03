@@ -496,6 +496,9 @@ namespace DefinitionEditor
                     RefreshData();
                 else
                     _isDataDirty = true;
+
+                if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
+                    PokeCommand.Execute(null);
             }
         }
 
