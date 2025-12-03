@@ -1,5 +1,6 @@
 ﻿using CacheEditor.Components.TagExplorer.Commands;
 using CacheEditor.Components.TagTree;
+using CacheEditor.RTE;
 using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
@@ -55,9 +56,12 @@ namespace CacheEditor
             TagTree.ContextMenu = Components.TagExplorer.MenuDefinitions.ContextMenu;
             TagTree.NodeDoubleClicked += TagTree_ItemDoubleClicked;
             CloseCommand = new DelegateCommand(Close);
+
+            RteSession = _cacheEditingService.Rte.CreateSession(cacheFile);
         }
 
         public ICacheFile CacheFile { get; }
+        public IRteSession RteSession { get; private set; }
         public IDictionary<string, object> PluginStorage { get; } = new Dictionary<string, object>();
         public IObservableCollection<IScreen> Documents => Items;
         public IObservableCollection<ICacheEditorTool> Tools { get; } = new BindableCollection<ICacheEditorTool>();
@@ -122,7 +126,7 @@ namespace CacheEditor
                 {
                     CacheEditor = this,
                     DefinitionData = futureDefinitionData,
-                    Instance = instance
+                    Instance = instance,
                 };
 
                 ActiveItem = new TagEditorViewModel(_cacheEditingService, context);
@@ -189,6 +193,8 @@ namespace CacheEditor
             _cacheEditingService?.Dispose();
             _cacheEditingService = null;
             PluginStorage?.Clear();
+            RteSession?.Dispose();
+            RteSession = null;
             CloseAllPanes();
         }
 
@@ -404,7 +410,7 @@ namespace CacheEditor
                 using (var stream = CacheFile.Cache.OpenCacheRead())
                 {
                     var data = CacheFile.Cache.Deserialize(stream, CurrentTag);
-                    tagEditor.PostMessage(this, new DefinitionDataChangedEvent(data));
+                    tagEditor.PostMessage(this, new DefinitionDataChangedEvent(data) { WasReloaded = true });
                 }
             }
         }

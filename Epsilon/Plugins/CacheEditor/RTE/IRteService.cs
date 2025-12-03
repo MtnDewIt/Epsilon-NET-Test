@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using CacheEditor.RTE.UI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace CacheEditor.RTE
 {
@@ -6,6 +9,11 @@ namespace CacheEditor.RTE
     {
         IEnumerable<IRteProvider> Providers { get; }
 
-        IRteTargetCollection GetTargetList(ICacheFile cacheFile);
+        IRteSession CreateSession(ICacheFile cacheFile);
+    }
+
+    public interface IRteSession : IDisposable
+    {
+        IRteTargetList TargetList { get; }
     }
 }

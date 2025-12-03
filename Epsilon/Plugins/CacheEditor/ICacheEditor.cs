@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CacheEditor.RTE;
+using System;
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Common;
@@ -11,6 +12,8 @@ namespace CacheEditor
     {
         ICacheFile CacheFile { get; }
         ITagTree TagTree { get; }
+        IRteSession RteSession { get; }
+
         ICacheEditorTool GetTool(string name);
         IDictionary<string, object> PluginStorage { get; }
         void OpenTag(CachedTag tag);

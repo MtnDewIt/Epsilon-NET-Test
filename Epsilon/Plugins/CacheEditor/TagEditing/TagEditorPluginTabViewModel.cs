@@ -28,11 +28,30 @@ namespace CacheEditor
             {
                 var plugin = await futurePlugin;
                 Content = plugin;
+                if (IsActive)
+                {
+                    Content?.Activate();
+                }
             }
             catch(Exception ex)
             {
                 Content = new TagEditorPluginErrorViewModel(ex);
             }
+        }
+
+        public override Task<bool> CanCloseAsync()
+        {
+            return _content?.CanCloseAsync();
+        }
+
+        protected override void OnActivate()
+        {
+            _content?.Activate();
+        }
+
+        protected override void OnDeactivate()
+        {
+            _content?.Deactivate();
         }
 
         protected override void OnClose()

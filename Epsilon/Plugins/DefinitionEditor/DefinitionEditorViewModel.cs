@@ -5,6 +5,8 @@ using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
+using EpsilonLib.Dialogs;
+using EpsilonLib.Logging;
 using EpsilonLib.Menus;
 using EpsilonLib.Shell;
 using EpsilonLib.Utils;
@@ -23,14 +25,7 @@ using TagTool.Common;
 using TagTool.Commands.Unicode;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
-using System.IO;
-using TagTool.IO;
-using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.Cache.HaloOnline;
-using EpsilonLib.Logging;
-using EpsilonLib.Dialogs;
-using System.Windows.Data;
 
 namespace DefinitionEditor
 {
@@ -41,10 +36,11 @@ namespace DefinitionEditor
         private ICacheFile _cacheFile;
         private CachedTag _instance;
         private object _definitionData;
-        private IDisposable _rteRefreshTimer;
+        private bool _isDataDirty = false;
         private IFieldsValueChangeSink _changeSink;
+        private IRteTargetList _rteTargetList;
 
-        public DefinitionEditorViewModel(      
+        public DefinitionEditorViewModel(
             IShell shell,
             IRteService rteService,
             ICacheEditor cacheEditor,
@@ -61,7 +57,7 @@ namespace DefinitionEditor
             _cacheFile = cacheFile;
             _changeSink = changeSink;
             _changeSink.ValueChanged += Field_ValueChanged;
-            
+
 
             RteService = rteService;
             _instance = instance;
@@ -79,9 +75,7 @@ namespace DefinitionEditor
 
             SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
 
-            RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
-            RteHasTargets = RteTargetList.Any();
-            RuntimeTagData = new byte[0];
+            InitRte();
         }
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
@@ -247,45 +241,12 @@ namespace DefinitionEditor
 
             GameCache editorCache = _cacheEditor.CacheFile.Cache;
 
-            //handle field types that will break things
-            var valueType = field.FieldType;
-            var fieldValue = field.FieldInfo.ValueGetter(field.Owner);
-            
-            //fixup modpak tagrefs
-            #if DEBUG
-            if(valueType == typeof(CachedTag) && editorCache is GameCacheModPackage)
-            {
-                CachedTag tagRef = (CachedTag)fieldValue;
-                //check if tagref references a modpak tag
-                if(editorCache.TagCache.TryGetCachedTag(tagRef.Index, out var taginstance) && 
-                    !((CachedTagHaloOnline)taginstance).IsEmpty())
-                {
-                    var modpaktagindices = editorCache.TagCache.NonNull().ToList();
-                    //find the index of our desired tag in relation to all modpak tags in the modpak that are not basecache tags
-                    int paktagcount = modpaktagindices.Count(x => x.Index < tagRef.Index);
-                    tagRef.Index = 0xFFFE - paktagcount;
-                    fieldValue = tagRef;
-                }
-            }
-            #endif
+            Type valueType = field.FieldType;
+            object fieldValue = field.FieldInfo.ValueGetter(field.Owner);
+            TagFieldAttribute fieldAttr = field.FieldInfo.Attribute ?? TagFieldAttribute.Default;
+            IRteTarget target = SelectedRteTargetItem.Target;
 
-            var stream = new MemoryStream();
-            var writer = new EndianWriter(stream, editorCache.Endianness);
-            var dataContext = new DataSerializationContext(writer, CacheAddressType.Memory, false);
-
-            var block = dataContext.CreateBlock();
-
-            _cacheEditor.CacheFile.Cache.Serializer.SerializeValue(dataContext, stream,
-                block, fieldValue, new TagFieldAttribute(),
-            field.FieldInfo.FieldType);
-            byte[] outData = block.Stream.ToArray();
-
-            using (var processStream = SelectedRteTargetItem.Target.Provider.CreateStream(SelectedRteTargetItem.Target))
-            {
-                processStream.Seek(address, SeekOrigin.Begin);
-                processStream.Write(outData, 0, outData.Length);
-                processStream.Flush();
-            }
+            SelectedRteTargetItem.Target.Provider.PokeValue(target, editorCache, _instance, address, fieldAttr, valueType, fieldValue);
         }
 
         public StructField StructField { get; set; }
@@ -306,9 +267,15 @@ namespace DefinitionEditor
         public NavigableSearchResults SearchResults { get; } = new NavigableSearchResults();
 
         public IRteService RteService { get; }
-        public TargetListModel RteTargetList { get; }
+
+        public IRteTargetList RteTargetList
+        {
+            get => _rteTargetList;
+            set => SetAndNotify(ref _rteTargetList, value);
+        }
+
         public TargetListItem SelectedRteTargetItem { get; set; }
-        public bool RteHasTargets { get; set; }
+        public bool RteHasTargets => RteTargetList?.Any() ?? false;
         public byte[] RuntimeTagData;
 
         public DelegateCommand ExpandAllCommand { get; }
@@ -390,6 +357,8 @@ namespace DefinitionEditor
                 Logger.LogCommand($"{_instance.Name}.{_instance.Group}", FieldHelper.GetFieldPath(field), Logger.CommandEvent.CommandType.setfield,
                     $"setfield {FieldHelper.GetFieldPath(field)} {value}");
             }
+
+            PostMessage(this, new DefinitionDataChangedEvent(_definitionData));
         }
 
         private void ExpandAll()
@@ -427,17 +396,6 @@ namespace DefinitionEditor
 
                 SearchResultField = currentResult.Field;
             }
-        }
-
-        private void RefreshRteTargets()
-        {
-            RteTargetList.Refresh();
-            RteHasTargets = RteTargetList.Any();
-
-            if (SelectedRteTargetItem == null || !RteTargetList.Contains(SelectedRteTargetItem))
-                SelectedRteTargetItem = RteTargetList.FirstOrDefault();
-
-            PokeCommand.RaiseCanExecuteChanged();
         }
 
         private async void SaveChanges()
@@ -500,16 +458,19 @@ namespace DefinitionEditor
         {
             base.OnViewLoaded();
 
-            if (_rteRefreshTimer == null)
-                _rteRefreshTimer = DispatcherEx.CreateTimer(TimeSpan.FromSeconds(5), RefreshRteTargets);
+            //if (_rteRefreshTimer == null)
+            //    _rteRefreshTimer = DispatcherEx.CreateTimer(TimeSpan.FromSeconds(5), RefreshRteTargets);
 
-            RefreshRteTargets();
+            //RefreshRteTargets();
         }
 
         protected override void OnClose()
         {
             Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.none, "exit");
-            base.OnClose();
+
+            ShutdownRte();
+            _changeSink.ValueChanged -= Field_ValueChanged;
+
             DisplayField?.Dispose();
             DisplayField = null;
             StructField?.Dispose();
@@ -520,13 +481,7 @@ namespace DefinitionEditor
             _blockOutline = null;
             RuntimeTagData = null;
 
-            _changeSink.ValueChanged -= Field_ValueChanged;
-
-            if (_rteRefreshTimer != null)
-            {
-                _rteRefreshTimer.Dispose();
-                _rteRefreshTimer = null;
-            }         
+            
         }
 
         protected override void OnMessage(object sender, object message)
@@ -534,8 +489,27 @@ namespace DefinitionEditor
             if (message is DefinitionDataChangedEvent e)
             {
                 _definitionData = e.NewData;
-                StructField.Populate(null, e.NewData);
+
+
+
+                if (IsActive)
+                    RefreshData();
+                else
+                    _isDataDirty = true;
             }
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            if (_isDataDirty)
+                RefreshData();
+        }
+
+        private void RefreshData()
+        {
+            StructField.Populate(null, _definitionData);
         }
 
         public class SearchResultItem
@@ -634,6 +608,32 @@ namespace DefinitionEditor
             }
         }
 
+        private void InitRte()
+        {
+            RuntimeTagData = [];
 
+            RteTargetList = _cacheEditor.RteSession.TargetList;
+            RteTargetList.CollectionChanged += RteTargetList_CollectionChanged;
+            RteTargetList.Refresh();
+
+            SelectedRteTargetItem = RteTargetList.FirstOrDefault();
+            NotifyOfPropertyChange(nameof(RteHasTargets));
+        }
+
+        private void ShutdownRte()
+        {
+            RteTargetList.CollectionChanged -= RteTargetList_CollectionChanged;
+            RteTargetList = null;
+        }
+
+        private void RteTargetList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (SelectedRteTargetItem == null || !RteTargetList.Contains(SelectedRteTargetItem))
+            {
+                SelectedRteTargetItem = RteTargetList.FirstOrDefault();
+            }
+
+            NotifyOfPropertyChange(nameof(RteHasTargets));
+        }
     }
 }
