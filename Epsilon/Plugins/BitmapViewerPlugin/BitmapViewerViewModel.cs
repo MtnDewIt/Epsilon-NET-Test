@@ -38,10 +38,10 @@ namespace BitmapViewerPlugin
         private CancellationTokenSource _loadCancelTokenSource = new CancellationTokenSource();
         private LoadStates _loadingState;
         private string _errorMessage;
-        private bool _channelA = true;
-        private bool _channelR = true;
-        private bool _channelG = true;
-        private bool _channelB = true;
+        private static bool _channelA = true;
+        private static bool _channelR = true;
+        private static bool _channelG = true;
+        private static bool _channelB = true;
 
         public BitmapViewerViewModel(ICacheFile cacheFile, CachedTag instance, Bitmap definition)
         {
@@ -210,7 +210,15 @@ namespace BitmapViewerPlugin
                 ExtractedBitmap data = await Task.Run(() =>
                     _bitmapExtractor.GetBitmapData(_cachedBaseBitmap, BitmapIndex, LayerIndex, MipLevel));
 
-                if (!cancelToken.IsCancellationRequested)
+                if (cancelToken.IsCancellationRequested)
+                    return;
+                
+                if (data == null)
+                {
+                    ErrorMessage = "Bitmap has no resource";
+                    LoadingState = LoadStates.Failed;
+                }
+                else
                 {
                     OnBitmapLoaded(data);
                     LoadingState = LoadStates.Success;
