@@ -43,8 +43,8 @@ namespace RenderMethodEditorPlugin
             Load(cache, renderMethod);
 
             PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
-            SaveCommand = new DelegateCommand(SaveChanges, () => tagEditor.CacheEditor.CacheFile.CanSerializeTags);
-            ReloadCommand = new DelegateCommand(() => tagEditor.CacheEditor.ReloadCurrentTag());
+            SaveCommand = new DelegateCommand(SaveChanges, () => _tagEditor.CacheEditor.CacheFile.CanSerializeTags);
+            ReloadCommand = new DelegateCommand(() => _tagEditor.CacheEditor.ReloadCurrentTag());
 
             RteService = rteService;
             InitRte();
