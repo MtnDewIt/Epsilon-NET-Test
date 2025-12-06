@@ -1,9 +1,19 @@
 ﻿using CacheEditor;
+using CacheEditor.RTE;
+using CacheEditor.RTE.UI;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
+using EpsilonLib.Commands;
+using EpsilonLib.Dialogs;
+using EpsilonLib.Logging;
 using RenderMethodEditorPlugin.ShaderMethods;
 using RenderMethodEditorPlugin.ShaderParameters;
+using Shared;
+using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
 using TagTool.Cache;
 using TagTool.Tags.Definitions;
 
@@ -11,6 +21,7 @@ namespace RenderMethodEditorPlugin
 {
     class RenderMethodEditorViewModel : TagEditorPluginBase
     {
+        private IShell _shell;
         private TagEditorContext _tagEditor;
         private RenderMethod _renderMethod;
         private GameCache _cache;
@@ -19,19 +30,45 @@ namespace RenderMethodEditorPlugin
         private RenderMethod.RenderMethodPostprocessBlock _shaderProperty;
         private bool _isDataDirty = false;
 
+        private IRteTargetList _rteTargetList;
+
         private ObservableCollection<GenericShaderParameter> _shaderParameters;
         private ObservableCollection<Method> _shaderMethods;
 
-        public RenderMethodEditorViewModel(TagEditorContext tagEditor, GameCache cache, RenderMethod renderMethod)
+        public RenderMethodEditorViewModel(TagEditorContext tagEditor, GameCache cache, IShell shell, IRteService rteService, RenderMethod renderMethod)
         {
+            _shell = shell;
             _cache = cache;
             _tagEditor = tagEditor;
             Load(cache, renderMethod);
+
+            PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
+            SaveCommand = new DelegateCommand(SaveChanges, () => tagEditor.CacheEditor.CacheFile.CanSerializeTags);
+            ReloadCommand = new DelegateCommand(() => tagEditor.CacheEditor.ReloadCurrentTag());
+
+            RteService = rteService;
+            InitRte();
         }
 
         public TagEditorContext TagEditor => _tagEditor;
 
         public GameCache Cache => _cache;
+
+        public IRteService RteService { get; }
+
+        public IRteTargetList RteTargetList
+        {
+            get => _rteTargetList;
+            set => SetAndNotify(ref _rteTargetList, value);
+        }
+
+        public TargetListItem SelectedRteTargetItem { get; set; }
+        public bool RteHasTargets => RteTargetList?.Any() ?? false;
+        public byte[] RuntimeTagData;
+
+        public DelegateCommand SaveCommand { get; }
+        public DelegateCommand PokeCommand { get; }
+        public DelegateCommand ReloadCommand { get; }
 
         public ObservableCollection<Method> ShaderMethods
         {
@@ -210,6 +247,62 @@ namespace RenderMethodEditorPlugin
             PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
         }
 
+        private async void SaveChanges()
+        {
+            if (!_tagEditor.CacheEditor.CacheFile.CanSerializeTags)
+                throw new NotSupportedException();
+
+            try
+            {
+                using (var progress = _shell.CreateProgressScope())
+                {
+                    progress.Report($"Serializing tag '{_tagEditor.Instance}'...");
+                    await _tagEditor.CacheEditor.CacheFile.SerializeTagAsync(_tagEditor.Instance, _renderMethod);
+                }
+                _shell.StatusBar.ShowStatusText("Saved Changes");
+                Logger.LogCommand($"{_tagEditor.Instance.Name}.{_tagEditor.Instance.Group}", null, Logger.CommandEvent.CommandType.None, "SaveTagChanges");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    Message = $"An exception was thrown while attempting to save tag changes.",
+                    SubMessage = ex.Message
+                };
+
+                _shell.ShowDialog(alert);
+            }
+        }
+
+        private void PokeChanges()
+        {
+            if (SelectedRteTargetItem == null)
+                return;
+
+            try
+            {
+                var target = SelectedRteTargetItem.Target;
+                target.Provider.PokeTag(target, _cache, _tagEditor.Instance, _renderMethod, ref RuntimeTagData);
+                _shell.StatusBar.ShowStatusText("Poked Changes");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+
+                var alert = new AlertDialogViewModel
+                {
+                    AlertType = Alert.Error,
+                    Message = $"An exception was thrown while attempting to poke tag changes.",
+                    SubMessage = ex.Message
+                };
+
+                _shell.ShowDialog(alert);
+            }
+        }
+
         protected override void OnClose()
         {
             base.OnClose();
@@ -220,6 +313,8 @@ namespace RenderMethodEditorPlugin
             _shaderProperty = null;
             ShaderMethods = null;
             ShaderParameters = null;
+
+            ShutdownRte();
         }
 
         private void RefreshParameters()
@@ -259,6 +354,9 @@ namespace RenderMethodEditorPlugin
                         RefreshParameters();
                     else
                         _isDataDirty = true;
+
+                    if (PokeCommand.CanExecute(null))
+                        PokeCommand.Execute(null);
                 }
             }
         }
@@ -270,6 +368,34 @@ namespace RenderMethodEditorPlugin
                 _isDataDirty = false;
                 RefreshParameters();
             }
+        }
+
+        private void InitRte()
+        {
+            RuntimeTagData = [];
+
+            RteTargetList = _tagEditor.CacheEditor.RteSession.TargetList;
+            RteTargetList.CollectionChanged += RteTargetList_CollectionChanged;
+            RteTargetList.Refresh();
+
+            SelectedRteTargetItem = RteTargetList.FirstOrDefault();
+            NotifyOfPropertyChange(nameof(RteHasTargets));
+        }
+
+        private void ShutdownRte()
+        {
+            RteTargetList.CollectionChanged -= RteTargetList_CollectionChanged;
+            RteTargetList = null;
+        }
+
+        private void RteTargetList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (SelectedRteTargetItem == null || !RteTargetList.Contains(SelectedRteTargetItem))
+            {
+                SelectedRteTargetItem = RteTargetList.FirstOrDefault();
+            }
+
+            NotifyOfPropertyChange(nameof(RteHasTargets));
         }
     }
 }
