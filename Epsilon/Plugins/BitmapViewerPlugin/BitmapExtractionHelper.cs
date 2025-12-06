@@ -41,7 +41,10 @@ namespace BitmapViewerPlugin
                 else
                     baseBitmap = BitmapExtractor.ExtractBitmap(_cacheFile.Cache, _bitmapGroup, bitmapIndex, _tag.Name, false);
             }
-                
+
+            if (baseBitmap == null)
+                return null;
+
 
             byte[] mipData = GetMipmapData(baseBitmap, layerIndex, mipLevel, out int mipWidth, out int mipHeight);
             mipData = BitmapDecoder.DecodeBitmap(mipData, baseBitmap.Format, mipWidth, mipHeight);
@@ -65,37 +68,15 @@ namespace BitmapViewerPlugin
             tempImage.Format = bitmap.Format;
             tempImage.Flags = bitmap.Flags;
 
-            width = BitmapUtilsPC.GetMipmapWidth(tempImage, mipmapIndex);
-            height = BitmapUtilsPC.GetMipmapHeight(tempImage, mipmapIndex);
-
-            int mipmapSize, mipmapOffset;
-            if (bitmap.Type == BitmapType.Texture2D)
-            {
-                mipmapOffset = BitmapUtilsPC.GetTexture2DOffset(tempImage, 0, 0, mipmapIndex);
-                mipmapSize = width * height * BitmapFormatUtils.GetBitsPerPixel(tempImage.Format) / 8;
-            }
-            else if (bitmap.Type == BitmapType.CubeMap)
-            {
-                mipmapOffset = BitmapUtilsPC.GetTextureCubemapOffset(tempImage, 0, 0, layerIndex, mipmapIndex);
-                mipmapSize = width * height * BitmapFormatUtils.GetBitsPerPixel(tempImage.Format) / 8;
-            }
-            else if (bitmap.Type == BitmapType.Array)
-            {
-                mipmapOffset = BitmapUtilsPC.GetTextureArrayOffset(tempImage, 0, 0, layerIndex, mipmapIndex);
-                mipmapSize = width * height * BitmapFormatUtils.GetBitsPerPixel(tempImage.Format) / 8;
-            }
-            else if (bitmap.Type == BitmapType.Texture3D)
-            {
-                mipmapOffset = BitmapUtilsPC.GetTexture3DOffset(tempImage, 0, 0, layerIndex, mipmapIndex);
-                mipmapSize = width * height * BitmapFormatUtils.GetBitsPerPixel(tempImage.Format) / 8;
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            int mipmapSize = BitmapUtilsPC.GetMipmapPixelDataSize(tempImage, layerIndex, mipmapIndex);
+            int mipmapOffset = BitmapUtilsPC.GetMipmapOffset(tempImage, layerIndex, mipmapIndex);
 
             var mipmapData = new byte[mipmapSize];
             Array.Copy(bitmap.Data, mipmapOffset, mipmapData, 0, mipmapSize);
+
+            width = Math.Max(1, bitmap.Width >> mipmapIndex);
+            height = Math.Max(1, bitmap.Height >> mipmapIndex);
+
             return mipmapData;
         }
 

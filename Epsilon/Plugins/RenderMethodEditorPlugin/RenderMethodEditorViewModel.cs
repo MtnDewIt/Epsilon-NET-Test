@@ -1,84 +1,65 @@
 ﻿using CacheEditor;
-using CacheEditor.RTE;
-using CacheEditor.RTE.UI;
 using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
-using EpsilonLib.Commands;
-using EpsilonLib.Dialogs;
-using EpsilonLib.Logging;
-using EpsilonLib.Utils;
 using RenderMethodEditorPlugin.ShaderMethods;
 using RenderMethodEditorPlugin.ShaderParameters;
-using Shared;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
 using TagTool.Tags.Definitions;
 
 namespace RenderMethodEditorPlugin
 {
     class RenderMethodEditorViewModel : TagEditorPluginBase
     {
-        private IShell _shell;
-        private ICacheEditor _cacheEditor;
-        private ICacheFile _cacheFile;
-        private CachedTag _instance;
-        private RenderMethod _definitionData;
-        private IDisposable _rteRefreshTimer;
-
+        private TagEditorContext _tagEditor;
+        private RenderMethod _renderMethod;
+        private GameCache _cache;
         private RenderMethodTemplate _renderMethodTemplate;
         private RenderMethodDefinition _renderMethodDefinition;
         private RenderMethod.RenderMethodPostprocessBlock _shaderProperty;
+        private bool _isDataDirty = false;
 
-        public ObservableCollection<BooleanConstant> BooleanConstants { get; private set;  } = new ObservableCollection<BooleanConstant>();
-        public ObservableCollection<Method> ShaderMethods { get; private set; } = new ObservableCollection<Method>();
-        public ObservableCollection<GenericShaderParameter> ShaderParameters { get; private set; } = new ObservableCollection<GenericShaderParameter>();
+        private ObservableCollection<GenericShaderParameter> _shaderParameters;
+        private ObservableCollection<Method> _shaderMethods;
 
-        public IRteService RteService { get; }
-        public TargetListModel RteTargetList { get; }
-        public TargetListItem SelectedRteTargetItem { get; set; }
-        public bool RteHasTargets { get; set; }
-        public byte[] RuntimeTagData;
-
-        public DelegateCommand SaveCommand { get; }
-        public DelegateCommand PokeCommand { get; }
-        public DelegateCommand ReloadCommand { get; }
-
-        public RenderMethodEditorViewModel(
-            IShell shell,
-            IRteService rteService,
-            ICacheEditor cacheEditor,
-            ICacheFile cacheFile,
-            CachedTag instance,
-            RenderMethod definitionData)
+        public RenderMethodEditorViewModel(TagEditorContext tagEditor, GameCache cache, RenderMethod renderMethod)
         {
-            Load(cacheFile.Cache, definitionData);
+            _cache = cache;
+            _tagEditor = tagEditor;
+            Load(cache, renderMethod);
+        }
 
-            _shell = shell;
-            _definitionData = definitionData;
-            _cacheEditor = cacheEditor;
-            _cacheFile = cacheFile;
-            _instance = instance;
+        public TagEditorContext TagEditor => _tagEditor;
 
-            RteService = rteService;
+        public GameCache Cache => _cache;
 
-            PokeCommand = new DelegateCommand(PokeChanges, () => RteTargetList.Any());
-            SaveCommand = new DelegateCommand(SaveChanges, () => _cacheFile.CanSerializeTags);
-            ReloadCommand = new DelegateCommand(() => _cacheEditor.ReloadCurrentTag());
+        public ObservableCollection<Method> ShaderMethods
+        {
+            get => _shaderMethods;
+            set => SetAndNotify(ref _shaderMethods, value);
+        }
 
-            RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
-            RteHasTargets = RteTargetList.Any();
-            RuntimeTagData = [];
+        public ObservableCollection<GenericShaderParameter> ShaderParameters
+        {
+            get => _shaderParameters;
+            set
+            {
+                if (_shaderParameters != null)
+                    UnregisterParameters();
+
+                _shaderParameters = value;
+
+                if (value != null)
+                    RegisterParameters();
+
+                NotifyOfPropertyChange();
+            }
         }
 
         private void Load(GameCache cache, RenderMethod renderMethod)
         {
-            _definitionData = renderMethod;
-            _shaderProperty = _definitionData.ShaderProperties[0];
+            _renderMethod = renderMethod;
+            _shaderProperty = _renderMethod.ShaderProperties[0];
             var templateName = _shaderProperty.Template.Name;
 
             if (templateName == null)
@@ -90,10 +71,10 @@ namespace RenderMethodEditorPlugin
 
             string templateType = templateName.Split('\\')[templateTypeSplitIndex].Split('_')[0];
 
-            var options = _definitionData.Options.ConvertAll(x => (byte)x.OptionIndex);
+            var options = _renderMethod.Options.ConvertAll(x => (byte)x.OptionIndex);
 
-            List<RenderMethodOption.ParameterBlock> rmopParameters;
-            using (var stream = cache.OpenCacheRead())
+            System.Collections.Generic.List<RenderMethodOption.ParameterBlock> rmopParameters;
+            using (var stream = _cache.OpenCacheRead())
             {
                 _renderMethodTemplate = cache.Deserialize<RenderMethodTemplate>(stream, _shaderProperty.Template);
                 _renderMethodDefinition = cache.Deserialize<RenderMethodDefinition>(stream, renderMethod.BaseRenderMethod);
@@ -101,22 +82,25 @@ namespace RenderMethodEditorPlugin
                 rmopParameters = TagTool.Shaders.ShaderGenerator.ShaderGeneratorNew.GatherParameters(cache, stream, _renderMethodDefinition, options.ToArray(), false);
             }
 
-            ShaderMethods = new ObservableCollection<Method>();
+            var newMethods = new ObservableCollection<Method>();
             for (int i = 0; i < _renderMethodDefinition.Categories.Count; i++)
             {
                 short optionIndex = 0; // assume an index of 0 for outdated tags
-                
-                if (i < _definitionData.Options.Count)
-                    optionIndex = _definitionData.Options[i].OptionIndex;
+
+                if (i < _renderMethod.Options.Count)
+                    optionIndex = _renderMethod.Options[i].OptionIndex;
 
                 if (optionIndex < _renderMethodDefinition.Categories[i].ShaderOptions.Count)
                 {
                     string categoryName = cache.StringTable.GetString(_renderMethodDefinition.Categories[i].Name);
                     string optionName = cache.StringTable.GetString(_renderMethodDefinition.Categories[i].ShaderOptions[optionIndex].Name);
 
-                    ShaderMethods.Add(new Method(categoryName, optionName, "Description N/A", i, optionIndex));
+                    newMethods.Add(new Method(categoryName, optionName, "Description N/A", i, optionIndex));
                 }
             }
+            ShaderMethods = newMethods;
+
+            var newParameters = new ObservableCollection<GenericShaderParameter>();
 
             foreach (var parameter in rmopParameters)
             {
@@ -130,7 +114,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                             {
                                 string description = $"1D vector for parameter \"{name}\"";
-                                ShaderParameters.Add(new FloatShaderParameter(_definitionData.ShaderProperties[0], name, description, i));
+                                newParameters.Add(new FloatShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }
@@ -142,7 +126,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                             {
                                 string description = $"4D vector for parameter \"{name}\"";
-                                ShaderParameters.Add(new Float4ShaderParameter(_definitionData.ShaderProperties[0], name, description, i));
+                                newParameters.Add(new Float4ShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }
@@ -153,7 +137,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.TextureParameterNames[i].Name) == name)
                             {
                                 string description = $"Bitmap tag for texture \"{name}\"";
-                                ShaderParameters.Add(new SamplerShaderParameter(_definitionData.ShaderProperties[0], name, description, i));
+                                newParameters.Add(new SamplerShaderParameter(this, _renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }
@@ -175,7 +159,7 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.BooleanParameterNames[i].Name) == name)
                             {
                                 string description = $"Checkbox for on/off parameter \"{name}\"";
-                                ShaderParameters.Add(new BooleanShaderParameter(_definitionData.ShaderProperties[0], name, description, i, cache, _renderMethodTemplate.BooleanParameterNames));
+                                newParameters.Add(new BooleanShaderParameter(_renderMethod.ShaderProperties[0], name, description, i, cache, _renderMethodTemplate.BooleanParameterNames));
                                 break;
                             }
                         }
@@ -190,7 +174,7 @@ namespace RenderMethodEditorPlugin
                         if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                         {
                             string description = $"Transform vector for texture \"{name}\"";
-                            ShaderParameters.Add(new TransformShaderParameter(_definitionData.ShaderProperties[0], name, description, i));
+                            newParameters.Add(new TransformShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                             break;
                         }
                     }
@@ -211,179 +195,81 @@ namespace RenderMethodEditorPlugin
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[j].Name) == name)
                             {
                                 string description = $"This value should match the option index for category \"{name}\"";
-                                ShaderParameters.Add(new CategoryShaderParameter(_definitionData.ShaderProperties[0], "category_" + name, description, j));
+                                newParameters.Add(new CategoryShaderParameter(_renderMethod.ShaderProperties[0], "category_" + name, description, j));
                                 break;
                             }
                         }
                     }
                 }
             }
-
-            this.NotifyOfPropertyChange(nameof(ShaderMethods));
-            this.NotifyOfPropertyChange(nameof(ShaderParameters));
+            ShaderParameters = newParameters;
         }
 
-        // get boolean values from existing tag data
-
-        private void ParseBooleanArguments()
+        public void Test()
         {
-            for(int i = 0; i < _renderMethodTemplate.BooleanParameterNames.Count; i++)
-            {
-                string name = _cacheFile.Cache.StringTable.GetString(_renderMethodTemplate.BooleanParameterNames[i].Name);
-                BooleanConstants.Add(new BooleanConstant(_shaderProperty, name, FindDescriptionFromName(name), i));
-            }
-        }
-
-        private string FindDescriptionFromName(string shaderArgName)
-        {
-            if(ShaderArgumentsDescription.ArgsDescription.ContainsKey(shaderArgName))
-                return ShaderArgumentsDescription.ArgsDescription[shaderArgName];
-            else
-                return "Missing description";
-        }
-
-        private void RefreshRteTargets()
-        {
-            RteTargetList.Refresh();
-            RteHasTargets = RteTargetList.Any();
-            if (SelectedRteTargetItem == null || !(RteTargetList).Contains(SelectedRteTargetItem))
-                SelectedRteTargetItem = RteTargetList.FirstOrDefault();
-            PokeCommand.RaiseCanExecuteChanged();
-        }
-
-        private async void SaveChanges()
-        {
-            if (!_cacheFile.CanSerializeTags)
-                throw new NotSupportedException();
-
-            try
-            {
-                using (var progress = _shell.CreateProgressScope())
-                {
-                    progress.Report($"Serializing tag '{_instance}'...");
-                    await _cacheFile.SerializeTagAsync(_instance, _definitionData);
-                }
-                _shell.StatusBar.ShowStatusText("Saved Changes");
-                Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.None, "SaveTagChanges");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-
-                var alert = new AlertDialogViewModel
-                {
-                    AlertType = Alert.Error,
-                    Message = $"An exception was thrown while attempting to save tag changes.",
-                    SubMessage = ex.Message
-                };
-
-                _shell.ShowDialog(alert);
-            }
-        }
-
-        private void PokeChanges()
-        {
-            if (SelectedRteTargetItem == null)
-                return;
-
-            try
-            {
-                IRteTarget target = SelectedRteTargetItem.Target;
-                target.Provider.PokeDefinition(target, _cacheFile.Cache, _instance as CachedTagHaloOnline, _definitionData, ref RuntimeTagData);
-
-                _shell.StatusBar.ShowStatusText($"Poked Render Method Definition");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-
-                var alert = new AlertDialogViewModel
-                {
-                    AlertType = Alert.Error,
-                    Message = $"An exception was thrown while attempting to poke tag changes.",
-                    SubMessage = ex.Message
-                };
-
-                _shell.ShowDialog(alert);
-            }
-        }
-
-        protected override void OnMessage(object sender, object message)
-        {
-            if (message is DefinitionDataChangedEvent e)
-            {
-                _definitionData = e.NewData as RenderMethod;
-                Load(_cacheFile.Cache, e.NewData as RenderMethod);
-
-                if (PokeCommand.CanExecute(null))
-                    PokeCommand.Execute(null);
-            }
-        }
-
-        protected override void OnViewLoaded()
-        {
-            base.OnViewLoaded();
-
-            if (_rteRefreshTimer == null)
-                _rteRefreshTimer = DispatcherEx.CreateTimer(TimeSpan.FromSeconds(5), RefreshRteTargets);
-
-            RefreshRteTargets();
+            PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
         }
 
         protected override void OnClose()
         {
             base.OnClose();
-            _cacheFile = null;
-            _cacheEditor = null;
-            _instance = null;
-            _definitionData = null;
+            _renderMethod = null;
+            _cache = null;
             _renderMethodTemplate = null;
             _renderMethodDefinition = null;
             _shaderProperty = null;
-            BooleanConstants.Clear();
-            ShaderMethods.Clear();
-            ShaderParameters.Clear();
-            RuntimeTagData = null;
-
-            if (_rteRefreshTimer != null)
-            {
-                _rteRefreshTimer.Dispose();
-                _rteRefreshTimer = null;
-            }
+            ShaderMethods = null;
+            ShaderParameters = null;
         }
-    }
 
-    class ShaderConstant
-    {
-        public RenderMethod.RenderMethodPostprocessBlock Property;
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int TemplateIndex;
-        public ShaderConstant(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex)
+        private void RefreshParameters()
         {
-            Name = ShaderStringConverter.ToPrettyFormat(name);
-            TemplateIndex = templateIndex;
-            Property = property;
-            Description = desc;
+            foreach (var parameter in _shaderParameters)
+                parameter.Refresh();
         }
-    }
 
-    class BooleanConstant : ShaderConstant
-    {
-        public bool Value
+        private void RegisterParameters()
         {
-            get => (((int)(Property.BooleanConstants) >> TemplateIndex) & 1) == 1;
-            set
+            foreach (var parameter in _shaderParameters)
+                parameter.ValueChanged += Parameter_ValueChanged;
+        }
+
+        private void UnregisterParameters()
+        {
+            foreach (var parameter in _shaderParameters)
+                parameter.ValueChanged -= Parameter_ValueChanged;
+        }
+
+        private void Parameter_ValueChanged(object sender, System.EventArgs e)
+        {
+            PostMessage(this, new DefinitionDataChangedEvent(_renderMethod));
+        }
+
+        protected override void OnMessage(object sender, object message)
+        {
+            if (message is DefinitionDataChangedEvent dataChangedEvent)
             {
-                if(value == true)
-                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants | (1 << TemplateIndex));
+                if (dataChangedEvent.WasReloaded)
+                {
+                    Load(_cache, (RenderMethod)dataChangedEvent.NewData);
+                }
                 else
-                    Property.BooleanConstants = (uint)((int)Property.BooleanConstants & ~(1 << TemplateIndex));
+                {
+                    if (IsActive)
+                        RefreshParameters();
+                    else
+                        _isDataDirty = true;
+                }
             }
         }
 
-        public BooleanConstant(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
+        protected override void OnActivate()
         {
+            if (_isDataDirty)
+            {
+                _isDataDirty = false;
+                RefreshParameters();
+            }
         }
     }
 }

@@ -7,7 +7,12 @@ using System.Linq;
 
 namespace CacheEditor.RTE.UI
 {
-    public class TargetListModel : PropertyChangedBase, IEnumerable<TargetListItem>, INotifyCollectionChanged
+    public interface IRteTargetList : IEnumerable<TargetListItem>, INotifyCollectionChanged
+    {
+        void Refresh();
+    }
+
+    public class TargetListModel : PropertyChangedBase, IRteTargetList
     {
         private ObservableCollection<TargetListItem> _list;
         private IRteTargetCollection _targetSource;

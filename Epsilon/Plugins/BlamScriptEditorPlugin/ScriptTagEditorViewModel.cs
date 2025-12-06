@@ -40,7 +40,10 @@ namespace BlamScriptEditorPlugin
             if(message is DefinitionDataChangedEvent e)
             {
                 _definition = (Scenario)e.NewData;
-                var _ = Dispatcher.CurrentDispatcher.InvokeAsync(() => DecompileAsync());
+                if (e.WasReloaded)
+                {
+                    var _ = Dispatcher.CurrentDispatcher.InvokeAsync(() => DecompileAsync());
+                }
             }
         }
 

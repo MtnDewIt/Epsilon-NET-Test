@@ -45,15 +45,6 @@ namespace DefinitionEditor
             }
         }
 
-        public bool IsTagLoaded(CachedTag tag)
-        {
-            if (tag == null)
-                return false;
-
-            using var stream = _target.Provider.CreateStream(_target);
-            return _target.Provider.GetTagMemoryAddress(stream, _cache.Cache, tag) != 0;
-        }
-
         private uint GetFieldMemoryAddress(EndianReader reader, uint address, Type type, string path)
         {
             if (path.Length == 0)

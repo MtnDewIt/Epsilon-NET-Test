@@ -1,14 +1,18 @@
-﻿using TagTool.Tags.Definitions;
+﻿using Stylet;
+using System;
+using TagTool.Tags.Definitions;
 
 namespace RenderMethodEditorPlugin.ShaderParameters
 {
-    class GenericShaderParameter
+    abstract class GenericShaderParameter : PropertyChangedBase
     {
         public RenderMethod.RenderMethodPostprocessBlock Property;
         public string Name { get; set; }
         public string PrettyName { get; set; }
         public string Description { get; set; }
         public int TemplateIndex;
+
+        public event EventHandler ValueChanged;
 
         public GenericShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex)
         {
@@ -18,5 +22,12 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             Property = property;
             Description = desc ?? "No description available";
         }
+
+        protected virtual void NotifyValueChanged()
+        {
+            ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public abstract void Refresh();
     }
 }

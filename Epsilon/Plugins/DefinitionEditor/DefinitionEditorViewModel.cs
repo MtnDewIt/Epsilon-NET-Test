@@ -5,6 +5,8 @@ using CacheEditor.TagEditing;
 using CacheEditor.TagEditing.Messages;
 using CacheEditor.ViewModels;
 using EpsilonLib.Commands;
+using EpsilonLib.Dialogs;
+using EpsilonLib.Logging;
 using EpsilonLib.Menus;
 using EpsilonLib.Shell;
 using EpsilonLib.Utils;
@@ -23,14 +25,7 @@ using TagTool.Common;
 using TagTool.Commands.Unicode;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
-using System.IO;
-using TagTool.IO;
-using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.Cache.HaloOnline;
-using EpsilonLib.Logging;
-using EpsilonLib.Dialogs;
-using System.Windows.Data;
 
 namespace DefinitionEditor
 {
@@ -41,15 +36,11 @@ namespace DefinitionEditor
         private ICacheFile _cacheFile;
         private CachedTag _instance;
         private object _definitionData;
-        private IDisposable _rteRefreshTimer;
+        private bool _isDataDirty = false;
         private IFieldsValueChangeSink _changeSink;
+        private IRteTargetList _rteTargetList;
 
-        // Fields that have changed since the last poke
-        private HashSet<ValueField> _changedFields = [];
-        // Fields that have been poked this session
-        private HashSet<ValueField> _pokedFields = [];
-
-        public DefinitionEditorViewModel(      
+        public DefinitionEditorViewModel(
             IShell shell,
             IRteService rteService,
             ICacheEditor cacheEditor,
@@ -66,7 +57,7 @@ namespace DefinitionEditor
             _cacheFile = cacheFile;
             _changeSink = changeSink;
             _changeSink.ValueChanged += Field_ValueChanged;
-            
+
 
             RteService = rteService;
             _instance = instance;
@@ -84,8 +75,7 @@ namespace DefinitionEditor
 
             SearchResults.CurrentIndexChanged += SearchResults_CurrentIndexChanged;
 
-            RteTargetList = new TargetListModel(rteService.GetTargetList(cacheFile));
-            RteHasTargets = RteTargetList.Any();
+            InitRte();
         }
 
         public SharedPreferences Preferences { get; } = SharedPreferences.Instance;
@@ -247,54 +237,16 @@ namespace DefinitionEditor
 
                 _shell.ShowDialog(alert);
                 return;
-            }
-
-            if(field is CachedTagField tagRefField)
-            {
-                // Ensure the tag being poked is loaded to avoid crashing.
-
-                CachedTag instance = tagRefField.SelectedInstance.Instance;
-
-                if (instance != null && !helper.IsTagLoaded(instance))
-                {
-                    var alert = new AlertDialogViewModel
-                    {
-                        AlertType = Alert.Error,
-                        DisplayName = "Failed to Poke tag reference",
-                        Message = $"Tag '{instance}' is not loaded!",
-                    };
-
-                    _shell.ShowDialog(alert);
-                    return;
-                }
-            }
+            }              
 
             GameCache editorCache = _cacheEditor.CacheFile.Cache;
 
-            //handle field types that will break things
-            var valueType = field.FieldType;
-            var fieldValue = field.FieldInfo.ValueGetter(field.Owner);
-            
-            var stream = new MemoryStream();
-            var writer = new EndianWriter(stream, editorCache.Endianness);
-            var dataContext = new DataSerializationContext(writer, CacheAddressType.Memory, false);
+            Type valueType = field.FieldType;
+            object fieldValue = field.FieldInfo.ValueGetter(field.Owner);
+            TagFieldAttribute fieldAttr = field.FieldInfo.Attribute ?? TagFieldAttribute.Default;
+            IRteTarget target = SelectedRteTargetItem.Target;
 
-            var block = dataContext.CreateBlock();
-
-            _cacheEditor.CacheFile.Cache.Serializer.SerializeValue(dataContext, stream,
-                block, fieldValue, new TagFieldAttribute(),
-            field.FieldInfo.FieldType);
-            byte[] outData = block.Stream.ToArray();
-
-            using (var processStream = SelectedRteTargetItem.Target.Provider.CreateStream(SelectedRteTargetItem.Target))
-            {
-                processStream.Seek(address, SeekOrigin.Begin);
-                processStream.Write(outData, 0, outData.Length);
-                processStream.Flush();
-            }
-
-            _changedFields.Remove(field);
-            _pokedFields.Add(field);
+            SelectedRteTargetItem.Target.Provider.PokeValue(target, editorCache, _instance, address, fieldAttr, valueType, fieldValue);
         }
 
         public StructField StructField { get; set; }
@@ -315,9 +267,15 @@ namespace DefinitionEditor
         public NavigableSearchResults SearchResults { get; } = new NavigableSearchResults();
 
         public IRteService RteService { get; }
-        public TargetListModel RteTargetList { get; }
+
+        public IRteTargetList RteTargetList
+        {
+            get => _rteTargetList;
+            set => SetAndNotify(ref _rteTargetList, value);
+        }
+
         public TargetListItem SelectedRteTargetItem { get; set; }
-        public bool RteHasTargets { get; set; }
+        public bool RteHasTargets => RteTargetList?.Any() ?? false;
         public byte[] RuntimeTagData;
 
         public DelegateCommand ExpandAllCommand { get; }
@@ -391,18 +349,16 @@ namespace DefinitionEditor
 
         private void Field_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-            if (e.Field is ValueField valueField)
-                _changedFields.Add(valueField);
-
             if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
                 PokeCommand.Execute(null);
-
             if (e.Field is ValueField field && !(field is BlockField))
             {
                 var value = FieldHelper.GetFieldValueForSetField(_cacheFile.Cache.StringTable, field);
                 Logger.LogCommand($"{_instance.Name}.{_instance.Group}", FieldHelper.GetFieldPath(field), Logger.CommandEvent.CommandType.SetField,
                     $"SetField {FieldHelper.GetFieldPath(field)} {value}");
             }
+
+            PostMessage(this, new DefinitionDataChangedEvent(_definitionData));
         }
 
         private void ExpandAll()
@@ -442,15 +398,6 @@ namespace DefinitionEditor
             }
         }
 
-        private void RefreshRteTargets()
-        {
-            RteTargetList.Refresh();
-            RteHasTargets = RteTargetList.Any();
-            if (SelectedRteTargetItem == null || !(RteTargetList).Contains(SelectedRteTargetItem))
-                SelectedRteTargetItem = RteTargetList.FirstOrDefault();
-            PokeCommand.RaiseCanExecuteChanged();
-        }
-
         private async void SaveChanges()
         {
             if (!_cacheFile.CanSerializeTags)
@@ -488,13 +435,9 @@ namespace DefinitionEditor
 
             try
             {
-                IRteTarget target = SelectedRteTargetItem.Target;
-                int changedFieldCount = _changedFields.Count;
-
-                foreach (ValueField field in _changedFields)
-                    PokeField(field);
-
-                _shell.StatusBar.ShowStatusText($"Poked {changedFieldCount} fields");
+                var target = SelectedRteTargetItem.Target;
+                target.Provider.PokeTag(target, _cacheFile.Cache, _instance, _definitionData, ref RuntimeTagData);
+                _shell.StatusBar.ShowStatusText("Poked Changes");
             }
             catch (Exception ex)
             {
@@ -515,16 +458,19 @@ namespace DefinitionEditor
         {
             base.OnViewLoaded();
 
-            if (_rteRefreshTimer == null)
-                _rteRefreshTimer = DispatcherEx.CreateTimer(TimeSpan.FromSeconds(5), RefreshRteTargets);
+            //if (_rteRefreshTimer == null)
+            //    _rteRefreshTimer = DispatcherEx.CreateTimer(TimeSpan.FromSeconds(5), RefreshRteTargets);
 
-            RefreshRteTargets();
+            //RefreshRteTargets();
         }
 
         protected override void OnClose()
         {
             Logger.LogCommand($"{_instance.Name}.{_instance.Group}", null, Logger.CommandEvent.CommandType.None, "Exit");
-            base.OnClose();
+
+            ShutdownRte();
+            _changeSink.ValueChanged -= Field_ValueChanged;
+
             DisplayField?.Dispose();
             DisplayField = null;
             StructField?.Dispose();
@@ -533,30 +479,40 @@ namespace DefinitionEditor
             _cacheEditor = null;
             _instance = null;
             _blockOutline = null;
+            RuntimeTagData = null;
 
-            _changeSink.ValueChanged -= Field_ValueChanged;
-
-            if (_rteRefreshTimer != null)
-            {
-                _rteRefreshTimer.Dispose();
-                _rteRefreshTimer = null;
-            }         
+            
         }
 
         protected override void OnMessage(object sender, object message)
         {
             if (message is DefinitionDataChangedEvent e)
             {
-                // Restore potentially changed fields on the next poke
-                _changedFields = _pokedFields;
-                _pokedFields = [];
-
                 _definitionData = e.NewData;
-                StructField.Populate(null, e.NewData);
+
+
+
+                if (IsActive)
+                    RefreshData();
+                else
+                    _isDataDirty = true;
 
                 if (Preferences.AutoPokeEnabled && PokeCommand.CanExecute(null))
                     PokeCommand.Execute(null);
             }
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            if (_isDataDirty)
+                RefreshData();
+        }
+
+        private void RefreshData()
+        {
+            StructField.Populate(null, _definitionData);
         }
 
         public class SearchResultItem
@@ -655,6 +611,32 @@ namespace DefinitionEditor
             }
         }
 
+        private void InitRte()
+        {
+            RuntimeTagData = [];
 
+            RteTargetList = _cacheEditor.RteSession.TargetList;
+            RteTargetList.CollectionChanged += RteTargetList_CollectionChanged;
+            RteTargetList.Refresh();
+
+            SelectedRteTargetItem = RteTargetList.FirstOrDefault();
+            NotifyOfPropertyChange(nameof(RteHasTargets));
+        }
+
+        private void ShutdownRte()
+        {
+            RteTargetList.CollectionChanged -= RteTargetList_CollectionChanged;
+            RteTargetList = null;
+        }
+
+        private void RteTargetList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (SelectedRteTargetItem == null || !RteTargetList.Contains(SelectedRteTargetItem))
+            {
+                SelectedRteTargetItem = RteTargetList.FirstOrDefault();
+            }
+
+            NotifyOfPropertyChange(nameof(RteHasTargets));
+        }
     }
 }

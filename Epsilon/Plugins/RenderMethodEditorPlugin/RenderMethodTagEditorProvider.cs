@@ -35,13 +35,8 @@ namespace RenderMethodEditorPlugin
             else if (context.Instance.IsInGroup("prt3"))
                 definitionData = ((Particle)(await context.DefinitionData)).RenderMethod;
 
-            return new RenderMethodEditorViewModel(
-                _shell.Value,
-                _rteService,
-                context.CacheEditor,
-                context.CacheEditor.CacheFile,
-                context.Instance,
-                definitionData);
+            var cache = context.CacheEditor.CacheFile.Cache;
+            return new RenderMethodEditorViewModel(context, cache, definitionData);
         }
 
         public bool ValidForTag(ICacheFile cache, CachedTag tag)

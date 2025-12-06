@@ -15,7 +15,7 @@
     <UserControl.Resources>
         
         <DataTemplate DataType="{x:Type shader_parameters:BooleanShaderParameter}">
-            <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}" Margin="5">
+            <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}" Margin="1,5">
                 <TextBlock Text="{Binding Name}" Width="250" Padding="0,0,10,0"/>
                 <CheckBox IsChecked="{Binding Value, Mode=TwoWay}" Width="100" HorizontalAlignment="Right"/>
             </StackPanel>
@@ -24,8 +24,51 @@
         <DataTemplate DataType="{x:Type shader_parameters:SamplerShaderParameter}">
             <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
                 <TextBlock Text="{Binding Name}" Width="250" Padding="0,2,10,0"/>
-                <TextBlock Text="Bitmap name:" Padding="0,2,10,0"/>
-                <TextBox Text="{Binding Value}" Width="400" HorizontalAlignment="Right" Padding="1"/>
+                <TextBlock Text="Bitmap:" Padding="0,2,10,0"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="{Binding Value, Mode=OneWay}" ToolTip="{Binding Value}" Width="400" HorizontalAlignment="Right" Padding="1" IsReadOnly="True"/>
+                    <Button
+                        Width="24"
+                        Height="24"
+                        Margin="4,0,0,0"
+                        Padding="4,0,4,1"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Command="{Binding BrowseCommand}"
+                        FontSize="14"
+                        FontFamily="Segoe UI"
+                        Content="⋯"
+                        ToolTip="Select a tag from the Tag Browser." />
+                    <Button
+                        Width="24"
+                        Height="24"
+                        Margin="4,0,0,0"
+                        Padding="3,3,4,4"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Command="{Binding NullCommand}"
+                        FontFamily="Segoe UI"
+                        FontSize="12"
+                        Content="Ø"
+                        ToolTip="Null this tag reference." />
+                    <Button
+                        Height="24"
+                        Margin="4,0,0,0"
+                        Padding="3,4,4,4"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Command="{Binding GotoCommand}"
+                        FontSize="18"
+                        FontFamily="Segoe UI"
+                        ToolTip="Open this tag in a new tab.">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="0,-5,0,0" Text="➝" />
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                </StackPanel>
+               
             </StackPanel>
         </DataTemplate>
 
@@ -226,7 +269,13 @@
         </ListView>
 
         <TextBlock Text="Shader Parameters" Grid.Row="2" FontWeight="Bold" Padding="3,10,0,7"/>
-        <ListBox ItemsSource="{Binding ShaderParameters}" Grid.Row="3"/>
+        <ListBox ItemsSource="{Binding ShaderParameters}" Grid.Row="3">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Focusable" Value="False"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
 
         <!-- <Button Click="{s:Action Test}" Content="Sync" /> -->
     </Grid>

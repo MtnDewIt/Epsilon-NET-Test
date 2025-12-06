@@ -15,6 +15,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                     Logger.CommandEvent.CommandType.SetField,
                     $"SetArgument {Name} {value} {Property.RealConstants[TemplateIndex].Arg1} " +
                     $"{Property.RealConstants[TemplateIndex].Arg2}");
+
+                NotifyValueChanged();
             }
         }
 
@@ -28,6 +30,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                     Logger.CommandEvent.CommandType.SetField,
                     $"SetArgument {Name} {Property.RealConstants[TemplateIndex].Arg0} {value} " +
                     $"{Property.RealConstants[TemplateIndex].Arg2}");
+
+                NotifyValueChanged();
             }
         }
 
@@ -41,11 +45,20 @@ namespace RenderMethodEditorPlugin.ShaderParameters
                     Logger.CommandEvent.CommandType.SetField,
                     $"SetArgument {Name} {Property.RealConstants[TemplateIndex].Arg0} {Property.RealConstants[TemplateIndex].Arg1} " +
                     $"{value}");
+
+                NotifyValueChanged();
             }
         }
 
         public Float3ShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
         {
+        }
+
+        public override void Refresh()
+        {
+            NotifyOfPropertyChange(nameof(Value1));
+            NotifyOfPropertyChange(nameof(Value2));
+            NotifyOfPropertyChange(nameof(Value3));
         }
     }
 }
