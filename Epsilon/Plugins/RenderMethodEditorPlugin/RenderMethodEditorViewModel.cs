@@ -150,20 +150,30 @@ namespace RenderMethodEditorPlugin
                         {
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                             {
-                                string description = $"1D vector for parameter \"{name}\"";
+                                string description = $"Float vector for parameter \"{name}\"";
                                 newParameters.Add(new FloatShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }
                         break;
                     case RenderMethodOption.ParameterBlock.OptionDataType.Color:
+                        for (int i = 0; i < _renderMethodTemplate.RealParameterNames.Count; i++)
+                        {
+                            if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
+                            {
+                                string description = $"RGB color for parameter \"{name}\"";
+                                newParameters.Add(new ColorShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                                break;
+                            }
+                        }
+                        break;
                     case RenderMethodOption.ParameterBlock.OptionDataType.ArgbColor:
                         for (int i = 0; i < _renderMethodTemplate.RealParameterNames.Count; i++)
                         {
                             if (cache.StringTable.GetString(_renderMethodTemplate.RealParameterNames[i].Name) == name)
                             {
-                                string description = $"4D vector for parameter \"{name}\"";
-                                newParameters.Add(new Float4ShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                                string description = $"ARGB color for parameter \"{name}\"";
+                                newParameters.Add(new ArgbColorShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
                                 break;
                             }
                         }

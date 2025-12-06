@@ -3,9 +3,9 @@ using TagTool.Tags.Definitions;
 
 namespace RenderMethodEditorPlugin.ShaderParameters
 {
-    class Color4ShaderParameter : GenericShaderParameter
+    class ArgbColorShaderParameter : GenericShaderParameter
     {
-        public float Value1
+        public float Alpha
         {
             get => Property.RealConstants[TemplateIndex].Arg0;
             set
@@ -20,7 +20,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Value2
+        public float Red
         {
             get => Property.RealConstants[TemplateIndex].Arg1;
             set
@@ -35,7 +35,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Value3
+        public float Green
         {
             get => Property.RealConstants[TemplateIndex].Arg2;
             set
@@ -50,7 +50,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Value4
+        public float Blue
         {
             get => Property.RealConstants[TemplateIndex].Arg3;
             set
@@ -65,16 +65,16 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public Color4ShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
+        public ArgbColorShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
         {
         }
 
         public override void Refresh()
         {
-            NotifyOfPropertyChange(nameof(Value1));
-            NotifyOfPropertyChange(nameof(Value2));
-            NotifyOfPropertyChange(nameof(Value3));
-            NotifyOfPropertyChange(nameof(Value4));
+            NotifyOfPropertyChange(nameof(Alpha));
+            NotifyOfPropertyChange(nameof(Red));
+            NotifyOfPropertyChange(nameof(Green));
+            NotifyOfPropertyChange(nameof(Blue));
         }
     }
 }

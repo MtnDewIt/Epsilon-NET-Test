@@ -3,9 +3,9 @@ using TagTool.Tags.Definitions;
 
 namespace RenderMethodEditorPlugin.ShaderParameters
 {
-    class Color3ShaderParameter : GenericShaderParameter
+    class ColorShaderParameter : GenericShaderParameter
     {
-        public float Value1
+        public float Red
         {
             get => Property.RealConstants[TemplateIndex].Arg0;
             set
@@ -20,7 +20,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Value2
+        public float Green
         {
             get => Property.RealConstants[TemplateIndex].Arg1;
             set
@@ -35,7 +35,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Value3
+        public float Blue
         {
             get => Property.RealConstants[TemplateIndex].Arg2;
             set
@@ -50,15 +50,14 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public Color3ShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
+        public ColorShaderParameter(RenderMethod.RenderMethodPostprocessBlock property, string name, string desc, int templateIndex) : base(property, name, desc, templateIndex)
         {
         }
-
         public override void Refresh()
         {
-            NotifyOfPropertyChange(nameof(Value1));
-            NotifyOfPropertyChange(nameof(Value2));
-            NotifyOfPropertyChange(nameof(Value3));
+            NotifyOfPropertyChange(nameof(Red));
+            NotifyOfPropertyChange(nameof(Green));
+            NotifyOfPropertyChange(nameof(Blue));
         }
     }
 }
