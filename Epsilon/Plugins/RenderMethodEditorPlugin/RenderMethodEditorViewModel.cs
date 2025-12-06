@@ -179,17 +179,17 @@ namespace RenderMethodEditorPlugin
                             }
                         }
                         break;
-                    //case RenderMethodOption.ParameterBlock.OptionDataType.Int:
-                    //    for (int i = 0; i < _renderMethodTemplate.IntegerParameterNames.Count; i++)
-                    //    {
-                    //        if (cache.StringTable.GetString(_renderMethodTemplate.IntegerParameterNames[i].Name) == name)
-                    //        {
-                    //            string description = $"Whole integer for parameter \"{name}\"";
-                    //            ShaderParameters.Add(new IntegerShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
-                    //            break;
-                    //        }
-                    //    }
-                    //    break;
+                    case RenderMethodOption.ParameterBlock.OptionDataType.Int:
+                        for (int i = 0; i < _renderMethodTemplate.IntegerParameterNames.Count; i++)
+                        {
+                            if (cache.StringTable.GetString(_renderMethodTemplate.IntegerParameterNames[i].Name) == name)
+                            {
+                                string description = $"Whole integer for parameter \"{name}\"";
+                                newParameters.Add(new IntegerShaderParameter(_renderMethod.ShaderProperties[0], name, description, i));
+                                break;
+                            }
+                        }
+                        break;
                     case RenderMethodOption.ParameterBlock.OptionDataType.Bool:
                         for (int i = 0; i < _renderMethodTemplate.BooleanParameterNames.Count; i++)
                         {

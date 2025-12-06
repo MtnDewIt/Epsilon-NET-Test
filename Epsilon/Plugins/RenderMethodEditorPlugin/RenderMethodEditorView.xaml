@@ -21,6 +21,13 @@
             </StackPanel>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type shader_parameters:IntegerShaderParameter}">
+            <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}" Margin="1">
+                <TextBlock Text="{Binding Name}" Width="250" Padding="0,2,10,0"/>
+                <TextBox Text="{Binding Value}" Width="75" HorizontalAlignment="Right" Padding="1,1,1,1"/>
+            </StackPanel>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type shader_parameters:SamplerShaderParameter}">
             <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
                 <TextBlock Text="{Binding Name}" Width="250" Padding="0,2,10,0"/>
