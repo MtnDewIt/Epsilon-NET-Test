@@ -62,8 +62,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             GotoCommand.RaiseCanExecuteChanged();
 
             Logger.LogCommand($"{Logger.ActiveTag.Name}.{Logger.ActiveTag.Group}", Name,
-                   Logger.CommandEvent.CommandType.setfield,
-                   $"setfield ShaderProperties[0].TextureConstants[{TemplateIndex}] {tag?.ToString() ?? "null"}");
+                   Logger.CommandEvent.CommandType.SetField,
+                   $"SetField ShaderProperties[0].TextureConstants[{TemplateIndex}] {tag?.ToString() ?? "null"}");
         }
     }
 }
