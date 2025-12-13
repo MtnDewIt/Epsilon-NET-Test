@@ -5,7 +5,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
 {
     class ArgbColorShaderParameter : GenericShaderParameter
     {
-        public float Alpha
+        public float Red
         {
             get => Property.RealConstants[TemplateIndex].Arg0;
             set
@@ -20,7 +20,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Red
+        public float Green
         {
             get => Property.RealConstants[TemplateIndex].Arg1;
             set
@@ -35,7 +35,7 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Green
+        public float Blue
         {
             get => Property.RealConstants[TemplateIndex].Arg2;
             set
@@ -50,8 +50,8 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             }
         }
 
-        public float Blue
-        {
+        public float Alpha
+{
             get => Property.RealConstants[TemplateIndex].Arg3;
             set
             {
