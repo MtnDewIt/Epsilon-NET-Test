@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using TagTool;
 using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.Metadata;
@@ -280,7 +281,7 @@ namespace VariantConverter.Components.VariantConverter
         {
             if (_061_TagRemapping == null)
             {
-                var jsonData = File.ReadAllText($@"{AppContext.BaseDirectory}\Tools\mappings\061_mapping.json");
+                var jsonData = File.ReadAllText($@"{DirectoryPaths.Data}\mappings\061_mapping.json");
                 _061_TagRemapping = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
             }
 
