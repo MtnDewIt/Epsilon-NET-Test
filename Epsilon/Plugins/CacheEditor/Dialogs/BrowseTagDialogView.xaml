@@ -1,14 +1,14 @@
 ﻿<controls:ChromeWindow
-    x:Class="CacheEditor.BrowseTagDialogView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:s="https://github.com/canton7/Stylet"
-    xmlns:controls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
-    Title="Browse Tags"
-    Width="700"
-    Height="500"
-    Padding="4"
-    Background="#2d2d30">
+x:Class="CacheEditor.BrowseTagDialogView"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:s="https://github.com/canton7/Stylet"
+xmlns:controls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
+Title="Browse Tags"
+Width="700"
+Height="500"
+Padding="4"
+Background="#2d2d30">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32" />

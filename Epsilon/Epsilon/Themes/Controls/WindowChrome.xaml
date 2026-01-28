@@ -112,6 +112,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="UseNativeTitleBar" Value="{DynamicResource UseNativeTitleBar}" />
+        <Setter Property="WindowStyle" Value="None" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome
@@ -234,6 +235,7 @@
         <Style.Triggers>
             <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource Self}}" Value="True">
                 <Setter Property="WindowChrome.WindowChrome" Value="{x:Null}" />
+                <Setter Property="WindowStyle" Value="SingleBorderWindow" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

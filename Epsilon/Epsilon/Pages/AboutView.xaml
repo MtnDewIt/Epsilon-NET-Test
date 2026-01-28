@@ -1,17 +1,16 @@
 ﻿<controls:ChromeWindow
-    x:Class="Epsilon.Pages.AboutView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
-    xmlns:wpfapp20="clr-namespace:WpfApp20"
-    Title="About Epsilon"
-    Width="320"
-    Height="300"
-    Background="#2d2d30"
-    Foreground="{DynamicResource Foreground}"
-    Hyperlink.RequestNavigate="Hyperlink_RequestNavigate"
-    ResizeMode="NoResize"
-    WindowStyle="None">
+x:Class="Epsilon.Pages.AboutView"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:controls="clr-namespace:EpsilonLib.Controls;assembly=EpsilonLib"
+xmlns:wpfapp20="clr-namespace:WpfApp20"
+Title="About Epsilon"
+Width="320"
+Height="300"
+Background="#2d2d30"
+Foreground="{DynamicResource Foreground}"
+Hyperlink.RequestNavigate="Hyperlink_RequestNavigate"
+ResizeMode="NoResize">
 
     <Window.Resources>
         <Style TargetType="{x:Type Hyperlink}" />
