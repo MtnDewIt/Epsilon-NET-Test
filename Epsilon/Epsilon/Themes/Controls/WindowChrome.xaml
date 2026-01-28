@@ -103,12 +103,15 @@
     </Style>
     
     
+    
+    
     <Style
         BasedOn="{StaticResource {x:Type Window}}"
         TargetType="{x:Type controls:ChromeWindow}">
         <Setter Property="Background" Value="#2d2d30" />
         <Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="UseNativeTitleBar" Value="{DynamicResource UseNativeTitleBar}" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome
@@ -140,6 +143,7 @@
                         </Border.Style>
                         <Grid>
                             <StackPanel
+                                x:Name="customTitleBarButtons"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Orientation="Horizontal"
@@ -220,9 +224,17 @@
                             <Setter TargetName="minimizeButton" Property="TextElement.Foreground" Value="#FF6D6D6D" />
                             <Setter TargetName="closeButton" Property="TextElement.Foreground" Value="#FF6D6D6D" />
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource Mode=Self}}" Value="True">
+                            <Setter TargetName="customTitleBarButtons" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="WindowChrome.WindowChrome" Value="{x:Null}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

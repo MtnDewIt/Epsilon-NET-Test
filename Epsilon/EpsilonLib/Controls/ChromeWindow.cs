@@ -68,6 +68,18 @@ namespace EpsilonLib.Controls
 
 
 
+        public bool UseNativeTitleBar
+        {
+            get { return (bool)GetValue(UseNativeTitleBarProperty); }
+            set { SetValue(UseNativeTitleBarProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for UseNativeTitleBar.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty UseNativeTitleBarProperty =
+            DependencyProperty.Register("UseNativeTitleBar", typeof(bool), typeof(ChromeWindow), new PropertyMetadata(false));
+
+
+
         public ChromeWindow()
         {
             MinimizeCommand = new DelegateCommand(Minimize);

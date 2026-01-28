@@ -270,6 +270,14 @@
                 SelectedItem="{Binding Path=Theme, Mode=TwoWay}"/>
         </DockPanel>
 
+        <DockPanel>
+            <CheckBox
+                VerticalAlignment="Center"
+                Content="Use Native Title Bar"
+                ToolTip="Use the standard Windows title bar instead of the custom one."
+                IsChecked="{Binding UseNativeTitleBar, Mode=TwoWay}" />
+        </DockPanel>
+
     </StackPanel>
     
 </UserControl>

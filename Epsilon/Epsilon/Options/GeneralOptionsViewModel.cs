@@ -35,6 +35,7 @@ namespace Epsilon.Options
         private string _startupWidth;
         private string _startupHeight;
         private bool _alwaysOnTop;
+        private bool _useNativeTitleBar;
 
         private string _defaultCacheShort;
         private string _defaultPakShort;
@@ -180,6 +181,12 @@ namespace Epsilon.Options
             set => SetOptionAndNotify(ref _alwaysOnTop, value);
         }
 
+        public bool UseNativeTitleBar
+        {
+            get => _useNativeTitleBar;
+            set => SetOptionAndNotify(ref _useNativeTitleBar, value);
+        }
+
         public override void Apply()
         {
             if (CachePathIsValid)
@@ -196,8 +203,10 @@ namespace Epsilon.Options
             _settings.Set(GeneralSettings.AlwaysOnTopSetting.Key, AlwaysOnTop);
             _settings.Set(GeneralSettings.AccentColorSetting.Key, AccentColorHex);
             _settings.Set(GeneralSettings.ThemeSetting.Key, Theme);
+            _settings.Set(GeneralSettings.UseNativeTitleBarSetting.Key, UseNativeTitleBar);
 
             Application.Current.Resources["AlwaysOnTop"] = AlwaysOnTop;
+            Application.Current.Resources["UseNativeTitleBar"] = UseNativeTitleBar;
         }
 
         public override void Load()
@@ -211,6 +220,7 @@ namespace Epsilon.Options
             AlwaysOnTop = _settings.Get(GeneralSettings.AlwaysOnTopSetting.Key, false);
             AccentColorHex = _settings.Get(GeneralSettings.AccentColorSetting.Key, "#007ACC");
             Theme = _settings.Get(GeneralSettings.ThemeSetting.Key, Theme.Default);
+            UseNativeTitleBar = _settings.Get(GeneralSettings.UseNativeTitleBarSetting.Key, false);
         }
     }
 }

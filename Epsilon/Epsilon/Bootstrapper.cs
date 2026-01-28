@@ -107,11 +107,13 @@ namespace WpfApp20
             AlwaysOnTop = _settings.Get("AlwaysOnTop", false);
             AccentColor = _settings.Get("AccentColor", "#007ACC");
             Theme = _settings.Get("Theme", Theme.Default);
+            bool useNativeTitleBar = _settings.Get("UseNativeTitleBar", false);
 
             App.Current.Resources.Add(typeof(ICommandRegistry), GetInstance<ICommandRegistry>());
             App.Current.Resources.Add(typeof(IMenuFactory), GetInstance<IMenuFactory>());
             App.Current.Resources.Add(SystemParameters.MenuPopupAnimationKey, PopupAnimation.None);
             App.Current.Resources["AlwaysOnTop"] = AlwaysOnTop;
+            App.Current.Resources["UseNativeTitleBar"] = useNativeTitleBar;
         }
 
         private void PostLaunchInitShell()

@@ -15,5 +15,6 @@ namespace Epsilon.Options
         public static SettingDefinition AlwaysOnTopSetting = new SettingDefinition("AlwaysOnTop", "");
         public static SettingDefinition AccentColorSetting = new SettingDefinition("AccentColor", "#007ACC");
         public static SettingDefinition ThemeSetting = new SettingDefinition("Theme", Theme.Default);
+        public static SettingDefinition UseNativeTitleBarSetting = new SettingDefinition("UseNativeTitleBar", false);
     }
 }

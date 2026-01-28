@@ -32,10 +32,20 @@
                     WindowChrome.IsHitTestVisibleInChrome="True" />
             </StackPanel>
             <TextBlock
-                Style="{StaticResource EpsilonTitle}"
+                x:Name="CenteredTitle"
                 Margin="0,4,0,0"
                 FontSize="18"
-                Text="{Binding Title}" />
+                Text="{Binding Title}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource EpsilonTitle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource AncestorType={x:Type controls:ChromeWindow}}}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </Grid>
 
 
