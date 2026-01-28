@@ -16,11 +16,29 @@ Background="#2d2d30">
         </Grid.RowDefinitions>
 
         <Image
-            Margin="4"
-            Style="{StaticResource EpsilonIcon}" />
+            Margin="4">
+            <Image.Style>
+                <Style TargetType="Image" BasedOn="{StaticResource EpsilonIcon}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource AncestorType={x:Type controls:ChromeWindow}}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
         <TextBlock
-            Style="{StaticResource EpsilonTitle}"
-            Text="{Binding DisplayName}" />
+            Text="{Binding DisplayName}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource EpsilonTitle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource AncestorType={x:Type controls:ChromeWindow}}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         
         <ContentControl
             Grid.Row="1"

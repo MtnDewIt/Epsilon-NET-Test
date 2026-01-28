@@ -20,10 +20,29 @@ Foreground="{DynamicResource Foreground}">
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Image Style="{StaticResource EpsilonIcon}" />
+        <Image>
+            <Image.Style>
+                <Style TargetType="Image" BasedOn="{StaticResource EpsilonIcon}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource AncestorType={x:Type controls:ChromeWindow}}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
         <TextBlock
-            Style="{StaticResource EpsilonTitle}"
-            Text="{Binding DisplayName}" />
+            Text="{Binding DisplayName}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource EpsilonTitle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UseNativeTitleBar, RelativeSource={RelativeSource AncestorType={x:Type controls:ChromeWindow}}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
 
         <StackPanel Grid.Row="1">
             <TextBlock
