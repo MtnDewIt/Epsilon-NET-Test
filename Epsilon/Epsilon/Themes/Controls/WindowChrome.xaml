@@ -103,8 +103,6 @@
     </Style>
     
     
-    
-    
     <Style
         BasedOn="{StaticResource {x:Type Window}}"
         TargetType="{x:Type controls:ChromeWindow}">
