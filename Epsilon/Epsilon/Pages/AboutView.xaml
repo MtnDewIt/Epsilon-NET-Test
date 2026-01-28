@@ -10,8 +10,7 @@
     Background="#2d2d30"
     Foreground="{DynamicResource Foreground}"
     Hyperlink.RequestNavigate="Hyperlink_RequestNavigate"
-    ResizeMode="NoResize"
-    WindowStyle="None">
+    ResizeMode="NoResize">
 
     <Window.Resources>
         <Style TargetType="{x:Type Hyperlink}" />
