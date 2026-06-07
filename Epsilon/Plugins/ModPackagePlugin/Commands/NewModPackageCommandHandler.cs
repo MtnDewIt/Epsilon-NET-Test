@@ -62,7 +62,7 @@ namespace ModPackagePlugin.Commands
 
         private async Task<GameCacheModPackage> CreateModPackageCacheAsync(GameCacheHaloOnline baseCache, FileInfo file, IProgressReporter progress)
         {
-            GameCacheModPackage modCache = await Task.Run(() => CreateAndInitializePackage(baseCache, progress));
+            GameCacheModPackage modCache = await Task.Run(() => CreateAndInitializePackage(baseCache, file, progress));
             
             modCache.BaseModPackage.Metadata.Name = file.Name.Split('.')[0];
             modCache.BaseModPackage.Header.ModifierFlags |= ModifierFlags.multiplayer;
@@ -75,7 +75,7 @@ namespace ModPackagePlugin.Commands
             return modCache;
         }
 
-        private static GameCacheModPackage CreateAndInitializePackage(GameCacheHaloOnline baseCache, IProgressReporter progress)
+        private static GameCacheModPackage CreateAndInitializePackage(GameCacheHaloOnline baseCache, FileInfo file, IProgressReporter progress)
         {
             var builder = new ModPackageBuilder(baseCache);
             builder.SetMetadata(new ModPackageMetadata());
