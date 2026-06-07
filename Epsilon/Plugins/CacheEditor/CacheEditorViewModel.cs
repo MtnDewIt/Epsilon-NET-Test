@@ -7,12 +7,14 @@ using EpsilonLib.Commands;
 using EpsilonLib.Dialogs;
 using EpsilonLib.Logging;
 using EpsilonLib.Settings;
+using EpsilonLib.Shell;
 using EpsilonLib.Shell.TreeModels;
 using Microsoft.Win32;
 using Shared;
 using Stylet;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,6 +58,8 @@ namespace CacheEditor
             TagTree.ContextMenu = Components.TagExplorer.MenuDefinitions.ContextMenu;
             TagTree.NodeDoubleClicked += TagTree_ItemDoubleClicked;
             CloseCommand = new DelegateCommand(Close);
+            CopyFullPath = new DelegateCommand(CopyPath);
+            OpenContainingFolder = new DelegateCommand(OpenFolder);
 
             RteSession = _cacheEditingService.Rte.CreateSession(cacheFile);
         }
@@ -66,6 +70,8 @@ namespace CacheEditor
         public IObservableCollection<IScreen> Documents => Items;
         public IObservableCollection<ICacheEditorTool> Tools { get; } = new BindableCollection<ICacheEditorTool>();
         public ICommand CloseCommand { get; }
+        public ICommand CopyFullPath { get; }
+        public ICommand OpenContainingFolder { get; }
         public TagTreeViewModel TagTree { get; set; }
         public event EventHandler CurrentTagChanged;
         public CachedTag CurrentTag => (ActiveItem as TagEditorViewModel)?.Tag;
@@ -212,6 +218,18 @@ namespace CacheEditor
         public void Close()
         {
             RequestClose();
+        }
+
+        public void CopyPath()
+        {
+            if (CacheFile?.File is not null)
+                ClipboardEx.SetTextSafe($"{CacheFile.File.FullName}");
+        }
+
+        public void OpenFolder()
+        {
+            if (CacheFile?.File is not null)
+                Process.Start("explorer.exe", CacheFile.File.Directory?.FullName);
         }
 
         private void ShowTool(ICacheEditorTool tool, bool activate = false)

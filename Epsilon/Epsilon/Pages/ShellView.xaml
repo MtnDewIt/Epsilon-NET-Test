@@ -67,6 +67,64 @@
             ActiveContent="{Binding ActiveDocument, Mode=TwoWay}"
             AllowMixedOrientation="True"
             DocumentsSource="{Binding Items}">
+            <xcad:DockingManager.DocumentContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        Command="{Binding Model.CopyFullPath}"
+                        Header="Copy Full Path" />
+                    <MenuItem
+                        Command="{Binding Model.OpenContainingFolder}"
+                        Header="Open Containing Folder" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding Path=CloseCommand}"
+                        Header="{x:Static xcad:Resources.Document_Close}"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <MenuItem
+                        Command="{Binding Path=CloseAllButThisCommand}"
+                        Header="{x:Static xcad:Resources.Document_CloseAllButThis}" />
+                    <MenuItem
+                        Command="{Binding Path=CloseAllCommand}"
+                        Header="{x:Static xcad:Resources.Document_CloseAll}" />
+                    <MenuItem
+                        Command="{Binding Path=FloatCommand}"
+                        Header="{x:Static xcad:Resources.Document_Float}" />
+                    <MenuItem
+                        Command="{Binding Path=DockAsDocumentCommand}"
+                        Header="{x:Static xcad:Resources.Document_DockAsDocument}" />
+                    <MenuItem
+                        Command="{Binding Path=NewHorizontalTabGroupCommand}"
+                        Header="{x:Static xcad:Resources.Document_NewHorizontalTabGroup}"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <MenuItem.Icon>
+                            <Image
+                                Width="14"
+                                Source="../Themes/Controls/AvalonDock/Images/HTabGroup.png"
+                                Stretch="Uniform" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem
+                        Command="{Binding Path=NewVerticalTabGroupCommand}"
+                        Header="{x:Static xcad:Resources.Document_NewVerticalTabGroup}"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <MenuItem.Icon>
+                            <Image
+                                Width="14"
+                                Source="../Themes/Controls/AvalonDock/Images/VTabGroup.png"
+                                Stretch="Uniform" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Command="{Binding Path=MoveToNextTabGroupCommand}"
+                        Header="{x:Static xcad:Resources.Document_MoveToNextTabGroup}"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <MenuItem
+                        Command="{Binding Path=MoveToPreviousTabGroupCommand}"
+                        Header="{x:Static xcad:Resources.Document_MoveToPreviousTabGroup}"
+                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </ContextMenu>
+            </xcad:DockingManager.DocumentContextMenu>
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel
                     x:Name="VerticalPanel"
@@ -86,6 +144,7 @@
                             <Setter Property="Title" Value="{Binding Model.DisplayName, Mode=OneWay}" />
                             <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
                             <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}" />
+                            <Setter Property="ToolTip" Value="{Binding Model.CacheFile.File.FullName, Mode=OneWay}" />
                         </Style>
                     </local:PanesStyleSelector.DocumentStyle>
                     <local:PanesStyleSelector.ToolStyle>
@@ -94,6 +153,7 @@
                             <Setter Property="Title" Value="{Binding Model.DisplayName, Mode=OneWay}" />
                             <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
                             <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}" />
+                            <Setter Property="ToolTip" Value="{Binding Model.CacheFile.File.FullName, Mode=OneWay}" />
                         </Style>
                     </local:PanesStyleSelector.ToolStyle>
                 </local:PanesStyleSelector>
