@@ -28,6 +28,6 @@ namespace RenderMethodEditorPlugin.ShaderParameters
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public abstract void Refresh();
+        public abstract new void Refresh();
     }
 }

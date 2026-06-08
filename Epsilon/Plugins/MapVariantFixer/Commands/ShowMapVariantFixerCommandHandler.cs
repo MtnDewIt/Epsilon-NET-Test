@@ -32,7 +32,7 @@ namespace MapVariantFixer
         public void UpdateCommand(Command command)
         {
             command.IsVisible = _cacheEditingService.ActiveCacheEditor != null && 
-                _cacheEditingService.ActiveCacheEditor.CacheFile.Cache.Version == TagTool.Cache.CacheVersion.HaloOnlineED
+                CacheVersionDetection.IsEldewrito(_cacheEditingService.ActiveCacheEditor.CacheFile.Cache.Version)
                 && !(_cacheEditingService.ActiveCacheEditor.CacheFile.Cache is GameCacheModPackage);
         }
     }

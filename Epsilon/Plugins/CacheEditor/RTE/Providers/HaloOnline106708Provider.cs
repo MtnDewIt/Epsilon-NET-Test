@@ -126,7 +126,7 @@ namespace CacheEditor.RTE.Providers
 
                 byte[] runtimeTagData = new byte[runtimeTotalSize - headerSize];
                 processStream.Seek(address + headerSize, SeekOrigin.Begin);
-                processStream.Read(runtimeTagData, 0, (int)(runtimeTotalSize - headerSize));
+                processStream.ReadExactly(runtimeTagData, 0, (int)(runtimeTotalSize - headerSize));
 
                 if (runtimeTagData.Length != editorData.Length)
                     throw new RteProviderException(this, $"Error: Loaded tag size did not match cache tag size. Is this tag overwritten in a modpak? Is your modpak built on the most up to date cache?");
