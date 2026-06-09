@@ -35,6 +35,7 @@ namespace CacheEditor.Components.TagTree
         ICommandHandler<CopyCommand>,
         ICommandHandler<CopyTagNameCommand>,
         ICommandHandler<CopyTagIndexCommand>,
+        ICommandHandler<CopyChildTagNamesCommand>,
         ICommandHandler<ToggleGroupNameViewCommand>,
         ICommandHandler<ToggleGroupTagNameViewCommand>,
         ICommandHandler<ExtractBitmapCommand>,
@@ -284,6 +285,33 @@ namespace CacheEditor.Components.TagTree
         void ICommandHandler<CopyTagIndexCommand>.UpdateCommand(Command command)
         {
             command.IsVisible = SelectedNode != null && SelectedNode?.Tag is CachedTag;
+        }
+
+        void ICommandHandler<CopyChildTagNamesCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode?.Tag is not CachedTag)
+            {
+                List<string> names = [];
+                GetChildTagNamesRecursive(SelectedNode, names);
+                string concat = string.Join(Environment.NewLine, names) + "\n";
+                ClipboardEx.SetTextSafe(concat);
+            }
+
+            void GetChildTagNamesRecursive(ITreeNode node, List<string> names)
+            {
+                foreach (var child in node.Children)
+                {
+                    if (child.Tag is CachedTag tag)
+                        names.Add($"{tag}");
+                    else
+                        GetChildTagNamesRecursive(child, names);
+                }
+            }
+        }
+
+        void ICommandHandler<CopyChildTagNamesCommand>.UpdateCommand(Command command)
+        {
+            command.IsVisible = SelectedNode != null && SelectedNode?.Tag is not CachedTag;
         }
 
         void ICommandHandler<ToggleGroupNameViewCommand>.ExecuteCommand(Command command)

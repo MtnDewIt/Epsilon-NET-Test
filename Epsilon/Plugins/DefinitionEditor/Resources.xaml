@@ -1091,7 +1091,17 @@
                 VerticalAlignment="Center"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding Values, Mode=OneTime}"
-                SelectedItem="{Binding Value}" />
+                SelectedItem="{Binding Value}">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <TextBlock Text="{Binding Index, StringFormat={}0x{0:X}}"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
         </StackPanel>
     </DataTemplate>
 

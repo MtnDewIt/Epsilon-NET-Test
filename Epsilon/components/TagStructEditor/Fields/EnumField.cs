@@ -22,7 +22,7 @@ namespace TagStructEditor.Fields
         {
             var members = TagEnum.GetMemberEnumerable(info).Members;
             for (int i = 0; i < members.Count; i++)
-                yield return new EnumMember(Utils.DemangleName(members[i].Name), (Enum)members[i].Value);
+                yield return new EnumMember(Utils.DemangleName(members[i].Name), (Enum)members[i].Value, i);
         }
 
         public override void Accept(IFieldVisitor visitor)
@@ -41,11 +41,13 @@ namespace TagStructEditor.Fields
         {
             public string Name { get; }
             public Enum Value { get; }
+            public int Index { get; }
 
-            public EnumMember(string name, Enum value)
+            public EnumMember(string name, Enum value, int index)
             {
                 Name = name;
                 Value = value;
+                Index = index;
             }
         }
     }

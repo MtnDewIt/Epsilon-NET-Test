@@ -22,6 +22,8 @@ namespace CacheEditor.Components.TagExplorer
         public static MenuItemDefinition CopyTagNameItem = new CommandMenuItemDefinition<CopyTagNameCommand>(ContextMenu, CopyMenuItemGroup);
         [ExportMenuItem]
         public static MenuItemDefinition CopyTagIndexItem = new CommandMenuItemDefinition<CopyTagIndexCommand>(ContextMenu, CopyMenuItemGroup);
+        [ExportMenuItem]
+        public static MenuItemDefinition CopyChildTagNamesItem = new CommandMenuItemDefinition<CopyChildTagNamesCommand>(ContextMenu, CopyMenuItemGroup);
 
         // View Group
         [ExportMenuItem]
