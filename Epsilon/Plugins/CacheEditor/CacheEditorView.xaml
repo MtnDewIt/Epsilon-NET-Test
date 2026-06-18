@@ -38,6 +38,12 @@
                                 <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}" />
                                 <Setter Property="IsActive" Value="{Binding Model.IsActive}" />
                                 <Setter Property="ToolTip" Value="{Binding Model.FullName, Mode=OneWay}" />
+                                <Setter Property="IconSource" Value="{x:Null}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Model.IsFavorited}" Value="True">
+                                        <Setter Property="IconSource" Value="{DynamicResource Favorite}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </local:PanesStyleSelector.DocumentStyle>
                         <local:PanesStyleSelector.ToolStyle>
@@ -83,12 +89,16 @@
                         Header="Copy Tag Index" />
                     <Separator />
                     <MenuItem
+                        Command="{Binding Model.FavoriteCommand}"
+                        Header="{Binding Model.FavoriteText}"/>
+                    <Separator />
+                    <MenuItem
                         Command="{Binding Path=CloseCommand}"
                         Header="Close"
                         Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                     <MenuItem
                         Command="{Binding Path=CloseAllButThisCommand}"
-                        Header="Close all But This" />
+                        Header="Close All But This" />
                     <MenuItem
                         Command="{Binding Path=CloseAllCommand}"
                         Header="Close All" />

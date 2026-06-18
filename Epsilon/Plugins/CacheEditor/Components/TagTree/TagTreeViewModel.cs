@@ -1,11 +1,13 @@
 ﻿using CacheEditor.Components.TagTree.Commands;
 using CacheEditor.TagEditing;
 using EpsilonLib.Commands;
+using EpsilonLib.Core;
 using EpsilonLib.Menus;
 using EpsilonLib.Settings;
 using EpsilonLib.Shell;
 using EpsilonLib.Shell.Commands;
 using EpsilonLib.Shell.TreeModels;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using TagTool.Cache;
+using TagTool.Common;
 using TagTool.Tags.Definitions;
 
 namespace CacheEditor.Components.TagTree
@@ -36,6 +39,7 @@ namespace CacheEditor.Components.TagTree
         ICommandHandler<CopyTagNameCommand>,
         ICommandHandler<CopyTagIndexCommand>,
         ICommandHandler<CopyChildTagNamesCommand>,
+        ICommandHandler<SetFavoriteTagCommand>,
         ICommandHandler<ToggleGroupNameViewCommand>,
         ICommandHandler<ToggleGroupTagNameViewCommand>,
         ICommandHandler<ExtractBitmapCommand>,
@@ -67,6 +71,7 @@ namespace CacheEditor.Components.TagTree
                 (TagTreeGroupDisplayMode)Settings.TagTreeGroupDisplaySetting.DefaultValue);
 
             _cacheEditingService = cacheEditingService;
+            _cacheEditingService.Favorites.FavoriteChanged += _favoritesService_FavoriteChanged;
             _cacheFile = cacheFile;
             _extraction = extraction;
             _cacheFile.TagSerialized += _cacheFile_TagSaved;
@@ -81,6 +86,14 @@ namespace CacheEditor.Components.TagTree
             {
                 node.Tag = e;
                 node.UpdateAppearance();
+            }
+        }
+
+        private void _favoritesService_FavoriteChanged(object sender, FavoriteChangedEventArgs e)
+        {
+            if (FindTag(e.Tag) is TagTreeTagNode node)
+            {
+                node.IsFavorited = e.Favorited;
             }
         }
 
@@ -143,6 +156,16 @@ namespace CacheEditor.Components.TagTree
                 }
             }
 
+            if (_cacheEditingService.Favorites.TryGetCacheFavorites(_cacheFile.Cache, out var favoriteList))
+            {
+                var favoritedTags = favoriteList.Select(n => _cacheFile.Cache.TagCache.GetTag(n.TagName));
+                foreach (var tag in favoritedTags)
+                {
+                    if (FindTag(tag) is TagTreeTagNode node)
+                        node.IsFavorited = true;
+                }
+            }
+
             if (Nodes.Count == 1)
                 Nodes.First().IsExpanded = true;
         }
@@ -157,7 +180,7 @@ namespace CacheEditor.Components.TagTree
 
             var filterText = FilterText.Trim();
 
-            // check for filter match with group group tag name
+            // check for filter match with group tag name
             string groupTagName = tag.Group.Tag.ToString();
             if (groupTagName.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) >= 0)
                 return true;
@@ -306,6 +329,26 @@ namespace CacheEditor.Components.TagTree
                     else
                         GetChildTagNamesRecursive(child, names);
                 }
+            }
+        }
+
+        void ICommandHandler<SetFavoriteTagCommand>.UpdateCommand(Command command)
+        {
+            if (SelectedNode is TagTreeTagNode tagNode)
+            {
+                command.DisplayText = _cacheEditingService.Favorites.GetCommandText(tagNode.IsFavorited);
+                command.IsEnabled = _cacheEditingService.Favorites.IsReady;
+                command.IsVisible = true;
+            }
+            else
+                command.IsVisible = false;
+        }
+
+        void ICommandHandler<SetFavoriteTagCommand>.ExecuteCommand(Command command)
+        {
+            if (SelectedNode is TagTreeTagNode tagNode && tagNode?.Tag is CachedTag tag)
+            {
+                _cacheEditingService.Favorites.ToggleCacheFavorite(_cacheFile.Cache, tag);
             }
         }
 

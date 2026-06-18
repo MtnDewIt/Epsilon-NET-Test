@@ -24,21 +24,6 @@
             </DockPanel>
         </ControlTemplate>
 
-        <DrawingImage x:Key="FolderClosed">
-            <DrawingImage.Drawing>
-                <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing
-                            Brush="#00FFFFFF"
-                            Geometry="F1M0,0L16,0 16,16 0,16z" />
-                        <GeometryDrawing
-                            Brush="#FFDBB679"
-                            Geometry="F1M2,3L8.374,3 8.874,4 2,4z M13.496,4L10,4 9.992,4 8.992,2 1.5,2C1.225,2,1,2.224,1,2.5L1,12.5C1,12.776,1.225,13,1.5,13L13.496,13C13.773,13,13.996,12.776,13.996,12.5L13.996,4.5C13.996,4.224,13.773,4,13.496,4" />
-                    </DrawingGroup.Children>
-                </DrawingGroup>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-
         <Style x:Key="BrowseButtonStyle" TargetType="{x:Type Button}"
                BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -74,7 +59,8 @@
                 Click="BrowseButtonClicked">
                 <Image
                     SnapsToDevicePixels="True"
-                    Source="{StaticResource FolderClosed}"/>
+                    UseLayoutRounding="True"
+                    Source="{StaticResource SearchFolderClosed}"/>
             </Button>
             <Button
                 Name="DefaultCacheClear"
@@ -115,7 +101,7 @@
                 Click="BrowseButtonClicked">
                 <Image
                     SnapsToDevicePixels="True"
-                    Source="{StaticResource FolderClosed}"/>
+                    Source="{StaticResource SearchFolderClosed}"/>
             </Button>
             <Button
                 Name="DefaultPakClear"

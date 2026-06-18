@@ -176,13 +176,13 @@
                                 ToolTip="List Open Tabs"
                                 Style="{StaticResource AvalonDock_ThemeMetro_ToolButtonStyle}">
                                 <avalonDockControls:DropDownButton.DropDownContextMenu>
-                                    <avalonDockControls:ContextMenuEx ItemsSource="{Binding Model.ChildrenSorted, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <avalonDockControls:ContextMenuEx
+                                        Style="{StaticResource {x:Type ContextMenu}}"
+                                        ItemsSource="{Binding Model.ChildrenSorted, RelativeSource={RelativeSource TemplatedParent}}">
                                         <avalonDockControls:ContextMenuEx.ItemContainerStyle>
                                             <Style
                                                 BasedOn="{StaticResource {x:Type MenuItem}}"
                                                 TargetType="{x:Type avalonDockControls:MenuItemEx}">
-                                                <Setter Property="Background" Value="White"/>
-                                                <Setter Property="Foreground" Value="Black"/>
                                                 <Setter Property="HeaderTemplate" Value="{Binding Path=Root.Manager.DocumentPaneMenuItemHeaderTemplate}" />
                                                 <Setter Property="HeaderTemplateSelector" Value="{Binding Path=Root.Manager.DocumentPaneMenuItemHeaderTemplateSelector}" />
                                                 <Setter Property="IconTemplate" Value="{Binding Path=Root.Manager.IconContentTemplate}" />
@@ -1148,11 +1148,21 @@
     </Style>
 
     <DataTemplate x:Key="AvalonDock_ThemeMetro_DocumentHeaderTemplate">
-        <TextBlock
-            Text="{Binding Title}"
-            Foreground="{DynamicResource Title}"
-            Margin="2,0,-3,0"
-            TextTrimming="CharacterEllipsis" />
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Text="{Binding Title}"
+                Foreground="{DynamicResource Title}"
+                Padding="0"
+                Margin="2,0,4,0"
+                TextTrimming="CharacterEllipsis" />
+            <Image
+                x:Name="icon"
+                Width="16"
+                Height="16"
+                Margin="0"
+                Visibility="{Binding IconSource, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                Source="{Binding IconSource}" />
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="AvalonDock_ThemeMetro_AnchorableHeaderTemplate">
@@ -1415,27 +1425,28 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Border
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="4"
                                     Background="Transparent" />
-                                <ContentPresenter
+                                <ContentPresenter Margin="0"
                                     Content="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}"
                                     ContentTemplate="{Binding DocumentHeaderTemplate, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type avalonDock:DockingManager}, Mode=FindAncestor}}"
                                     ContentTemplateSelector="{Binding DocumentHeaderTemplateSelector, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type avalonDock:DockingManager}, Mode=FindAncestor}}" />
                                 <!--  Close button should be moved out to the container style  -->
                                 <Button
                                     x:Name="DocumentCloseButton"
-                                    Grid.Column="2"
+                                    Grid.Column="3"
                                     Width="16"
                                     Height="16"
-                                    Margin="7,3,0,0"
+                                    Margin="0,2,0,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding Path=LayoutItem.CloseCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                     Style="{StaticResource SmallClose}"
                                     ToolTip="{x:Static avalonDockProperties:Resources.Document_Close}"
-                                    Visibility="Hidden">
+                                    Visibility="Collapsed">
                                     <Path
                                         x:Name="PART_ImgPinClose"
                                         Width="8"
@@ -1460,9 +1471,6 @@
                                 <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="DocumentCloseButton" Property="Visibility" Value="Visible" />
-
-
-
                         </MultiDataTrigger>
                         <DataTrigger
                             Binding="{Binding Path=IsLastFocusedDocument}"

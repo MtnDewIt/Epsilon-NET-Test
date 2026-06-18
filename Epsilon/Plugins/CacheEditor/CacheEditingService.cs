@@ -15,6 +15,7 @@ namespace CacheEditor
         private ICacheEditor _activeEditor;
         private Lazy<IShell> _shell;
         private Lazy<IRteService> _rteService;
+        private IFavoritesService _favoritesService;
 
         public ISettingsCollection Settings { get; }
         public IReadOnlyList<ITagEditorPluginProvider> TagEditorPlugins { get; }
@@ -27,17 +28,20 @@ namespace CacheEditor
         public IEnumerable<ICacheEditorToolProvider> Tools { get; set; }
 
         public IRteService Rte => _rteService.Value;
+        public IFavoritesService Favorites => _favoritesService;
 
         [ImportingConstructor]
         public CacheEditingService(
             Lazy<IShell> shell,
             Lazy<IRteService> rteService,
             ISettingsService settingsService,
+            IFavoritesService favoritesService,
             [ImportMany] IEnumerable<ITagEditorPluginProvider> tagEditorPlugins,
             [ImportMany] IEnumerable<ICacheEditorToolProvider> tools)
         {
             _shell = shell;
             _rteService = rteService;
+            _favoritesService = favoritesService;
             Settings = settingsService.GetCollection("CacheEditor");
             TagEditorPlugins = tagEditorPlugins.OrderBy(x => x.SortOrder).ToList();
             Tools = tools;

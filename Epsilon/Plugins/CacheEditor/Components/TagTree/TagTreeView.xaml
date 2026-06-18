@@ -7,53 +7,10 @@
     xmlns:EpsilonConverters="clr-namespace:EpsilonLib.Converters;assembly=EpsilonLib"
     xmlns:ThemeCore="clr-namespace:EpsilonLib.Themes;assembly=EpsilonLib"
     xmlns:local="clr-namespace:CacheEditor.Components.TagTree">
+    
     <UserControl.Resources>
-        <DrawingImage x:Key="FolderOpened">
-            <DrawingImage.Drawing>
-                <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing
-                            Brush="#00FFFFFF"
-                            Geometry="F1M0,0L16,0 16,16 0,16z" />
-                        <GeometryDrawing
-                            Brush="#FFDCB67A"
-                            Geometry="F1M1,3L1,12C1,12.97,1.94,12.984,1.997,12.984L2,12.984 2,3 8,3 9,5 13,5 13,8 4,8 2,13 13,13 15,8 14,8 14,5C14,4,12.764,4,13,4L9.5,4 8.5,2 2,2C2,2,1,2,1,3" />
-                    </DrawingGroup.Children>
-                </DrawingGroup>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-        <DrawingImage x:Key="FolderClosed">
-            <DrawingImage.Drawing>
-                <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing
-                            Brush="#00FFFFFF"
-                            Geometry="F1M0,0L16,0 16,16 0,16z" />
-                        <GeometryDrawing
-                            Brush="#FFDBB679"
-                            Geometry="F1M2,3L8.374,3 8.874,4 2,4z M13.496,4L10,4 9.992,4 8.992,2 1.5,2C1.225,2,1,2.224,1,2.5L1,12.5C1,12.776,1.225,13,1.5,13L13.496,13C13.773,13,13.996,12.776,13.996,12.5L13.996,4.5C13.996,4.224,13.773,4,13.496,4" />
-                    </DrawingGroup.Children>
-                </DrawingGroup>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-        <DrawingImage x:Key="Document">
-            <DrawingImage.Drawing>
-                <DrawingGroup>
-                    <DrawingGroup.Children>
-                        <GeometryDrawing
-                            Brush="#00FFFFFF"
-                            Geometry="F1M16,16L0,16 0,0 16,0z" />
-                        <GeometryDrawing
-                            Brush="#FFFFFFFF"
-                            Geometry="F1M12,13L4,13 4,3 9,3 9,6 12,6z M9.641,2L3.964,2C3.964,2,3,2,3,3L3,13C3,14,3.965,14,3.965,14L11.965,14C12.965,14,13,13,13,13L13,5z" />
-                        <GeometryDrawing
-                            Brush="#00FFFFFF"
-                            Geometry="F1M4,3L9,3 9,6 12,6 12,13 4,13z" />
-                    </DrawingGroup.Children>
-                </DrawingGroup>
-            </DrawingImage.Drawing>
-        </DrawingImage>
     </UserControl.Resources>
+    
     <DockPanel>
         <TextBox x:Name="SearchBox"
             Margin="0,-4,0,0"
@@ -61,7 +18,7 @@
             VerticalContentAlignment="Center"
             Height="25"
             DockPanel.Dock="Top"
-            Tag="Search..."
+            Tag="Search Tags (Ctrl+Shift+F)"
             Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Delay=75}" />
         
         <TreeView x:Name="TagTree"
@@ -110,8 +67,13 @@
                         <TextBlock
                             Text="{Binding Text}"
                             ToolTip="{Binding Text}"
-                            Margin="-1,-1,0,2"/>
+                            Margin="0"/>
                     </StackPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsFavorited}" Value="True">
+                            <Setter TargetName="Icon" Property="Image.Source" Value="{StaticResource Favorite}" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
 
                 <HierarchicalDataTemplate
