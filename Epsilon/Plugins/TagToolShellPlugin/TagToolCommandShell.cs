@@ -79,8 +79,19 @@ namespace TagToolShellPlugin
 
             public override void Write(char[] buffer, int index, int count)
             {
-                var line = new string(buffer, index, count - CoreNewLine.Length);
-                _outputDispatcher.Invoke(() => _writeLineDelegate(line));
+                int stripCount = 0;
+                for (int i = 1; (i <= count && i < 3); i++)
+                {
+                    char c = buffer[^i];
+                    if (c == '\n' || c == '\r')
+                        stripCount++;
+                }
+
+                count -= stripCount;
+
+                var line = new string(buffer, index, count);
+                if (line != null)
+                    _outputDispatcher.Invoke(() => _writeLineDelegate(line));
             }
         }
     }

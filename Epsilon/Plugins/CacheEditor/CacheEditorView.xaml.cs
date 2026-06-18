@@ -31,7 +31,7 @@ namespace CacheEditor
         {
             // ctrl-W to close current tag
 
-            if ((e.Key == Key.W && e.KeyboardDevice.IsKeyDown(Key.LeftCtrl)) || (e.Key == Key.LeftCtrl && e.KeyboardDevice.IsKeyDown(Key.W)))
+            if (e.Key == Key.W && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 var cacheViewModel = DataContext as CacheEditorViewModel;
                 if (cacheViewModel.IsActive)
