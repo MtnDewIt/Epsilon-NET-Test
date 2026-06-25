@@ -103,26 +103,23 @@ namespace BlamScriptEditorPlugin
             if (target.Document != null)
             {
                 var caretOffset = target.CaretOffset;
-                var newValue = args.NewValue;
+                var newValue = args.NewValue ?? string.Empty;
 
-                if (newValue == null)
+                if (!object.ReferenceEquals(target.Document.Text, newValue))
                 {
-                    newValue = "";
+                    target.Document.Text = (string)newValue;
+                    target.CaretOffset = Math.Min(caretOffset, newValue.ToString().Length);
                 }
-
-                target.Document.Text = (string)newValue;
-                target.CaretOffset = Math.Min(caretOffset, newValue.ToString().Length);
             }
         }
 
         protected override void OnTextChanged(EventArgs e)
         {
-            if (this.Document != null)
+            if (this.Document != null && !object.ReferenceEquals(Text, this.Document.Text))
             {
                 Text = this.Document.Text;
+                base.OnTextChanged(e);
             }
-
-            base.OnTextChanged(e);
         }
 
         /// <summary>

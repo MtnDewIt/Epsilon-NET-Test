@@ -1,9 +1,12 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit.Search;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace BlamScriptEditorPlugin
@@ -18,21 +21,25 @@ namespace BlamScriptEditorPlugin
         public ScriptTagEditorView()
         {
             InitializeComponent();
+            SearchPanel panel = SearchPanel.Install(ScriptSourceTextBox);
+
+            SolidColorBrush brush = new((Color)ColorConverter.ConvertFromString("#40FF7810"));
+            brush.Freeze();
+            panel.MarkerBrush = brush;
+            panel.MarkerCornerRadius = 0.0f;
         }
 
         private void ScriptKeyDownHandler(object sender, KeyEventArgs e)
         {
-            switch(e.Key)
+            bool controlModifier = e.KeyboardDevice.Modifiers == ModifierKeys.Control;
+
+            switch (e.Key)
             {
-                case Key.Enter:
-                    InsertText("\r\n"); e.Handled = true;
+                case Key.Z when controlModifier && sender is ScriptTextEditor:
+                    e.Handled = true;
                     break;
-                case Key.Tab:
-                    InsertText("\t"); e.Handled = true;
-                    break;
-                case Key.Z:
-                    if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
-                        ScriptSourceTextBox.Undo();
+                case Key.S when controlModifier:
+                    SaveButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                     break;
                 default:
                     break;
@@ -48,15 +55,6 @@ namespace BlamScriptEditorPlugin
 
         private void ScriptSourceTextBox_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Command == ApplicationCommands.Paste)
-            {
-                var cursorPosition = ScriptSourceTextBox.SelectionStart;
-                string toPaste = Clipboard.GetText();
-                ScriptSourceTextBox.Text = ScriptSourceTextBox.Text.Insert(cursorPosition, (toPaste));
-                ScriptSourceTextBox.SelectionStart = cursorPosition + toPaste.Length;
-
-                e.Handled = true;
-            }
         }
     }
 }
