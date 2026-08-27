@@ -83,6 +83,6 @@ namespace CacheEditor.Components.TagTree
 
     class TagTreeGroupNode : TagTreeNode
     {
-
+        public override string ToString() => Text;
     }
 }

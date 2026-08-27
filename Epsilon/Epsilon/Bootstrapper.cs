@@ -25,6 +25,7 @@ namespace WpfApp20
     public class Bootstrapper : MefBootstrapper<ShellViewModel>
     {
         private FileHistoryService _fileHistory;
+        private FavoritesService _favorites;
         private IEditorService _editorService;
         private ISettingsCollection _settings;
         private string DefaultCachePath;
@@ -43,6 +44,7 @@ namespace WpfApp20
 
             var startupTasks = new List<Task>();
             startupTasks.Add(_fileHistory.InitAsync());
+            startupTasks.Add(_favorites.InitAsync());
 
             PrepareResources();
 
@@ -81,6 +83,9 @@ namespace WpfApp20
 
             _fileHistory = new FileHistoryService(new XmlFileHistoryStore("filehistory.xml"));
             batch.AddExportedValue<IFileHistoryService>(_fileHistory);
+
+            _favorites = new FavoritesService(new XmlFavoritesStore("favorites.xml"));
+            batch.AddExportedValue<IFavoritesService>(_favorites);
         }
 
         protected override IEnumerable<Assembly> GetAssemblies()

@@ -9,6 +9,12 @@ namespace CacheEditor.Components.TagTree
     {
         private Func<string> _textDelegate;
 
+        public bool IsFavorited
+        {
+            get;
+            set => SetAndNotify(ref field, value);
+        }
+
         public TagTreeTagNode(CachedTag tag, Func<string> textDelegate)
         {
             Tag = tag;
@@ -35,5 +41,7 @@ namespace CacheEditor.Components.TagTree
                     return ColorHint.Muted;
             return ColorHint.Default;
         }
+
+        public override string ToString() => Text;
     }
 }

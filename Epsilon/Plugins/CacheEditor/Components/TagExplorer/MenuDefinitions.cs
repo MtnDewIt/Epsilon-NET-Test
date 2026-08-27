@@ -8,6 +8,7 @@ namespace CacheEditor.Components.TagExplorer
     public static class MenuDefinitions
     {
         public static object CopyMenuItemGroup = new object();
+        public static object ServiceMenuItemGroup = new object();
         public static object ViewMenuItemGroup = new object();
         public static object EditMenuItemGroup = new object();
         public static object ExtractImportMenuItemGroup = new object();
@@ -24,6 +25,10 @@ namespace CacheEditor.Components.TagExplorer
         public static MenuItemDefinition CopyTagIndexItem = new CommandMenuItemDefinition<CopyTagIndexCommand>(ContextMenu, CopyMenuItemGroup);
         [ExportMenuItem]
         public static MenuItemDefinition CopyChildTagNamesItem = new CommandMenuItemDefinition<CopyChildTagNamesCommand>(ContextMenu, CopyMenuItemGroup);
+
+        // Service Group
+        [ExportMenuItem]
+        public static MenuItemDefinition SetFavoriteTagItem = new CommandMenuItemDefinition<SetFavoriteTagCommand>(ContextMenu, ServiceMenuItemGroup);
 
         // View Group
         [ExportMenuItem]

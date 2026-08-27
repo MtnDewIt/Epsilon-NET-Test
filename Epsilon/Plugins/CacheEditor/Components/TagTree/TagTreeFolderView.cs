@@ -88,5 +88,20 @@ namespace CacheEditor.Components.TagTree
         }
     }
 
-    public class TagTreeFolderNode : TagTreeNode { }
+    public class TagTreeFolderNode : TagTreeNode
+    {
+        public override string ToString()
+        {
+            List<string> folders = [Text];
+
+            TagTreeNode parent = Parent;
+            while (parent is not null)
+            {
+                folders.Add(parent.Text);
+                parent = parent.Parent;
+            }
+            folders.Reverse();
+            return string.Join('\\', folders);
+        }
+    }
 }

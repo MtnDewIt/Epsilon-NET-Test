@@ -28,9 +28,9 @@ namespace DefinitionEditor
 
         private void TagDefWindowKeyUp(object sender, KeyEventArgs e)
         {
-            // ctrl-F to focus Definition Search
+            // ctrl+F to focus Definition Search
 
-            if ((e.Key == Key.F && e.KeyboardDevice.IsKeyDown(Key.LeftCtrl)) || (e.Key == Key.LeftCtrl && e.KeyboardDevice.IsKeyDown(Key.F)))
+            if (e.Key == Key.F && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 DefinitionEditorViewModel definitionViewModel = (DefinitionEditorViewModel)DataContext;
                 if (definitionViewModel != null && IsVisible)
@@ -43,7 +43,7 @@ namespace DefinitionEditor
 
             // ctrl-S to save
 
-            else if ((e.Key == Key.S && e.KeyboardDevice.IsKeyDown(Key.LeftCtrl)) || (e.Key == Key.LeftCtrl && e.KeyboardDevice.IsKeyDown(Key.S)))
+            else if (e.Key == Key.S && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 DefinitionEditorViewModel definitionViewModel = (DefinitionEditorViewModel)DataContext;
                 if (definitionViewModel != null && IsVisible)

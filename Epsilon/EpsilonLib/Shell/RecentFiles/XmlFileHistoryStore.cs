@@ -55,7 +55,7 @@ namespace Shared
                     Indent = true
                 };
 
-                using (var writer = XmlWriter.Create(File.CreateText("filehistory.xml"), settings))
+                using (var writer = XmlWriter.Create(File.CreateText(_filePath), settings))
                 {
 
                     writer.WriteStartDocument();

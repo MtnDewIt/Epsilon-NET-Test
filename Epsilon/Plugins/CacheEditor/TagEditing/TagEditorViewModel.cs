@@ -3,6 +3,7 @@ using EpsilonLib.Core;
 using EpsilonLib.Logging;
 using EpsilonLib.Shell;
 using EpsilonLib.Shell.TreeModels;
+using Shared;
 using Stylet;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Xml.Linq;
 using TagTool.Cache;
 
@@ -28,22 +30,31 @@ namespace CacheEditor
         public CachedTag Tag;
         public string FullName { get; set; }
 
+        public bool IsFavorited { get; set { SetAndNotify(ref field, value); NotifyOfPropertyChange(() => FavoriteText); }}
+        public string FavoriteText => _cacheEditingService.Favorites.GetCommandText(IsFavorited);
+        public ImageSource Icon { get; set => SetAndNotify(ref field, value); }
         public ICommand CloseCommand { get; set; }
         public ICommand CopyTagNameCommand { get; set; }
         public ICommand CopyTagIndexCommand { get; set; }
         public ICommand TagTreeDeselect { get; set; }
+        public DelegateCommand FavoriteCommand { get; set; }
 
         public TagEditorViewModel(ICacheEditingService cacheEditingService, TagEditorContext context)
         {
             _cacheEditingService = cacheEditingService;
             Tag = context.Instance;
             DisplayName = $"{Path.GetFileName(Tag.Name)}.{Tag.Group.Tag}";
+
+            _cacheEditingService.Favorites.FavoriteChanged += _favoritesService_FavoriteChanged;
+            IsFavorited = _cacheEditingService.Favorites.TagIsFavorited(context.CacheEditor.CacheFile.Cache, Tag);
+
             FullName = $"{Tag.Name}.{Tag.Group.Tag}";
 
             CloseCommand = new DelegateCommand(Close);
             CopyTagNameCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"{Tag}"));
             CopyTagIndexCommand = new DelegateCommand(() => ClipboardEx.SetTextSafe($"0x{Tag.Index:X08}"));
             TagTreeDeselect = new DelegateCommand(() => (context.CacheEditor.TagTree as TreeModel).SelectedNode = null);
+            FavoriteCommand = new DelegateCommand(SetFavorite, CanSetFavorite);
 
             LoadPlugins(context);
         }
@@ -83,6 +94,22 @@ namespace CacheEditor
                 throw;
             }
         }
+
+        private void _favoritesService_FavoriteChanged(object sender, FavoriteChangedEventArgs e)
+        {
+            if (e.Tag == Tag)
+            {
+                IsFavorited = e.Favorited;
+            }
+            FavoriteCommand.RaiseCanExecuteChanged();
+        }
+
+        public void SetFavorite()
+        {
+            _cacheEditingService.Favorites.ToggleCacheFavorite(_cacheEditingService.ActiveCacheEditor.CacheFile.Cache, Tag);
+            FavoriteCommand.RaiseCanExecuteChanged();
+        }
+        public bool CanSetFavorite() => _cacheEditingService.Favorites.IsReady;
 
         public void Close()
         {

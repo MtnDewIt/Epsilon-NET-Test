@@ -19,6 +19,7 @@
                         </s:ApplicationLoader.Bootstrapper>
                     </s:ApplicationLoader>
                 </ResourceDictionary>
+                <ResourceDictionary Source="Themes/Icons/Simple.xaml" />
                 <ResourceDictionary Source="Themes/Controls/Menu.xaml" />
                 <ResourceDictionary Source="Themes/Controls/TreeView.xaml" />
                 <ResourceDictionary Source="Themes/Controls/Scrollbar.xaml" />
@@ -133,6 +134,10 @@
                 <!--<Setter Property="PlacementRectangle" Value="True" />-->
             </Style>
             
+            <Style x:Key="{x:Type Image}" TargetType="{x:Type Image}">
+                <Setter Property="UseLayoutRounding" Value="True" />
+            </Style>
+
             <Style x:Key="EpsilonIcon" TargetType="{x:Type Image}">
                 <Setter Property="Width" Value="24" />
                 <Setter Property="Height" Value="24" />
