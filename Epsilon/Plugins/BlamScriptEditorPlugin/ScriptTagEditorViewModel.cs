@@ -19,6 +19,7 @@ namespace BlamScriptEditorPlugin
     {
         private readonly IShell _shell;
         private ICacheFile _cacheFile;
+        private CachedTag _instance;
         private Scenario _definition;
         private string _scriptSourceCode;
 
@@ -28,10 +29,11 @@ namespace BlamScriptEditorPlugin
             set => SetAndNotify(ref _scriptSourceCode, value);
         }
 
-        public ScriptTagEditorViewModel(IShell shell, ICacheFile cacheFile, Scenario definition)
+        public ScriptTagEditorViewModel(IShell shell, ICacheFile cacheFile, CachedTag instance, Scenario definition)
         {
             _shell = shell;
             _cacheFile = cacheFile;
+            _instance = instance;
             _definition = definition;
         }
 
@@ -56,7 +58,7 @@ namespace BlamScriptEditorPlugin
         {
             try
             {
-                var decompiler = new ScriptDecompiler(_cacheFile.Cache, _definition);
+                var decompiler = new ScriptDecompiler(_cacheFile.Cache, _definition, _instance);
                 ScriptSourceCode = await Task.Run(() =>
                 {
                     using (var writer = new StringWriter())
